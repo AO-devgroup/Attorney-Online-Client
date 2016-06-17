@@ -8,7 +8,7 @@
 
 ### Command list:
 
- - **L**oad**A**ddon (name, checksum)
+ - **L**oad **A**ddon (name, checksum)
    Loads the requested addon and makes it usable in-game.
 
  - **S**et **L**ayer (wID, ID, depth, type, args)
