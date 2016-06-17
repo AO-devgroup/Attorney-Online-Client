@@ -2,9 +2,9 @@
 ----
 
 ### Message format:
-  [2-letter command]\r[arguments, \r separated]\n
+  [2-letter command]:[arguments, : separated]\n
   
-  Example: **LA***\r*Phoenix Wright from PW5*\r*c48c29157e2b358cc144027f3e2d8cb4*\n*
+  Example: **LA***:*Phoenix Wright from PW5*:*c48c29157e2b358cc144027f3e2d8cb4*\n*
 
 ### Command list:
 
