@@ -1,4 +1,4 @@
-# Server to Client protocol
+# Server to Client Protocol
 ----
 
 ### Message format:
@@ -25,3 +25,22 @@
 
  - **G**o**T**o (IP, msg)
    Loads another server at IP, passing it a string msg as a handshake argument
+
+
+----
+----
+# Client to Server Protocol
+----
+
+### Message format:
+  [2-letter command]:[arguments, : separated]\r\n
+  
+  Example: **CB***:*Chatbox*:*I like the Ace Attorney franchise!*\r\n*
+  
+### Command list:
+
+ - **H**and**S**hake (message)
+   The first command to be sent between the client and the server. Message is an optional parameter that can be passed by the **GT** command.
+
+ - **C**all**B**ack (ID, args)
+   Is sent whenever an interactive layer fires its callback. ID is the identifier of the interactive layer, args are the arguments it passes.
