@@ -1,2 +1,5 @@
 # AttorneyOnlineQtClient
-This is the new client project based on the Qt creator
+you will need to make a qt project then add these files to the project. not tested, someone please do.
+
+
+MAKE SURE THE CODE BUILDS BEFORE PUSHING
