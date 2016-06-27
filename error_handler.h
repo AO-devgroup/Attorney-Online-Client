@@ -1,0 +1,4 @@
+#ifndef ERRORHANDLER_H
+#define ERRORHANDLER_H
+
+#endif // ERRORHANDLER_H
