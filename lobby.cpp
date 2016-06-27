@@ -49,7 +49,7 @@ void Lobby::on_connect_pressed()
 void Lobby::on_connect_released()
 {
     ui->connect->setStyleSheet("border-image:url(" + getImagePath("connect.png") + ")");
-    callError("ur a fag");
+    callError("ur a fag"); //for debugging purposes
 }
 
 void Lobby::on_publicservers_clicked()
