@@ -17,7 +17,7 @@ public:
   ~Lobby();
 
 public slots:
-  void openCourtroomwindow();
+  void openCourtroomWindow();
 
 private slots:
   void on_refresh_pressed();
@@ -38,7 +38,7 @@ private slots:
 
 private:
   Ui::Lobby *ui;
-  Ui::Courtroom *mMyNewWindow;
+  Courtroom *mCourtroomWindow;
 };
 
 #endif // LOBBY_H

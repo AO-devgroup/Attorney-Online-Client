@@ -2,6 +2,8 @@
 #include "ui_lobby.h"
 #include "config_handler.h"
 #include "error_handler.h"
+#include "courtroom.h"
+#include "ui_courtroom.h"
 
 Lobby::Lobby(QWidget *parent) :
     QMainWindow(parent),
@@ -14,11 +16,18 @@ Lobby::Lobby(QWidget *parent) :
     ui->connect->setStyleSheet("border-image:url(" + getImagePath("connect.png") + ")");
     ui->publicservers->setStyleSheet("border-image:url(" + getImagePath("publicservers.png") + ")");
     ui->favorites->setStyleSheet("border-image:url(" + getImagePath("favorites.png") + ")");
+    //connect(ui->addtofav, SIGNAL(click()), this, SLOT(openCourtroomWindow()));
 }
 
 Lobby::~Lobby()
 {
     delete ui;
+}
+
+void Lobby::openCourtroomWindow()
+{
+   //mCourtroomWindow = new Ui::Courtroom(); // Be sure to destroy you window somewhere
+   //mCourtroomWindow->show();
 }
 
 void Lobby::on_refresh_pressed()
@@ -29,6 +38,7 @@ void Lobby::on_refresh_pressed()
 void Lobby::on_refresh_released()
 {
     ui->refresh->setStyleSheet("border-image:url(" + getImagePath("refresh.png") + ")");
+    callError("ur a fag"); //for debugging purposes
 }
 
 void Lobby::on_addtofav_pressed()
@@ -49,7 +59,8 @@ void Lobby::on_connect_pressed()
 void Lobby::on_connect_released()
 {
     ui->connect->setStyleSheet("border-image:url(" + getImagePath("connect.png") + ")");
-    callError("ur a fag"); //for debugging purposes
+    mCourtroomWindow = new Courtroom(this);
+    mCourtroomWindow->show();
 }
 
 void Lobby::on_publicservers_clicked()
