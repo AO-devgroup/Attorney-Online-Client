@@ -24,19 +24,6 @@
     <normaloff>:/resource/logo.png</normaloff>:/resource/logo.png</iconset>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QPushButton" name="debugbutton">
-    <property name="geometry">
-     <rect>
-      <x>40</x>
-      <y>310</y>
-      <width>121</width>
-      <height>41</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>debugbutton</string>
-    </property>
-   </widget>
    <widget class="QLabel" name="background">
     <property name="geometry">
      <rect>
@@ -51,16 +38,6 @@
     </property>
     <property name="pixmap">
      <pixmap>../build-Attorney_Online_new-Desktop_Qt_5_7_0_GCC_64bit-Debug/base/themes/default/lobbybackground.png</pixmap>
-    </property>
-   </widget>
-   <widget class="QTextEdit" name="debugconsole">
-    <property name="geometry">
-     <rect>
-      <x>30</x>
-      <y>140</y>
-      <width>221</width>
-      <height>131</height>
-     </rect>
     </property>
    </widget>
    <widget class="QPushButton" name="refresh">
@@ -143,14 +120,60 @@
      <bool>true</bool>
     </property>
    </widget>
-   <zorder>background</zorder>
-   <zorder>debugbutton</zorder>
-   <zorder>debugconsole</zorder>
-   <zorder>refresh</zorder>
-   <zorder>addtofav</zorder>
-   <zorder>connect</zorder>
-   <zorder>publicservers</zorder>
-   <zorder>favorites</zorder>
+   <widget class="QListWidget" name="serverlist">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>125</y>
+      <width>286</width>
+      <height>240</height>
+     </rect>
+    </property>
+    <property name="palette">
+     <palette>
+      <active>
+       <colorrole role="Base">
+        <brush brushstyle="SolidPattern">
+         <color alpha="0">
+          <red>255</red>
+          <green>255</green>
+          <blue>255</blue>
+         </color>
+        </brush>
+       </colorrole>
+      </active>
+      <inactive>
+       <colorrole role="Base">
+        <brush brushstyle="SolidPattern">
+         <color alpha="0">
+          <red>255</red>
+          <green>255</green>
+          <blue>255</blue>
+         </color>
+        </brush>
+       </colorrole>
+      </inactive>
+      <disabled>
+       <colorrole role="Base">
+        <brush brushstyle="SolidPattern">
+         <color alpha="255">
+          <red>239</red>
+          <green>235</green>
+          <blue>231</blue>
+         </color>
+        </brush>
+       </colorrole>
+      </disabled>
+     </palette>
+    </property>
+    <property name="font">
+     <font>
+      <weight>75</weight>
+      <italic>false</italic>
+      <bold>true</bold>
+     </font>
+    </property>
+   </widget>
   </widget>
  </widget>
  <resources>

@@ -2,6 +2,7 @@
 #define LOBBY_H
 
 #include <QMainWindow>
+#include <QFont>
 #include "courtroom.h"
 
 namespace Ui {

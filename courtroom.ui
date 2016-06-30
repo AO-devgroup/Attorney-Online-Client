@@ -65,8 +65,8 @@
    <widget class="QPlainTextEdit" name="plainTextEdit">
     <property name="geometry">
      <rect>
-      <x>280</x>
-      <y>20</y>
+      <x>300</x>
+      <y>90</y>
       <width>161</width>
       <height>141</height>
      </rect>
@@ -211,6 +211,38 @@
      <string/>
     </property>
    </widget>
+   <widget class="QLabel" name="present_placeholder">
+    <property name="geometry">
+     <rect>
+      <x>171</x>
+      <y>626</y>
+      <width>158</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="pixmap">
+     <pixmap>base/themes/default/present.png</pixmap>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="present">
+    <property name="geometry">
+     <rect>
+      <x>171</x>
+      <y>626</y>
+      <width>158</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="flat">
+     <bool>true</bool>
+    </property>
+   </widget>
    <zorder>background</zorder>
    <zorder>plainTextEdit</zorder>
    <zorder>takethat_placeholder</zorder>
@@ -220,6 +252,8 @@
    <zorder>playingarea</zorder>
    <zorder>objection_placeholder</zorder>
    <zorder>objection</zorder>
+   <zorder>present_placeholder</zorder>
+   <zorder>present</zorder>
   </widget>
  </widget>
  <resources>

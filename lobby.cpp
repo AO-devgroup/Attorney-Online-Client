@@ -1,21 +1,35 @@
 #include "lobby.h"
 #include "ui_lobby.h"
-#include "config_handler.h"
-#include "error_handler.h"
 #include "courtroom.h"
 #include "ui_courtroom.h"
+
+#include "config_handler.h"
+#include "error_handler.h"
+#include "networking.h"
+
 
 Lobby::Lobby(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::Lobby)
 {
   ui->setupUi(this);
+
+  //int id = QFontDatabase::addApplicationFont(":/resource/tahomabd.ttf");
+  //QString family = QFontDatabase::applicationFontFamilies(id).at(0);
+  //QFont tahomabd(family);
+
   ui->background->setPixmap(QPixmap(getImagePath("lobbybackground.png")));
   ui->refresh->setStyleSheet("border-image:url(" + getImagePath("refresh.png") + ")");
   ui->addtofav->setStyleSheet("border-image:url(" + getImagePath("addtofav.png") + ")");
   ui->connect->setStyleSheet("border-image:url(" + getImagePath("connect.png") + ")");
-  ui->publicservers->setStyleSheet("border-image:url(" + getImagePath("publicservers.png") + ")");
+  ui->publicservers->setStyleSheet("border-image:url(" + getImagePath("publicservers_selected.png") + ")");
   ui->favorites->setStyleSheet("border-image:url(" + getImagePath("favorites.png") + ")");
+
+  //tahomabd.setWeight(4);
+
+  //ui->serverlist->setFont(tahomabd);
+
+
 }
 
 Lobby::~Lobby()
@@ -25,7 +39,7 @@ Lobby::~Lobby()
 
 void Lobby::openCourtroomWindow()
 {
-   //mCourtroomWindow = new Ui::Courtroom(); // Be sure to destroy you window somewhere
+   //mCourtroomWindow = new Ui::Courtroom();
    //mCourtroomWindow->show();
 }
 
@@ -37,7 +51,9 @@ void Lobby::on_refresh_pressed()
 void Lobby::on_refresh_released()
 {
     ui->refresh->setStyleSheet("border-image:url(" + getImagePath("refresh.png") + ")");
-    callError("ur a fag"); //for debugging purposes
+    //callError("ur a fag");
+    //call serverlist_refresh
+    ui->serverlist->addItems(getServerList());
 }
 
 void Lobby::on_addtofav_pressed()
@@ -53,6 +69,7 @@ void Lobby::on_addtofav_pressed()
 void Lobby::on_addtofav_released()
 {
     ui->addtofav->setStyleSheet("border-image:url(" + getImagePath("addtofav.png") + ")");
+    ui->serverlist->addItem("OAH");
 }
 
 void Lobby::on_connect_pressed()
@@ -64,8 +81,9 @@ void Lobby::on_connect_released()
 {
     ui->connect->setStyleSheet("border-image:url(" + getImagePath("connect.png") + ")");
     mCourtroomWindow = new Courtroom(this);
+    mCourtroomWindow->setWindowModality(Qt::NonModal);
     mCourtroomWindow->show();
-    this->hide();
+    //this->hide();
 }
 
 void Lobby::on_publicservers_clicked()

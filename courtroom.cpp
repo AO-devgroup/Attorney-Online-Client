@@ -7,10 +7,12 @@ Courtroom::Courtroom(QWidget *parent) :
   ui(new Ui::Courtroom)
 {
   ui->setupUi(this);
+  this->setWindowTitle("hueheuehu");
   ui->background->setPixmap(QPixmap(getImagePath("courtroombackground.png")));
   ui->holdit->setStyleSheet("border-image:url(" + getImagePath("holdit.png") + ")");
   ui->objection->setStyleSheet("border-image:url(" + getImagePath("objection.png") + ")");
   ui->takethat->setStyleSheet("border-image:url(" + getImagePath("takethat.png") + ")");
+  ui->present->setStyleSheet("border-image:url(" + getImagePath("present_pressed.png") + ")");
 }
 
 Courtroom::~Courtroom()
@@ -54,4 +56,9 @@ void Courtroom::on_takethat_pressed()
 void Courtroom::on_takethat_released()
 {
   ui->takethat->setStyleSheet("border-image:url(" + getImagePath("takethat.png") + ")");
+}
+
+void Courtroom::on_present_clicked()
+{
+    //insert evidence functionality here
 }

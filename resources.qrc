@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/">
         <file>resource/logo.png</file>
+        <file>resource/tahomabd.ttf</file>
     </qresource>
 </RCC>

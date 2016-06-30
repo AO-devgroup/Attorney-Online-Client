@@ -29,6 +29,8 @@ private slots:
 
   void on_takethat_released();
 
+  void on_present_clicked();
+
 private:
   Ui::Courtroom *ui;
 };
