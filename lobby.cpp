@@ -32,7 +32,7 @@ void Lobby::openCourtroomWindow()
 
 void Lobby::on_refresh_pressed()
 {
-    ui->refresh->setStyleSheet("border-image:url(" + getImagePath("refresh_onclick.png") + ")");
+    ui->refresh->setStyleSheet("border-image:url(" + getImagePath("refresh_pressed.png") + ")");
 }
 
 void Lobby::on_refresh_released()
@@ -43,7 +43,7 @@ void Lobby::on_refresh_released()
 
 void Lobby::on_addtofav_pressed()
 {
-    ui->addtofav->setStyleSheet("border-image:url(" + getImagePath("addtofav_onclick.png") + ")");
+    ui->addtofav->setStyleSheet("border-image:url(" + getImagePath("addtofav_pressed.png") + ")");
 }
 
 void Lobby::on_addtofav_released()
@@ -53,7 +53,7 @@ void Lobby::on_addtofav_released()
 
 void Lobby::on_connect_pressed()
 {
-    ui->connect->setStyleSheet("border-image:url(" + getImagePath("connect_onclick.png") + ")");
+    ui->connect->setStyleSheet("border-image:url(" + getImagePath("connect_pressed.png") + ")");
 }
 
 void Lobby::on_connect_released()
