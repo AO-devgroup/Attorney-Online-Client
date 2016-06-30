@@ -10,8 +10,24 @@
     <height>668</height>
    </rect>
   </property>
+  <property name="minimumSize">
+   <size>
+    <width>256</width>
+    <height>192</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>714</width>
+    <height>668</height>
+   </size>
+  </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>Attorney Online</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="resources.qrc">
+    <normaloff>:/resource/logo.png</normaloff>:/resource/logo.png</iconset>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QLabel" name="background">
@@ -132,6 +148,9 @@
     </property>
    </widget>
    <widget class="QLabel" name="holdit_placeholder">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -179,8 +198,32 @@
      <bool>true</bool>
     </property>
    </widget>
+   <widget class="QLabel" name="playingarea">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>256</width>
+      <height>192</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <zorder>background</zorder>
+   <zorder>plainTextEdit</zorder>
+   <zorder>takethat_placeholder</zorder>
+   <zorder>takethat</zorder>
+   <zorder>holdit_placeholder</zorder>
+   <zorder>holdit</zorder>
+   <zorder>playingarea</zorder>
+   <zorder>objection_placeholder</zorder>
+   <zorder>objection</zorder>
   </widget>
  </widget>
- <resources/>
+ <resources>
+  <include location="resources.qrc"/>
+ </resources>
  <connections/>
 </ui>

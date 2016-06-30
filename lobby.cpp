@@ -9,14 +9,13 @@ Lobby::Lobby(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::Lobby)
 {
-    ui->setupUi(this);
-    ui->background->setPixmap(QPixmap(getImagePath("lobbybackground.png")));
-    ui->refresh->setStyleSheet("border-image:url(" + getImagePath("refresh.png") + ")");
-    ui->addtofav->setStyleSheet("border-image:url(" + getImagePath("addtofav.png") + ")");
-    ui->connect->setStyleSheet("border-image:url(" + getImagePath("connect.png") + ")");
-    ui->publicservers->setStyleSheet("border-image:url(" + getImagePath("publicservers.png") + ")");
-    ui->favorites->setStyleSheet("border-image:url(" + getImagePath("favorites.png") + ")");
-    //connect(ui->addtofav, SIGNAL(click()), this, SLOT(openCourtroomWindow()));
+  ui->setupUi(this);
+  ui->background->setPixmap(QPixmap(getImagePath("lobbybackground.png")));
+  ui->refresh->setStyleSheet("border-image:url(" + getImagePath("refresh.png") + ")");
+  ui->addtofav->setStyleSheet("border-image:url(" + getImagePath("addtofav.png") + ")");
+  ui->connect->setStyleSheet("border-image:url(" + getImagePath("connect.png") + ")");
+  ui->publicservers->setStyleSheet("border-image:url(" + getImagePath("publicservers.png") + ")");
+  ui->favorites->setStyleSheet("border-image:url(" + getImagePath("favorites.png") + ")");
 }
 
 Lobby::~Lobby()

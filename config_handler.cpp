@@ -2,7 +2,9 @@
 
 QString base_dir = (QDir::currentPath() + "/base/");
 
-QString user_theme_path = (base_dir + "themes/" + getUserTheme() + "/");
+QString theme_path = (base_dir + "themes/" + getUserTheme() + "/");
+
+QString characters_path = (base_dir + "characters/");
 
 QString getUserTheme()
 {
@@ -19,7 +21,12 @@ QString getUserTheme()
 
 QString getImagePath(QString image)
 {
-  return (user_theme_path + image);
+  return (theme_path + image);
+}
+
+QString getCharGifPath(QString image)
+{
+  return (characters_path + "Vinyl/" + image);
 }
 
 bool fileExists(QString path) { //check file existence and makes sure its not a directory

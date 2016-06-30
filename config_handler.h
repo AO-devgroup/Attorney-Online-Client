@@ -11,6 +11,8 @@ QString getUserTheme();
 
 QString getImagePath(QString image);
 
+QString getCharGifPath(QString image);
+
 bool fileExists(QString path);
 
 //deprecated

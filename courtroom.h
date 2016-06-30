@@ -2,6 +2,7 @@
 #define COURTROOM_H
 
 #include <QMainWindow>
+#include <QMovie>
 
 namespace Ui {
 class Courtroom;
@@ -14,6 +15,19 @@ class Courtroom : public QMainWindow
 public:
   explicit Courtroom(QWidget *parent = 0);
   ~Courtroom();
+
+private slots:
+  void on_holdit_pressed();
+
+  void on_holdit_released();
+
+  void on_objection_pressed();
+
+  void on_objection_released();
+
+  void on_takethat_pressed();
+
+  void on_takethat_released();
 
 private:
   Ui::Courtroom *ui;
