@@ -5,12 +5,13 @@
 #include <QTextStream>
 #include <QString>
 #include <QDir>
-
-extern QString base_dir; //should be available globally
+#include <QFileInfo>
 
 QString getUserTheme();
 
 QString getImagePath(QString image);
+
+bool fileExists(QString path);
 
 //deprecated
 

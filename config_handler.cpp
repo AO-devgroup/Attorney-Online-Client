@@ -22,6 +22,11 @@ QString getImagePath(QString image)
   return (user_theme_path + image);
 }
 
+bool fileExists(QString path) { //check file existence and makes sure its not a directory
+    QFileInfo check_file(path);
+    return (check_file.exists() && check_file.isFile());
+}
+
 
 
 

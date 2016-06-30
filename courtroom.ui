@@ -33,10 +33,10 @@
    <widget class="QPushButton" name="objection">
     <property name="geometry">
      <rect>
-      <x>80</x>
-      <y>300</y>
-      <width>80</width>
-      <height>23</height>
+      <x>90</x>
+      <y>291</y>
+      <width>76</width>
+      <height>28</height>
      </rect>
     </property>
     <property name="text">
@@ -102,23 +102,26 @@
    <widget class="QLabel" name="objection_placeholder">
     <property name="geometry">
      <rect>
-      <x>100</x>
-      <y>300</y>
-      <width>59</width>
-      <height>15</height>
+      <x>90</x>
+      <y>291</y>
+      <width>76</width>
+      <height>28</height>
      </rect>
     </property>
     <property name="text">
      <string/>
     </property>
+    <property name="pixmap">
+     <pixmap>base/themes/default/objection.png</pixmap>
+    </property>
    </widget>
-   <widget class="QPushButton" name="pushButton">
+   <widget class="QPushButton" name="holdit">
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>290</y>
-      <width>80</width>
-      <height>23</height>
+      <y>291</y>
+      <width>76</width>
+      <height>28</height>
      </rect>
     </property>
     <property name="text">
@@ -132,13 +135,48 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>300</y>
-      <width>59</width>
-      <height>15</height>
+      <y>291</y>
+      <width>76</width>
+      <height>28</height>
      </rect>
     </property>
     <property name="text">
      <string/>
+    </property>
+    <property name="pixmap">
+     <pixmap>base/themes/default/holdit.png</pixmap>
+    </property>
+   </widget>
+   <widget class="QLabel" name="takethat_placeholder">
+    <property name="geometry">
+     <rect>
+      <x>170</x>
+      <y>291</y>
+      <width>76</width>
+      <height>28</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="pixmap">
+     <pixmap>base/themes/default/takethat.png</pixmap>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="takethat">
+    <property name="geometry">
+     <rect>
+      <x>170</x>
+      <y>291</y>
+      <width>76</width>
+      <height>28</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="flat">
+     <bool>true</bool>
     </property>
    </widget>
   </widget>

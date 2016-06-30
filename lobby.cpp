@@ -43,7 +43,12 @@ void Lobby::on_refresh_released()
 
 void Lobby::on_addtofav_pressed()
 {
-    ui->addtofav->setStyleSheet("border-image:url(" + getImagePath("addtofav_pressed.png") + ")");
+  QString image_path = getImagePath("addtofav_pressed.png");
+  if (!fileExists(image_path))
+    callError("Missing file: " + image_path);
+  else
+    ui->addtofav->setStyleSheet("border-image:url(" + image_path + ")");
+
 }
 
 void Lobby::on_addtofav_released()
@@ -61,6 +66,7 @@ void Lobby::on_connect_released()
     ui->connect->setStyleSheet("border-image:url(" + getImagePath("connect.png") + ")");
     mCourtroomWindow = new Courtroom(this);
     mCourtroomWindow->show();
+    this->hide();
 }
 
 void Lobby::on_publicservers_clicked()
