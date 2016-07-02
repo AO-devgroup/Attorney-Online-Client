@@ -7,7 +7,7 @@ Courtroom::Courtroom(QWidget *parent) :
   ui(new Ui::Courtroom)
 {
   ui->setupUi(this);
-  this->setWindowTitle("hueheuehu");
+  this->setWindowTitle("Dank memes online");
   ui->background->setPixmap(QPixmap(getImagePath("courtroombackground.png")));
   ui->holdit->setStyleSheet("border-image:url(" + getImagePath("holdit.png") + ")");
   ui->objection->setStyleSheet("border-image:url(" + getImagePath("objection.png") + ")");
@@ -61,4 +61,10 @@ void Courtroom::on_takethat_released()
 void Courtroom::on_present_clicked()
 {
     //insert evidence functionality here
+
+}
+
+void Courtroom::on_chatLine_returnPressed()
+{
+
 }

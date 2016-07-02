@@ -243,6 +243,16 @@
      <bool>true</bool>
     </property>
    </widget>
+   <widget class="QLineEdit" name="chatLine">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>210</y>
+      <width>251</width>
+      <height>23</height>
+     </rect>
+    </property>
+   </widget>
    <zorder>background</zorder>
    <zorder>plainTextEdit</zorder>
    <zorder>takethat_placeholder</zorder>
@@ -254,6 +264,7 @@
    <zorder>objection</zorder>
    <zorder>present_placeholder</zorder>
    <zorder>present</zorder>
+   <zorder>chatLine</zorder>
   </widget>
  </widget>
  <resources>

@@ -31,6 +31,8 @@ private slots:
 
   void on_present_clicked();
 
+  void on_chatLine_returnPressed();
+
 private:
   Ui::Courtroom *ui;
 };

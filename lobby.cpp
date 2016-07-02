@@ -83,7 +83,7 @@ void Lobby::on_connect_released()
     mCourtroomWindow = new Courtroom(this);
     mCourtroomWindow->setWindowModality(Qt::NonModal);
     mCourtroomWindow->show();
-    //this->hide();
+    this->hide();
 }
 
 void Lobby::on_publicservers_clicked()
