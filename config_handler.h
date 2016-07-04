@@ -14,6 +14,8 @@ QString getImagePath(QString image);
 
 QString getCharGifPath(QString image);
 
+QString getConfigPath();
+
 bool fileExists(QString path);
 
 //deprecated

@@ -23,6 +23,7 @@ class Lobby : public QMainWindow
 
 public:
   explicit Lobby(QWidget *parent = 0);
+  void setTheme();
   ~Lobby();
 
 public slots:

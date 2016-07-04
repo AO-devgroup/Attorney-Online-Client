@@ -10,6 +10,15 @@ Lobby::Lobby(QWidget *parent) :
   //QString family = QFontDatabase::applicationFontFamilies(id).at(0);
   //QFont tahomabd(family);
 
+  //tahomabd.setWeight(4);
+
+  //ui->serverlist->setFont(tahomabd);
+
+
+}
+
+void Lobby::setTheme()
+{
   QString background_path = getImagePath("lobbybackground.png");
   QString refresh_path = getImagePath("refresh.png");
   QString addtofav_path = getImagePath("addtofav.png");
@@ -34,13 +43,6 @@ Lobby::Lobby(QWidget *parent) :
 
   if (fileExists(favorites_path))
     ui->favorites->setStyleSheet("border-image:url(" + favorites_path + ")");
-
-
-  //tahomabd.setWeight(4);
-
-  //ui->serverlist->setFont(tahomabd);
-
-
 }
 
 Lobby::~Lobby()

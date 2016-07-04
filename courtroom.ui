@@ -50,7 +50,7 @@
     <property name="geometry">
      <rect>
       <x>90</x>
-      <y>291</y>
+      <y>310</y>
       <width>76</width>
       <height>28</height>
      </rect>
@@ -59,7 +59,7 @@
      <string/>
     </property>
     <property name="flat">
-     <bool>true</bool>
+     <bool>false</bool>
     </property>
    </widget>
    <widget class="QPlainTextEdit" name="plainTextEdit">
@@ -115,27 +115,11 @@
      <string>hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh</string>
     </property>
    </widget>
-   <widget class="QLabel" name="objection_placeholder">
-    <property name="geometry">
-     <rect>
-      <x>90</x>
-      <y>291</y>
-      <width>76</width>
-      <height>28</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-    <property name="pixmap">
-     <pixmap>base/themes/default/objection.png</pixmap>
-    </property>
-   </widget>
    <widget class="QPushButton" name="holdit">
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>291</y>
+      <y>310</y>
       <width>76</width>
       <height>28</height>
      </rect>
@@ -262,49 +246,14 @@
      <string/>
     </property>
     <property name="flat">
-     <bool>true</bool>
-    </property>
-   </widget>
-   <widget class="QLabel" name="holdit_placeholder">
-    <property name="enabled">
-     <bool>true</bool>
-    </property>
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>291</y>
-      <width>76</width>
-      <height>28</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-    <property name="pixmap">
-     <pixmap>base/themes/default/holdit.png</pixmap>
-    </property>
-   </widget>
-   <widget class="QLabel" name="takethat_placeholder">
-    <property name="geometry">
-     <rect>
-      <x>170</x>
-      <y>291</y>
-      <width>76</width>
-      <height>28</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-    <property name="pixmap">
-     <pixmap>base/themes/default/takethat.png</pixmap>
+     <bool>false</bool>
     </property>
    </widget>
    <widget class="QPushButton" name="takethat">
     <property name="geometry">
      <rect>
       <x>170</x>
-      <y>291</y>
+      <y>310</y>
       <width>76</width>
       <height>28</height>
      </rect>
@@ -313,7 +262,7 @@
      <string/>
     </property>
     <property name="flat">
-     <bool>true</bool>
+     <bool>false</bool>
     </property>
    </widget>
    <widget class="QLabel" name="playingarea">
@@ -329,22 +278,6 @@
      <string/>
     </property>
    </widget>
-   <widget class="QLabel" name="present_placeholder">
-    <property name="geometry">
-     <rect>
-      <x>171</x>
-      <y>626</y>
-      <width>158</width>
-      <height>41</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-    <property name="pixmap">
-     <pixmap>base/themes/default/present.png</pixmap>
-    </property>
-   </widget>
    <widget class="QPushButton" name="present">
     <property name="geometry">
      <rect>
@@ -358,7 +291,7 @@
      <string/>
     </property>
     <property name="flat">
-     <bool>true</bool>
+     <bool>false</bool>
     </property>
    </widget>
    <widget class="QLineEdit" name="chatLine">
@@ -462,18 +395,154 @@
      </palette>
     </property>
    </widget>
+   <widget class="QPushButton" name="emote1">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>219</y>
+      <width>40</width>
+      <height>40</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="emote2">
+    <property name="geometry">
+     <rect>
+      <x>59</x>
+      <y>219</y>
+      <width>40</width>
+      <height>40</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="emote3">
+    <property name="geometry">
+     <rect>
+      <x>108</x>
+      <y>219</y>
+      <width>40</width>
+      <height>40</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="emote4">
+    <property name="geometry">
+     <rect>
+      <x>157</x>
+      <y>219</y>
+      <width>40</width>
+      <height>40</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="emote5">
+    <property name="geometry">
+     <rect>
+      <x>206</x>
+      <y>219</y>
+      <width>40</width>
+      <height>40</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="emote6">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>266</y>
+      <width>40</width>
+      <height>40</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="emote7">
+    <property name="geometry">
+     <rect>
+      <x>59</x>
+      <y>266</y>
+      <width>40</width>
+      <height>40</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="emote8">
+    <property name="geometry">
+     <rect>
+      <x>108</x>
+      <y>266</y>
+      <width>40</width>
+      <height>40</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="emote9">
+    <property name="geometry">
+     <rect>
+      <x>157</x>
+      <y>266</y>
+      <width>40</width>
+      <height>40</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="emote10">
+    <property name="geometry">
+     <rect>
+      <x>206</x>
+      <y>266</y>
+      <width>40</width>
+      <height>40</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
    <zorder>background</zorder>
    <zorder>plainTextEdit</zorder>
-   <zorder>takethat_placeholder</zorder>
    <zorder>takethat</zorder>
-   <zorder>holdit_placeholder</zorder>
    <zorder>holdit</zorder>
    <zorder>playingarea</zorder>
-   <zorder>objection_placeholder</zorder>
    <zorder>objection</zorder>
-   <zorder>present_placeholder</zorder>
    <zorder>present</zorder>
    <zorder>chatLine</zorder>
+   <zorder>emote1</zorder>
+   <zorder>emote2</zorder>
+   <zorder>emote3</zorder>
+   <zorder>emote4</zorder>
+   <zorder>emote5</zorder>
+   <zorder>emote6</zorder>
+   <zorder>emote7</zorder>
+   <zorder>emote8</zorder>
+   <zorder>emote9</zorder>
+   <zorder>emote10</zorder>
   </widget>
  </widget>
  <resources>

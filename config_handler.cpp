@@ -9,15 +9,22 @@ QString characters_path = (base_dir + "characters/");
 
 QString getTheme()
 {
-  QFile config_file(base_dir + "config.ini");
+  QFile config_file(getConfigPath());
   if (!config_file.open(QIODevice::ReadOnly))
   {
-      callError("Failed to read " + base_dir + "config.ini");
+      callError("Error: Failed to read " + base_dir + "config.ini");
   }
   QTextStream in(&config_file);
-  QString config_string = in.readLine();
-  config_file.close();
-  return config_string;
+
+  while(!in.atEnd()) {
+      QString line = in.readLine();
+        if (line.startsWith("theme = "))
+          //removes "theme = " from the start of the line, then returns the rest
+          return line.remove(0, 8);
+  }
+
+  callError("Fatal error: could not find theme in config.ini");
+
 }
 
 QString getImagePath(QString image)
@@ -28,6 +35,11 @@ QString getImagePath(QString image)
 QString getCharGifPath(QString image)
 {
   return (characters_path + "Vinyl/" + image);
+}
+
+QString getConfigPath()
+{
+  return (base_dir + "config.ini");
 }
 
 bool fileExists(QString path)
