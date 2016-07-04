@@ -7,3 +7,5 @@ void callError(QString message)
   msgBox.setWindowTitle("Error");
   msgBox.exec();
 }
+
+

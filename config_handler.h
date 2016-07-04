@@ -6,8 +6,9 @@
 #include <QString>
 #include <QDir>
 #include <QFileInfo>
+#include "error_handler.h"
 
-QString getUserTheme();
+QString getTheme();
 
 QString getImagePath(QString image);
 

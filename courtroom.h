@@ -4,6 +4,11 @@
 #include <QMainWindow>
 #include <QMovie>
 
+#include "ui_courtroom.h"
+
+#include "config_handler.h"
+#include "error_handler.h"
+
 namespace Ui {
 class Courtroom;
 }
@@ -35,6 +40,7 @@ private slots:
 
 private:
   Ui::Courtroom *ui;
+  bool present_evidence = false;
 };
 
 #endif // COURTROOM_H

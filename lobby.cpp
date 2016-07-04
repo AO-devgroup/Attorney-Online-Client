@@ -1,12 +1,4 @@
 #include "lobby.h"
-#include "ui_lobby.h"
-#include "courtroom.h"
-#include "ui_courtroom.h"
-
-#include "config_handler.h"
-#include "error_handler.h"
-#include "networking.h"
-
 
 Lobby::Lobby(QWidget *parent) :
     QMainWindow(parent),
@@ -18,12 +10,31 @@ Lobby::Lobby(QWidget *parent) :
   //QString family = QFontDatabase::applicationFontFamilies(id).at(0);
   //QFont tahomabd(family);
 
-  ui->background->setPixmap(QPixmap(getImagePath("lobbybackground.png")));
-  ui->refresh->setStyleSheet("border-image:url(" + getImagePath("refresh.png") + ")");
-  ui->addtofav->setStyleSheet("border-image:url(" + getImagePath("addtofav.png") + ")");
-  ui->connect->setStyleSheet("border-image:url(" + getImagePath("connect.png") + ")");
-  ui->publicservers->setStyleSheet("border-image:url(" + getImagePath("publicservers_selected.png") + ")");
-  ui->favorites->setStyleSheet("border-image:url(" + getImagePath("favorites.png") + ")");
+  QString background_path = getImagePath("lobbybackground.png");
+  QString refresh_path = getImagePath("refresh.png");
+  QString addtofav_path = getImagePath("addtofav.png");
+  QString connect_path = getImagePath("connect.png");
+  QString publicservers_path = getImagePath("publicservers.png");
+  QString favorites_path = getImagePath("favorites.png");
+
+  if (fileExists(background_path))
+    ui->background->setPixmap(QPixmap(background_path));
+
+  if (fileExists(refresh_path))
+    ui->refresh->setStyleSheet("border-image:url(" + refresh_path + ")");
+
+  if (fileExists(addtofav_path))
+    ui->addtofav->setStyleSheet("border-image:url(" + addtofav_path + ")");
+
+  if (fileExists(connect_path))
+    ui->connect->setStyleSheet("border-image:url(" + connect_path + ")");
+
+  if (fileExists(publicservers_path))
+    ui->publicservers->setStyleSheet("border-image:url(" + publicservers_path + ")");
+
+  if (fileExists(favorites_path))
+    ui->favorites->setStyleSheet("border-image:url(" + favorites_path + ")");
+
 
   //tahomabd.setWeight(4);
 
@@ -45,55 +56,81 @@ void Lobby::openCourtroomWindow()
 
 void Lobby::on_refresh_pressed()
 {
-    ui->refresh->setStyleSheet("border-image:url(" + getImagePath("refresh_pressed.png") + ")");
+  QString path = getImagePath("refresh_pressed.png");
+
+  if (fileExists(path))
+    ui->refresh->setStyleSheet("border-image:url(" + path + ")");
 }
 
 void Lobby::on_refresh_released()
 {
-    ui->refresh->setStyleSheet("border-image:url(" + getImagePath("refresh.png") + ")");
-    //callError("ur a fag");
-    //call serverlist_refresh
+  QString path = getImagePath("refresh.png");
+
+    ui->refresh->setStyleSheet("border-image:url(" + path + ")");
+
+    ui->serverlist->clear();
     ui->serverlist->addItems(getServerList());
 }
 
 void Lobby::on_addtofav_pressed()
 {
-  QString image_path = getImagePath("addtofav_pressed.png");
-  if (!fileExists(image_path))
-    callError("Missing file: " + image_path);
-  else
-    ui->addtofav->setStyleSheet("border-image:url(" + image_path + ")");
+  QString path = getImagePath("addtofav_pressed.png");
 
+  if (fileExists(path))
+      ui->addtofav->setStyleSheet("border-image:url(" + path + ")");
 }
 
 void Lobby::on_addtofav_released()
 {
-    ui->addtofav->setStyleSheet("border-image:url(" + getImagePath("addtofav.png") + ")");
-    ui->serverlist->addItem("OAH");
+  QString path = getImagePath("addtofav.png");
+
+  if (fileExists(path))
+    ui->addtofav->setStyleSheet("border-image:url(" + path + ")");
 }
 
 void Lobby::on_connect_pressed()
 {
-    ui->connect->setStyleSheet("border-image:url(" + getImagePath("connect_pressed.png") + ")");
+  QString path = getImagePath("connect_pressed.png");
+
+  if (fileExists(path))
+    ui->connect->setStyleSheet("border-image:url(" + path + ")");
 }
 
 void Lobby::on_connect_released()
 {
-    ui->connect->setStyleSheet("border-image:url(" + getImagePath("connect.png") + ")");
+  QString path = getImagePath("connect.png");
+
+  if (fileExists(path))
+  {
+    ui->connect->setStyleSheet("border-image:url(" + path + ")");
     mCourtroomWindow = new Courtroom(this);
     mCourtroomWindow->setWindowModality(Qt::NonModal);
     mCourtroomWindow->show();
     this->hide();
+  }
+
 }
 
 void Lobby::on_publicservers_clicked()
 {
-    ui->publicservers->setStyleSheet("border-image:url(" + getImagePath("publicservers_selected.png") + ")");
-    ui->favorites->setStyleSheet("border-image:url(" + getImagePath("favorites.png") + ")");
+  QString path_public = getImagePath("publicservers_selected.png");
+  QString path_favorites = getImagePath("favorites.png");
+
+  if (fileExists(path_public))
+    ui->publicservers->setStyleSheet("border-image:url(" + path_public + ")");
+
+    if (fileExists(path_favorites))
+      ui->favorites->setStyleSheet("border-image:url(" + path_favorites + ")");
 }
 
 void Lobby::on_favorites_clicked()
 {
-    ui->favorites->setStyleSheet("border-image:url(" + getImagePath("favorites_selected.png") + ")");
-    ui->publicservers->setStyleSheet("border-image:url(" + getImagePath("publicservers.png") + ")");
+  QString path_favorites = getImagePath("favorites_selected.png");
+  QString path_public = getImagePath("publicservers.png");
+
+  if (fileExists(path_favorites))
+    ui->favorites->setStyleSheet("border-image:url(" + path_favorites + ")");
+
+    if (fileExists(path_public))
+      ui->publicservers->setStyleSheet("border-image:url(" + path_public + ")");
 }

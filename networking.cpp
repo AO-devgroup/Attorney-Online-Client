@@ -1,5 +1,7 @@
 #include "networking.h"
 
+//T0D0 fix this monstrosity
+
 QStringList getServerList()
 {
   //socket.whatever NETWORKING WHO KNOWS LOL

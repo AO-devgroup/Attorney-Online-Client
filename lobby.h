@@ -3,7 +3,15 @@
 
 #include <QMainWindow>
 #include <QFont>
+#include <QString>
+
+#include "ui_lobby.h"
 #include "courtroom.h"
+#include "ui_courtroom.h"
+
+#include "config_handler.h"
+#include "error_handler.h"
+#include "networking.h"
 
 namespace Ui {
 class Lobby;

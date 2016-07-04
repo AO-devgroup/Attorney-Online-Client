@@ -1,6 +1,5 @@
 #include "courtroom.h"
-#include "ui_courtroom.h"
-#include "config_handler.h"
+
 
 Courtroom::Courtroom(QWidget *parent) :
   QMainWindow(parent),
@@ -8,11 +7,27 @@ Courtroom::Courtroom(QWidget *parent) :
 {
   ui->setupUi(this);
   this->setWindowTitle("Dank memes online");
-  ui->background->setPixmap(QPixmap(getImagePath("courtroombackground.png")));
-  ui->holdit->setStyleSheet("border-image:url(" + getImagePath("holdit.png") + ")");
-  ui->objection->setStyleSheet("border-image:url(" + getImagePath("objection.png") + ")");
-  ui->takethat->setStyleSheet("border-image:url(" + getImagePath("takethat.png") + ")");
-  ui->present->setStyleSheet("border-image:url(" + getImagePath("present_pressed.png") + ")");
+
+  QString background_path = getImagePath("courtroombackground.png");
+  QString holdit_path = getImagePath("holdit.png");
+  QString objection_path = getImagePath("objection.png");
+  QString takethat_path = getImagePath("takethat.png");
+  QString present_path = getImagePath("present_pressed.png");
+
+  if (fileExists(background_path))
+    ui->background->setPixmap(QPixmap(background_path));
+
+  if (fileExists(holdit_path))
+    ui->holdit->setStyleSheet("border-image:url(" + holdit_path + ")");
+
+  if (fileExists(objection_path))
+    ui->objection->setStyleSheet("border-image:url(" + objection_path + ")");
+
+  if (fileExists(takethat_path))
+    ui->takethat->setStyleSheet("border-image:url(" + takethat_path + ")");
+
+  if (fileExists(present_path))
+    ui->present->setStyleSheet("border-image:url(" + present_path + ")");
 }
 
 Courtroom::~Courtroom()
@@ -22,12 +37,19 @@ Courtroom::~Courtroom()
 
 void Courtroom::on_holdit_pressed()
 {
-  ui->holdit->setStyleSheet("border-image:url(" + getImagePath("holdit_pressed.png") + ")");
+  QString path = getImagePath("holdit_pressed.png");
+
+  if (fileExists(path))
+    ui->holdit->setStyleSheet("border-image:url(" + path + ")");
 }
 
 void Courtroom::on_holdit_released()
 {
-  ui->holdit->setStyleSheet("border-image:url(" + getImagePath("holdit.png") + ")");
+  QString path = getImagePath("holdit.png");
+
+  if (fileExists(path))
+    ui->holdit->setStyleSheet("border-image:url(" + path + ")");
+
   QMovie *movie = new QMovie(getCharGifPath("(b)normal.gif"));
   ui->playingarea->setMovie(movie);
   movie->start();
@@ -36,12 +58,19 @@ void Courtroom::on_holdit_released()
 
 void Courtroom::on_objection_pressed()
 {
-  ui->objection->setStyleSheet("border-image:url(" + getImagePath("objection_pressed.png") + ")");
+  QString path = getImagePath("objection_pressed.png");
+
+  if (fileExists(path))
+    ui->objection->setStyleSheet("border-image:url(" + path + ")");
 }
 
 void Courtroom::on_objection_released()
 {
-  ui->objection->setStyleSheet("border-image:url(" + getImagePath("objection.png") + ")");
+  QString path = getImagePath("objection.png");
+
+  if (fileExists(path))
+    ui->objection->setStyleSheet("border-image:url(" + path + ")");
+
   QMovie *movie = new QMovie(getCharGifPath("(a)normal.gif"));
   ui->playingarea->setMovie(movie);
   movie->start();
@@ -50,21 +79,43 @@ void Courtroom::on_objection_released()
 
 void Courtroom::on_takethat_pressed()
 {
-  ui->takethat->setStyleSheet("border-image:url(" + getImagePath("takethat_pressed.png") + ")");
+  QString path = getImagePath("takethat_pressed.png");
+
+  if (fileExists(path))
+    ui->takethat->setStyleSheet("border-image:url(" + path + ")");
 }
 
 void Courtroom::on_takethat_released()
 {
-  ui->takethat->setStyleSheet("border-image:url(" + getImagePath("takethat.png") + ")");
+  QString path = getImagePath("takethat.png");
+
+  if (fileExists(path))
+    ui->takethat->setStyleSheet("border-image:url(" + path + ")");
 }
 
 void Courtroom::on_present_clicked()
 {
-    //insert evidence functionality here
+  QString present_on = getImagePath("present.png");
+  QString present_off = getImagePath("present_pressed.png");
+
+  if (present_evidence)
+  {
+    ui->present->setStyleSheet("border-image:url(" + present_off + ")");
+    present_evidence = false;
+  }
+
+  else
+  {
+    ui->present->setStyleSheet("border-image:url(" + present_on + ")");
+    present_evidence = true;
+  }
 
 }
 
 void Courtroom::on_chatLine_returnPressed()
 {
-
+  //callError("BOIS");
+  QString chatMessage = ui->chatLine->text();
+  ui->plainTextEdit->setPlainText(chatMessage);
+  ui->chatLine->clear();
 }
