@@ -7,7 +7,10 @@ Courtroom::Courtroom(QWidget *parent) :
 {
   ui->setupUi(this);
   this->setWindowTitle("Dank memes online");
+}
 
+void Courtroom::setTheme()
+{
   QString background_path = getImagePath("courtroombackground.png");
   QString holdit_path = getImagePath("holdit.png");
   QString objection_path = getImagePath("objection.png");

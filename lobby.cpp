@@ -19,6 +19,8 @@ Lobby::Lobby(QWidget *parent) :
 
 void Lobby::setTheme()
 {
+
+
   QString background_path = getImagePath("lobbybackground.png");
   QString refresh_path = getImagePath("refresh.png");
   QString addtofav_path = getImagePath("addtofav.png");
@@ -105,11 +107,13 @@ void Lobby::on_connect_released()
   if (fileExists(path))
   {
     ui->connect->setStyleSheet("border-image:url(" + path + ")");
-    mCourtroomWindow = new Courtroom(this);
-    mCourtroomWindow->setWindowModality(Qt::NonModal);
-    mCourtroomWindow->show();
-    this->hide();
   }
+
+  mCourtroomWindow = new Courtroom(this);
+  //mCourtroomWindow->setWindowModality(Qt::NonModal);
+  mCourtroomWindow->setTheme();
+  mCourtroomWindow->show();
+  this->hide();
 
 }
 

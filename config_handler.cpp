@@ -1,18 +1,28 @@
 #include "config_handler.h"
-#include "error_handler.h"
 
-QString base_dir = (QDir::currentPath() + "/base/");
 
-QString theme_path = (base_dir + "themes/" + getTheme() + "/");
+QString getBaseDir()
+{
+  return (QDir::currentPath() + "/base/");
+}
 
-QString characters_path = (base_dir + "characters/");
+QString getThemePath()
+{
+  return (getBaseDir() + "themes/" + getTheme() + "/");
+}
+
+QString getCharPath()
+{
+  return (getBaseDir() + "characters/");
+}
 
 QString getTheme()
 {
   QFile config_file(getConfigPath());
   if (!config_file.open(QIODevice::ReadOnly))
   {
-      callError("Error: Failed to read " + base_dir + "config.ini");
+      callError("FATAL ERROR: Failed to read " + getBaseDir() + "config.ini");
+      QApplication::quit();
   }
   QTextStream in(&config_file);
 
@@ -23,23 +33,24 @@ QString getTheme()
           return line.remove(0, 8);
   }
 
-  callError("Fatal error: could not find theme in config.ini");
+  callError("Error: could not find theme in config.ini. Setting to default.");
 
+  return "default";
 }
 
 QString getImagePath(QString image)
 {
-  return (theme_path + image);
+  return (getThemePath() + image);
 }
 
 QString getCharGifPath(QString image)
 {
-  return (characters_path + "Vinyl/" + image);
+  return (getCharPath() + "Vinyl/" + image);
 }
 
 QString getConfigPath()
 {
-  return (base_dir + "config.ini");
+  return (getBaseDir() + "config.ini");
 }
 
 bool fileExists(QString path)

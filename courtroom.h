@@ -19,6 +19,7 @@ class Courtroom : public QMainWindow
 
 public:
   explicit Courtroom(QWidget *parent = 0);
+  void setTheme();
   ~Courtroom();
 
 private slots:

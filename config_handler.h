@@ -6,7 +6,14 @@
 #include <QString>
 #include <QDir>
 #include <QFileInfo>
+#include <QApplication>
 #include "error_handler.h"
+
+QString getBasePath();
+
+QString getThemePath();
+
+QString getCharPath();
 
 QString getTheme();
 
