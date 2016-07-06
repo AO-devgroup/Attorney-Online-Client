@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QMovie>
+#include <QString>
 
 #include "ui_courtroom.h"
 
@@ -20,6 +21,7 @@ class Courtroom : public QMainWindow
 public:
   explicit Courtroom(QWidget *parent = 0);
   void setTheme();
+  void setChar();
   ~Courtroom();
 
 private slots:
@@ -42,6 +44,7 @@ private slots:
 private:
   Ui::Courtroom *ui;
   bool present_evidence = false;
+  QString playerChar = "null";
 };
 
 #endif // COURTROOM_H

@@ -7,21 +7,20 @@
 #include <QDir>
 #include <QFileInfo>
 #include <QApplication>
+#include <QStringList>
+
 #include "error_handler.h"
+#include "character_handler.h"
+
+extern std::vector<QString> g_config_file;
 
 QString getBasePath();
 
-QString getThemePath();
-
-QString getCharPath();
+void LoadConfig();
 
 QString getTheme();
 
 QString getImagePath(QString image);
-
-QString getCharGifPath(QString image);
-
-QString getConfigPath();
 
 bool fileExists(QString path);
 

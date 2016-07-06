@@ -20,6 +20,8 @@ Lobby::Lobby(QWidget *parent) :
 void Lobby::setTheme()
 {
 
+  LoadConfig(); //sets config.ini as a global variable !IMPORTANT!
+                //literally everything breaks if you remove this
 
   QString background_path = getImagePath("lobbybackground.png");
   QString refresh_path = getImagePath("refresh.png");

@@ -6,7 +6,7 @@ Courtroom::Courtroom(QWidget *parent) :
   ui(new Ui::Courtroom)
 {
   ui->setupUi(this);
-  this->setWindowTitle("Dank memes online");
+  this->setWindowTitle("Attorney Online");
 }
 
 void Courtroom::setTheme()
@@ -33,6 +33,12 @@ void Courtroom::setTheme()
     ui->present->setStyleSheet("border-image:url(" + present_path + ")");
 }
 
+void Courtroom::setChar()
+{
+  //set emote buttons #T0D0
+  playerChar = "Vinyl";
+}
+
 Courtroom::~Courtroom()
 {
   delete ui;
@@ -53,7 +59,7 @@ void Courtroom::on_holdit_released()
   if (fileExists(path))
     ui->holdit->setStyleSheet("border-image:url(" + path + ")");
 
-  QMovie *movie = new QMovie(getCharGifPath("(b)normal.gif"));
+  QMovie *movie = new QMovie(getCharGifPath(playerChar,"(b)normal.gif"));
   ui->playingarea->setMovie(movie);
   movie->start();
   ui->plainTextEdit->appendPlainText("ayy lmao");
@@ -74,7 +80,7 @@ void Courtroom::on_objection_released()
   if (fileExists(path))
     ui->objection->setStyleSheet("border-image:url(" + path + ")");
 
-  QMovie *movie = new QMovie(getCharGifPath("(a)normal.gif"));
+  QMovie *movie = new QMovie(getCharGifPath(playerChar, "(a)normal.gif"));
   ui->playingarea->setMovie(movie);
   movie->start();
   ui->plainTextEdit->appendPlainText("ayy lmao");

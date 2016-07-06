@@ -3,7 +3,7 @@
 void callError(QString message)
 {
   QMessageBox msgBox;
-  msgBox.setText(message);
+  msgBox.setText("Error: " + message);
   msgBox.setWindowTitle("Error");
   msgBox.exec();
 }
