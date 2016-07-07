@@ -41,8 +41,8 @@ int getEmoteNumber()
         callError("misconfigured char.ini. Expected \"number = \", found " + ::g_char_ini[line_number]);
 
       QString newline = line.remove(0, 9); //removes "number = " from the start of the line
-      int output = newline.toInt();
-      return output;
+
+      return newline.toInt();
     }
   }
 

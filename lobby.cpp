@@ -5,16 +5,6 @@ Lobby::Lobby(QWidget *parent) :
     ui(new Ui::Lobby)
 {
   ui->setupUi(this);
-
-  //int id = QFontDatabase::addApplicationFont(":/resource/tahomabd.ttf");
-  //QString family = QFontDatabase::applicationFontFamilies(id).at(0);
-  //QFont tahomabd(family);
-
-  //tahomabd.setWeight(4);
-
-  //ui->serverlist->setFont(tahomabd);
-
-
 }
 
 void Lobby::setTheme()
@@ -52,12 +42,6 @@ void Lobby::setTheme()
 Lobby::~Lobby()
 {
     delete ui;
-}
-
-void Lobby::openCourtroomWindow()
-{
-   //mCourtroomWindow = new Ui::Courtroom();
-   //mCourtroomWindow->show();
 }
 
 void Lobby::on_refresh_pressed()
@@ -112,7 +96,6 @@ void Lobby::on_connect_released()
   }
 
   mCourtroomWindow = new Courtroom(this);
-  //mCourtroomWindow->setWindowModality(Qt::NonModal);
   mCourtroomWindow->setTheme();
   mCourtroomWindow->setChar();
   mCourtroomWindow->show();

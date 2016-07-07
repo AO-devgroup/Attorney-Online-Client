@@ -133,7 +133,6 @@ void Courtroom::on_present_clicked()
 
 void Courtroom::on_chatLine_returnPressed()
 {
-  //callError("BOIS");
   QString chatMessage = ui->chatLine->text();
   ui->plainTextEdit->setPlainText(chatMessage);
   ui->chatLine->clear();

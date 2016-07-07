@@ -27,7 +27,6 @@ public:
   ~Lobby();
 
 public slots:
-  void openCourtroomWindow();
 
 private slots:
   void on_refresh_pressed();
