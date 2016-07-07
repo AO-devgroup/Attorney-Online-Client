@@ -11,6 +11,8 @@ Courtroom::Courtroom(QWidget *parent) :
 
 void Courtroom::setTheme()
 {
+  LoadConfig();
+
   QString background_path = getImagePath("courtroombackground.png");
   QString holdit_path = getImagePath("holdit.png");
   QString objection_path = getImagePath("objection.png");
@@ -35,8 +37,16 @@ void Courtroom::setTheme()
 
 void Courtroom::setChar()
 {
-  //set emote buttons #T0D0
   playerChar = "Vinyl";
+
+  LoadCharIni(playerChar);
+
+  int print = getEmoteNumber();
+  QString out = QString::number(print);
+
+  ui->plainTextEdit->appendPlainText(out);
+  //set emote buttons #T0D0
+
 }
 
 Courtroom::~Courtroom()
@@ -62,7 +72,7 @@ void Courtroom::on_holdit_released()
   QMovie *movie = new QMovie(getCharGifPath(playerChar,"(b)normal.gif"));
   ui->playingarea->setMovie(movie);
   movie->start();
-  ui->plainTextEdit->appendPlainText("ayy lmao");
+  ui->plainTextEdit->appendPlainText(g_char_ini[0]);
 }
 
 void Courtroom::on_objection_pressed()

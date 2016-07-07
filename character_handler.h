@@ -7,9 +7,9 @@
 #include "config_handler.h"
 #include "error_handler.h"
 
-extern std::vector<QString> g_config_file;
+extern QStringList g_char_ini;
 
-void LoadCharIni();
+void LoadCharIni(QString character);
 
 int getEmoteNumber();
 

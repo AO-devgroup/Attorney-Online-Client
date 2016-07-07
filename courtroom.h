@@ -9,6 +9,7 @@
 
 #include "config_handler.h"
 #include "error_handler.h"
+#include "character_handler.h"
 
 namespace Ui {
 class Courtroom;

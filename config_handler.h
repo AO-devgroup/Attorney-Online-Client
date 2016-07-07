@@ -12,7 +12,7 @@
 #include "error_handler.h"
 #include "character_handler.h"
 
-extern std::vector<QString> g_config_file;
+extern QStringList g_config_file;
 
 QString getBasePath();
 

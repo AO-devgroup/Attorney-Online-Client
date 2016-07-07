@@ -114,6 +114,7 @@ void Lobby::on_connect_released()
   mCourtroomWindow = new Courtroom(this);
   //mCourtroomWindow->setWindowModality(Qt::NonModal);
   mCourtroomWindow->setTheme();
+  mCourtroomWindow->setChar();
   mCourtroomWindow->show();
   this->hide();
 

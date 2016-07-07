@@ -1,6 +1,6 @@
 #include "config_handler.h"
 
-std::vector<QString> g_config_file{"hOI"};
+QStringList g_config_file{"if this is visible anywhere, it means something broke"};
 
 QString getBasePath()
 {
@@ -22,7 +22,7 @@ void LoadConfig()
 
   while(!in.atEnd())
   {
-    g_config_file[line_count] = in.readLine();
+    g_config_file.insert(line_count, in.readLine());
     ++line_count;
   }
 }
@@ -32,6 +32,8 @@ QString getTheme()
   //int config_size = ::g_config_file.size();
 
   //QTextStream in(getConfigFile());
+
+  //StringList config_file = ::g_config_file;
 
   for(QString line : ::g_config_file)
   {
