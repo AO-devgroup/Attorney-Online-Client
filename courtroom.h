@@ -21,8 +21,8 @@ class Courtroom : public QMainWindow
 
 public:
   explicit Courtroom(QWidget *parent = 0);
-  void setTheme();
-  void setChar();
+  void setTheme();                         //sets images according to theme in config.ini
+  void setChar();                          //loads appropriate char.ini into the global namespace
   ~Courtroom();
 
 private slots:
@@ -46,6 +46,11 @@ private:
   Ui::Courtroom *ui;
   bool present_evidence = false;
   QString playerChar = "null";
+  int emote_number;
+  int emote_pages;
+  int emote_current_page;
+  int emote_pressed;      //keeps track of which emote button is pressed
+  void setEmotes();       //sets emote images
 };
 
 #endif // COURTROOM_H

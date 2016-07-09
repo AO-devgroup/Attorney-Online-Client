@@ -24,10 +24,4 @@ QString getImagePath(QString image);
 
 bool fileExists(QString path);
 
-//deprecated
-
-//QImage getUserBackground();
-//QString getUserBackgroundPath();
-
-
 #endif // CONFIG_HANDLER_H

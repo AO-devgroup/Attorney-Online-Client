@@ -17,5 +17,7 @@ QString getCharPath(QString character);
 
 QString getCharGifPath(QString character, QString gif);
 
+QString getEmoteIconPath(QString character, QString emoteicon);
+
 
 #endif // CHARACTER_HANDLER_H

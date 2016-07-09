@@ -42,6 +42,9 @@ int getEmoteNumber()
 
       QString newline = line.remove(0, 9); //removes "number = " from the start of the line
 
+      if (newline.toInt() < 1)
+        callFatalError("number of emotes appear to be zero or negative");
+
       return newline.toInt();
     }
   }
@@ -60,4 +63,14 @@ QString getCharPath(QString character)
 QString getCharGifPath(QString character, QString image)
 {
   return (getCharPath(character) + image);
+}
+
+QString getCharEmotePath(QString character, QString emote)
+{
+  return (getCharPath(character) + emote);
+}
+
+QString getEmoteIconPath(QString character, QString emoteicon)
+{
+  return (getCharPath(character) + "emotions/button" + emoteicon + ".png");
 }

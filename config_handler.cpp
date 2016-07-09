@@ -29,13 +29,8 @@ void LoadConfig()
 
 QString getTheme()
 {
-  //int config_size = ::g_config_file.size();
 
-  //QTextStream in(getConfigFile());
-
-  //StringList config_file = ::g_config_file;
-
-  for(QString line : ::g_config_file)
+for(QString line : ::g_config_file)
   {
     if (line.startsWith("theme = "))
       //removes "theme = " from the start of the line, then returns the rest

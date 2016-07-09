@@ -8,4 +8,13 @@ void callError(QString message)
   msgBox.exec();
 }
 
+void callFatalError(QString message)
+{
+  QMessageBox msgBox;
+  msgBox.setText("FATAL ERROR: " + message + "\n\nquitting application");
+  msgBox.setWindowTitle("FATAL ERROR");
+  msgBox.exec();
+  //appquit #T0D0
+}
+
 
