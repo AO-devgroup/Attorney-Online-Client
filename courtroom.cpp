@@ -91,7 +91,7 @@ void Courtroom::setEmotes()                 //called every time the emote page i
     callFatalError("emotes_on_page was not set properly (-1)");
 
   else
-    callFatalError("Something broke with the emotes idk. blame the terrible developers/n"
+    callFatalError("Something broke with the emotes idk. blame the terrible developers."
                    "seriously, though. emotes_on_page failed to set properly. who knows why");
 
   //int max_emote = (((emote_pages - 1) * 10) + (emote_number % 10));
