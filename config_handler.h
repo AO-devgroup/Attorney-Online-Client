@@ -22,6 +22,6 @@ QString getTheme();
 
 QString getImagePath(QString image);
 
-bool fileExists(QString path);
+bool fileExists(QString path, bool quiet = false);
 
 #endif // CONFIG_HANDLER_H

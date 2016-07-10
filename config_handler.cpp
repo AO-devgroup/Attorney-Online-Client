@@ -47,12 +47,16 @@ QString getImagePath(QString image)
   return (getBasePath() + "themes/" + getTheme() + "/" + image);
 }
 
-bool fileExists(QString path)
+bool fileExists(QString path, bool quiet)
 {
   QFileInfo check_file(path);
 
   if (check_file.exists() && check_file.isFile())
     return true;
+
+  else if (quiet)
+    return false;
+
   else
   {
     callError("Missing file: " + path);

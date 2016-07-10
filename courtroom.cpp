@@ -37,15 +37,18 @@ void Courtroom::setTheme()
 
 void Courtroom::setChar()
 {
-  playerChar = "Vinyl";
+  playerChar = "Phoenix";
 
   LoadCharIni(playerChar);
 
   emote_pressed = 1;
 
-  emote_number = getEmoteNumber();
+  emote_number = getEmoteNumber();          //if something went wrong, this will return -1
 
-  if ((emote_number % 10) == 0) //we check if the amount of emotes is divisible by ten
+  if (emote_number == -1)
+    callFatalError("failed to get emote_number (-1)");
+
+  if ((emote_number % 10) == 0)             //we check if the amount of emotes is divisible by ten
     emote_pages = (emote_number / 10);
   else
     emote_pages = ((emote_number / 10) + 1);
@@ -70,7 +73,7 @@ void Courtroom::setEmotes()                 //called every time the emote page i
   ui->emote2->hide();
   ui->emote1->hide();
 
-  int emotes_on_page;
+  int emotes_on_page = -1;
 
   if(emote_pages < 1)                        //SANITY CHECK
     callError("amount of emote pages appear to be zero or negative");
@@ -84,77 +87,98 @@ void Courtroom::setEmotes()                 //called every time the emote page i
   else if(emote_current_page < emote_pages)  //if not, we should be on a page that is not the last page
     emotes_on_page = 10;                     //conclusion: 10 emotes on the page
 
-  else
-    callFatalError("Something broke with the emotes idk");
+  else if(emotes_on_page == -1)
+    callFatalError("emotes_on_page was not set properly (-1)");
 
-  int max_emote = (((emote_pages - 1) * 10) + (emote_number % 10));
+  else
+    callFatalError("Something broke with the emotes idk. blame the terrible developers/n"
+                   "seriously, though. emotes_on_page failed to set properly. who knows why");
+
+  //int max_emote = (((emote_pages - 1) * 10) + (emote_number % 10));
 
   QString path;
 
   switch(emotes_on_page)                     // !!!!!!INTENTIONAL FALLTHROUGH!!!!!!!!!!
   {
     case 10:
-      path = getEmoteIconPath(playerChar, (max_emote-- + "_on"));
+      path = getEmoteIconPath(playerChar, (10 + (10 * (emote_current_page - 1))));
       if (fileExists(path))
+      {
         ui->emote10->setStyleSheet("border-image:url(" + path + ")");
         ui->emote10->show();
+      }
 
     case 9:
-      path = getEmoteIconPath(playerChar, max_emote-- + "_on");
+      path = getEmoteIconPath(playerChar, (9 + (10 * (emote_current_page - 1))));
       if (fileExists(path))
+      {
         ui->emote9->setStyleSheet("border-image:url(" + path + ")");
         ui->emote9->show();
+      }
 
     case 8:
-      path = getEmoteIconPath(playerChar, max_emote-- + "_on");
+      path = getEmoteIconPath(playerChar, (8 + (10 * (emote_current_page - 1))));
       if (fileExists(path))
+      {
         ui->emote8->setStyleSheet("border-image:url(" + path + ")");
         ui->emote8->show();
+      }
 
     case 7:
-      path = getEmoteIconPath(playerChar, max_emote-- + "_on");
+      path = getEmoteIconPath(playerChar, (7 + (10 * (emote_current_page - 1))));
       if (fileExists(path))
+      {
         ui->emote7->setStyleSheet("border-image:url(" + path + ")");
         ui->emote7->show();
+      }
 
     case 6:
-      path = getEmoteIconPath(playerChar, max_emote-- + "_on");
+      path = getEmoteIconPath(playerChar, (6 + (10 * (emote_current_page - 1))));
       if (fileExists(path))
+      {
         ui->emote6->setStyleSheet("border-image:url(" + path + ")");
         ui->emote6->show();
+      }
 
     case 5:
-      path = getEmoteIconPath(playerChar, max_emote-- + "_on");
+      path = getEmoteIconPath(playerChar, (5 + (10 * (emote_current_page - 1))));
       if (fileExists(path))
+      {
         ui->emote5->setStyleSheet("border-image:url(" + path + ")");
         ui->emote5->show();
+      }
 
     case 4:
-      path = getEmoteIconPath(playerChar, max_emote-- + "_on");
+      path = getEmoteIconPath(playerChar, (4 + (10 * (emote_current_page - 1))));
       if (fileExists(path))
+      {
         ui->emote4->setStyleSheet("border-image:url(" + path + ")");
         ui->emote4->show();
+      }
 
     case 3:
-      path = getEmoteIconPath(playerChar, max_emote-- + "_on");
+      path = getEmoteIconPath(playerChar, (3 + (10 * (emote_current_page - 1))));
       if (fileExists(path))
+      {
         ui->emote3->setStyleSheet("border-image:url(" + path + ")");
         ui->emote3->show();
+      }
 
     case 2:
-      path = getEmoteIconPath(playerChar, max_emote-- + "_on");
+      path = getEmoteIconPath(playerChar, (2 + (10 * (emote_current_page - 1))));
       if (fileExists(path))
+      {
         ui->emote2->setStyleSheet("border-image:url(" + path + ")");
         ui->emote2->show();
+      }
 
     case 1:
-      path = getEmoteIconPath(playerChar, max_emote + "_on");
+      path = getEmoteIconPath(playerChar, (1 + (10 * (emote_current_page - 1))));
       if (fileExists(path))
+      {
         ui->emote1->setStyleSheet("border-image:url(" + path + ")");
         ui->emote1->show();
-
-    default:
-      callFatalError("something broke hilariously. blame the terrible developers");
+      }
   }
 
 
