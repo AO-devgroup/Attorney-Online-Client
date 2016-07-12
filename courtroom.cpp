@@ -56,6 +56,8 @@ void Courtroom::setChar()
   emote_current_page = 1;
 
   setEmotes();
+
+  ui->emote1->setStyleSheet("border-image:url(" + getEmoteIconPath(1) + "_on.png" + ")");
 }
 
 void Courtroom::setEmotes()                 //called every time the emote page is changed
@@ -94,14 +96,22 @@ void Courtroom::setEmotes()                 //called every time the emote page i
     callFatalError("Something broke with the emotes idk. blame the terrible developers."
                    "seriously, though. emotes_on_page failed to set properly. who knows why");
 
-  //int max_emote = (((emote_pages - 1) * 10) + (emote_number % 10));
+
+  /////////////////////////////////////////////////////////////////////////////////////////
+  // !!!!!!INTENTIONAL FALLTHROUGH!!!!!!!!!!
+  // the way this works is that if there are ten emotes on the page, all emotes will be set
+  // if 9, then everything below case 9 will be executed etc.
+  // remember that all emotes are hidden earlier ^
+  // if a case is matched, the rest of the case checks will be IGNORED
+  // that is how a switch fallthrough works, you're welcome
+  /////////////////////////////////////////////////////////////////////////////////////////
 
   QString path;
 
-  switch(emotes_on_page)                     // !!!!!!INTENTIONAL FALLTHROUGH!!!!!!!!!!
+  switch(emotes_on_page)
   {
     case 10:
-      path = getEmoteIconPath(playerChar, (10 + (10 * (emote_current_page - 1))));
+      path = getEmoteIconPath(10) + "_off.png";
       if (fileExists(path))
       {
         ui->emote10->setStyleSheet("border-image:url(" + path + ")");
@@ -109,7 +119,7 @@ void Courtroom::setEmotes()                 //called every time the emote page i
       }
 
     case 9:
-      path = getEmoteIconPath(playerChar, (9 + (10 * (emote_current_page - 1))));
+      path = getEmoteIconPath(9) + "_off.png";
       if (fileExists(path))
       {
         ui->emote9->setStyleSheet("border-image:url(" + path + ")");
@@ -117,7 +127,7 @@ void Courtroom::setEmotes()                 //called every time the emote page i
       }
 
     case 8:
-      path = getEmoteIconPath(playerChar, (8 + (10 * (emote_current_page - 1))));
+      path = getEmoteIconPath(8) + "_off.png";
       if (fileExists(path))
       {
         ui->emote8->setStyleSheet("border-image:url(" + path + ")");
@@ -125,7 +135,7 @@ void Courtroom::setEmotes()                 //called every time the emote page i
       }
 
     case 7:
-      path = getEmoteIconPath(playerChar, (7 + (10 * (emote_current_page - 1))));
+      path = getEmoteIconPath(7) + "_off.png";
       if (fileExists(path))
       {
         ui->emote7->setStyleSheet("border-image:url(" + path + ")");
@@ -133,7 +143,7 @@ void Courtroom::setEmotes()                 //called every time the emote page i
       }
 
     case 6:
-      path = getEmoteIconPath(playerChar, (6 + (10 * (emote_current_page - 1))));
+      path = getEmoteIconPath(6) + "_off.png";
       if (fileExists(path))
       {
         ui->emote6->setStyleSheet("border-image:url(" + path + ")");
@@ -141,7 +151,7 @@ void Courtroom::setEmotes()                 //called every time the emote page i
       }
 
     case 5:
-      path = getEmoteIconPath(playerChar, (5 + (10 * (emote_current_page - 1))));
+      path = getEmoteIconPath(5) + "_off.png";
       if (fileExists(path))
       {
         ui->emote5->setStyleSheet("border-image:url(" + path + ")");
@@ -149,7 +159,7 @@ void Courtroom::setEmotes()                 //called every time the emote page i
       }
 
     case 4:
-      path = getEmoteIconPath(playerChar, (4 + (10 * (emote_current_page - 1))));
+      path = getEmoteIconPath(4) + "_off.png";
       if (fileExists(path))
       {
         ui->emote4->setStyleSheet("border-image:url(" + path + ")");
@@ -157,7 +167,7 @@ void Courtroom::setEmotes()                 //called every time the emote page i
       }
 
     case 3:
-      path = getEmoteIconPath(playerChar, (3 + (10 * (emote_current_page - 1))));
+      path = getEmoteIconPath(3) + "_off.png";
       if (fileExists(path))
       {
         ui->emote3->setStyleSheet("border-image:url(" + path + ")");
@@ -165,7 +175,7 @@ void Courtroom::setEmotes()                 //called every time the emote page i
       }
 
     case 2:
-      path = getEmoteIconPath(playerChar, (2 + (10 * (emote_current_page - 1))));
+      path = getEmoteIconPath(2) + "_off.png";
       if (fileExists(path))
       {
         ui->emote2->setStyleSheet("border-image:url(" + path + ")");
@@ -173,17 +183,70 @@ void Courtroom::setEmotes()                 //called every time the emote page i
       }
 
     case 1:
-      path = getEmoteIconPath(playerChar, (1 + (10 * (emote_current_page - 1))));
+      path = getEmoteIconPath(1) + "_off.png";
       if (fileExists(path))
       {
         ui->emote1->setStyleSheet("border-image:url(" + path + ")");
         ui->emote1->show();
       }
   }
+}
 
+//this is some topkek bs code right here but i couldnt find a better way to do it
 
+void Courtroom::setAllEmotesOff()
+{
+  QString path;
 
+  path = getEmoteIconPath(1) + "_off.png";
+  ui->emote1->setStyleSheet("border-image:url(" + path + ")");
 
+  path = getEmoteIconPath(2) + "_off.png";
+  ui->emote2->setStyleSheet("border-image:url(" + path + ")");
+
+  path = getEmoteIconPath(3) + "_off.png";
+  ui->emote3->setStyleSheet("border-image:url(" + path + ")");
+
+  path = getEmoteIconPath(4) + "_off.png";
+  ui->emote4->setStyleSheet("border-image:url(" + path + ")");
+
+  path = getEmoteIconPath(5) + "_off.png";
+  ui->emote5->setStyleSheet("border-image:url(" + path + ")");
+
+  path = getEmoteIconPath(6) + "_off.png";
+  ui->emote6->setStyleSheet("border-image:url(" + path + ")");
+
+  path = getEmoteIconPath(7) + "_off.png";
+  ui->emote7->setStyleSheet("border-image:url(" + path + ")");
+
+  path = getEmoteIconPath(8) + "_off.png";
+  ui->emote8->setStyleSheet("border-image:url(" + path + ")");
+
+  path = getEmoteIconPath(9) + "_off.png";
+  ui->emote9->setStyleSheet("border-image:url(" + path + ")");
+
+  path = getEmoteIconPath(10) + "_off.png";
+  ui->emote10->setStyleSheet("border-image:url(" + path + ")");
+
+}
+
+QString Courtroom::getEmoteIconPath(int emotenumber)
+{
+  QString str_emotenumber = QString::number(emotenumber + (10 * (emote_current_page - 1)));
+
+  QString smallb = getCharPath(playerChar) + "emotions/button" + str_emotenumber;
+  QString bigb = getCharPath(playerChar) + "emotions/Button" + str_emotenumber;
+
+  //true makes the check quiet and does not throw an error if it fails
+  if (fileExists(smallb, true))
+    return smallb;
+
+  else if (fileExists(bigb, true))
+    return bigb;
+
+  //at this point, we know the file doesnt exist, but we return this and the caller handles the error
+  else
+    return smallb;
 }
 
 Courtroom::~Courtroom()
@@ -273,4 +336,124 @@ void Courtroom::on_chatLine_returnPressed()
   QString chatMessage = ui->chatLine->text();
   ui->plainTextEdit->setPlainText(chatMessage);
   ui->chatLine->clear();
+}
+
+void Courtroom::on_emote1_clicked()
+{
+  int n = 1;
+
+  setAllEmotesOff();
+
+  ui->emote1->setStyleSheet("border-image:url(" +
+                            getEmoteIconPath(n) +
+                            "_on.png" + ")");
+  emote_pressed = n;
+}
+
+void Courtroom::on_emote2_clicked()
+{
+  int n = 2;
+
+  setAllEmotesOff();
+
+  ui->emote2->setStyleSheet("border-image:url(" +
+                            getEmoteIconPath(n) +
+                            "_on.png" + ")");
+  emote_pressed = n;
+}
+
+void Courtroom::on_emote3_clicked()
+{
+  int n = 3;
+
+  setAllEmotesOff();
+
+  ui->emote3->setStyleSheet("border-image:url(" +
+                            getEmoteIconPath(n) +
+                            "_on.png" + ")");
+  emote_pressed = n;
+}
+
+void Courtroom::on_emote4_clicked()
+{
+  int n = 4;
+
+  setAllEmotesOff();
+
+  ui->emote4->setStyleSheet("border-image:url(" +
+                            getEmoteIconPath(n) +
+                            "_on.png" + ")");
+  emote_pressed = n;
+}
+
+void Courtroom::on_emote5_clicked()
+{
+  int n = 5;
+
+  setAllEmotesOff();
+
+  ui->emote5->setStyleSheet("border-image:url(" +
+                            getEmoteIconPath(n) +
+                            "_on.png" + ")");
+  emote_pressed = n;
+}
+
+void Courtroom::on_emote6_clicked()
+{
+  int n = 6;
+
+  setAllEmotesOff();
+
+  ui->emote6->setStyleSheet("border-image:url(" +
+                            getEmoteIconPath(n) +
+                            "_on.png" + ")");
+  emote_pressed = n;
+}
+
+void Courtroom::on_emote7_clicked()
+{
+  int n = 7;
+
+  setAllEmotesOff();
+
+  ui->emote7->setStyleSheet("border-image:url(" +
+                            getEmoteIconPath(n) +
+                            "_on.png" + ")");
+  emote_pressed = n;
+}
+
+void Courtroom::on_emote8_clicked()
+{
+  int n = 8;
+
+  setAllEmotesOff();
+
+  ui->emote8->setStyleSheet("border-image:url(" +
+                            getEmoteIconPath(n) +
+                            "_on.png" + ")");
+  emote_pressed = n;
+}
+
+void Courtroom::on_emote9_clicked()
+{
+  int n = 9;
+
+  setAllEmotesOff();
+
+  ui->emote9->setStyleSheet("border-image:url(" +
+                            getEmoteIconPath(n) +
+                            "_on.png" + ")");
+  emote_pressed = n;
+}
+
+void Courtroom::on_emote10_clicked()
+{
+  int n = 10;
+
+  setAllEmotesOff();
+
+  ui->emote10->setStyleSheet("border-image:url(" +
+                            getEmoteIconPath(n) +
+                            "_on.png" + ")");
+  emote_pressed = n;
 }

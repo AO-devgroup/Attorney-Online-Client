@@ -84,37 +84,3 @@ QString getCharEmotePath(QString character, QString emote)
 {
   return (getCharPath(character) + emote);
 }
-
-QString getEmoteIconPath(QString character, int emotenumber, bool onoroff)
-{
-  QString str_emotenumber = QString::number(emotenumber);
-
-  QString smallb_on = getCharPath(character) + "emotions/button" + str_emotenumber + "_on.png";
-  QString bigb_on = getCharPath(character) + "emotions/Button" + str_emotenumber + "_on.png";
-  QString smallb_off = getCharPath(character) + "emotions/button" + str_emotenumber + "_off.png";
-  QString bigb_off = getCharPath(character) + "emotions/Button" + str_emotenumber + "_off.png";
-
-  if (onoroff)
-  {
-    if (fileExists(smallb_on, true))        //true makes the check quiet and does not throw an error..
-      return smallb_on;                     //..if it fails
-
-    else if (fileExists(bigb_on, true))
-      return bigb_on;
-
-    else
-      return smallb_on;                     //at this point, we know the file doesnt exist, but..
-  }                                         //..we return this and the caller handles the error
-
-  else
-  {
-    if (fileExists(smallb_off, true))
-      return smallb_off;
-
-    else if (fileExists(bigb_off, true))
-      return bigb_off;
-
-    else
-      return smallb_off;                    //same here
-  }
-}

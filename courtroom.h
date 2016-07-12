@@ -42,6 +42,26 @@ private slots:
 
   void on_chatLine_returnPressed();
 
+  void on_emote1_clicked();
+
+  void on_emote2_clicked();
+
+  void on_emote3_clicked();
+
+  void on_emote4_clicked();
+
+  void on_emote5_clicked();
+
+  void on_emote6_clicked();
+
+  void on_emote7_clicked();
+
+  void on_emote8_clicked();
+
+  void on_emote9_clicked();
+
+  void on_emote10_clicked();
+
 private:
   Ui::Courtroom *ui;
   bool present_evidence = false;
@@ -51,6 +71,8 @@ private:
   int emote_current_page;
   int emote_pressed;      //keeps track of which emote button is pressed
   void setEmotes();       //sets emote images
+  void setAllEmotesOff();
+  QString getEmoteIconPath(int emotenumber);
 };
 
 #endif // COURTROOM_H
