@@ -525,6 +525,32 @@
      <string/>
     </property>
    </widget>
+   <widget class="QPushButton" name="emote_right">
+    <property name="geometry">
+     <rect>
+      <x>236</x>
+      <y>253</y>
+      <width>20</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="emote_left">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>253</y>
+      <width>20</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
    <zorder>background</zorder>
    <zorder>plainTextEdit</zorder>
    <zorder>takethat</zorder>
@@ -543,6 +569,8 @@
    <zorder>emote8</zorder>
    <zorder>emote9</zorder>
    <zorder>emote10</zorder>
+   <zorder>emote_right</zorder>
+   <zorder>emote_left</zorder>
   </widget>
  </widget>
  <resources>

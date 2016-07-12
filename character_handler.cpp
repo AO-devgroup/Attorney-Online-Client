@@ -1,13 +1,13 @@
 #include "character_handler.h"
 
-QStringList g_char_ini{"if this is visible anywhere, it means something broke"};
+QStringList g_char_ini{"if this is visible anywhere, it means that char.ini failed to load into memory"};
 
 void LoadCharIni(QString character)
 {
   QFile char_ini(getCharPath(character) + "char.ini");
   if (!char_ini.open(QIODevice::ReadOnly))
   {
-      callError("failed to read " + getCharPath("Vinyl") + "char.ini");
+      callFatalError("failed to read " + getCharPath(character) + "char.ini");
       //QApplication::quit();
       //qApp->quit();
   }
@@ -39,7 +39,7 @@ int getEmoteNumber()
 
     if (line.startsWith("number = ") && found_emotions)
     {
-      //removes "number = " from the start of the line
+      //removes "number = " from the start of the string
       QString newline = line.remove(0, 9);
 
       //SANITY CHECK
@@ -55,7 +55,7 @@ int getEmoteNumber()
       return -1;
     }
 
-    //in the unlikely event that we wont find [SoundN] and reach EOF
+    //in the unlikely event that we dont find [SoundN] and reach EOF
     if (line_number == (g_char_ini.size() - 1))
     {
       callError("could not find [Emotions] in char.ini");
@@ -64,8 +64,8 @@ int getEmoteNumber()
 
   }
 
-  //we should not ever come here, but if the loop somehow finishes,
-  //we return a -1 to signal the caller that something went wrong,
+  //we should not ever come here, but if the loop somehow finishes
+  //we return a -1 to signal the caller that something went wrong
 
   return -1;
 }

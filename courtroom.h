@@ -62,6 +62,10 @@ private slots:
 
   void on_emote10_clicked();
 
+  void on_emote_right_clicked();
+
+  void on_emote_left_clicked();
+
 private:
   Ui::Courtroom *ui;
   bool present_evidence = false;

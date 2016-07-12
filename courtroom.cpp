@@ -18,6 +18,8 @@ void Courtroom::setTheme()
   QString objection_path = getImagePath("objection.png");
   QString takethat_path = getImagePath("takethat.png");
   QString present_path = getImagePath("present_pressed.png");
+  QString left_arrow_path = getImagePath("arrow_left.png");
+  QString right_arrow_path = getImagePath("arrow_right.png");
 
   if (fileExists(background_path))
     ui->background->setPixmap(QPixmap(background_path));
@@ -33,6 +35,12 @@ void Courtroom::setTheme()
 
   if (fileExists(present_path))
     ui->present->setStyleSheet("border-image:url(" + present_path + ")");
+
+  if (fileExists(left_arrow_path))
+    ui->emote_left->setStyleSheet("border-image:url(" + left_arrow_path + ")");
+
+  if (fileExists(right_arrow_path))
+    ui->emote_right->setStyleSheet("border-image:url(" + right_arrow_path + ")");
 }
 
 void Courtroom::setChar()
@@ -60,7 +68,9 @@ void Courtroom::setChar()
   ui->emote1->setStyleSheet("border-image:url(" + getEmoteIconPath(1) + "_on.png" + ")");
 }
 
-void Courtroom::setEmotes()                 //called every time the emote page is changed
+//called every time the emote page is changed
+
+void Courtroom::setEmotes()
 {
   //first we hide everything
 
@@ -74,6 +84,9 @@ void Courtroom::setEmotes()                 //called every time the emote page i
   ui->emote3->hide();
   ui->emote2->hide();
   ui->emote1->hide();
+
+  ui->emote_left->hide();
+  ui->emote_right->hide();
 
   int emotes_on_page = -1;
 
@@ -94,7 +107,18 @@ void Courtroom::setEmotes()                 //called every time the emote page i
 
   else
     callFatalError("Something broke with the emotes idk. blame the terrible developers."
-                   "seriously, though. emotes_on_page failed to set properly. who knows why");
+                   "seriously, though. emotes_on_page failed to set properly. who knows why."
+                   "this error should never appear ever ever");
+
+  //here we check if the left and right arrows need to appear
+
+  //anything higher than the first page must have the left arrow
+  if (emote_current_page > 1)
+    ui->emote_left->show();
+
+  //as long as the max amount of pages is higher than the current one, right arrow is shown
+  if (emote_current_page < emote_pages)
+    ui->emote_right->show();
 
 
   /////////////////////////////////////////////////////////////////////////////////////////
@@ -190,6 +214,7 @@ void Courtroom::setEmotes()                 //called every time the emote page i
         ui->emote1->show();
       }
   }
+
 }
 
 //this is some topkek bs code right here but i couldnt find a better way to do it
@@ -234,14 +259,17 @@ QString Courtroom::getEmoteIconPath(int emotenumber)
 {
   QString str_emotenumber = QString::number(emotenumber + (10 * (emote_current_page - 1)));
 
+  //we need to check both uppercase and lowercase B's because the files are inconsistently named
+
   QString smallb = getCharPath(playerChar) + "emotions/button" + str_emotenumber;
   QString bigb = getCharPath(playerChar) + "emotions/Button" + str_emotenumber;
 
-  //true makes the check quiet and does not throw an error if it fails
-  if (fileExists(smallb, true))
+  //true as param makes the check quiet and does not throw an error if it fails
+  //we also need to check both on and off for reasons
+  if (fileExists(smallb + "_off.png", true) && fileExists(smallb + "_on.png", true))
     return smallb;
 
-  else if (fileExists(bigb, true))
+  else if (fileExists(bigb + "_off.png", true) && fileExists(bigb + "_on.png", true))
     return bigb;
 
   //at this point, we know the file doesnt exist, but we return this and the caller handles the error
@@ -457,3 +485,16 @@ void Courtroom::on_emote10_clicked()
                             "_on.png" + ")");
   emote_pressed = n;
 }
+
+void Courtroom::on_emote_left_clicked()
+{
+  --emote_current_page;
+  setEmotes();
+}
+
+void Courtroom::on_emote_right_clicked()
+{
+  ++emote_current_page;
+  setEmotes();
+}
+
