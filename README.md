@@ -12,6 +12,7 @@ http://tiny.cc/getao2
 # Images
 
 ![Epic UI](http://i.imgur.com/RZbMAlB.png)
+<br />
 Comparison between AO2(left) and AO Classic(right) UI
 
 # Changelog
