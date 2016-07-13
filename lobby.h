@@ -48,6 +48,7 @@ private slots:
 private:
   Ui::Lobby *ui;
   Courtroom *mCourtroomWindow;
+  bool court_exists = false;
 };
 
 #endif // LOBBY_H

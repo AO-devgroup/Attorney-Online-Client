@@ -11,8 +11,6 @@ extern QStringList g_char_ini;
 
 void LoadCharIni(QString character);
 
-int getEmoteNumber();
-
 QString getCharPath(QString character);
 
 QString getCharGifPath(QString character, QString gif);

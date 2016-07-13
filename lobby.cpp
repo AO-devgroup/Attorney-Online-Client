@@ -95,11 +95,15 @@ void Lobby::on_connect_released()
     ui->connect->setStyleSheet("border-image:url(" + path + ")");
   }
 
-  mCourtroomWindow = new Courtroom(this);
-  mCourtroomWindow->setTheme();
-  mCourtroomWindow->setChar();
-  mCourtroomWindow->show();
-  this->hide();
+  if(!court_exists)
+  {
+    court_exists = true;
+    mCourtroomWindow = new Courtroom(this);
+    mCourtroomWindow->setTheme();
+    mCourtroomWindow->setChar();
+    mCourtroomWindow->show();
+    this->hide();
+  }
 
 }
 

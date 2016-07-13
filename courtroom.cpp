@@ -49,9 +49,9 @@ void Courtroom::setChar()
 
   LoadCharIni(playerChar);
 
-  emote_pressed = 1;
+  setEmotes();
 
-  emote_number = getEmoteNumber();          //if something went wrong, this will return -1
+  emote_pressed = 1;
 
   if (emote_number == -1)
     callFatalError("failed to get emote_number (-1)");
@@ -63,14 +63,64 @@ void Courtroom::setChar()
 
   emote_current_page = 1;
 
-  setEmotes();
+  setEmotePage();
 
   ui->emote1->setStyleSheet("border-image:url(" + getEmoteIconPath(1) + "_on.png" + ")");
 }
 
+void Courtroom::setEmotes()
+{
+  bool found_emotions = false;
+  QString line;
+  emote_number = -1;
+
+  for(int line_number{0} ; line_number < g_char_ini.size() ; ++line_number)
+  {
+    line = g_char_ini.at(line_number);
+
+    //we are satisified if the line starts with target string
+    //in case someone adds a space and wonders why things break
+    if (line.startsWith("[Emotions]"))
+      found_emotions = true;
+
+    if (line.startsWith("number = ") && found_emotions)
+    {
+      //removes "number = " from the start of the string
+      QString newline = line.remove(0, 9);
+
+      //SANITY CHECK
+      if (newline.toInt() < 1)
+        callFatalError("number of emotes appear to be zero or negative");
+
+      emote_number = newline.toInt();
+    }
+
+    if (!(emote_number == -1) && line.startsWith("1 = "))
+    {
+
+      for(int emote_n{1} ; emote_n <= emote_number ; ++emote_n)
+      {
+        int current_line_n = line_number + emote_n - 1;
+        QString current_line = g_char_ini[current_line_n];
+        QStringList line_list = current_line.split("#");
+
+        emote_list.insert(emote_n, line_list[2]);
+      }
+      break;
+    }
+
+
+    //in the unlikely event that we reach EOF
+    if (line_number == (g_char_ini.size() - 1))
+    {
+      callError("could not find [Emotions] in char.ini");
+    }
+  }
+}
+
 //called every time the emote page is changed
 
-void Courtroom::setEmotes()
+void Courtroom::setEmotePage()
 {
   //first we hide everything
 
@@ -255,6 +305,12 @@ void Courtroom::setAllEmotesOff()
 
 }
 
+//i forgot how but this works somehow
+int Courtroom::getPressedEmote()
+{
+  return (emote_pressed + (10 * (emote_current_page - 1)));
+}
+
 QString Courtroom::getEmoteIconPath(int emotenumber)
 {
   QString str_emotenumber = QString::number(emotenumber + (10 * (emote_current_page - 1)));
@@ -356,18 +412,27 @@ void Courtroom::on_present_clicked()
     ui->present->setStyleSheet("border-image:url(" + present_on + ")");
     present_evidence = true;
   }
-
 }
 
 void Courtroom::on_chatLine_returnPressed()
 {
   QString chatMessage = ui->chatLine->text();
-  ui->plainTextEdit->setPlainText(chatMessage);
+  ui->plainTextEdit->appendPlainText(chatMessage);
   ui->chatLine->clear();
+
+  ui->playingbackground->setPixmap(getBasePath() + "background/gs4/defenseempty.png");
+  ui->bench->setPixmap(getBasePath() + "background/gs4/bancodefensa.png");
+  ui->chatbubble->setPixmap(getImagePath("chat.png"));
+
+  QMovie *movie = new QMovie(getCharGifPath(playerChar, "(b)" + emote_list[getPressedEmote()] + ".gif"));
+  ui->playingarea->setMovie(movie);
+  movie->start();
 }
 
 void Courtroom::on_emote1_clicked()
 {
+  ui->chatLine->setFocus();
+
   int n = 1;
 
   setAllEmotesOff();
@@ -380,6 +445,8 @@ void Courtroom::on_emote1_clicked()
 
 void Courtroom::on_emote2_clicked()
 {
+  ui->chatLine->setFocus();
+
   int n = 2;
 
   setAllEmotesOff();
@@ -392,6 +459,8 @@ void Courtroom::on_emote2_clicked()
 
 void Courtroom::on_emote3_clicked()
 {
+  ui->chatLine->setFocus();
+
   int n = 3;
 
   setAllEmotesOff();
@@ -404,6 +473,8 @@ void Courtroom::on_emote3_clicked()
 
 void Courtroom::on_emote4_clicked()
 {
+  ui->chatLine->setFocus();
+
   int n = 4;
 
   setAllEmotesOff();
@@ -416,6 +487,8 @@ void Courtroom::on_emote4_clicked()
 
 void Courtroom::on_emote5_clicked()
 {
+  ui->chatLine->setFocus();
+
   int n = 5;
 
   setAllEmotesOff();
@@ -428,6 +501,8 @@ void Courtroom::on_emote5_clicked()
 
 void Courtroom::on_emote6_clicked()
 {
+  ui->chatLine->setFocus();
+
   int n = 6;
 
   setAllEmotesOff();
@@ -440,6 +515,8 @@ void Courtroom::on_emote6_clicked()
 
 void Courtroom::on_emote7_clicked()
 {
+  ui->chatLine->setFocus();
+
   int n = 7;
 
   setAllEmotesOff();
@@ -452,6 +529,8 @@ void Courtroom::on_emote7_clicked()
 
 void Courtroom::on_emote8_clicked()
 {
+  ui->chatLine->setFocus();
+
   int n = 8;
 
   setAllEmotesOff();
@@ -464,6 +543,8 @@ void Courtroom::on_emote8_clicked()
 
 void Courtroom::on_emote9_clicked()
 {
+  ui->chatLine->setFocus();
+
   int n = 9;
 
   setAllEmotesOff();
@@ -476,6 +557,8 @@ void Courtroom::on_emote9_clicked()
 
 void Courtroom::on_emote10_clicked()
 {
+  ui->chatLine->setFocus();
+
   int n = 10;
 
   setAllEmotesOff();
@@ -489,12 +572,12 @@ void Courtroom::on_emote10_clicked()
 void Courtroom::on_emote_left_clicked()
 {
   --emote_current_page;
-  setEmotes();
+  setEmotePage();
 }
 
 void Courtroom::on_emote_right_clicked()
 {
   ++emote_current_page;
-  setEmotes();
+  setEmotePage();
 }
 

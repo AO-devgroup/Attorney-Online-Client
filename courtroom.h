@@ -74,9 +74,12 @@ private:
   int emote_pages;
   int emote_current_page;
   int emote_pressed;      //keeps track of which emote button is pressed
-  void setEmotes();       //sets emote images
+  void setEmotePage();       //sets emote images
   void setAllEmotesOff();
   QString getEmoteIconPath(int emotenumber);
+  QStringList emote_list{"emote_list element 0"};
+  void setEmotes();
+  int getPressedEmote();
 };
 
 #endif // COURTROOM_H
