@@ -9,6 +9,11 @@ here is a working windows build:
 
 http://tiny.cc/getao2
 
+# Images
+
+![Epic UI](http://i.imgur.com/RZbMAlB.png)
+Comparison between AO2(left) and AO Classic(right) UI
+
 # Changelog
 these are the changes from the old client made by FanatSors. the ones listed here are already done
 
