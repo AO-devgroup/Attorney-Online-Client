@@ -47,7 +47,7 @@ public:
     QPushButton *emote10;
     QPushButton *emote_right;
     QPushButton *emote_left;
-    QLabel *bench;
+    QLabel *desk;
     QLabel *playingbackground;
     QLabel *chatbubble;
 
@@ -173,9 +173,9 @@ public:
         emote_left = new QPushButton(centralwidget);
         emote_left->setObjectName(QStringLiteral("emote_left"));
         emote_left->setGeometry(QRect(0, 253, 20, 20));
-        bench = new QLabel(centralwidget);
-        bench->setObjectName(QStringLiteral("bench"));
-        bench->setGeometry(QRect(0, 150, 256, 42));
+        desk = new QLabel(centralwidget);
+        desk->setObjectName(QStringLiteral("desk"));
+        desk->setGeometry(QRect(0, 150, 256, 42));
         playingbackground = new QLabel(centralwidget);
         playingbackground->setObjectName(QStringLiteral("playingbackground"));
         playingbackground->setGeometry(QRect(0, 0, 256, 192));
@@ -204,7 +204,7 @@ public:
         emote_left->raise();
         playingbackground->raise();
         playingarea->raise();
-        bench->raise();
+        desk->raise();
         chatbubble->raise();
 
         retranslateUi(Courtroom);
@@ -234,7 +234,7 @@ public:
         emote10->setText(QString());
         emote_right->setText(QString());
         emote_left->setText(QString());
-        bench->setText(QString());
+        desk->setText(QString());
         playingbackground->setText(QString());
         chatbubble->setText(QString());
     } // retranslateUi

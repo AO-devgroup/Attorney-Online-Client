@@ -421,7 +421,7 @@ void Courtroom::on_chatLine_returnPressed()
   ui->chatLine->clear();
 
   ui->playingbackground->setPixmap(getBasePath() + "background/gs4/defenseempty.png");
-  ui->bench->setPixmap(getBasePath() + "background/gs4/bancodefensa.png");
+  ui->desk->setPixmap(getBasePath() + "background/gs4/bancodefensa.png");
   ui->chatbubble->setPixmap(getImagePath("chat.png"));
 
   QMovie *movie = new QMovie(getCharGifPath(playerChar, "(b)" + emote_list[getPressedEmote()] + ".gif"));
