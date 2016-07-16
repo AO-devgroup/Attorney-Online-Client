@@ -14,10 +14,10 @@ void Courtroom::setTheme()
   LoadConfig();
 
   QString background_path = getImagePath("courtroombackground.png");
-  QString holdit_path = getImagePath("holdit.png");
-  QString objection_path = getImagePath("objection.png");
-  QString takethat_path = getImagePath("takethat.png");
-  QString present_path = getImagePath("present_pressed.png");
+  QString holdit_path = getImagePath("holdit_disabled.png");
+  QString objection_path = getImagePath("objection_disabled.png");
+  QString takethat_path = getImagePath("takethat_disabled.png");
+  QString present_path = getImagePath("present_disabled.png");
   QString left_arrow_path = getImagePath("arrow_left.png");
   QString right_arrow_path = getImagePath("arrow_right.png");
 
@@ -41,6 +41,7 @@ void Courtroom::setTheme()
 
   if (fileExists(right_arrow_path))
     ui->emote_right->setStyleSheet("border-image:url(" + right_arrow_path + ")");
+
 }
 
 void Courtroom::setChar()
@@ -66,6 +67,35 @@ void Courtroom::setChar()
   setEmotePage();
 
   ui->emote1->setStyleSheet("border-image:url(" + getEmoteIconPath(1) + "_on.png" + ")");
+}
+
+void Courtroom::setCharSelect()
+{
+  char_select_list = getCharSelectList();
+
+  QString char_select_path = getImagePath("charselect_background.png");
+
+  if (fileExists(char_select_path))
+    ui->charselect->setPixmap(QPixmap(char_select_path));
+
+  QString char1_path = getCharPath("Phoenix");
+
+  //mCourtroomWindow = new Courtroom(this);
+  QPushButton *char1 = new QPushButton(this);
+
+  if (fileExists(char1_path + "char_icon.png"))
+  {
+    char1->setStyleSheet("border-image:url(" + char1_path + "char_icon.png" + ")");
+    //char1->pos() = QPoint(20, 10);
+    char1->move(10, 10);
+    char1->resize(60, 60);
+    char1->show();
+    //char1->
+    //char1->enabled();
+  }
+
+
+  ui->spectator->show();
 }
 
 void Courtroom::setEmotes()
@@ -338,68 +368,99 @@ Courtroom::~Courtroom()
   delete ui;
 }
 
-void Courtroom::on_holdit_pressed()
+void Courtroom::on_holdit_clicked()
 {
-  QString path = getImagePath("holdit_pressed.png");
+  QString holdit_disabled_path = getImagePath("holdit_disabled.png");
+  QString holdit_path = getImagePath("holdit.png");
+  QString objection_path = getImagePath("objection_disabled.png");
+  QString takethat_path = getImagePath("takethat_disabled.png");
 
-  if (fileExists(path))
-    ui->holdit->setStyleSheet("border-image:url(" + path + ")");
+
+  //if holdit is already enabled
+  if (objection_state == 1)
+  {
+    objection_state = 0;
+    if (fileExists(holdit_disabled_path))
+      ui->holdit->setStyleSheet("border-image:url(" + holdit_disabled_path + ")");
+  }
+  else
+  {
+    objection_state = 1;
+    if (fileExists(holdit_path))
+      ui->holdit->setStyleSheet("border-image:url(" + holdit_path + ")");
+
+    if (fileExists(objection_path))
+      ui->objection->setStyleSheet("border-image:url(" + objection_path + ")");
+
+    if (fileExists(takethat_path))
+      ui->takethat->setStyleSheet("border-image:url(" + takethat_path + ")");
+  }
 }
 
-void Courtroom::on_holdit_released()
+void Courtroom::on_objection_clicked()
 {
-  QString path = getImagePath("holdit.png");
+  QString objection_disabled_path = getImagePath("objection_disabled.png");
+  QString objection_path = getImagePath("objection.png");
+  QString holdit_path = getImagePath("holdit_disabled.png");
+  QString takethat_path = getImagePath("takethat_disabled.png");
 
-  if (fileExists(path))
-    ui->holdit->setStyleSheet("border-image:url(" + path + ")");
 
-  QMovie *movie = new QMovie(getCharGifPath(playerChar,"(b)normal.gif"));
-  ui->playingarea->setMovie(movie);
-  movie->start();
-  ui->plainTextEdit->appendPlainText(g_char_ini[0]);
+  //if objection is already enabled
+  if (objection_state == 2)
+  {
+    objection_state = 0;
+    if (fileExists(objection_disabled_path))
+      ui->objection->setStyleSheet("border-image:url(" + objection_disabled_path + ")");
+  }
+  else
+  {
+    objection_state = 2;
+    if (fileExists(objection_path))
+      ui->objection->setStyleSheet("border-image:url(" + objection_path + ")");
+
+    if (fileExists(holdit_path))
+      ui->holdit->setStyleSheet("border-image:url(" + holdit_path + ")");
+
+    if (fileExists(takethat_path))
+      ui->takethat->setStyleSheet("border-image:url(" + takethat_path + ")");
+  }
 }
 
-void Courtroom::on_objection_pressed()
+void Courtroom::on_takethat_clicked()
 {
-  QString path = getImagePath("objection_pressed.png");
+  QString takethat_disabled_path = getImagePath("takethat_disabled.png");
+  QString takethat_path = getImagePath("takethat.png");
+  QString holdit_path = getImagePath("holdit_disabled.png");
+  QString objection_path = getImagePath("objection_disabled.png");
 
-  if (fileExists(path))
-    ui->objection->setStyleSheet("border-image:url(" + path + ")");
-}
 
-void Courtroom::on_objection_released()
-{
-  QString path = getImagePath("objection.png");
+  //if takethat is already enabled
+  if (objection_state == 3)
+  {
+    objection_state = 0;
 
-  if (fileExists(path))
-    ui->objection->setStyleSheet("border-image:url(" + path + ")");
+    if (fileExists(takethat_disabled_path))
+      ui->takethat->setStyleSheet("border-image:url(" + takethat_disabled_path + ")");
+  }
+  else
+  {
+    objection_state = 3;
 
-  QMovie *movie = new QMovie(getCharGifPath(playerChar, "(a)normal.gif"));
-  ui->playingarea->setMovie(movie);
-  movie->start();
-  ui->plainTextEdit->appendPlainText("ayy lmao");
-}
+    if (fileExists(takethat_path))
+      ui->takethat->setStyleSheet("border-image:url(" + takethat_path + ")");
 
-void Courtroom::on_takethat_pressed()
-{
-  QString path = getImagePath("takethat_pressed.png");
+    if (fileExists(objection_path))
+      ui->objection->setStyleSheet("border-image:url(" + objection_path + ")");
 
-  if (fileExists(path))
-    ui->takethat->setStyleSheet("border-image:url(" + path + ")");
-}
-
-void Courtroom::on_takethat_released()
-{
-  QString path = getImagePath("takethat.png");
-
-  if (fileExists(path))
-    ui->takethat->setStyleSheet("border-image:url(" + path + ")");
+    if (fileExists(holdit_path))
+      ui->holdit->setStyleSheet("border-image:url(" + holdit_path + ")");
+  }
 }
 
 void Courtroom::on_present_clicked()
 {
   QString present_on = getImagePath("present.png");
-  QString present_off = getImagePath("present_pressed.png");
+  QString present_off = getImagePath("present_disabled.png");
 
   if (present_evidence)
   {
@@ -580,4 +641,33 @@ void Courtroom::on_emote_right_clicked()
   ++emote_current_page;
   setEmotePage();
 }
+
+
+void Courtroom::on_spectator_clicked()
+{
+    ui->spectator->hide();
+    ui->charselect->hide();
+
+    ui->emote10->hide();
+    ui->emote9->hide();
+    ui->emote8->hide();
+    ui->emote7->hide();
+    ui->emote6->hide();
+    ui->emote5->hide();
+    ui->emote4->hide();
+    ui->emote3->hide();
+    ui->emote2->hide();
+    ui->emote1->hide();
+
+    ui->emote_left->hide();
+    ui->emote_right->hide();
+
+    ui->chatLine->hide();
+
+}
+
+
+
+
+
 

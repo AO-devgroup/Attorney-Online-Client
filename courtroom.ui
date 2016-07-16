@@ -407,6 +407,9 @@
     <property name="text">
      <string/>
     </property>
+    <property name="flat">
+     <bool>false</bool>
+    </property>
    </widget>
    <widget class="QPushButton" name="emote2">
     <property name="geometry">
@@ -580,7 +583,7 @@
    <widget class="QLabel" name="chatbubble">
     <property name="geometry">
      <rect>
-      <x>0</x>
+      <x>3</x>
       <y>114</y>
       <width>256</width>
       <height>78</height>
@@ -588,6 +591,32 @@
     </property>
     <property name="text">
      <string/>
+    </property>
+   </widget>
+   <widget class="QLabel" name="charselect">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>714</width>
+      <height>668</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="spectator">
+    <property name="geometry">
+     <rect>
+      <x>370</x>
+      <y>640</y>
+      <width>80</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Spectator</string>
     </property>
    </widget>
    <zorder>background</zorder>
@@ -613,6 +642,8 @@
    <zorder>playingarea</zorder>
    <zorder>desk</zorder>
    <zorder>chatbubble</zorder>
+   <zorder>charselect</zorder>
+   <zorder>spectator</zorder>
   </widget>
  </widget>
  <resources>

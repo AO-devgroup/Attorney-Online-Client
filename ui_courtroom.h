@@ -50,6 +50,8 @@ public:
     QLabel *desk;
     QLabel *playingbackground;
     QLabel *chatbubble;
+    QLabel *charselect;
+    QPushButton *spectator;
 
     void setupUi(QMainWindow *Courtroom)
     {
@@ -140,6 +142,7 @@ public:
         emote1 = new QPushButton(centralwidget);
         emote1->setObjectName(QStringLiteral("emote1"));
         emote1->setGeometry(QRect(10, 219, 40, 40));
+        emote1->setFlat(false);
         emote2 = new QPushButton(centralwidget);
         emote2->setObjectName(QStringLiteral("emote2"));
         emote2->setGeometry(QRect(59, 219, 40, 40));
@@ -181,7 +184,13 @@ public:
         playingbackground->setGeometry(QRect(0, 0, 256, 192));
         chatbubble = new QLabel(centralwidget);
         chatbubble->setObjectName(QStringLiteral("chatbubble"));
-        chatbubble->setGeometry(QRect(0, 114, 256, 78));
+        chatbubble->setGeometry(QRect(3, 114, 256, 78));
+        charselect = new QLabel(centralwidget);
+        charselect->setObjectName(QStringLiteral("charselect"));
+        charselect->setGeometry(QRect(0, 0, 714, 668));
+        spectator = new QPushButton(centralwidget);
+        spectator->setObjectName(QStringLiteral("spectator"));
+        spectator->setGeometry(QRect(370, 645, 80, 23));
         Courtroom->setCentralWidget(centralwidget);
         background->raise();
         plainTextEdit->raise();
@@ -206,6 +215,8 @@ public:
         playingarea->raise();
         desk->raise();
         chatbubble->raise();
+        charselect->raise();
+        spectator->raise();
 
         retranslateUi(Courtroom);
 
@@ -237,6 +248,8 @@ public:
         desk->setText(QString());
         playingbackground->setText(QString());
         chatbubble->setText(QString());
+        charselect->setText(QString());
+        spectator->setText(QApplication::translate("Courtroom", "Spectator", 0));
     } // retranslateUi
 
 };

@@ -14,3 +14,11 @@ QStringList getServerList()
   return serverlist;
 
 }
+
+QStringList getCharSelectList()
+{
+  //server.connect i dunno man
+  QStringList charlist{"Phoenix", "Oldbag", "Vinyl"};
+
+  return charlist;
+}

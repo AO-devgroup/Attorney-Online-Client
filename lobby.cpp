@@ -100,8 +100,11 @@ void Lobby::on_connect_released()
     court_exists = true;
     mCourtroomWindow = new Courtroom(this);
     mCourtroomWindow->setTheme();
-    mCourtroomWindow->setChar();
+    //mCourtroomWindow->char_select_list = getCharSelectList();
+    mCourtroomWindow->setCharSelect();
+    //mCourtroomWindow->setChar();
     mCourtroomWindow->show();
+
     this->hide();
   }
 

@@ -5,4 +5,6 @@
 
 QStringList getServerList();
 
+QStringList getCharSelectList();
+
 #endif // NETWORKING_H

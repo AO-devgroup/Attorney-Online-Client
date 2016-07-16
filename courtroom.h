@@ -10,6 +10,7 @@
 #include "config_handler.h"
 #include "error_handler.h"
 #include "character_handler.h"
+#include "networking.h"
 
 namespace Ui {
 class Courtroom;
@@ -23,9 +24,11 @@ public:
   explicit Courtroom(QWidget *parent = 0);
   void setTheme();                         //sets images according to theme in config.ini
   void setChar();                          //loads appropriate char.ini into the global namespace
+  void setCharSelect();
   ~Courtroom();
 
 private slots:
+  /*
   void on_holdit_pressed();
 
   void on_holdit_released();
@@ -37,6 +40,12 @@ private slots:
   void on_takethat_pressed();
 
   void on_takethat_released();
+  */
+  void on_holdit_clicked();
+
+  void on_objection_clicked();
+
+  void on_takethat_clicked();
 
   void on_present_clicked();
 
@@ -66,10 +75,13 @@ private slots:
 
   void on_emote_left_clicked();
 
+  void on_spectator_clicked();
+
 private:
   Ui::Courtroom *ui;
   bool present_evidence = false;
-  QString playerChar = "null";
+  int objection_state{0};       // 0 is nothing, 1 is holdit, 2 is objection 3 is takethat
+  QString playerChar = "null";  //in effect means spectator
   int emote_number;
   int emote_pages;
   int emote_current_page;
@@ -80,6 +92,7 @@ private:
   QStringList emote_list{"emote_list element 0"};
   void setEmotes();
   int getPressedEmote();
+  QStringList char_select_list;
 };
 
 #endif // COURTROOM_H
