@@ -19,6 +19,7 @@ Comparison between AO2(left) and AO Classic(right) UI
 these are the changes from the old client made by FanatSors. the ones listed here are already done
 
 - Removed emote limit
+- Increased characters per page from 20 to 90
 - "firstmode" in char.ini is now deprecated
 - Added theme support
 - Added actual error messages when something is wrong
@@ -40,7 +41,6 @@ these are changes that will happen if everything goes smooth
 - Add moving speedlines
 - Increase character customization options
 - Improve network protocol
-- Increase size of char select
 - Add dynamic sizing to char select(remove blank char pages, essentially)
 - Add EVIDENCE support
 - Remove kebab
