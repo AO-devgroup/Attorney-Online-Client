@@ -29,6 +29,7 @@ these are the changes from the old client made by FanatSors. the ones listed her
 - Added "config.ini" with user-defined settings
 - Slightly changed the UI to make the playing area clearer
 - Slightly rearranged the directory structure
+- Moved character icons from base/misc/DemoThings/ to their respective character folder
 
 
 # Planned changes
