@@ -18,6 +18,10 @@ http://tiny.cc/getao2
 <br />
 Comparison between AO2(left) and AO Classic(right) UI
 
+![Epic charselect](http://i.imgur.com/VdG8TQT.png)
+<br />
+Comparison between AO2 char select and AO Classic(right)
+
 # Changelog
 these are the changes from the old client made by FanatSors. the ones listed here are already done
 
@@ -30,6 +34,7 @@ these are the changes from the old client made by FanatSors. the ones listed her
 - Slightly changed the UI to make the playing area clearer
 - Slightly rearranged the directory structure
 - Moved character icons from base/misc/DemoThings/ to their respective character folder
+- Client window is now scaleable
 
 
 # Planned changes
