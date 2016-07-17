@@ -190,7 +190,7 @@ public:
         charselect->setGeometry(QRect(0, 0, 714, 668));
         spectator = new QPushButton(centralwidget);
         spectator->setObjectName(QStringLiteral("spectator"));
-        spectator->setGeometry(QRect(370, 645, 80, 23));
+        spectator->setGeometry(QRect(370, 640, 80, 23));
         Courtroom->setCentralWidget(centralwidget);
         background->raise();
         plainTextEdit->raise();

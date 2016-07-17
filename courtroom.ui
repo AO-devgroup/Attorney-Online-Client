@@ -619,6 +619,19 @@
      <string>Spectator</string>
     </property>
    </widget>
+   <widget class="QLabel" name="charselector">
+    <property name="geometry">
+     <rect>
+      <x>370</x>
+      <y>260</y>
+      <width>62</width>
+      <height>62</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
    <zorder>background</zorder>
    <zorder>plainTextEdit</zorder>
    <zorder>takethat</zorder>
@@ -644,6 +657,7 @@
    <zorder>chatbubble</zorder>
    <zorder>charselect</zorder>
    <zorder>spectator</zorder>
+   <zorder>charselector</zorder>
   </widget>
  </widget>
  <resources>

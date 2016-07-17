@@ -23,6 +23,7 @@ class Lobby : public QMainWindow
 
 public:
   explicit Lobby(QWidget *parent = 0);
+  Courtroom *mCourtroomWindow;
   void setTheme();
   ~Lobby();
 
@@ -47,7 +48,6 @@ private slots:
 
 private:
   Ui::Lobby *ui;
-  Courtroom *mCourtroomWindow;
   bool court_exists = false;
 };
 

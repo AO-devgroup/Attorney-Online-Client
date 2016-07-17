@@ -46,7 +46,7 @@ void Courtroom::setTheme()
 
 void Courtroom::setChar()
 {
-  playerChar = "Phoenix";
+  //playerChar = "Phoenix";
 
   LoadCharIni(playerChar);
 
@@ -74,28 +74,47 @@ void Courtroom::setCharSelect()
   char_select_list = getCharSelectList();
 
   QString char_select_path = getImagePath("charselect_background.png");
+  QString char_selector_path = getImagePath("char_selector.png");
 
   if (fileExists(char_select_path))
     ui->charselect->setPixmap(QPixmap(char_select_path));
 
-  QString char1_path = getCharPath("Phoenix");
+  if (fileExists(char_selector_path))
+    char_selector.setParent(ui->charselect);
+    char_selector.setPixmap(char_selector_path);
 
-  //mCourtroomWindow = new Courtroom(this);
-  QPushButton *char1 = new QPushButton(this);
+  const int x_modifier{67};
+  int x_mod_count{0};
 
-  if (fileExists(char1_path + "char_icon.png"))
+  QList<charicon*> charicon_list;
+  for(int char_number{1} ; char_number < char_select_list.size() ; ++char_number)
   {
-    char1->setStyleSheet("border-image:url(" + char1_path + "char_icon.png" + ")");
-    //char1->pos() = QPoint(20, 10);
-    char1->move(10, 10);
-    char1->resize(60, 60);
-    char1->show();
-    //char1->
-    //char1->enabled();
+    int x_pos = 25 + (x_modifier * x_mod_count);
+    int y_pos = 36;
+    charicon *charpointer = new charicon(x_pos, y_pos, char_select_list[char_number], ui->charselect);
+    charicon_list.insert(char_number, charpointer);
+    ++x_mod_count;
   }
 
-
   ui->spectator->show();
+
+  //this is the crown jewel of the terrible mess of code this software is
+  //the software gets stuck in an infinite loop while its waiting for
+  //a char to be selected, i couldnt figure out a better way to do it :/
+  //it actually crashes the program OH WELL
+  /*
+  while(playerChar == "null")
+  {
+    for(charicon *icon : charicon_list)
+    {
+      if (icon->m_is_selected == true)
+      {
+        playerChar = icon->m_character;
+        break;
+      }
+    }
+  }
+  */
 }
 
 void Courtroom::setEmotes()

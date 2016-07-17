@@ -21,7 +21,8 @@ SOURCES += \
     error_handler.cpp \
     courtroom.cpp \
     networking.cpp \
-    character_handler.cpp
+    character_handler.cpp \
+    charicon.cpp
 
 HEADERS  += \
     main.h \
@@ -30,7 +31,8 @@ HEADERS  += \
     error_handler.h \
     courtroom.h \
     networking.h \
-    character_handler.h
+    character_handler.h \
+    charicon.h
 
 FORMS    += \
     lobby.ui \

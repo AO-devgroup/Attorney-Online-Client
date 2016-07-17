@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QMovie>
 #include <QString>
+#include <QLabel>
 
 #include "ui_courtroom.h"
 
@@ -11,6 +12,7 @@
 #include "error_handler.h"
 #include "character_handler.h"
 #include "networking.h"
+#include "charicon.h"
 
 namespace Ui {
 class Courtroom;
@@ -25,6 +27,7 @@ public:
   void setTheme();                         //sets images according to theme in config.ini
   void setChar();                          //loads appropriate char.ini into the global namespace
   void setCharSelect();
+  QLabel char_selector;
   ~Courtroom();
 
 private slots:
