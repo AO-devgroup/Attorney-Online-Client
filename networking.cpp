@@ -20,7 +20,7 @@ QStringList getCharSelectList()
   //server.connect i dunno man
   //to make later logic make sense we need to fill the 0 index with something
   QStringList charlist{"null",
-                       "Phoenix", "Oldbag", "Vinyl", "Miles"
+                       "Phoenix", "Oldbag", "Judge", "Miles"
                       };
 
   return charlist;

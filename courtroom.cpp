@@ -80,8 +80,11 @@ void Courtroom::setCharSelect()
     ui->charselect->setPixmap(QPixmap(char_select_path));
 
   if (fileExists(char_selector_path))
+  {
     char_selector.setParent(ui->charselect);
     char_selector.setPixmap(char_selector_path);
+    char_selector.hide();
+  }
 
   const int x_modifier{67};
   int x_mod_count{0};
@@ -97,24 +100,6 @@ void Courtroom::setCharSelect()
   }
 
   ui->spectator->show();
-
-  //this is the crown jewel of the terrible mess of code this software is
-  //the software gets stuck in an infinite loop while its waiting for
-  //a char to be selected, i couldnt figure out a better way to do it :/
-  //it actually crashes the program OH WELL
-  /*
-  while(playerChar == "null")
-  {
-    for(charicon *icon : charicon_list)
-    {
-      if (icon->m_is_selected == true)
-      {
-        playerChar = icon->m_character;
-        break;
-      }
-    }
-  }
-  */
 }
 
 void Courtroom::setEmotes()

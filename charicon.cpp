@@ -42,7 +42,7 @@ charicon::charicon(int x_pos, int y_pos, QString character, QWidget *parent)
 
 void charicon::leaveEvent(QEvent * e)
 {
-  setFlat(true);
+  //setFlat(true);
   QPushButton::leaveEvent(e);
 }
 
@@ -61,5 +61,5 @@ void charicon::clicked()
 
 charicon::~charicon()
 {
-  delete this;
+
 }

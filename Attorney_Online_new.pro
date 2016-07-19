@@ -22,7 +22,8 @@ SOURCES += \
     courtroom.cpp \
     networking.cpp \
     character_handler.cpp \
-    charicon.cpp
+    charicon.cpp \
+    chariconarray.cpp
 
 HEADERS  += \
     main.h \
@@ -32,7 +33,8 @@ HEADERS  += \
     courtroom.h \
     networking.h \
     character_handler.h \
-    charicon.h
+    charicon.h \
+    chariconarray.h
 
 FORMS    += \
     lobby.ui \
