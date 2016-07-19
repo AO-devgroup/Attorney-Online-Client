@@ -24,7 +24,7 @@ charicon::charicon(int x_pos, int y_pos, QString character, QWidget *parent)
   }
   else if (fileExists(legacy_path, true))
   {
-    this->setStyleSheet("border-image:url(" + path + ")");
+    this->setStyleSheet("border-image:url(" + legacy_path + ")");
     this->show();
   }
   else if (fileExists(legacy_path_lower, true))

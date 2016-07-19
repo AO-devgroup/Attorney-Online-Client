@@ -52,6 +52,9 @@ public:
     QLabel *chatbubble;
     QLabel *charselect;
     QPushButton *spectator;
+    QLabel *charselector;
+    QPushButton *charselect_left;
+    QPushButton *charselect_right;
 
     void setupUi(QMainWindow *Courtroom)
     {
@@ -188,9 +191,19 @@ public:
         charselect = new QLabel(centralwidget);
         charselect->setObjectName(QStringLiteral("charselect"));
         charselect->setGeometry(QRect(0, 0, 714, 668));
+        charselect->setPixmap(QPixmap(QString::fromUtf8("../build-Attorney_Online_new-Desktop_Qt_5_7_0_GCC_64bit-Debug/base/themes/default/charselect_background.png")));
         spectator = new QPushButton(centralwidget);
         spectator->setObjectName(QStringLiteral("spectator"));
-        spectator->setGeometry(QRect(370, 640, 80, 23));
+        spectator->setGeometry(QRect(317, 640, 80, 23));
+        charselector = new QLabel(centralwidget);
+        charselector->setObjectName(QStringLiteral("charselector"));
+        charselector->setGeometry(QRect(370, 260, 62, 62));
+        charselect_left = new QPushButton(centralwidget);
+        charselect_left->setObjectName(QStringLiteral("charselect_left"));
+        charselect_left->setGeometry(QRect(2, 325, 20, 20));
+        charselect_right = new QPushButton(centralwidget);
+        charselect_right->setObjectName(QStringLiteral("charselect_right"));
+        charselect_right->setGeometry(QRect(691, 325, 20, 20));
         Courtroom->setCentralWidget(centralwidget);
         background->raise();
         plainTextEdit->raise();
@@ -217,6 +230,9 @@ public:
         chatbubble->raise();
         charselect->raise();
         spectator->raise();
+        charselector->raise();
+        charselect_left->raise();
+        charselect_right->raise();
 
         retranslateUi(Courtroom);
 
@@ -250,6 +266,9 @@ public:
         chatbubble->setText(QString());
         charselect->setText(QString());
         spectator->setText(QApplication::translate("Courtroom", "Spectator", 0));
+        charselector->setText(QString());
+        charselect_left->setText(QString());
+        charselect_right->setText(QString());
     } // retranslateUi
 
 };

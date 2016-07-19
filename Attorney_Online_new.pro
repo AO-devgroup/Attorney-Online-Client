@@ -22,8 +22,7 @@ SOURCES += \
     courtroom.cpp \
     networking.cpp \
     character_handler.cpp \
-    charicon.cpp \
-    chariconarray.cpp
+    charicon.cpp
 
 HEADERS  += \
     main.h \

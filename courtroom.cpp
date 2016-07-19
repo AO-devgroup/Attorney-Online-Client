@@ -86,20 +86,48 @@ void Courtroom::setCharSelect()
     char_selector.hide();
   }
 
+  ui->spectator->show();
+
+  char_select_current_page = 1;
+
+  setCharSelectPage();
+}
+
+void Courtroom::setCharSelectPage()
+{
+  const int max_chars_on_page{90};
+
+  const int base_x_pos{25};
+  const int base_y_pos{36};
+
   const int x_modifier{67};
   int x_mod_count{0};
 
+  const int y_modifier{67};
+  int y_mod_count{0};
+
   QList<charicon*> charicon_list;
-  for(int char_number{1} ; char_number < char_select_list.size() ; ++char_number)
+  for(int local_char_number{1} ; local_char_number < char_select_list.size() ; ++local_char_number)
   {
-    int x_pos = 25 + (x_modifier * x_mod_count);
-    int y_pos = 36;
-    charicon *charpointer = new charicon(x_pos, y_pos, char_select_list[char_number], ui->charselect);
-    charicon_list.insert(char_number, charpointer);
+    int real_char_number = local_char_number + (90 * (char_select_current_page - 1));
+    int x_pos = base_x_pos + (x_modifier * x_mod_count);
+    int y_pos = base_y_pos + (y_modifier * y_mod_count);
+    charicon *charpointer = new charicon(x_pos, y_pos, char_select_list[real_char_number], ui->charselect);
+    charicon_list.insert(local_char_number, charpointer);
     ++x_mod_count;
+
+    //if char number is divisible by ten then the next emote should start on a new line
+    if (local_char_number % 10 == 0)
+    {
+      ++y_mod_count;
+      x_mod_count = 0;
+    }
+
+
+    if (local_char_number == max_chars_on_page)
+      break;
   }
 
-  ui->spectator->show();
 }
 
 void Courtroom::setEmotes()
