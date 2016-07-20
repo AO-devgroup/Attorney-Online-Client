@@ -149,13 +149,15 @@ void Courtroom::setCharSelect()
 
 void Courtroom::setCharSelectPage()
 {
-  //start by hiding errything ayy lmao
+  //start by hiding errything and resetting ayy lmao
   ui->charselect_left->hide();
   ui->charselect_right->hide();
 
   for(int n_icon{1} ; n_icon <= 90 ; ++n_icon)
   {
     charicon_list.at(n_icon)->hide();
+    charicon_list.at(n_icon)->setStyleSheet("border-image:url()");
+    charicon_list.at(n_icon)->setText("");
   }
 
   int chars_on_page = -1;
@@ -209,8 +211,8 @@ void Courtroom::setCharSelectPage()
   {
     int real_char_number = local_char_number + real_char_modifier;
 
-    charicon_list[local_char_number]->setIcon(char_select_list[real_char_number]);
-    charicon_list[local_char_number]->show();
+    charicon_list.at(local_char_number)->setIcon(char_select_list[real_char_number]);
+    charicon_list.at(local_char_number)->show();
 
   //anything higher than the first page must have the left arrow
   if (char_select_current_page > 1)

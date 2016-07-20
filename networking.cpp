@@ -34,8 +34,8 @@ QStringList getCharSelectList()
     "Phoenix", "Oldbag", "Judge", "Miles", "Vinyl", "Butz", "Lotta", "Miles D", "Kristoph", "zettaslow",
     "Phoenix", "Oldbag", "Judge", "Miles", "Vinyl", "Butz", "Lotta", "Miles D", "Kristoph", "zettaslow",
     "Phoenix", "Oldbag", "Judge", "Miles", "Vinyl", "Butz", "Lotta", "Miles D", "Kristoph", "zettaslow",
-    "Phoenix", "Oldbag", "Judge", "Miles", "Vinyl", "Butz", "Lotta", "Miles D", "Kristoph", "zettaslow",
-    "bruh", "ay", "oi"
+    "Phoenix", "Oldbag", "Judge", "Miles", "Vinyl", "Butz", "Lotta", "Miles D", "Kristoph", "Kristoph",
+    "bruh", "ay", "oi", "Gumshoe"
   };
 
   return charlist;
