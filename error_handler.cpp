@@ -8,6 +8,15 @@ void callError(QString message)
   msgBox.exec();
 }
 
+void callError(int message)
+{
+  QString intmessage= QString::number(message);
+  QMessageBox msgBox;
+  msgBox.setText("Error: " + intmessage);
+  msgBox.setWindowTitle("Error");
+  msgBox.exec();
+}
+
 void callFatalError(QString message)
 {
   QMessageBox msgBox;

@@ -1,7 +1,18 @@
 #include "charicon.h"
 
+charicon::charicon()
+{
 
-charicon::charicon(int x_pos, int y_pos, QString character, QWidget *parent)
+}
+
+charicon::charicon(int x_pos, int y_pos, QWidget *parent)
+{
+  this->setParent(parent);
+  this->resize(60, 60);
+  this->move(x_pos, y_pos);
+}
+
+void charicon::setIcon(QString character)
 {
   m_character = character;
 
@@ -14,9 +25,6 @@ charicon::charicon(int x_pos, int y_pos, QString character, QWidget *parent)
 
   QString legacy_path_lower = getBasePath() + "misc/DemoThings/" + character.toLower() + "_char_icon.png";
 
-  this->setParent(parent);
-  this->resize(60, 60);
-  this->move(x_pos, y_pos);
   if (fileExists(path, true))
   {
     this->setStyleSheet("border-image:url(" + path + ")");
@@ -38,6 +46,7 @@ charicon::charicon(int x_pos, int y_pos, QString character, QWidget *parent)
     this->setText(character);
     this->show();
   }
+
 }
 
 void charicon::leaveEvent(QEvent * e)

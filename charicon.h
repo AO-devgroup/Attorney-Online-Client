@@ -10,17 +10,18 @@
 
 #include "error_handler.h"
 #include "character_handler.h"
-#include "courtroom.h"
 
 
 class charicon : public QPushButton
 {
 
 public:
-  charicon(int x_pos, int y_pos, QString character, QWidget *parent);
+  charicon();
+  charicon(int x_pos, int y_pos, QWidget *parent);
   ~charicon();
   QString m_character;
   bool m_is_selected = false;
+  void setIcon(QString character);
 
 protected:
   void enterEvent(QEvent *e);

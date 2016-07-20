@@ -72,6 +72,60 @@ void Courtroom::setChar()
 void Courtroom::setCharSelect()
 {
   char_select_list = getCharSelectList();
+  char_amount = char_select_list.size() - 1;  //we need to remove the "null" char
+
+  charicon_list << nullptr;
+
+  //setting up the grid and positions, also hiding until further stuff happens
+  const int base_x_pos{25};
+  const int base_y_pos{36};
+
+  const int x_modifier{67};
+  int x_mod_count{0};
+
+  const int y_modifier{67};
+  int y_mod_count{0};
+
+  for(int n_icon{1} ; n_icon <= 90 ; ++n_icon)
+  {
+    int x_pos = base_x_pos + (x_modifier * x_mod_count);
+    int y_pos = base_y_pos + (y_modifier * y_mod_count);
+
+    charicon_list.insert(n_icon, new charicon(x_pos, y_pos, ui->charselect));
+    charicon_list.at(n_icon)->hide();
+
+    ++x_mod_count;
+
+    //if char number is divisible by ten then the next emote should start on a new line
+    if (n_icon % 10 == 0)
+    {
+      ++y_mod_count;
+      x_mod_count = 0;
+    }
+  }
+
+  QString left_arrow_path = getImagePath("arrow_left.png");
+  QString right_arrow_path = getImagePath("arrow_right.png");
+
+  //setting images on arrow buttons
+  if (fileExists(left_arrow_path))
+    ui->charselect_left->setStyleSheet("border-image:url(" + left_arrow_path + ")");
+
+  if (fileExists(right_arrow_path))
+    ui->charselect_right->setStyleSheet("border-image:url(" + right_arrow_path + ")");
+
+  //hiding them to begin with
+  ui->charselect_left->hide();
+  ui->charselect_right->hide();
+
+  //SANITY CHECK
+  if (char_amount <= 0)
+    callFatalError("amount of character appear to be equal or less than zero");;
+
+  if (char_amount % 90 == 0)
+    char_select_pages = char_amount / 90;
+  else
+    char_select_pages = (char_amount / 90) + 1;
 
   QString char_select_path = getImagePath("charselect_background.png");
   QString char_selector_path = getImagePath("char_selector.png");
@@ -95,37 +149,76 @@ void Courtroom::setCharSelect()
 
 void Courtroom::setCharSelectPage()
 {
-  const int max_chars_on_page{90};
+  //start by hiding errything ayy lmao
+  ui->charselect_left->hide();
+  ui->charselect_right->hide();
 
-  const int base_x_pos{25};
-  const int base_y_pos{36};
-
-  const int x_modifier{67};
-  int x_mod_count{0};
-
-  const int y_modifier{67};
-  int y_mod_count{0};
-
-  QList<charicon*> charicon_list;
-  for(int local_char_number{1} ; local_char_number < char_select_list.size() ; ++local_char_number)
+  for(int n_icon{1} ; n_icon <= 90 ; ++n_icon)
   {
-    int real_char_number = local_char_number + (90 * (char_select_current_page - 1));
-    int x_pos = base_x_pos + (x_modifier * x_mod_count);
-    int y_pos = base_y_pos + (y_modifier * y_mod_count);
-    charicon *charpointer = new charicon(x_pos, y_pos, char_select_list[real_char_number], ui->charselect);
-    charicon_list.insert(local_char_number, charpointer);
-    ++x_mod_count;
+    charicon_list.at(n_icon)->hide();
+  }
 
-    //if char number is divisible by ten then the next emote should start on a new line
-    if (local_char_number % 10 == 0)
-    {
-      ++y_mod_count;
-      x_mod_count = 0;
-    }
+  int chars_on_page = -1;
+
+  //SANITY CHECK
+  if(char_select_pages < 1)
+    callError("amount of emote pages appear to be zero or negative");
+
+  //check if there is only one page of characters
+  else if(char_select_pages == 1)
+    chars_on_page = char_amount;
+
+  //check if we are on the first page
+  else if(char_select_current_page == 1)
+  {
+    if(char_select_pages == 1)
+      chars_on_page = char_amount;
+    else if(char_select_pages > 1)
+      chars_on_page = 90;
+    else
+      callError("char_select_current_page == 1 returned true but somehow char_select_pages was set wrong");
+  }
+
+  //check if we are on the last page
+  else if(char_select_current_page == char_select_pages)
+  {
+    //then we check if the amount of chars we have is a multiple of 90
+    if (char_amount % 90 == 0)
+      chars_on_page = 90;
+    else
+      chars_on_page = (char_amount % 90);
+  }
+
+  //if none of the above are true, we have to be somewhere in the middle, which means 90 chars
+  else if(char_select_current_page < char_select_pages && char_select_current_page > 1)
+    chars_on_page = 90;
+
+  else if(chars_on_page == -1)
+    callFatalError("emotes_on_page was not set properly (-1)");
+
+  else
+    callFatalError("Something broke with the charselect idk. blame the terrible developers."
+                   "seriously, though. chars_on_page failed to set properly. who knows why."
+                   "this error should never appear ever ever");
 
 
-    if (local_char_number == max_chars_on_page)
-      break;
+
+  int real_char_modifier = (90 * (char_select_current_page - 1));
+
+  for(int local_char_number{1} ; local_char_number <= chars_on_page ; ++local_char_number)
+  {
+    int real_char_number = local_char_number + real_char_modifier;
+
+    charicon_list[local_char_number]->setIcon(char_select_list[real_char_number]);
+    charicon_list[local_char_number]->show();
+
+  //anything higher than the first page must have the left arrow
+  if (char_select_current_page > 1)
+    ui->charselect_left->show();
+
+  //as long as the current page is less than max amount of pages, right arrow is shown
+  if (char_select_current_page < char_select_pages)
+    ui->charselect_right->show();
   }
 
 }
@@ -642,9 +735,7 @@ void Courtroom::on_emote9_clicked()
 
   setAllEmotesOff();
 
-  ui->emote9->setStyleSheet("border-image:url(" +
-                            getEmoteIconPath(n) +
-                            "_on.png" + ")");
+  ui->emote9->setStyleSheet("border-image:url(" + getEmoteIconPath(n) + "_on.png" + ")");
   emote_pressed = n;
 }
 
@@ -656,9 +747,7 @@ void Courtroom::on_emote10_clicked()
 
   setAllEmotesOff();
 
-  ui->emote10->setStyleSheet("border-image:url(" +
-                            getEmoteIconPath(n) +
-                            "_on.png" + ")");
+  ui->emote10->setStyleSheet("border-image:url(" + getEmoteIconPath(n) + "_on.png" + ")");
   emote_pressed = n;
 }
 
@@ -698,8 +787,14 @@ void Courtroom::on_spectator_clicked()
 
 }
 
+void Courtroom::on_charselect_left_clicked()
+{
+  --char_select_current_page;
+  setCharSelectPage();
+}
 
-
-
-
-
+void Courtroom::on_charselect_right_clicked()
+{
+  ++char_select_current_page;
+  setCharSelectPage();
+}

@@ -5,6 +5,8 @@
 #include <QMovie>
 #include <QString>
 #include <QLabel>
+#include <QVector>
+#include <QList>
 
 #include "ui_courtroom.h"
 
@@ -29,6 +31,8 @@ public:
   void setCharSelect();
   void setCharSelectPage();
   QLabel char_selector;
+  QVector<charicon* > charicon_list;
+
   ~Courtroom();
 
 private:
@@ -49,6 +53,7 @@ private:
   QStringList char_select_list;
   int char_select_pages;
   int char_select_current_page;
+  int char_amount;
 
 private slots:
   void on_holdit_clicked();
@@ -87,6 +92,8 @@ private slots:
 
   void on_spectator_clicked();
 
+  void on_charselect_left_clicked();
+  void on_charselect_right_clicked();
 };
 
 #endif // COURTROOM_H

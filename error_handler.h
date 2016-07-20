@@ -6,6 +6,8 @@
 
 void callError(QString message);
 
+void callError(int message);
+
 void callFatalError(QString message);
 
 #endif // ERRORHANDLER_H
