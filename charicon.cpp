@@ -51,7 +51,7 @@ void charicon::setIcon(QString character)
 
 void charicon::leaveEvent(QEvent * e)
 {
-  //setFlat(true);
+  //ui->char_selector->hide();
   QPushButton::leaveEvent(e);
 }
 

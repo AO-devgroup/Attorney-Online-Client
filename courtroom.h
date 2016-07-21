@@ -30,7 +30,7 @@ public:
   void setChar();                          //loads appropriate char.ini into the global namespace
   void setCharSelect();
   void setCharSelectPage();
-  QLabel char_selector;
+  //QLabel char_selector;
   QVector<charicon* > charicon_list;
 
   ~Courtroom();

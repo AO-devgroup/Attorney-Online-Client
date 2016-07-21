@@ -18,7 +18,7 @@ QStringList getServerList()
 QStringList getCharSelectList()
 {
   //server.connect i dunno man
-  //to make later logic make sense we need to fill the 0 index with something
+  //to make later logic make sense we need to fill the 0 index with something(null)
   //currently there is a test set here
   QStringList charlist
   {

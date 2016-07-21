@@ -128,18 +128,18 @@ void Courtroom::setCharSelect()
     char_select_pages = (char_amount / 90) + 1;
 
   QString char_select_path = getImagePath("charselect_background.png");
-  QString char_selector_path = getImagePath("char_selector.png");
+  //QString char_selector_path = getImagePath("char_selector.png");
 
   if (fileExists(char_select_path))
     ui->charselect->setPixmap(QPixmap(char_select_path));
-
+/*
   if (fileExists(char_selector_path))
   {
     char_selector.setParent(ui->charselect);
     char_selector.setPixmap(char_selector_path);
     char_selector.hide();
   }
-
+*/
   ui->spectator->show();
 
   char_select_current_page = 1;
