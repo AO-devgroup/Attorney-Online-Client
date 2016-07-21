@@ -2,7 +2,7 @@
 
 this project uses QT 5.7
 
-you will need to make a qt project then add these files to the project. not tested, someone please do.
+you will need to make a qt project then add these files to the project. Then, you need to add characters/ and background/ from a vanill ao installation
 
 nothing is networked yet, but clicking "connect" will bring up a prototype playing window
 
