@@ -119,7 +119,7 @@ public:
         takethat->setFlat(false);
         playingarea = new QLabel(centralwidget);
         playingarea->setObjectName(QStringLiteral("playingarea"));
-        playingarea->setGeometry(QRect(0, 1, 256, 192));
+        playingarea->setGeometry(QRect(0, 0, 256, 192));
         present = new QPushButton(centralwidget);
         present->setObjectName(QStringLiteral("present"));
         present->setGeometry(QRect(171, 626, 158, 41));
@@ -181,13 +181,13 @@ public:
         emote_left->setGeometry(QRect(0, 253, 20, 20));
         desk = new QLabel(centralwidget);
         desk->setObjectName(QStringLiteral("desk"));
-        desk->setGeometry(QRect(0, 150, 256, 42));
+        desk->setGeometry(QRect(0, 149, 256, 42));
         playingbackground = new QLabel(centralwidget);
         playingbackground->setObjectName(QStringLiteral("playingbackground"));
         playingbackground->setGeometry(QRect(0, 0, 256, 192));
         chatbubble = new QLabel(centralwidget);
         chatbubble->setObjectName(QStringLiteral("chatbubble"));
-        chatbubble->setGeometry(QRect(3, 114, 256, 78));
+        chatbubble->setGeometry(QRect(0, 114, 256, 78));
         charselect = new QLabel(centralwidget);
         charselect->setObjectName(QStringLiteral("charselect"));
         charselect->setGeometry(QRect(0, 0, 714, 668));

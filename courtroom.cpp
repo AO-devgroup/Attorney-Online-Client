@@ -72,9 +72,15 @@ void Courtroom::setChar()
 void Courtroom::setCharSelect()
 {
   char_select_list = getCharSelectList();
+
   char_amount = char_select_list.size() - 1;  //we need to remove the "null" char
 
-  charicon_list << nullptr;
+  //we need to fill in index 0 for later logic to flow
+  charicon_list.insert(0, nullptr);
+
+
+  ui->spectator->setParent(ui->charselect);
+
 
   //setting up the grid and positions, also hiding until further stuff happens
   const int base_x_pos{25};
@@ -86,12 +92,21 @@ void Courtroom::setCharSelect()
   const int y_modifier{67};
   int y_mod_count{0};
 
+  QSignalMapper* signalMapper = new QSignalMapper (this) ;
+
   for(int n_icon{1} ; n_icon <= 90 ; ++n_icon)
   {
     int x_pos = base_x_pos + (x_modifier * x_mod_count);
     int y_pos = base_y_pos + (y_modifier * y_mod_count);
 
+
     charicon_list.insert(n_icon, new charicon(x_pos, y_pos, ui->charselect));
+
+    connect (charicon_list.at(n_icon), SIGNAL(clicked()), signalMapper, SLOT(map())) ;
+    signalMapper -> setMapping (charicon_list.at(n_icon), n_icon) ;
+
+    connect (signalMapper, SIGNAL(mapped(int)), this, SLOT(charChoose(int))) ;
+    //connect(charicon_list.at(n_icon), SIGNAL (charClicked()), this, SLOT (handleCharicon()));
     charicon_list.at(n_icon)->hide();
 
     ++x_mod_count;
@@ -223,6 +238,19 @@ void Courtroom::setCharSelectPage()
     ui->charselect_right->show();
   }
 
+}
+
+void Courtroom::handleCharicon(QString character)
+{
+  callError(character);
+}
+
+void Courtroom::charChoose(int charnumber)
+{
+  playerChar = char_select_list.at(charnumber);
+  this->setTheme();
+  this->setChar();
+  ui->charselect->hide();
 }
 
 void Courtroom::setEmotes()

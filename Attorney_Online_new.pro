@@ -32,8 +32,7 @@ HEADERS  += \
     courtroom.h \
     networking.h \
     character_handler.h \
-    charicon.h \
-    chariconarray.h
+    charicon.h
 
 FORMS    += \
     lobby.ui \

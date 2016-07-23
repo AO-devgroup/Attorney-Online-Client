@@ -7,6 +7,7 @@
 #include <QLabel>
 #include <QVector>
 #include <QList>
+#include <QSignalMapper>
 
 #include "ui_courtroom.h"
 
@@ -35,6 +36,9 @@ public:
 
   ~Courtroom();
 
+public slots:
+  void handleCharicon(QString character);
+
 private:
   Ui::Courtroom *ui;
   bool present_evidence = false;
@@ -56,6 +60,8 @@ private:
   int char_amount;
 
 private slots:
+  void charChoose(int i);
+
   void on_holdit_clicked();
 
   void on_objection_clicked();

@@ -269,7 +269,7 @@
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>1</y>
+      <y>0</y>
       <width>256</width>
       <height>192</height>
      </rect>
@@ -558,7 +558,7 @@
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>150</y>
+      <y>149</y>
       <width>256</width>
       <height>42</height>
      </rect>
@@ -583,7 +583,7 @@
    <widget class="QLabel" name="chatbubble">
     <property name="geometry">
      <rect>
-      <x>3</x>
+      <x>0</x>
       <y>114</y>
       <width>256</width>
       <height>78</height>
