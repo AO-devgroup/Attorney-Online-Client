@@ -661,6 +661,20 @@
      <string/>
     </property>
    </widget>
+   <widget class="QPushButton" name="changecharacter">
+    <property name="geometry">
+     <rect>
+      <x>250</x>
+      <y>327</y>
+      <width>131</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Change character</string>
+    </property>
+   </widget>
+   <zorder>charselect</zorder>
    <zorder>background</zorder>
    <zorder>plainTextEdit</zorder>
    <zorder>takethat</zorder>
@@ -684,11 +698,11 @@
    <zorder>playingarea</zorder>
    <zorder>desk</zorder>
    <zorder>chatbubble</zorder>
-   <zorder>charselect</zorder>
    <zorder>spectator</zorder>
    <zorder>charselector</zorder>
    <zorder>charselect_left</zorder>
    <zorder>charselect_right</zorder>
+   <zorder>changecharacter</zorder>
   </widget>
  </widget>
  <resources>

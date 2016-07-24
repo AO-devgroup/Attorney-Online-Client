@@ -46,8 +46,6 @@ void Courtroom::setTheme()
 
 void Courtroom::setChar()
 {
-  //playerChar = "Phoenix";
-
   LoadCharIni(playerChar);
 
   setEmotes();
@@ -67,6 +65,12 @@ void Courtroom::setChar()
   setEmotePage();
 
   ui->emote1->setStyleSheet("border-image:url(" + getEmoteIconPath(1) + "_on.png" + ")");
+
+  ui->chatLine->show();
+  ui->objection->show();
+  ui->holdit->show();
+  ui->takethat->show();
+  ui->present->show();
 }
 
 void Courtroom::setCharSelect()
@@ -78,9 +82,17 @@ void Courtroom::setCharSelect()
   //we need to fill in index 0 for later logic to flow
   charicon_list.insert(0, nullptr);
 
+  //you raise me uup
+  //srs, tho. brings the ui in front of the rest of the courtroom
+  ui->charselect->raise();
+  ui->charselect_left->raise();
+  ui->charselect_right->raise();
+  ui->spectator->raise();
 
+  //so when we show() and hide() charselect, children follow suit
+  ui->charselect_left->setParent(ui->charselect);
+  ui->charselect_right->setParent(ui->charselect);
   ui->spectator->setParent(ui->charselect);
-
 
   //setting up the grid and positions, also hiding until further stuff happens
   const int base_x_pos{25};
@@ -107,17 +119,19 @@ void Courtroom::setCharSelect()
 
     connect (signalMapper, SIGNAL(mapped(int)), this, SLOT(charChoose(int))) ;
     //connect(charicon_list.at(n_icon), SIGNAL (charClicked()), this, SLOT (handleCharicon()));
-    charicon_list.at(n_icon)->hide();
+    //charicon_list.at(n_icon)->hide();
 
     ++x_mod_count;
 
-    //if char number is divisible by ten then the next emote should start on a new line
+    //if char number is divisible by ten then the next charicon should start on a new line
     if (n_icon % 10 == 0)
     {
       ++y_mod_count;
       x_mod_count = 0;
     }
   }
+
+  //delete signalMapper;
 
   QString left_arrow_path = getImagePath("arrow_left.png");
   QString right_arrow_path = getImagePath("arrow_right.png");
@@ -155,7 +169,6 @@ void Courtroom::setCharSelect()
     char_selector.hide();
   }
 */
-  ui->spectator->show();
 
   char_select_current_page = 1;
 
@@ -164,15 +177,17 @@ void Courtroom::setCharSelect()
 
 void Courtroom::setCharSelectPage()
 {
-  //start by hiding errything and resetting ayy lmao
+  //start by hiding left and right arrows because were
+  //not certain at this point if they should appear or not
   ui->charselect_left->hide();
   ui->charselect_right->hide();
 
+  //we make sure all the char icons start hidden as well
   for(int n_icon{1} ; n_icon <= 90 ; ++n_icon)
   {
-    charicon_list.at(n_icon)->hide();
     charicon_list.at(n_icon)->setStyleSheet("border-image:url()");
     charicon_list.at(n_icon)->setText("");
+    charicon_list.at(n_icon)->hide();
   }
 
   int chars_on_page = -1;
@@ -228,6 +243,7 @@ void Courtroom::setCharSelectPage()
 
     charicon_list.at(local_char_number)->setIcon(char_select_list[real_char_number]);
     charicon_list.at(local_char_number)->show();
+  }
 
   //anything higher than the first page must have the left arrow
   if (char_select_current_page > 1)
@@ -236,7 +252,8 @@ void Courtroom::setCharSelectPage()
   //as long as the current page is less than max amount of pages, right arrow is shown
   if (char_select_current_page < char_select_pages)
     ui->charselect_right->show();
-  }
+
+  ui->spectator->show();
 
 }
 
@@ -245,12 +262,39 @@ void Courtroom::handleCharicon(QString character)
   callError(character);
 }
 
-void Courtroom::charChoose(int charnumber)
+void Courtroom::charChoose(int local_charnumber)
 {
-  playerChar = char_select_list.at(charnumber);
-  this->setTheme();
-  this->setChar();
+  //we first need to figure out which character we have based on page number and
+  //icon number
+
+  int real_char_number;
+  QString real_char;
+
+  real_char_number = local_charnumber + (90 * (char_select_current_page - 1));
+  real_char = char_select_list.at(real_char_number);
+
+  //T0D0
+  //hello mister server, can we has real_char pls?
+  //if (serversaysyes)
+  playerChar = real_char;
+  setTheme();
+  setChar();
+
+
+
   ui->charselect->hide();
+
+  /*
+  for (int n_icon{1} ; n_icon <= 90 ; ++n_icon)
+  {
+    delete charicon_list.at(n_icon);
+  }
+  */
+
+
+
+  //else
+  //ui->errorlabel->setText("Character is already taken.");
 }
 
 void Courtroom::setEmotes()
@@ -796,8 +840,10 @@ void Courtroom::on_emote_right_clicked()
 
 void Courtroom::on_spectator_clicked()
 {
-    ui->spectator->hide();
-    ui->charselect->hide();
+    ui->objection->hide();
+    ui->holdit->hide();
+    ui->takethat->hide();
+    ui->present->hide();
 
     ui->emote10->hide();
     ui->emote9->hide();
@@ -815,6 +861,7 @@ void Courtroom::on_spectator_clicked()
 
     ui->chatLine->hide();
 
+    ui->charselect->hide();
 }
 
 void Courtroom::on_charselect_left_clicked()
@@ -827,4 +874,12 @@ void Courtroom::on_charselect_right_clicked()
 {
   ++char_select_current_page;
   setCharSelectPage();
+}
+
+void Courtroom::on_changecharacter_clicked()
+{
+  //T0D0
+  //politely tell the server that we're not using our char anymore(playerChar)
+  //setCharSelect();
+  ui->charselect->show();
 }

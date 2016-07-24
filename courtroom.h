@@ -100,6 +100,7 @@ private slots:
 
   void on_charselect_left_clicked();
   void on_charselect_right_clicked();
+  void on_changecharacter_clicked();
 };
 
 #endif // COURTROOM_H

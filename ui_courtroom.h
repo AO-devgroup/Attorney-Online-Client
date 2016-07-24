@@ -55,6 +55,7 @@ public:
     QLabel *charselector;
     QPushButton *charselect_left;
     QPushButton *charselect_right;
+    QPushButton *changecharacter;
 
     void setupUi(QMainWindow *Courtroom)
     {
@@ -204,7 +205,11 @@ public:
         charselect_right = new QPushButton(centralwidget);
         charselect_right->setObjectName(QStringLiteral("charselect_right"));
         charselect_right->setGeometry(QRect(691, 325, 20, 20));
+        changecharacter = new QPushButton(centralwidget);
+        changecharacter->setObjectName(QStringLiteral("changecharacter"));
+        changecharacter->setGeometry(QRect(250, 327, 131, 23));
         Courtroom->setCentralWidget(centralwidget);
+        charselect->raise();
         background->raise();
         plainTextEdit->raise();
         takethat->raise();
@@ -228,11 +233,11 @@ public:
         playingarea->raise();
         desk->raise();
         chatbubble->raise();
-        charselect->raise();
         spectator->raise();
         charselector->raise();
         charselect_left->raise();
         charselect_right->raise();
+        changecharacter->raise();
 
         retranslateUi(Courtroom);
 
@@ -269,6 +274,7 @@ public:
         charselector->setText(QString());
         charselect_left->setText(QString());
         charselect_right->setText(QString());
+        changecharacter->setText(QApplication::translate("Courtroom", "Change character", 0));
     } // retranslateUi
 
 };
