@@ -2,6 +2,9 @@
 #define NETWORKING_H
 
 #include <QStringList>
+#include <QVector>
+
+#include <courtroom.h>
 
 QStringList getServerList();
 

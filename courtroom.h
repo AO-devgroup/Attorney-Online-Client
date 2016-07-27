@@ -33,6 +33,7 @@ public:
   void setCharSelectPage();
   //QLabel char_selector;
   QVector<charicon* > charicon_list;
+  QVector<QLabel* > char_taken_list;
 
   ~Courtroom();
 
@@ -49,7 +50,7 @@ private:
   int emote_current_page;
   int emote_pressed;      //keeps track of which emote button is pressed
   void setEmotes();
-  void setEmotePage();       //sets emote images
+  void setEmotePage();
   void setAllEmotesOff();
   QString getEmoteIconPath(int emotenumber);
   QStringList emote_list{"emote_list element 0"};
@@ -58,6 +59,8 @@ private:
   int char_select_pages;
   int char_select_current_page;
   int char_amount;
+  QVector<int> chars_taken;
+  void setTakenChars();
 
 private slots:
   void charChoose(int i);

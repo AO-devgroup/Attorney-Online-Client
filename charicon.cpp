@@ -74,6 +74,7 @@ void charicon::enterEvent(QEvent * e)
 {
   //ui->char_selector.char_selector.move(10, 10);
   //Courtroom.char_selector.show();
+  char_selector->raise();
   char_selector->show();
   setFlat(false);
   QPushButton::enterEvent(e);
@@ -86,6 +87,25 @@ void charicon::released()
 }
 
 charicon::~charicon()
+{
+
+}
+
+chartaken::chartaken(int x_pos, int y_pos, QWidget *parent)
+{
+  this->setParent(parent);
+  this->setAttribute(Qt::WA_TransparentForMouseEvents);
+
+  this->move(x_pos, y_pos);
+  this->resize(60, 60);
+
+  QString path = getImagePath("char_taken.png");
+
+  if (fileExists(path))
+    this->setPixmap(path);
+}
+
+chartaken::chartaken()
 {
 
 }

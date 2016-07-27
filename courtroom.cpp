@@ -79,8 +79,11 @@ void Courtroom::setCharSelect()
 
   char_amount = char_select_list.size() - 1;  //we need to remove the "null" char
 
-  //we need to fill in index 0 for later logic to flow
+  setTakenChars();
+
+  //we need to fill in indexes 0 for later logic to flow
   charicon_list.insert(0, nullptr);
+  char_taken_list.insert(0, nullptr);
 
   //you raise me uup
   //srs, tho. brings the ui in front of the rest of the courtroom
@@ -113,6 +116,9 @@ void Courtroom::setCharSelect()
 
 
     charicon_list.insert(n_icon, new charicon(x_pos, y_pos, ui->charselect));
+    char_taken_list.insert(n_icon, new chartaken(x_pos, y_pos, ui->charselect));
+
+    char_taken_list.at(n_icon)->hide();
 
     connect (charicon_list.at(n_icon), SIGNAL(clicked()), signalMapper, SLOT(map())) ;
     signalMapper -> setMapping (charicon_list.at(n_icon), n_icon) ;
@@ -243,6 +249,9 @@ void Courtroom::setCharSelectPage()
 
     charicon_list.at(local_char_number)->setIcon(char_select_list[real_char_number]);
     charicon_list.at(local_char_number)->show();
+
+    if (chars_taken.at(real_char_number) == -1)
+      char_taken_list.at(local_char_number)->show();
   }
 
   //anything higher than the first page must have the left arrow
@@ -283,15 +292,6 @@ void Courtroom::charChoose(int local_charnumber)
 
 
   ui->charselect->hide();
-
-  /*
-  for (int n_icon{1} ; n_icon <= 90 ; ++n_icon)
-  {
-    delete charicon_list.at(n_icon);
-  }
-  */
-
-
 
   //else
   //ui->errorlabel->setText("Character is already taken.");

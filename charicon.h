@@ -18,12 +18,12 @@ class charicon : public QPushButton
 public:
   charicon();
   charicon(int x_pos, int y_pos, QWidget *parent);
-  ~charicon();
   QString m_character;
   QWidget *m_parent;
   QLabel *char_selector;
   bool m_is_selected = false;
   void setIcon(QString character);
+  ~charicon();
 
 protected:
   void enterEvent(QEvent *e);
@@ -35,6 +35,13 @@ protected:
 
 //private slots:
   //void handleButton();
+};
+
+class chartaken : public QLabel
+{
+public:
+  chartaken();
+  chartaken(int x_pos, int y_pos, QWidget *parent);
 };
 
 #endif // CHARICON_H
