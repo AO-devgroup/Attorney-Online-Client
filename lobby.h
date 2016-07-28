@@ -4,6 +4,8 @@
 #include <QMainWindow>
 #include <QFont>
 #include <QString>
+#include <QtNetwork>
+#include <QDataStream>
 
 #include "ui_lobby.h"
 #include "courtroom.h"
@@ -25,9 +27,22 @@ public:
   explicit Lobby(QWidget *parent = 0);
   Courtroom *mCourtroomWindow;
   void setTheme();
+
+  void lookupMaster();
+  void pingMaster();
+  void connectMaster();
+  QHostAddress msIP;
+  int msPORT{27016};
+  QTcpSocket *ms_socket;
+  QDataStream in;
+
   ~Lobby();
 
 public slots:
+
+  void lookedUp(QHostInfo);
+
+  void readMaster();
 
 private slots:
   void on_refresh_pressed();

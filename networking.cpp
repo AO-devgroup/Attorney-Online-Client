@@ -1,4 +1,6 @@
 #include "networking.h"
+#include "courtroom.h"
+#include "lobby.h"
 
 //T0D0 fix this monstrosity
 
@@ -69,10 +71,51 @@ void Courtroom::setTakenChars()
 
     chars_taken.insert(n_char, int_taken_or_not);
   }
-
-
-
 }
+
+void Lobby::lookupMaster()
+{
+  QHostInfo::lookupHost("master.aceattorneyonline.com", this, SLOT(lookedUp(QHostInfo)));
+}
+
+void Lobby::lookedUp(QHostInfo host)
+{
+  if (host.error() != QHostInfo::NoError)
+  {
+    callError("master.aceattorneyonline.com could not resolve");
+    return;
+   }
+
+   const auto addresses = host.addresses();
+   //we just take the first address and be happy
+   msIP = addresses.at(0);
+}
+
+void Lobby::pingMaster()
+{
+
+
+  ms_socket->write("askforservers");
+  //callError(ms_socket.bytesAvailable());
+}
+
+void Lobby::connectMaster()
+{
+  ms_socket->connectToHost("master.aceattorneyonline.com", msPORT);
+}
+
+void Lobby::readMaster()
+{
+  char buffer[1024] = {0};
+  ms_socket->read(buffer, ms_socket->bytesAvailable());
+
+  QString in_data = buffer;
+  callError(in_data);
+
+  //ms_socket->close();
+}
+
+
 
 /*
 QVector<int> getTakenChars()

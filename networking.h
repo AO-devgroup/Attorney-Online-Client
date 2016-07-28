@@ -3,8 +3,7 @@
 
 #include <QStringList>
 #include <QVector>
-
-#include <courtroom.h>
+#include <QtNetwork>
 
 QStringList getServerList();
 

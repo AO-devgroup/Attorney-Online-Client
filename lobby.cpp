@@ -4,6 +4,10 @@ Lobby::Lobby(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::Lobby)
 {
+  ms_socket = new QTcpSocket(this);
+  //in.setDevice(ms_socket);
+  connect(ms_socket, &QIODevice::readyRead, this, &Lobby::readMaster);
+
   ui->setupUi(this);
 }
 
@@ -76,6 +80,8 @@ void Lobby::on_addtofav_released()
 
   if (fileExists(path))
     ui->addtofav->setStyleSheet("border-image:url(" + path + ")");
+
+  pingMaster();
 }
 
 void Lobby::on_connect_pressed()
