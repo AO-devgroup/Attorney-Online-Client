@@ -2,10 +2,11 @@
 
 void callError(QString message)
 {
-  QMessageBox msgBox;
-  msgBox.setText("Error: " + message);
-  msgBox.setWindowTitle("Error");
-  msgBox.exec();
+  QMessageBox *msgBox = new QMessageBox;
+  msgBox->setText("Error: " + message);
+  msgBox->setWindowTitle("Error");
+  msgBox->setWindowModality(Qt::NonModal);
+  msgBox->show();
 }
 
 void callError(int message)

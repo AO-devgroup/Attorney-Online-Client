@@ -674,6 +674,19 @@
      <string>Change character</string>
     </property>
    </widget>
+   <widget class="QLabel" name="charError">
+    <property name="geometry">
+     <rect>
+      <x>270</x>
+      <y>50</y>
+      <width>59</width>
+      <height>15</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
    <zorder>charselect</zorder>
    <zorder>background</zorder>
    <zorder>plainTextEdit</zorder>
@@ -703,6 +716,7 @@
    <zorder>charselect_left</zorder>
    <zorder>charselect_right</zorder>
    <zorder>changecharacter</zorder>
+   <zorder>charError</zorder>
   </widget>
  </widget>
  <resources>

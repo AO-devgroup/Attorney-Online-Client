@@ -56,6 +56,7 @@ public:
     QPushButton *charselect_left;
     QPushButton *charselect_right;
     QPushButton *changecharacter;
+    QLabel *charError;
 
     void setupUi(QMainWindow *Courtroom)
     {
@@ -208,6 +209,9 @@ public:
         changecharacter = new QPushButton(centralwidget);
         changecharacter->setObjectName(QStringLiteral("changecharacter"));
         changecharacter->setGeometry(QRect(250, 327, 131, 23));
+        charError = new QLabel(centralwidget);
+        charError->setObjectName(QStringLiteral("charError"));
+        charError->setGeometry(QRect(270, 50, 59, 15));
         Courtroom->setCentralWidget(centralwidget);
         charselect->raise();
         background->raise();
@@ -238,6 +242,7 @@ public:
         charselect_left->raise();
         charselect_right->raise();
         changecharacter->raise();
+        charError->raise();
 
         retranslateUi(Courtroom);
 
@@ -275,6 +280,7 @@ public:
         charselect_left->setText(QString());
         charselect_right->setText(QString());
         changecharacter->setText(QApplication::translate("Courtroom", "Change character", 0));
+        charError->setText(QString());
     } // retranslateUi
 
 };

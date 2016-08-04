@@ -6,7 +6,7 @@ Lobby::Lobby(QWidget *parent) :
 {
   ms_socket = new QTcpSocket(this);
   //in.setDevice(ms_socket);
-  connect(ms_socket, &QIODevice::readyRead, this, &Lobby::readMaster);
+  connect(ms_socket, &QTcpSocket::readyRead, this, &Lobby::handle_ms_packet);
 
   ui->setupUi(this);
 }
@@ -64,6 +64,7 @@ void Lobby::on_refresh_released()
 
     ui->serverlist->clear();
     ui->serverlist->addItems(getServerList());
+    ms_socket->write("askforservers");
 }
 
 void Lobby::on_addtofav_pressed()
@@ -138,4 +139,16 @@ void Lobby::on_favorites_clicked()
 
     if (fileExists(path_public))
       ui->publicservers->setStyleSheet("border-image:url(" + path_public + ")");
+}
+
+void Lobby::on_chatmessage_returnPressed()
+{
+  QString name = ui->chatname->text();
+  QString message = ui->chatmessage->text();
+  QString packet = "CT#" + name + "#" + message + "#%";
+
+
+  ms_socket->write(packet.toLocal8Bit());
+
+  ui->chatmessage->clear();
 }

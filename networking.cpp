@@ -73,6 +73,8 @@ void Courtroom::setTakenChars()
   }
 }
 
+//obsolete
+/*
 void Lobby::lookupMaster()
 {
   QHostInfo::lookupHost("master.aceattorneyonline.com", this, SLOT(lookedUp(QHostInfo)));
@@ -90,29 +92,67 @@ void Lobby::lookedUp(QHostInfo host)
    //we just take the first address and be happy
    msIP = addresses.at(0);
 }
+*/
 
 void Lobby::pingMaster()
 {
 
 
-  ms_socket->write("askforservers");
+  ms_socket->write("askforservers#%");
   //callError(ms_socket.bytesAvailable());
 }
 
 void Lobby::connectMaster()
 {
-  ms_socket->connectToHost("master.aceattorneyonline.com", msPORT);
+  ms_socket->connectToHost(msHOST, msPORT);
 }
 
-void Lobby::readMaster()
+void Lobby::handle_ms_packet()
 {
-  char buffer[1024] = {0};
+  ui->serverlist->addItem("hOI");
+
+  char buffer[2048] = {0};
   ms_socket->read(buffer, ms_socket->bytesAvailable());
 
   QString in_data = buffer;
-  callError(in_data);
+
+  QStringList packet_list = in_data.split("%");
+
+  for (QString packet : packet_list)
+  {
+    QStringList in_data_list = packet.split("#");
+
+    QString header = in_data_list[0];
+
+    if (header == "CHECK")
+      ;
+
+    else if (header == "CT")
+    {
+      master_connected = true;
+      ui->chatbox->addItem(in_data_list[1] + ": " + in_data_list[2]);
+    }
+    else if (header == "servercheok")
+    {
+      ;
+    }
+    else
+    {
+      ;
+    }
+  }
+
+
+
+  //callError(in_data);
+  //
 
   //ms_socket->close();
+}
+
+void Lobby::refreshServerList()
+{
+
 }
 
 

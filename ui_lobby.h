@@ -15,6 +15,7 @@
 #include <QtWidgets/QButtonGroup>
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
+#include <QtWidgets/QLineEdit>
 #include <QtWidgets/QListWidget>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QPushButton>
@@ -33,6 +34,9 @@ public:
     QPushButton *publicservers;
     QPushButton *favorites;
     QListWidget *serverlist;
+    QListWidget *chatbox;
+    QLineEdit *chatname;
+    QLineEdit *chatmessage;
 
     void setupUi(QMainWindow *Lobby)
     {
@@ -86,6 +90,55 @@ public:
         font.setItalic(false);
         font.setWeight(75);
         serverlist->setFont(font);
+        chatbox = new QListWidget(centralwidget);
+        chatbox->setObjectName(QStringLiteral("chatbox"));
+        chatbox->setGeometry(QRect(2, 445, 515, 198));
+        QPalette palette1;
+        QBrush brush2(QColor(111, 255, 116, 0));
+        brush2.setStyle(Qt::SolidPattern);
+        palette1.setBrush(QPalette::Active, QPalette::Base, brush2);
+        palette1.setBrush(QPalette::Inactive, QPalette::Base, brush2);
+        palette1.setBrush(QPalette::Disabled, QPalette::Base, brush1);
+        chatbox->setPalette(palette1);
+        QFont font1;
+        font1.setPointSize(8);
+        chatbox->setFont(font1);
+        chatbox->setFocusPolicy(Qt::NoFocus);
+        chatbox->setFrameShape(QFrame::NoFrame);
+        chatbox->setSizeAdjustPolicy(QAbstractScrollArea::AdjustToContentsOnFirstShow);
+        chatbox->setSelectionMode(QAbstractItemView::NoSelection);
+        chatbox->setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
+        chatbox->setHorizontalScrollMode(QAbstractItemView::ScrollPerItem);
+        chatbox->setWordWrap(true);
+        chatname = new QLineEdit(centralwidget);
+        chatname->setObjectName(QStringLiteral("chatname"));
+        chatname->setGeometry(QRect(4, 646, 85, 19));
+        QSizePolicy sizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+        sizePolicy.setHorizontalStretch(0);
+        sizePolicy.setVerticalStretch(0);
+        sizePolicy.setHeightForWidth(chatname->sizePolicy().hasHeightForWidth());
+        chatname->setSizePolicy(sizePolicy);
+        QPalette palette2;
+        palette2.setBrush(QPalette::Active, QPalette::Base, brush);
+        palette2.setBrush(QPalette::Inactive, QPalette::Base, brush);
+        palette2.setBrush(QPalette::Disabled, QPalette::Base, brush1);
+        chatname->setPalette(palette2);
+        QFont font2;
+        font2.setPointSize(9);
+        chatname->setFont(font2);
+        chatname->setFrame(false);
+        chatmessage = new QLineEdit(centralwidget);
+        chatmessage->setObjectName(QStringLiteral("chatmessage"));
+        chatmessage->setGeometry(QRect(93, 646, 424, 19));
+        QPalette palette3;
+        palette3.setBrush(QPalette::Active, QPalette::Base, brush);
+        palette3.setBrush(QPalette::Inactive, QPalette::Base, brush);
+        palette3.setBrush(QPalette::Disabled, QPalette::Base, brush1);
+        chatmessage->setPalette(palette3);
+        QFont font3;
+        font3.setPointSize(10);
+        chatmessage->setFont(font3);
+        chatmessage->setFrame(false);
         Lobby->setCentralWidget(centralwidget);
 
         retranslateUi(Lobby);
@@ -102,6 +155,7 @@ public:
         connect->setText(QString());
         publicservers->setText(QString());
         favorites->setText(QString());
+        chatname->setPlaceholderText(QApplication::translate("Lobby", "Name", 0));
     } // retranslateUi
 
 };

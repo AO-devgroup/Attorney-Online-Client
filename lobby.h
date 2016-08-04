@@ -31,18 +31,21 @@ public:
   void lookupMaster();
   void pingMaster();
   void connectMaster();
-  QHostAddress msIP;
+  //QHostAddress msIP;
+  QString msHOST = "master.aceattorneyonline.com";
   int msPORT{27016};
   QTcpSocket *ms_socket;
-  QDataStream in;
+  void refreshServerList();
+  bool master_connected = false;
+  //QDataStream in;
 
   ~Lobby();
 
 public slots:
 
-  void lookedUp(QHostInfo);
+  //void lookedUp(QHostInfo);
 
-  void readMaster();
+  void handle_ms_packet();
 
 private slots:
   void on_refresh_pressed();
@@ -60,6 +63,8 @@ private slots:
   void on_publicservers_clicked();
 
   void on_favorites_clicked();
+
+  void on_chatmessage_returnPressed();
 
 private:
   Ui::Lobby *ui;
