@@ -112,7 +112,7 @@ public:
         chatbox->setWordWrap(true);
         chatname = new QLineEdit(centralwidget);
         chatname->setObjectName(QStringLiteral("chatname"));
-        chatname->setGeometry(QRect(4, 646, 85, 19));
+        chatname->setGeometry(QRect(3, 646, 85, 19));
         QSizePolicy sizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
         sizePolicy.setHorizontalStretch(0);
         sizePolicy.setVerticalStretch(0);

@@ -130,7 +130,20 @@ void Lobby::handle_ms_packet()
     else if (header == "CT")
     {
       master_connected = true;
-      ui->chatbox->addItem(in_data_list[1] + ": " + in_data_list[2]);
+      if (in_data_list.size() == 4)
+        ui->chatbox->addItem(in_data_list[1] + ": " + in_data_list[2]);
+      else if (in_data_list.size() == 2)
+        ui->chatbox->addItem(in_data_list[1]);
+      else
+      {
+        /*
+        int size = in_data_list.size();
+        QString str_size = QString::number(size);
+        ui->chatbox->addItem("Malformed CT packet. in_data_list.size() = " + str_size + ". Expected 1 or 2");
+        */
+        ui->chatbox->addItem(packet);
+      }
+
     }
     else if (header == "servercheok")
     {
@@ -148,6 +161,20 @@ void Lobby::handle_ms_packet()
   //
 
   //ms_socket->close();
+}
+
+void Lobby::on_chatmessage_returnPressed()
+{
+  QString name = ui->chatname->text();
+  QString message = ui->chatmessage->text();
+  QString packet = "CT#" + name + "#" + message + "#%";
+
+  //no you cant send empty messages
+  if ((name != "") && (message != ""))
+  {
+    ms_socket->write(packet.toLocal8Bit());
+    ui->chatmessage->clear();
+  }
 }
 
 void Lobby::refreshServerList()

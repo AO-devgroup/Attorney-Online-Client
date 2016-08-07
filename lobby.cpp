@@ -140,15 +140,3 @@ void Lobby::on_favorites_clicked()
     if (fileExists(path_public))
       ui->publicservers->setStyleSheet("border-image:url(" + path_public + ")");
 }
-
-void Lobby::on_chatmessage_returnPressed()
-{
-  QString name = ui->chatname->text();
-  QString message = ui->chatmessage->text();
-  QString packet = "CT#" + name + "#" + message + "#%";
-
-
-  ms_socket->write(packet.toLocal8Bit());
-
-  ui->chatmessage->clear();
-}
