@@ -60,11 +60,11 @@ void Lobby::on_refresh_released()
 {
   QString path = getImagePath("refresh.png");
 
-    ui->refresh->setStyleSheet("border-image:url(" + path + ")");
+  ui->refresh->setStyleSheet("border-image:url(" + path + ")");
 
-    ui->serverlist->clear();
-    ui->serverlist->addItems(getServerList());
-    ms_socket->write("askforservers");
+  //ui->serverlist->clear();
+  //ui->serverlist->addItems(getServerList());
+  requestAllServers();
 }
 
 void Lobby::on_addtofav_pressed()

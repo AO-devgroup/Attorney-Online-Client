@@ -94,11 +94,16 @@ void Lobby::lookedUp(QHostInfo host)
 }
 */
 
+void Lobby::requestAllServers()
+{
+  ms_socket->write("ALL#%");
+}
+
 void Lobby::pingMaster()
 {
 
 
-  ms_socket->write("askforservers#%");
+  //ms_socket->write("ALL#%");
   //callError(ms_socket.bytesAvailable());
 }
 
@@ -109,7 +114,7 @@ void Lobby::connectMaster()
 
 void Lobby::handle_ms_packet()
 {
-  ui->serverlist->addItem("hOI");
+  //ui->serverlist->addItem("hOI");
 
   char buffer[2048] = {0};
   ms_socket->read(buffer, ms_socket->bytesAvailable());
@@ -120,9 +125,9 @@ void Lobby::handle_ms_packet()
 
   for (QString packet : packet_list)
   {
-    QStringList in_data_list = packet.split("#");
+    QStringList packet_arguments = packet.split("#");
 
-    QString header = in_data_list[0];
+    QString header = packet_arguments[0];
 
     if (header == "CHECK")
       ;
@@ -130,16 +135,16 @@ void Lobby::handle_ms_packet()
     else if (header == "CT")
     {
       master_connected = true;
-      if (in_data_list.size() == 4)
-        ui->chatbox->addItem(in_data_list[1] + ": " + in_data_list[2]);
-      else if (in_data_list.size() == 2)
-        ui->chatbox->addItem(in_data_list[1]);
+      if (packet_arguments.size() == 4)
+        ui->chatbox->addItem(packet_arguments[1] + ": " + packet_arguments[2]);
+      else if (packet_arguments.size() == 2)
+        ui->chatbox->addItem(packet_arguments[1]);
       else
       {
         /*
-        int size = in_data_list.size();
+        int size = packet_arguments.size();
         QString str_size = QString::number(size);
-        ui->chatbox->addItem("Malformed CT packet. in_data_list.size() = " + str_size + ". Expected 1 or 2");
+        ui->chatbox->addItem("Malformed CT packet. packet_arguments.size() = " + str_size + ". Expected 1 or 2");
         */
         ui->chatbox->addItem(packet);
       }
@@ -148,6 +153,25 @@ void Lobby::handle_ms_packet()
     else if (header == "servercheok")
     {
       ;
+    }
+    else if (header == "SN")
+    {
+      ui->chatbox->addItem(packet);
+      callError(":^)");
+    }
+    else if (header == "ALL")
+    {
+      int amount_of_servers = packet_arguments.size() - 2;
+
+      for (int n_server{1} ; n_server <= amount_of_servers ; ++n_server)
+      {
+        QString server_name = packet_arguments.at(n_server).split("&").at(0);
+        QString server_desc = packet_arguments.at(n_server).split("&").at(1);
+
+        m_server_list.insert(n_server, server_name);
+
+        ui->serverlist->addItems(m_server_list);
+      }
     }
     else
     {

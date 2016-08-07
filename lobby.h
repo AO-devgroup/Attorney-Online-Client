@@ -32,11 +32,13 @@ public:
   void pingMaster();
   void connectMaster();
   //QHostAddress msIP;
-  QString msHOST = "master.aceattorneyonline.com";
+  QString msHOST = "localhost";
   int msPORT{27016};
   QTcpSocket *ms_socket;
   void refreshServerList();
   bool master_connected = false;
+  void requestAllServers();
+  QStringList m_server_list{"null"};
   //QDataStream in;
 
   ~Lobby();
