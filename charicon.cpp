@@ -15,6 +15,7 @@ charicon::charicon(int x_pos, int y_pos, QWidget *parent)
   //connect(this, SIGNAL (clicked()), this, SLOT (handleButton()));
   m_parent = parent;
 
+  //connect(this, SIGNAL(clicked()), this, SLOT(handleClick()));
 
   char_selector = new QLabel(parent);
   //char_selector->setParent(parent);
@@ -85,7 +86,12 @@ void charicon::released()
   callError("ohai");
   m_parent->hide();
 }
-
+/*
+void charicon::handleClick(int char_number)
+{
+  emit charClicked(char_number);
+}
+*/
 charicon::~charicon()
 {
 

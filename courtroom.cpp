@@ -97,7 +97,7 @@ void Courtroom::setCharSelect()
   ui->charselect_right->setParent(ui->charselect);
   ui->spectator->setParent(ui->charselect);
 
-  //setting up the grid and positions, also hiding until further stuff happens
+  //setting up the grid and positions
   const int base_x_pos{25};
   const int base_y_pos{36};
 
@@ -123,7 +123,6 @@ void Courtroom::setCharSelect()
     connect (charicon_list.at(n_icon), SIGNAL(clicked()), signalMapper, SLOT(map())) ;
     signalMapper -> setMapping (charicon_list.at(n_icon), n_icon) ;
 
-    connect (signalMapper, SIGNAL(mapped(int)), this, SLOT(charChoose(int))) ;
     //connect(charicon_list.at(n_icon), SIGNAL (charClicked()), this, SLOT (handleCharicon()));
     //charicon_list.at(n_icon)->hide();
 
@@ -136,6 +135,8 @@ void Courtroom::setCharSelect()
       x_mod_count = 0;
     }
   }
+
+  connect (signalMapper, SIGNAL(mapped(int)), this, SLOT(charChoose(int))) ;
 
   //delete signalMapper;
 

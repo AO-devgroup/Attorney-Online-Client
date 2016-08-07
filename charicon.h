@@ -15,6 +15,8 @@
 class charicon : public QPushButton
 {
 
+  Q_OBJECT
+
 public:
   charicon();
   charicon(int x_pos, int y_pos, QWidget *parent);
@@ -25,13 +27,16 @@ public:
   void setIcon(QString character);
   ~charicon();
 
+//private slots:
+  //void handleClick(int char_number);
+
 protected:
   void enterEvent(QEvent *e);
   void leaveEvent(QEvent *e);
   void released();
 
 //signals:
-  //void charClicked();
+  //void charClicked(int char_number);
 
 //private slots:
   //void handleButton();
