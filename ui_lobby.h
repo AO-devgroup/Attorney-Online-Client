@@ -107,7 +107,7 @@ public:
         chatbox->setFont(font1);
         chatbox->setFocusPolicy(Qt::NoFocus);
         chatbox->setFrameShape(QFrame::NoFrame);
-        chatbox->setSizeAdjustPolicy(QAbstractScrollArea::AdjustToContentsOnFirstShow);
+        chatbox->setSizeAdjustPolicy(QAbstractScrollArea::AdjustIgnored);
         chatbox->setSelectionMode(QAbstractItemView::NoSelection);
         chatbox->setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
         chatbox->setHorizontalScrollMode(QAbstractItemView::ScrollPerItem);
@@ -143,7 +143,10 @@ public:
         chatmessage->setFrame(false);
         description = new QPlainTextEdit(centralwidget);
         description->setObjectName(QStringLiteral("description"));
-        description->setGeometry(QRect(340, 110, 171, 241));
+        description->setGeometry(QRect(337, 109, 173, 245));
+        sizePolicy.setHeightForWidth(description->sizePolicy().hasHeightForWidth());
+        description->setSizePolicy(sizePolicy);
+        description->setMaximumSize(QSize(173, 245));
         QPalette palette4;
         QBrush brush3(QColor(255, 255, 255, 255));
         brush3.setStyle(Qt::SolidPattern);
@@ -159,6 +162,10 @@ public:
         palette4.setBrush(QPalette::Disabled, QPalette::Base, brush1);
         palette4.setBrush(QPalette::Disabled, QPalette::ToolTipText, brush3);
         description->setPalette(palette4);
+        description->setFrameShape(QFrame::NoFrame);
+        description->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+        description->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+        description->setSizeAdjustPolicy(QAbstractScrollArea::AdjustIgnored);
         description->setReadOnly(true);
         Lobby->setCentralWidget(centralwidget);
 

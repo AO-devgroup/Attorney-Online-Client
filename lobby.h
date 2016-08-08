@@ -6,6 +6,7 @@
 #include <QString>
 #include <QtNetwork>
 #include <QDataStream>
+#include <QSizePolicy>
 
 #include "ui_lobby.h"
 #include "courtroom.h"

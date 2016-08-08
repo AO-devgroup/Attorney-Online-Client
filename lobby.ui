@@ -232,7 +232,7 @@
      <enum>QFrame::NoFrame</enum>
     </property>
     <property name="sizeAdjustPolicy">
-     <enum>QAbstractScrollArea::AdjustToContentsOnFirstShow</enum>
+     <enum>QAbstractScrollArea::AdjustIgnored</enum>
     </property>
     <property name="selectionMode">
      <enum>QAbstractItemView::NoSelection</enum>
@@ -369,11 +369,23 @@
    <widget class="QPlainTextEdit" name="description">
     <property name="geometry">
      <rect>
-      <x>340</x>
-      <y>110</y>
-      <width>171</width>
-      <height>241</height>
+      <x>337</x>
+      <y>109</y>
+      <width>173</width>
+      <height>245</height>
      </rect>
+    </property>
+    <property name="sizePolicy">
+     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+      <horstretch>0</horstretch>
+      <verstretch>0</verstretch>
+     </sizepolicy>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>173</width>
+      <height>245</height>
+     </size>
     </property>
     <property name="palette">
      <palette>
@@ -465,6 +477,18 @@
        </colorrole>
       </disabled>
      </palette>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::NoFrame</enum>
+    </property>
+    <property name="verticalScrollBarPolicy">
+     <enum>Qt::ScrollBarAlwaysOff</enum>
+    </property>
+    <property name="horizontalScrollBarPolicy">
+     <enum>Qt::ScrollBarAlwaysOff</enum>
+    </property>
+    <property name="sizeAdjustPolicy">
+     <enum>QAbstractScrollArea::AdjustIgnored</enum>
     </property>
     <property name="readOnly">
      <bool>true</bool>
