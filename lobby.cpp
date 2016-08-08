@@ -140,3 +140,13 @@ void Lobby::on_favorites_clicked()
     if (fileExists(path_public))
       ui->publicservers->setStyleSheet("border-image:url(" + path_public + ")");
 }
+
+void Lobby::on_serverlist_clicked(const QModelIndex &index)
+{
+  ui->description->clear();
+  ui->description->appendPlainText(m_server_list.at(index.row()).desc);
+  //callError("ohai");
+  //ui->description->
+  //ui->description->setText(m_server_list.at(index.row()).desc);
+  //ui->description->setText("ship!!!");
+}

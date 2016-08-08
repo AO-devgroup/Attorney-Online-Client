@@ -14,6 +14,7 @@
 #include "config_handler.h"
 #include "error_handler.h"
 #include "networking.h"
+#include "datatypes.h"
 
 namespace Ui {
 class Lobby;
@@ -38,7 +39,8 @@ public:
   void refreshServerList();
   bool master_connected = false;
   void requestAllServers();
-  QStringList m_server_list{"null"};
+  QVector<server_type> m_server_list;
+  //QStringList m_server_list;
   //QDataStream in;
 
   ~Lobby();
@@ -67,6 +69,8 @@ private slots:
   void on_favorites_clicked();
 
   void on_chatmessage_returnPressed();
+
+  void on_serverlist_clicked(const QModelIndex &index);
 
 private:
   Ui::Lobby *ui;

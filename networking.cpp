@@ -163,15 +163,32 @@ void Lobby::handle_ms_packet()
     {
       int amount_of_servers = packet_arguments.size() - 2;
 
+      QVector<server_type> server_list;
+
       for (int n_server{1} ; n_server <= amount_of_servers ; ++n_server)
       {
-        QString server_name = packet_arguments.at(n_server).split("&").at(0);
-        QString server_desc = packet_arguments.at(n_server).split("&").at(1);
+        server_type server
+        {
+          packet_arguments.at(n_server).split("&").at(0),
+          packet_arguments.at(n_server).split("&").at(1)
+        };
+        //QString server_name = packet_arguments.at(n_server).split("&").at(0);
+        //QString server_desc = packet_arguments.at(n_server).split("&").at(1);
 
-        m_server_list.insert(n_server, server_name);
+        server_list.insert(n_server - 1, server);
 
-        ui->serverlist->addItems(m_server_list);
+        //ui->serverlist->addItems(m_server_list);
       }
+
+      m_server_list = server_list;
+
+      ui->serverlist->clear();
+
+      for (server_type server : m_server_list)
+      {
+        ui->serverlist->addItem(server.name);
+      }
+      //ui->serverlist->addItems(server_list);
     }
     else
     {

@@ -5,6 +5,8 @@
 #include <QVector>
 #include <QtNetwork>
 
+#include "datatypes.h"
+
 QStringList getServerList();
 
 QStringList getCharSelectList();

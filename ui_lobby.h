@@ -18,6 +18,7 @@
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QListWidget>
 #include <QtWidgets/QMainWindow>
+#include <QtWidgets/QPlainTextEdit>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QWidget>
 
@@ -37,6 +38,7 @@ public:
     QListWidget *chatbox;
     QLineEdit *chatname;
     QLineEdit *chatmessage;
+    QPlainTextEdit *description;
 
     void setupUi(QMainWindow *Lobby)
     {
@@ -139,6 +141,25 @@ public:
         font3.setPointSize(10);
         chatmessage->setFont(font3);
         chatmessage->setFrame(false);
+        description = new QPlainTextEdit(centralwidget);
+        description->setObjectName(QStringLiteral("description"));
+        description->setGeometry(QRect(340, 110, 171, 241));
+        QPalette palette4;
+        QBrush brush3(QColor(255, 255, 255, 255));
+        brush3.setStyle(Qt::SolidPattern);
+        palette4.setBrush(QPalette::Active, QPalette::Text, brush3);
+        palette4.setBrush(QPalette::Active, QPalette::Base, brush);
+        palette4.setBrush(QPalette::Active, QPalette::ToolTipText, brush3);
+        palette4.setBrush(QPalette::Inactive, QPalette::Text, brush3);
+        palette4.setBrush(QPalette::Inactive, QPalette::Base, brush);
+        palette4.setBrush(QPalette::Inactive, QPalette::ToolTipText, brush3);
+        QBrush brush4(QColor(190, 190, 190, 255));
+        brush4.setStyle(Qt::SolidPattern);
+        palette4.setBrush(QPalette::Disabled, QPalette::Text, brush4);
+        palette4.setBrush(QPalette::Disabled, QPalette::Base, brush1);
+        palette4.setBrush(QPalette::Disabled, QPalette::ToolTipText, brush3);
+        description->setPalette(palette4);
+        description->setReadOnly(true);
         Lobby->setCentralWidget(centralwidget);
 
         retranslateUi(Lobby);
@@ -156,6 +177,7 @@ public:
         publicservers->setText(QString());
         favorites->setText(QString());
         chatname->setPlaceholderText(QApplication::translate("Lobby", "Name", 0));
+        description->setPlainText(QString());
     } // retranslateUi
 
 };

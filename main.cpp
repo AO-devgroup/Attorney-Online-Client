@@ -10,6 +10,7 @@ int main(int argc, char *argv[])
   w.setTheme();
   w.connectMaster();
   w.show();
+  w.requestAllServers();
 
   return a.exec();
 }
