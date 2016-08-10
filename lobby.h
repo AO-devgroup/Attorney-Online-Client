@@ -43,7 +43,14 @@ public:
   void requestAllServers();
   QVector<server_type> m_server_list;
   void server_connect(QString ip, int port);
-  int int_connected_server;
+  int int_selected_server = -1;
+
+  QFile favoritefile;
+
+  //true is public servers selected, false is favorites
+  bool public_servers_selected = true;
+  QVector<server_type> favoriteservers;
+  void LoadFavorites();
 
   //QStringList m_server_list;
   //QDataStream in;
@@ -82,6 +89,8 @@ private slots:
   void on_chatmessage_returnPressed();
 
   void on_serverlist_clicked(const QModelIndex &index);
+
+  void on_favoritelist_clicked(const QModelIndex &index);
 
 private:
   Ui::Lobby *ui;

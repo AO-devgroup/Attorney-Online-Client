@@ -15,9 +15,10 @@ Lobby::Lobby(QWidget *parent) :
 
 void Lobby::setTheme()
 {
-
+  //literally everything breaks if you remove this
   LoadConfig(); //sets config.ini as a global variable !IMPORTANT!
-                //literally everything breaks if you remove this
+
+
 
   QString background_path = getImagePath("lobbybackground.png");
   QString refresh_path = getImagePath("refresh.png");
@@ -43,6 +44,11 @@ void Lobby::setTheme()
 
   if (fileExists(favorites_path))
     ui->favorites->setStyleSheet("border-image:url(" + favorites_path + ")");
+
+  //
+  //LoadFavorites();
+
+  ui->favoritelist->hide();
 }
 
 Lobby::~Lobby()
@@ -82,7 +88,30 @@ void Lobby::on_addtofav_released()
   if (fileExists(path))
     ui->addtofav->setStyleSheet("border-image:url(" + path + ")");
 
-  pingMaster();
+  //you cant add favorites from favorites m8
+  if (!public_servers_selected)
+    return;
+
+  //this means there is no selection
+  if (int_selected_server == -1)
+    return;
+
+  server_type fav_server = m_server_list.at(int_selected_server);
+
+  if (!favoritefile.open(QIODevice::ReadWrite | QIODevice::Text))
+  {
+    callError("failed to write in \"favorites.txt\"");
+  }
+
+  QTextStream out(&favoritefile);
+
+  QString server_line = fav_server.ip + ":" + fav_server.port + ":" + fav_server.name;
+
+  out << server_line << '\n';
+
+  //favoritefile.write(server_line);
+  favoritefile.close();
+
 }
 
 void Lobby::on_connect_pressed()
@@ -119,6 +148,8 @@ void Lobby::on_connect_released()
 
 void Lobby::on_publicservers_clicked()
 {
+  public_servers_selected = true;
+
   QString path_public = getImagePath("publicservers_selected.png");
   QString path_favorites = getImagePath("favorites.png");
 
@@ -127,10 +158,15 @@ void Lobby::on_publicservers_clicked()
 
     if (fileExists(path_favorites))
       ui->favorites->setStyleSheet("border-image:url(" + path_favorites + ")");
+
+    ui->favoritelist->hide();
+    ui->serverlist->show();
 }
 
 void Lobby::on_favorites_clicked()
 {
+  public_servers_selected = false;
+
   QString path_favorites = getImagePath("favorites_selected.png");
   QString path_public = getImagePath("publicservers.png");
 
@@ -139,6 +175,18 @@ void Lobby::on_favorites_clicked()
 
   if (fileExists(path_public))
     ui->publicservers->setStyleSheet("border-image:url(" + path_public + ")");
+
+  LoadFavorites();
+
+  ui->favoritelist->clear();
+
+  for (server_type server : favoriteservers)
+  {
+    ui->favoritelist->addItem(server.name);
+  }
+
+  ui->serverlist->hide();
+  ui->favoritelist->show();
 }
 
 void Lobby::on_serverlist_clicked(const QModelIndex &index)
@@ -147,7 +195,75 @@ void Lobby::on_serverlist_clicked(const QModelIndex &index)
 
   ui->description->setPlainText(f_server.desc);
 
-  int_connected_server = index.row();
+  int_selected_server = index.row();
 
   server_connect(f_server.ip, f_server.port);
 }
+
+void Lobby::on_favoritelist_clicked(const QModelIndex &index)
+{
+  server_type f_server = favoriteservers.at(index.row());
+
+  //ui->description->setPlainText(f_server.desc);
+
+  int_selected_server = index.row();
+
+  server_connect(f_server.ip, f_server.port);
+}
+
+void Lobby::LoadFavorites()
+{
+
+
+  if (fileExists((getBasePath() + "favorites.txt"), true))
+    favoritefile.setFileName(getBasePath() + "favorites.txt");
+
+  //legacy support, the new name is favorites.txt
+  else if (fileExists((getBasePath() + "serverlist.txt"), true))
+    favoritefile.setFileName(getBasePath() + "serverlist.txt");
+
+  else
+  {
+    callError("could not find \"favorites.txt\" ");
+    return;
+  }
+
+  if (!favoritefile.open(QIODevice::ReadOnly))
+  {
+    callError("failed to read \"favorites.txt\"");
+  }
+  QTextStream in(&favoritefile);
+
+  QVector<server_type> temp_servers;
+
+  for(int line_count{0}; ; ++line_count)
+  {
+    if (in.atEnd())
+      break;
+
+    QString line = in.readLine();
+    QStringList line_contents = line.split(":");
+
+    //we check if the line is valid first
+    if (line_contents.size() == 3)
+    {
+      server_type serv;
+
+      serv.name = line_contents.at(2);
+      serv.ip = line_contents.at(0);
+      serv.port = line_contents.at(1).toInt();
+
+      temp_servers.insert(line_count, serv);
+
+      favoriteservers = temp_servers;
+
+      //favoriteservers.insert(line_count, serv);
+    }
+
+    if (in.atEnd())
+      break;
+  }
+
+  favoritefile.close();
+}
+

@@ -1,4 +1,4 @@
-#include "networking.h"
+﻿#include "networking.h"
 #include "courtroom.h"
 #include "lobby.h"
 
@@ -132,6 +132,7 @@ void Lobby::ms_failed_to_connect()
 void Lobby::ms_connection_established()
 {
   master_connected = true;
+  requestAllServers();
 }
 
 void Lobby::handle_ms_packet()
@@ -235,7 +236,7 @@ void Lobby::handle_ms_packet()
 
 void Lobby::handle_server_packet()
 {
-  qDebug() << "Connected to " << int_connected_server;
+  qDebug() << "Connected to " << int_selected_server;
 
 
 }

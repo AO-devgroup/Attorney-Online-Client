@@ -39,6 +39,7 @@ public:
     QLineEdit *chatmessage;
     QPlainTextEdit *description;
     QPlainTextEdit *chatbox;
+    QListWidget *favoritelist;
 
     void setupUi(QMainWindow *Lobby)
     {
@@ -157,6 +158,15 @@ public:
         chatbox->setPalette(palette4);
         chatbox->setFrameShape(QFrame::NoFrame);
         chatbox->setReadOnly(true);
+        favoritelist = new QListWidget(centralwidget);
+        favoritelist->setObjectName(QStringLiteral("favoritelist"));
+        favoritelist->setGeometry(QRect(20, 125, 286, 240));
+        QPalette palette5;
+        palette5.setBrush(QPalette::Active, QPalette::Base, brush);
+        palette5.setBrush(QPalette::Inactive, QPalette::Base, brush);
+        palette5.setBrush(QPalette::Disabled, QPalette::Base, brush1);
+        favoritelist->setPalette(palette5);
+        favoritelist->setFont(font);
         Lobby->setCentralWidget(centralwidget);
 
         retranslateUi(Lobby);
