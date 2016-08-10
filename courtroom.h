@@ -17,6 +17,7 @@
 #include "character_handler.h"
 #include "networking.h"
 #include "charicon.h"
+#include "datatypes.h"
 
 namespace Ui {
 class Courtroom;
