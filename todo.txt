@@ -1,0 +1,1 @@
+-Fix Fiercy's sillyness (aka emote crash on read)
