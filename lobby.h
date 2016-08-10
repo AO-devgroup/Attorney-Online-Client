@@ -35,12 +35,16 @@ public:
   void connectMaster();
   //QHostAddress msIP;
   QString msHOST = "localhost";
-  int msPORT{27016};
+  int msPORT = 27016;
   QTcpSocket *ms_socket;
+  QTcpSocket *server_socket;
   void refreshServerList();
   bool master_connected = false;
   void requestAllServers();
   QVector<server_type> m_server_list;
+  void server_connect(QString ip, int port);
+  int int_connected_server;
+
   //QStringList m_server_list;
   //QDataStream in;
 
@@ -51,6 +55,12 @@ public slots:
   //void lookedUp(QHostInfo);
 
   void handle_ms_packet();
+
+  void handle_server_packet();
+
+  void ms_connection_established();
+
+  void ms_failed_to_connect();
 
 private slots:
   void on_refresh_pressed();
@@ -76,6 +86,7 @@ private slots:
 private:
   Ui::Lobby *ui;
   bool court_exists = false;
+
 };
 
 #endif // LOBBY_H

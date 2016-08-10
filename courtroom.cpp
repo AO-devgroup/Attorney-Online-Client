@@ -9,6 +9,11 @@ Courtroom::Courtroom(QWidget *parent) :
   this->setWindowTitle("Attorney Online");
 }
 
+Courtroom::~Courtroom()
+{
+  delete ui;
+}
+
 void Courtroom::setTheme()
 {
   LoadConfig();
@@ -612,10 +617,7 @@ QString Courtroom::getEmoteIconPath(int emotenumber)
     return smallb;
 }
 
-Courtroom::~Courtroom()
-{
-  delete ui;
-}
+
 
 void Courtroom::on_holdit_clicked()
 {

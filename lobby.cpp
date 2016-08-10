@@ -5,8 +5,10 @@ Lobby::Lobby(QWidget *parent) :
     ui(new Ui::Lobby)
 {
   ms_socket = new QTcpSocket(this);
+  server_socket = new QTcpSocket(this);
   //in.setDevice(ms_socket);
   connect(ms_socket, &QTcpSocket::readyRead, this, &Lobby::handle_ms_packet);
+  connect(server_socket, &QTcpSocket::readyRead, this, &Lobby::handle_server_packet);
 
   ui->setupUi(this);
 }
@@ -21,7 +23,7 @@ void Lobby::setTheme()
   QString refresh_path = getImagePath("refresh.png");
   QString addtofav_path = getImagePath("addtofav.png");
   QString connect_path = getImagePath("connect.png");
-  QString publicservers_path = getImagePath("publicservers.png");
+  QString publicservers_path = getImagePath("publicservers_selected.png");
   QString favorites_path = getImagePath("favorites.png");
 
   if (fileExists(background_path))
@@ -62,8 +64,6 @@ void Lobby::on_refresh_released()
 
   ui->refresh->setStyleSheet("border-image:url(" + path + ")");
 
-  //ui->serverlist->clear();
-  //ui->serverlist->addItems(getServerList());
   requestAllServers();
 }
 
@@ -143,12 +143,11 @@ void Lobby::on_favorites_clicked()
 
 void Lobby::on_serverlist_clicked(const QModelIndex &index)
 {
-  //ui->description->verticalScrollBar()->setSliderPosition(0);
-  //ui->description->setVerticalPolicy(QSizePolicy::fixed);
-  //ui->description->clear();
-  ui->description->setPlainText(m_server_list.at(index.row()).desc);
-  //callError("ohai");
-  //ui->description->
-  //ui->description->setText(m_server_list.at(index.row()).desc);
-  //ui->description->setText("ship!!!");
+  server_type f_server = m_server_list.at(index.row());
+
+  ui->description->setPlainText(f_server.desc);
+
+  int_connected_server = index.row();
+
+  server_connect(f_server.ip, f_server.port);
 }

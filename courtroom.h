@@ -2,6 +2,7 @@
 #define COURTROOM_H
 
 #include <QMainWindow>
+#include <QWindow>
 #include <QMovie>
 #include <QString>
 #include <QLabel>

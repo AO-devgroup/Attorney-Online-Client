@@ -7,6 +7,8 @@ struct server_type
 {
   QString name;
   QString desc;
+  QString ip;
+  int port;
 };
 
 struct emote_type

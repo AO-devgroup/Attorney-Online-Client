@@ -96,20 +96,42 @@ void Lobby::lookedUp(QHostInfo host)
 
 void Lobby::requestAllServers()
 {
+  if (!master_connected)
+    return;
+
   ms_socket->write("ALL#%");
 }
 
 void Lobby::pingMaster()
 {
+  if (!master_connected)
+    return;
 
-
-  //ms_socket->write("ALL#%");
+  ms_socket->write("askforservers#%");
   //callError(ms_socket.bytesAvailable());
 }
 
 void Lobby::connectMaster()
 {
   ms_socket->connectToHost(msHOST, msPORT);
+
+  connect (ms_socket, SIGNAL(connected()), this, SLOT(ms_connection_established()));
+  connect (ms_socket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(ms_failed_to_connect()));
+  //if ()
+  //  master_connected = true;
+
+  //else
+  //  callError("Could not connect to master.");
+}
+
+void Lobby::ms_failed_to_connect()
+{
+  callError("Could not connect to masterserver :v(");
+}
+
+void Lobby::ms_connection_established()
+{
+  master_connected = true;
 }
 
 void Lobby::handle_ms_packet()
@@ -130,15 +152,16 @@ void Lobby::handle_ms_packet()
     QString header = packet_arguments[0];
 
     if (header == "CHECK")
-      ;
+      master_connected = true;
 
     else if (header == "CT")
     {
-      master_connected = true;
       if (packet_arguments.size() == 4)
-        ui->chatbox->addItem(packet_arguments[1] + ": " + packet_arguments[2]);
+        //ui->chatbox->addItem(packet_arguments[1] + ": " + packet_arguments[2]);
+        ui->chatbox->appendPlainText(packet_arguments[1] + ": " + packet_arguments[2]);
       else if (packet_arguments.size() == 2)
-        ui->chatbox->addItem(packet_arguments[1]);
+        //ui->chatbox->addItem(packet_arguments[1]);
+        ui->chatbox->appendPlainText(packet_arguments[1]);
       else
       {
         /*
@@ -146,7 +169,7 @@ void Lobby::handle_ms_packet()
         QString str_size = QString::number(size);
         ui->chatbox->addItem("Malformed CT packet. packet_arguments.size() = " + str_size + ". Expected 1 or 2");
         */
-        ui->chatbox->addItem(packet);
+        ui->chatbox->appendPlainText(packet);
       }
 
     }
@@ -156,22 +179,28 @@ void Lobby::handle_ms_packet()
     }
     else if (header == "SN")
     {
-      ui->chatbox->addItem(packet);
+      ui->chatbox->appendPlainText(packet);
       callError(":^)");
     }
     else if (header == "ALL")
     {
       int amount_of_servers = packet_arguments.size() - 2;
 
+      qDebug() << "amount_of_servers: " << amount_of_servers;
+      qDebug() << "packet: " << packet;
+
       QVector<server_type> server_list;
 
       for (int n_server{1} ; n_server <= amount_of_servers ; ++n_server)
       {
-        server_type server
-        {
-          packet_arguments.at(n_server).split("&").at(0),
-          packet_arguments.at(n_server).split("&").at(1)
-        };
+        QString i_server = packet_arguments.at(n_server);
+        server_type server;
+
+        server.name = i_server.split("&").at(0);
+        server.desc =  i_server.split("&").at(1);
+        server.ip =  i_server.split("&").at(2);
+        server.port =  i_server.split("&").at(3).toInt();
+
         //QString server_name = packet_arguments.at(n_server).split("&").at(0);
         //QString server_desc = packet_arguments.at(n_server).split("&").at(1);
 
@@ -204,8 +233,18 @@ void Lobby::handle_ms_packet()
   //ms_socket->close();
 }
 
+void Lobby::handle_server_packet()
+{
+  qDebug() << "Connected to " << int_connected_server;
+
+
+}
+
 void Lobby::on_chatmessage_returnPressed()
 {
+  if (!master_connected)
+    return;
+
   QString name = ui->chatname->text();
   QString message = ui->chatmessage->text();
   QString packet = "CT#" + name + "#" + message + "#%";
@@ -218,10 +257,20 @@ void Lobby::on_chatmessage_returnPressed()
   }
 }
 
+void Lobby::server_connect(QString ip, int port)
+{
+  server_socket->close();
+
+  server_socket->connectToHost(ip, port);
+}
+
+//replaced by requestAllServers()
+/*
 void Lobby::refreshServerList()
 {
 
 }
+*/
 
 
 
