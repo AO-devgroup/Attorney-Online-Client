@@ -8,6 +8,7 @@
 #include <QVector>
 #include <QList>
 #include <QSignalMapper>
+#include <QSettings>
 
 #include "ui_courtroom.h"
 
@@ -24,6 +25,7 @@ class Courtroom;
 class Courtroom : public QMainWindow
 {
   Q_OBJECT
+
 
 public:
   explicit Courtroom(QWidget *parent = 0);
@@ -53,7 +55,8 @@ private:
   void setEmotePage();
   void setAllEmotesOff();
   QString getEmoteIconPath(int emotenumber);
-  QStringList emote_list{"emote_list element 0"};
+  QVector<emote_type> emote_list;
+  //QStringList emote_list {"emote_list element 0"};
   int getPressedEmote();
   QStringList char_select_list;
   int char_select_pages;
@@ -61,6 +64,7 @@ private:
   int char_amount;
   QVector<int> chars_taken;
   void setTakenChars();
+  QSettings ini_charini;
 
 private slots:
   void charChoose(int i);
