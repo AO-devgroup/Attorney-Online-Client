@@ -35,26 +35,23 @@ these are the changes from the old client made by FanatSors. the ones listed her
 - Slightly rearranged the directory structure
 - Moved character icons from base/misc/DemoThings/ to their respective character folder
 - Client window is now scaleable
+- Added "change character" button
+- Servers now show up all at once in the public serverlist
+- Added dynamic sizing to char select(remove blank char pages and remove character limit, essentially)
 
 
 # Planned changes
 these are changes that will happen if everything goes smooth
 
-- Increase character limit to 500
-- Increase music limit*
 - Remove/decrease loading times(for servers and for the masterserver)
-- Add "change character" button
 - Readd the long-lost "Spectator" function
 - Add area support
 - Add separate volume sliders for music, character blips and sfx
 - Add moving speedlines
 - Increase character customization options
 - Improve network protocol
-- Add dynamic sizing to char select(remove blank char pages, essentially)
 - Add EVIDENCE support
 - Remove kebab
-
-*:the music limit might already be 1000. who knows.
 
 
 # Credits
@@ -64,6 +61,3 @@ Capcom
 
 Original AA multiplayer concept:
 FanatSors
-
-Lead Client Developer:
-OmniTroid
