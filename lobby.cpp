@@ -149,6 +149,7 @@ void Lobby::on_connect_released()
 void Lobby::on_publicservers_clicked()
 {
   public_servers_selected = true;
+  int_selected_server = -1;
 
   QString path_public = getImagePath("publicservers_selected.png");
   QString path_favorites = getImagePath("favorites.png");
@@ -166,6 +167,7 @@ void Lobby::on_publicservers_clicked()
 void Lobby::on_favorites_clicked()
 {
   public_servers_selected = false;
+  int_selected_server = -1;
 
   QString path_favorites = getImagePath("favorites_selected.png");
   QString path_public = getImagePath("publicservers.png");

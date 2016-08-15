@@ -143,8 +143,6 @@ void Courtroom::setCharSelect()
 
   connect (signalMapper, SIGNAL(mapped(int)), this, SLOT(charChoose(int))) ;
 
-  //delete signalMapper;
-
   QString left_arrow_path = getImagePath("arrow_left.png");
   QString right_arrow_path = getImagePath("arrow_right.png");
 
