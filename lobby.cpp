@@ -98,14 +98,16 @@ void Lobby::on_addtofav_released()
 
   server_type fav_server = m_server_list.at(int_selected_server);
 
-  if (!favoritefile.open(QIODevice::ReadWrite | QIODevice::Text))
+  if (!favoritefile.open(QIODevice::WriteOnly | QIODevice::Append))
   {
     callError("failed to write in \"favorites.txt\"");
   }
 
   QTextStream out(&favoritefile);
 
-  QString server_line = fav_server.ip + ":" + fav_server.port + ":" + fav_server.name;
+  QString str_port = QString::number(fav_server.port);
+
+  QString server_line = fav_server.ip + ":" + str_port + ":" + fav_server.name;
 
   out << server_line << '\n';
 
@@ -206,6 +208,9 @@ void Lobby::on_favoritelist_clicked(const QModelIndex &index)
 {
   server_type f_server = favoriteservers.at(index.row());
 
+  if (f_server.name == "!MISCONFIGURED!")
+    return;
+
   //ui->description->setPlainText(f_server.desc);
 
   int_selected_server = index.row();
@@ -260,6 +265,23 @@ void Lobby::LoadFavorites()
       favoriteservers = temp_servers;
 
       //favoriteservers.insert(line_count, serv);
+    }
+
+    else
+    {
+      QString str_line = QString::number(line_count + 1);
+
+      callError("favorites.txt appears to be misconfigured on line " + str_line + ". Expected <ip>:<port>:<name> format.");
+
+      server_type serv;
+
+      serv.name = "!MISCONFIGURED!";
+      serv.ip = "";
+      serv.port = 0;
+
+      temp_servers.insert(line_count, serv);
+
+      favoriteservers = temp_servers;
     }
 
     if (in.atEnd())

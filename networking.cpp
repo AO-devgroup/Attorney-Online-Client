@@ -261,6 +261,7 @@ void Lobby::on_chatmessage_returnPressed()
 void Lobby::server_connect(QString ip, int port)
 {
   server_socket->close();
+  server_socket->abort();
 
   server_socket->connectToHost(ip, port);
 }
