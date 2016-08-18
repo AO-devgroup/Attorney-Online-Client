@@ -65,7 +65,7 @@ private:
   int char_select_current_page;
   int char_amount;
   QVector<int> chars_taken;
-  void setTakenChars();
+  void setTakenChars(QString string_from_server);
   QSettings ini_charini;
 
 private slots:
