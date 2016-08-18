@@ -48,6 +48,8 @@ void Lobby::setTheme()
   //
   //LoadFavorites();
 
+  connect(server_socket, SIGNAL(disconnected()), this, SLOT(server_disconnected()));
+
   ui->favoritelist->hide();
 }
 
@@ -133,6 +135,16 @@ void Lobby::on_connect_released()
     ui->connect->setStyleSheet("border-image:url(" + path + ")");
   }
 
+  server_socket->write("askchaa#%");
+  server_socket->write("askchar2#%");
+
+
+  //QString f_ip = m_server_list.at(int_selected_server).ip;
+  //int f_port = m_server_list.at(int_selected_server).port;
+
+  //establish_connection();
+
+  /*
   if(!court_exists)
   {
     court_exists = true;
@@ -145,6 +157,7 @@ void Lobby::on_connect_released()
 
     this->hide();
   }
+  */
 
 }
 
@@ -195,6 +208,8 @@ void Lobby::on_favorites_clicked()
 
 void Lobby::on_serverlist_clicked(const QModelIndex &index)
 {
+  ui->onlinestatus->setText("Offline");
+
   server_type f_server = m_server_list.at(index.row());
 
   ui->description->setPlainText(f_server.desc);
@@ -206,6 +221,8 @@ void Lobby::on_serverlist_clicked(const QModelIndex &index)
 
 void Lobby::on_favoritelist_clicked(const QModelIndex &index)
 {
+  ui->onlinestatus->setText("Offline");
+
   server_type f_server = favoriteservers.at(index.row());
 
   if (f_server.name == "!MISCONFIGURED!")

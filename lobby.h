@@ -34,16 +34,18 @@ public:
   void pingMaster();
   void connectMaster();
   //QHostAddress msIP;
-  QString msHOST = "localhost";
+  QString msHOST = "master.aceattorneyonline.com";
   int msPORT = 27016;
   QTcpSocket *ms_socket;
   QTcpSocket *server_socket;
   void refreshServerList();
   bool master_connected = false;
+  bool server_connected = false;
   void requestAllServers();
   QVector<server_type> m_server_list;
   void server_connect(QString ip, int port);
   int int_selected_server = -1;
+  void establish_connection();
 
   QFile favoritefile;
 
@@ -51,6 +53,12 @@ public:
   bool public_servers_selected = true;
   QVector<server_type> favoriteservers;
   void LoadFavorites();
+
+  int charlist_size;
+  int evidence_size;
+  int musiclist_size;
+
+  bool array_sizes_set = false;
 
   //QStringList m_server_list;
   //QDataStream in;
@@ -68,6 +76,8 @@ public slots:
   void ms_connection_established();
 
   void ms_failed_to_connect();
+
+  void server_disconnected();
 
 private slots:
   void on_refresh_pressed();

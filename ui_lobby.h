@@ -40,6 +40,7 @@ public:
     QPlainTextEdit *description;
     QPlainTextEdit *chatbox;
     QListWidget *favoritelist;
+    QLabel *onlinestatus;
 
     void setupUi(QMainWindow *Lobby)
     {
@@ -167,6 +168,26 @@ public:
         palette5.setBrush(QPalette::Disabled, QPalette::Base, brush1);
         favoritelist->setPalette(palette5);
         favoritelist->setFont(font);
+        onlinestatus = new QLabel(centralwidget);
+        onlinestatus->setObjectName(QStringLiteral("onlinestatus"));
+        onlinestatus->setGeometry(QRect(338, 91, 169, 16));
+        QPalette palette6;
+        palette6.setBrush(QPalette::Active, QPalette::WindowText, brush2);
+        palette6.setBrush(QPalette::Active, QPalette::Text, brush2);
+        palette6.setBrush(QPalette::Active, QPalette::ButtonText, brush2);
+        palette6.setBrush(QPalette::Inactive, QPalette::WindowText, brush2);
+        palette6.setBrush(QPalette::Inactive, QPalette::Text, brush2);
+        palette6.setBrush(QPalette::Inactive, QPalette::ButtonText, brush2);
+        palette6.setBrush(QPalette::Disabled, QPalette::WindowText, brush3);
+        palette6.setBrush(QPalette::Disabled, QPalette::Text, brush3);
+        palette6.setBrush(QPalette::Disabled, QPalette::ButtonText, brush3);
+        onlinestatus->setPalette(palette6);
+        QFont font3;
+        font3.setBold(true);
+        font3.setWeight(75);
+        onlinestatus->setFont(font3);
+        onlinestatus->setLayoutDirection(Qt::LeftToRight);
+        onlinestatus->setAlignment(Qt::AlignCenter);
         Lobby->setCentralWidget(centralwidget);
 
         retranslateUi(Lobby);
@@ -185,6 +206,7 @@ public:
         favorites->setText(QString());
         chatname->setPlaceholderText(QApplication::translate("Lobby", "Name", 0));
         description->setPlainText(QString());
+        onlinestatus->setText(QApplication::translate("Lobby", "Offline", 0));
     } // retranslateUi
 
 };

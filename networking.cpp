@@ -2,8 +2,8 @@
 #include "courtroom.h"
 #include "lobby.h"
 
-//T0D0 fix this monstrosity
-
+//obsolete, replaced by requestAllServers()
+/*
 QStringList getServerList()
 {
   //socket.whatever NETWORKING WHO KNOWS LOL
@@ -16,6 +16,7 @@ QStringList getServerList()
   return serverlist;
 
 }
+*/
 
 QStringList getCharSelectList()
 {
@@ -34,7 +35,7 @@ QStringList getCharSelectList()
 void Courtroom::setTakenChars()
 {
   //req from server teh taken char list ayy lmao
-  QString string_from_server = "Charscheck#-1#0#0#0#0#0#0#0#0#-1#%";
+  QString string_from_server = "Charscheck#-1#0#0#0#0#0#0#0#0#-1#%"; //placeholder value
   QStringList taken_chars_str;
   int taken_chars_size;
 
@@ -236,7 +237,54 @@ void Lobby::handle_ms_packet()
 
 void Lobby::handle_server_packet()
 {
-  qDebug() << "Connected to " << int_selected_server;
+  server_connected = true;
+
+  char buffer[2048] = {0};
+  server_socket->read(buffer, server_socket->bytesAvailable());
+
+  QString in_data = buffer;
+
+  QStringList packet_list = in_data.split("%", QString::SplitBehavior(QString::SkipEmptyParts));
+
+  for(QString packet : packet_list)
+  {
+    QStringList packet_contents = packet.split("#", QString::SplitBehavior(QString::SkipEmptyParts));
+
+    QString header = packet_contents.at(0);
+
+    if (header == "PN")
+    {
+      QString players_online = packet_contents.at(1);
+      QString max_players = packet_contents.at(2);
+
+      ui->onlinestatus->setText("Online: " + players_online + "/" + max_players);
+    }
+
+    else if (header == "SI")
+    {
+      int int_charsize = packet_contents.at(1).toInt();
+      int int_evisize = packet_contents.at(2).toInt();
+      int int_musicsize = packet_contents.at(3).toInt();
+
+      charlist_size = int_charsize;
+      evidence_size = int_evisize;
+      musiclist_size = int_musicsize;
+      array_sizes_set = true;
+    }
+
+    else if (header == "CI")
+    {
+      //put packet_list into an array #T0D0
+      ;
+    }
+
+    else if (header == "decryptor")
+    {
+      establish_connection();
+    }
+    qDebug() << packet;
+  }
+
 
 
 }
@@ -264,6 +312,28 @@ void Lobby::server_connect(QString ip, int port)
   server_socket->abort();
 
   server_socket->connectToHost(ip, port);
+}
+
+void Lobby::establish_connection()
+{
+  qDebug() << "establish_connection() called";
+
+  bool connected = (server_socket->state() == QTcpSocket::ConnectedState);
+
+  if (!connected)
+    return;
+
+  server_socket->write("HI#dontworryitsmeomnitroidimjusttestingforao2#%");
+  server_socket->write("askchaa#%");
+  server_socket->write("askchar2#%");
+
+  //server_socket->write("amk#%");
+
+}
+
+void Lobby::server_disconnected()
+{
+  server_connected = false;
 }
 
 //replaced by requestAllServers()
