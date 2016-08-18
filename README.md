@@ -4,7 +4,7 @@ this project uses QT 5.7
 
 you will need to make a qt project then add these files to the project. Then, you need to add characters/ and background/ from a vanill ao installation
 
-nothing is networked yet, but clicking "connect" will bring up a prototype playing window
+masterchat works 100%, favorites work and servers show online staus and clicking "connect" will bring up a prototype playing window(will not connect to the selected server yet)
 
 MAKE SURE THE CODE BUILDS BEFORE PUSHING
 
