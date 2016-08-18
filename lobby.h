@@ -14,7 +14,6 @@
 
 #include "config_handler.h"
 #include "error_handler.h"
-#include "networking.h"
 #include "datatypes.h"
 
 namespace Ui {
@@ -27,61 +26,31 @@ class Lobby : public QMainWindow
 
 public:
   explicit Lobby(QWidget *parent = 0);
-  Courtroom *mCourtroomWindow;
+
   void setTheme();
-
-  void lookupMaster();
-  void pingMaster();
-  void connectMaster();
-  //QHostAddress msIP;
-  QString msHOST = "master.aceattorneyonline.com";
-  int msPORT = 27016;
-  QTcpSocket *ms_socket;
-  QTcpSocket *server_socket;
-  void refreshServerList();
-  bool master_connected = false;
-  bool server_connected = false;
-  void requestAllServers();
-  QVector<server_type> m_server_list;
-  void server_connect(QString ip, int port);
-  int int_selected_server = -1;
-  void establish_connection();
-
-
-  QFile favoritefile;
-
-  bool public_servers_selected = true;
-  QVector<server_type> favoriteservers;
   void LoadFavorites();
 
-  int charlist_size;
-  int evidence_size;
-  int musiclist_size;
+  QVector<server_type> m_server_list;
 
-  bool array_sizes_set = false;
+  int int_selected_server = -1;
+  bool public_servers_selected = true;
+
+  QVector<server_type> favoriteservers;
+  QFile favoritefile;
 
   QVector<QString> char_vector;
   QVector<QString> evidence_vector;
   QVector<QString> music_vector;
 
-  //QStringList m_server_list;
-  //QDataStream in;
-
   ~Lobby();
 
 public slots:
 
-  //void lookedUp(QHostInfo);
+  void handle_ms_message(QString message);
 
-  void handle_ms_packet();
+  void update_server_list(QVector<server_type> &server_list);
 
-  void handle_server_packet();
-
-  void ms_connection_established();
-
-  void ms_failed_to_connect();
-
-  void server_disconnected();
+  void update_onlinestatus(QString players_online, QString max_players);
 
 private slots:
   void on_refresh_pressed();
@@ -111,7 +80,11 @@ private:
   bool court_exists = false;
 
 signals:
-  void done_loading();
+  void all_servers_requested();
+  void server_connection_requested(QString ip, int port);
+  void ms_message_requested(QString packet);
+  void enter_server_requested();
+  //void server_disconnect_requested();
 
 };
 

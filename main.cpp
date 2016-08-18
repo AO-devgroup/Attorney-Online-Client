@@ -3,20 +3,31 @@
 int main(int argc, char *argv[])
 {
 
-  QApplication a(argc, argv);
-  Lobby w;
-  Courtroom s;
-  Networkhandler n;
-  s.hide();
+  QApplication main_application(argc, argv);
 
-  QObject::connect(&w, SIGNAL(done_loading()), &s, SLOT(initialize_courtroom()));
+  Lobby main_lobby;
+  Courtroom main_courtroom;
+  Networkhandler main_networkhandler;
 
-  //this prevents errors from ending the application
-  //a.setQuitOnLastWindowClosed(false);
-  w.setTheme();
-  w.connectMaster();
-  w.show();
-  //w.requestAllServers();
+  main_courtroom.hide();
 
-  return a.exec();
+  QObject::connect(&main_networkhandler, SIGNAL(ms_message_received(QString)), &main_lobby, SLOT(handle_ms_message(QString)));
+  QObject::connect(&main_networkhandler, SIGNAL(server_list_received(QVector<server_type>&)), &main_lobby, SLOT(update_server_list(QVector<server_type>&)));
+  QObject::connect(&main_networkhandler, SIGNAL(onlinestatus_changed(QString,QString)), &main_lobby, SLOT(update_onlinestatus(QString,QString)));
+
+  QObject::connect(&main_networkhandler, SIGNAL(done_loading()), &main_courtroom, SLOT(initialize_courtroom()));
+
+  QObject::connect(&main_lobby, SIGNAL(all_servers_requested()), &main_networkhandler, SLOT(handle_all_servers_requested()));
+  QObject::connect(&main_lobby, SIGNAL(server_connection_requested(QString,int)), &main_networkhandler, SLOT(connect_to_server(QString,int)));
+  QObject::connect(&main_lobby, SIGNAL(ms_message_requested(QString)), &main_networkhandler, SLOT(ms_send_message(QString)));
+  QObject::connect(&main_lobby, SIGNAL(enter_server_requested()), &main_networkhandler, SLOT(handle_enter_server_request()));
+
+  main_networkhandler.connect_to_master();
+
+  LoadConfig();
+  main_lobby.setTheme();
+
+  main_lobby.show();
+
+  return main_application.exec();
 }

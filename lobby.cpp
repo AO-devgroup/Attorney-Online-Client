@@ -4,11 +4,7 @@ Lobby::Lobby(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::Lobby)
 {
-  ms_socket = new QTcpSocket(this);
-  server_socket = new QTcpSocket(this);
-  //in.setDevice(ms_socket);
-  connect(ms_socket, &QTcpSocket::readyRead, this, &Lobby::handle_ms_packet);
-  connect(server_socket, &QTcpSocket::readyRead, this, &Lobby::handle_server_packet);
+
 
   ui->setupUi(this);
 }
@@ -16,7 +12,7 @@ Lobby::Lobby(QWidget *parent) :
 void Lobby::setTheme()
 {
   //literally everything breaks if you remove this
-  LoadConfig(); //sets config.ini as a global variable !IMPORTANT!
+   //sets config.ini as a global variable !IMPORTANT!
 
 
 
@@ -48,7 +44,7 @@ void Lobby::setTheme()
   //
   //LoadFavorites();
 
-  connect(server_socket, SIGNAL(disconnected()), this, SLOT(server_disconnected()));
+  //connect(server_socket, SIGNAL(disconnected()), this, SLOT(server_disconnected()));
 
 
 
@@ -74,7 +70,7 @@ void Lobby::on_refresh_released()
 
   ui->refresh->setStyleSheet("border-image:url(" + path + ")");
 
-  requestAllServers();
+  all_servers_requested();
 }
 
 void Lobby::on_addtofav_pressed()
@@ -137,30 +133,7 @@ void Lobby::on_connect_released()
     ui->connect->setStyleSheet("border-image:url(" + path + ")");
   }
 
-  server_socket->write("askchaa#%");
-  server_socket->write("askchar2#%");
-
-
-  //QString f_ip = m_server_list.at(int_selected_server).ip;
-  //int f_port = m_server_list.at(int_selected_server).port;
-
-  //establish_connection();
-
-  /*
-  if(!court_exists)
-  {
-    court_exists = true;
-    mCourtroomWindow = new Courtroom(this);
-    //mCourtroomWindow->setTheme();
-    //mCourtroomWindow->char_select_list = getCharSelectList();
-    mCourtroomWindow->setCharSelect();
-    //mCourtroomWindow->setChar();
-    mCourtroomWindow->show();
-
-    this->hide();
-  }
-  */
-
+  enter_server_requested();
 }
 
 void Lobby::on_publicservers_clicked()
@@ -210,6 +183,8 @@ void Lobby::on_favorites_clicked()
 
 void Lobby::on_serverlist_clicked(const QModelIndex &index)
 {
+  //server_disconnect_requested();
+
   ui->onlinestatus->setText("Offline");
 
   server_type f_server = m_server_list.at(index.row());
@@ -218,7 +193,7 @@ void Lobby::on_serverlist_clicked(const QModelIndex &index)
 
   int_selected_server = index.row();
 
-  server_connect(f_server.ip, f_server.port);
+  server_connection_requested(f_server.ip, f_server.port);
 }
 
 void Lobby::on_favoritelist_clicked(const QModelIndex &index)
@@ -234,13 +209,48 @@ void Lobby::on_favoritelist_clicked(const QModelIndex &index)
 
   int_selected_server = index.row();
 
-  server_connect(f_server.ip, f_server.port);
+  server_connection_requested(f_server.ip, f_server.port);
+}
+
+void Lobby::on_chatmessage_returnPressed()
+{
+  QString name = ui->chatname->text();
+  QString message = ui->chatmessage->text();
+  QString packet = "CT#" + name + "#" + message + "#%";
+
+  //no you cant send empty messages
+  if ((name != "") && (message != ""))
+  {
+    ms_message_requested(packet);
+    ui->chatmessage->clear();
+  }
+}
+
+void Lobby::handle_ms_message(QString message)
+{
+  ui->chatbox->appendPlainText(message);
+}
+
+void Lobby::update_server_list(QVector<server_type> &server_list)
+{
+  ui->serverlist->clear();
+  m_server_list.clear();
+
+  for (int n_server = 0; n_server < server_list.size() ; ++n_server)
+  {
+    QString server = server_list.at(n_server).name;
+    m_server_list.insert(n_server, server_list.at(n_server));
+    ui->serverlist->addItem(server);
+  }
+}
+
+void Lobby::update_onlinestatus(QString players_online, QString max_players)
+{
+  ui->onlinestatus->setText("Online: " + players_online + "/" + max_players);
 }
 
 void Lobby::LoadFavorites()
 {
-
-
   if (fileExists((getBasePath() + "favorites.txt"), true))
     favoritefile.setFileName(getBasePath() + "favorites.txt");
 
@@ -309,4 +319,3 @@ void Lobby::LoadFavorites()
 
   favoritefile.close();
 }
-

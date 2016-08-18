@@ -101,11 +101,13 @@ void Courtroom::setChar()
 
 void Courtroom::setCharSelect()
 {
-  char_select_list = getCharSelectList();
+  //T0D0 fix this
+  //char_select_list = getCharSelectList();
 
   char_amount = char_select_list.size() - 1;  //we need to remove the "null" char
 
-  setTakenChars();
+  //T0D0 uncomment this
+  //setTakenChars();
 
   //we need to fill in indexes 0 for later logic to flow
   charicon_list.insert(0, nullptr);
@@ -351,8 +353,6 @@ void Courtroom::setEmotes()
       {
           for (int i = 1; i <= emote_number; i++)
           {
-//
-
               emote_type emote_struct;
               QString emote_uncut = ini_charini->value(QString::number(i), "Dankmemes#Dankmemes#Dankmemes#0#").toString(); //"dankmemes" ensure empty lines won't cause fatal errors
               QStringList emote_cut = emote_uncut.split("#");

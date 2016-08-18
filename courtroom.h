@@ -10,13 +10,13 @@
 #include <QList>
 #include <QSignalMapper>
 #include <QSettings>
+#include <QDebug>
 
 #include "ui_courtroom.h"
 
 #include "config_handler.h"
 #include "error_handler.h"
 #include "character_handler.h"
-#include "networking.h"
 #include "charicon.h"
 #include "datatypes.h"
 
@@ -35,7 +35,7 @@ public:
   void setChar();                          //loads appropriate char.ini into the global namespace
   void setCharSelect();
   void setCharSelectPage();
-  //QLabel char_selector;
+
   QVector<charicon* > charicon_list;
   QVector<QLabel* > char_taken_list;
 
@@ -60,7 +60,6 @@ private:
   void setAllEmotesOff();
   QString getEmoteIconPath(int emotenumber);
   QVector<emote_type> emote_list;
-  //QStringList emote_list {"emote_list element 0"};
   int getPressedEmote();
   QStringList char_select_list;
   int char_select_pages;

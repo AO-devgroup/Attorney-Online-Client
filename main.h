@@ -1,9 +1,11 @@
 #ifndef MAIN_H
 #define MAIN_H
 
+#include <QApplication>
+
 #include "lobby.h"
 #include "courtroom.h"
-#include "networkhandler.h"
-#include <QApplication>
+#include "network_handler.h"
+#include "config_handler.h"
 
 #endif // MAIN_H

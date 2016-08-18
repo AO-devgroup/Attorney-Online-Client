@@ -21,12 +21,10 @@ SOURCES += \
     lobby.cpp \
     error_handler.cpp \
     courtroom.cpp \
-    networking.cpp \
     character_handler.cpp \
     charicon.cpp \
     datatypes.cpp \
-    networkhandler.cpp \
-    globals.cpp
+    network_handler.cpp
 
 HEADERS  += \
     main.h \
@@ -34,12 +32,10 @@ HEADERS  += \
     lobby.h \
     error_handler.h \
     courtroom.h \
-    networking.h \
     character_handler.h \
     charicon.h \
     datatypes.h \
-    networkhandler.h \
-    globals.h
+    network_handler.h
 
 FORMS    += \
     lobby.ui \

@@ -16,8 +16,7 @@
 
 extern QStringList g_config_file;
 
-extern QVector<char_type> g_character_list;
-extern QVector<evi_type> g_evidence_list;
+
 
 QString getBasePath();
 
