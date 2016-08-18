@@ -32,10 +32,10 @@ QStringList getCharSelectList()
   return charlist;
 }
 
-void Courtroom::setTakenChars()
+void Courtroom::setTakenChars(QString string_from_server)
 {
   //req from server teh taken char list ayy lmao
-  QString string_from_server = "Charscheck#-1#0#0#0#0#0#0#0#0#-1#%"; //placeholder value
+   //= "Charscheck#-1#0#0#0#0#0#0#0#0#-1#%"; //placeholder value
   QStringList taken_chars_str;
   int taken_chars_size;
 
@@ -270,10 +270,13 @@ void Lobby::handle_server_packet()
       evidence_size = int_evisize;
       musiclist_size = int_musicsize;
       array_sizes_set = true;
+
+      server_socket->write("askchar2#%");
     }
 
     else if (header == "CI")
     {
+<<<<<<< HEAD
       //all instances of this are just placeholders for charlist_size until server protocol is fixed
       int temp_charlist_size = 9;
 
@@ -297,8 +300,31 @@ void Lobby::handle_server_packet()
         //the 2 here accounts for CI and <cid>
         char_vector.insert(n_char, packet_contents.at(n_char + 2));
       }
-    }
+=======
+      //put packet_list into an array #T0D0
 
+        //lets just ignore the whole loading and get to the point until we figured out something cooler
+      server_socket->write("AN#11#%");
+    }
+    else if (header == "EI")
+    {
+      //evidence  fucking sucks
+
+        //lets just ignore the whole loading and get to the point until we figured out something cooler
+      server_socket->write("AE#11#%");
+>>>>>>> 16a3e67020dca8921928cfa7fd7844b034b24435
+    }
+    else if (header == "EM")
+    {
+      //music list #T0D0
+
+        //lets just ignore the whole loading and get to the point until we figured out something cooler
+      server_socket->write("AM#11#%");
+    }
+    else if (header == "CharsCheck")
+    {
+      setTakenChars(packet);
+    }
     else if (header == "decryptor")
     {
       establish_connection();
@@ -351,10 +377,6 @@ void Lobby::establish_connection()
 
   server_socket->write("HI#dontworryitsmeomnitroidimjusttestingforao2#%");
   server_socket->write("askchaa#%");
-  server_socket->write("askchar2#%");
-
-  //server_socket->write("amk#%");
-
 }
 
 void Lobby::server_disconnected()
