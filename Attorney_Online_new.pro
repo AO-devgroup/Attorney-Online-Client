@@ -24,7 +24,9 @@ SOURCES += \
     networking.cpp \
     character_handler.cpp \
     charicon.cpp \
-    datatypes.cpp
+    datatypes.cpp \
+    networkhandler.cpp \
+    globals.cpp
 
 HEADERS  += \
     main.h \
@@ -35,7 +37,9 @@ HEADERS  += \
     networking.h \
     character_handler.h \
     charicon.h \
-    datatypes.h
+    datatypes.h \
+    networkhandler.h \
+    globals.h
 
 FORMS    += \
     lobby.ui \

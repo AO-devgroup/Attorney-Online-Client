@@ -19,4 +19,17 @@ struct emote_type
   int mod;
 };
 
+struct char_type
+{
+  QString name;
+  QString description;
+  bool password;
+};
+
+struct evi_type
+{
+  QString name;
+  QString description;
+};
+
 #endif // DATATYPES_H

@@ -274,13 +274,39 @@ void Lobby::handle_server_packet()
 
     else if (header == "CI")
     {
-      //put packet_list into an array #T0D0
-      ;
+      //all instances of this are just placeholders for charlist_size until server protocol is fixed
+      int temp_charlist_size = 9;
+
+      if (!array_sizes_set)
+        continue;
+
+      if (!(packet_contents.size() == temp_charlist_size + 2))
+      {
+        QString err_str = QString::number(temp_charlist_size + 2);
+        QString err_str2 = QString::number(packet_contents.size());
+
+        callError("MALFORMED PACKET. EXPECTED " + err_str2 + ", got " + err_str);
+        continue;
+      }
+
+      for(int n_char = 0 ; n_char <= temp_charlist_size ; ++n_char)
+      {
+
+        //char_vector.clear();
+
+        //the 2 here accounts for CI and <cid>
+        char_vector.insert(n_char, packet_contents.at(n_char + 2));
+      }
     }
 
     else if (header == "decryptor")
     {
       establish_connection();
+    }
+
+    else if (header == "DONE")
+    {
+      done_loading();
     }
     qDebug() << packet;
   }

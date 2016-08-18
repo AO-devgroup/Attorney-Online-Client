@@ -8,11 +8,16 @@
 #include <QFileInfo>
 #include <QApplication>
 #include <QStringList>
+#include <QVector>
 
 #include "error_handler.h"
 #include "character_handler.h"
+#include "datatypes.h"
 
 extern QStringList g_config_file;
+
+extern QVector<char_type> g_character_list;
+extern QVector<evi_type> g_evidence_list;
 
 QString getBasePath();
 

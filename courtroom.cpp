@@ -14,9 +14,30 @@ Courtroom::~Courtroom()
   delete ui;
 }
 
-void Courtroom::setTheme()
+void Courtroom::initialize_courtroom()
 {
   LoadConfig();
+  setTheme();
+
+  //char_select_list = getCharSelectList();
+  char_select_list.clear();
+
+  /*
+  for (int n_char = 0 ; n_char < g_character_list.size() ; ++n_char)
+  {
+    char
+  }
+  */
+
+  setCharSelect();
+  setChar();
+  show();
+
+}
+
+void Courtroom::setTheme()
+{
+
 
   QString background_path = getImagePath("courtroombackground.png");
   QString holdit_path = getImagePath("holdit_disabled.png");

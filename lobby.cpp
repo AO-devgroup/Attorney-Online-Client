@@ -50,6 +50,8 @@ void Lobby::setTheme()
 
   connect(server_socket, SIGNAL(disconnected()), this, SLOT(server_disconnected()));
 
+
+
   ui->favoritelist->hide();
 }
 

@@ -47,9 +47,9 @@ public:
   int int_selected_server = -1;
   void establish_connection();
 
+
   QFile favoritefile;
 
-  //true is public servers selected, false is favorites
   bool public_servers_selected = true;
   QVector<server_type> favoriteservers;
   void LoadFavorites();
@@ -59,6 +59,10 @@ public:
   int musiclist_size;
 
   bool array_sizes_set = false;
+
+  QVector<QString> char_vector;
+  QVector<QString> evidence_vector;
+  QVector<QString> music_vector;
 
   //QStringList m_server_list;
   //QDataStream in;
@@ -105,6 +109,9 @@ private slots:
 private:
   Ui::Lobby *ui;
   bool court_exists = false;
+
+signals:
+  void done_loading();
 
 };
 

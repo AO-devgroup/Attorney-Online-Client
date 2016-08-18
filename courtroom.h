@@ -44,6 +44,8 @@ public:
 public slots:
   void handleCharicon(QString character);
 
+  void initialize_courtroom();
+
 private:
   Ui::Courtroom *ui;
   bool present_evidence = false;
