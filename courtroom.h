@@ -44,7 +44,9 @@ public:
 public slots:
   void handleCharicon(QString character);
 
-  void set_character_list(QVector<char_type> &char_list);
+  void set_character_list(QVector<char_type> &p_char_list);
+
+  void set_music_list(QStringList &p_music_list);
 
   void initialize_courtroom();
 
@@ -71,7 +73,8 @@ private:
   void setTakenChars(QString string_from_server);
   QSettings ini_charini;
 
-  QVector<char_type> character_list;
+  QVector<char_type> m_character_list;
+  QStringList m_music_list;
 
 private slots:
   void charChoose(int i);

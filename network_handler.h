@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QTcpSocket>
 #include <QString>
+#include <QNetworkInterface>
 
 #include "datatypes.h"
 #include "error_handler.h"
@@ -23,10 +24,14 @@ public:
   bool master_connected = false;
   bool server_connected = false;
 
+  //prefixed with bool_ to remove ambiguity with the signals, see below
+  bool bool_character_list_received = false;
+  bool bool_music_list_received = false;
+
   QString ms_hostname = "master.aceattorneyonline.com";
   int ms_port = 27016;
 
-  QVector<server_type> ms_server_list;
+  QVector<server_type> m_server_list;
 
   void connect_to_master();
   void request_all_servers();
@@ -38,9 +43,11 @@ signals:
 
   void ms_message_received(QString message);
 
-  void server_list_received(QVector<server_type> &server_list);
+  void server_list_received(QVector<server_type> &f_server_list);
 
-  void character_list_received(QVector<char_type> &char_list);
+  void character_list_received(QVector<char_type> &f_char_list);
+
+  void music_list_received(QStringList &f_music_list);
 
   void onlinestatus_changed(QString players_online, QString max_players);
 

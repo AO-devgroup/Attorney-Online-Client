@@ -31,6 +31,9 @@ void Networkhandler::connect_to_master()
 void Networkhandler::connect_to_server(QString hostname, int port)
 {
   server_connected = false;
+  bool_character_list_received = false;
+  bool_music_list_received = false;
+
   server_socket->close();
   server_socket->abort();
 
@@ -67,7 +70,7 @@ void Networkhandler::request_all_servers()
 
 void Networkhandler::initiate_handshake()
 {
-  server_socket->write("HI#dontworryitsmeomnitroidimjusttestingforao2#%");
+
 }
 
 void Networkhandler::ms_send_message(QString packet)
@@ -89,9 +92,10 @@ void Networkhandler::handle_enter_server_request()
 void Networkhandler::initiate_loading_sequence()
 {
 
-  server_socket->write("askchaa#%");
+  //server_socket->write("askchaa#%");
 
   //we cheat a bit because the network protocol isnt done yet
+  //T0D0, fix when protocol is figured out
   done_loading();
 }
 
@@ -140,7 +144,7 @@ void Networkhandler::handle_ms_packet()
 
       QVector<server_type> server_list;
 
-      ms_server_list.clear();
+      m_server_list.clear();
 
       for (int n_server{1} ; n_server <= amount_of_servers ; ++n_server)
       {
@@ -152,10 +156,10 @@ void Networkhandler::handle_ms_packet()
         server.ip =  i_server.split("&").at(2);
         server.port =  i_server.split("&").at(3).toInt();
 
-        ms_server_list.insert(n_server - 1, server);
+        m_server_list.insert(n_server - 1, server);
       }
 
-    server_list_received(ms_server_list);
+    server_list_received(m_server_list);
 
     }
 
@@ -197,7 +201,8 @@ void Networkhandler::handle_server_packet()
 
       for (int n_char = 0 ; n_char < packet_contents.size() ; ++n_char)
       {
-        QStringList char_string_list = packet_contents.at(n_char + 1).split("&", QString::SplitBehavior(QString::SkipEmptyParts));
+        QStringList char_string_list =
+          packet_contents.at(n_char + 1).split("&", QString::SplitBehavior(QString::SkipEmptyParts));
 
         if (char_string_list.size() != 3)
           callFatalError("malformed packet. expected char_string_list.size() to be 3, found" +
@@ -221,50 +226,46 @@ void Networkhandler::handle_server_packet()
       //pass as reference for efficiency(it can get pretty big)
       character_list_received(f_char_list);
 
-      /*
-      //all instances of this are just placeholders for charlist_size until server protocol is fixed
-      //
-      int temp_charlist_size = 9;
-
-      //if (!array_sizes_set)
-      //  continue;
-
-      if (!(packet_contents.size() == temp_charlist_size + 2))
-      {
-        QString err_str = QString::number(temp_charlist_size + 2);
-        QString err_str2 = QString::number(packet_contents.size());
-
-        callError("MALFORMED PACKET. EXPECTED " + err_str2 + ", got " + err_str);
-        continue;
-      }
-
-      for(int n_char = 0 ; n_char <= temp_charlist_size ; ++n_char)
-      {
-
-        //char_vector.clear();
-
-        //the 2 here accounts for CI and <cid>
-        char_vector.insert(n_char, packet_contents.at(n_char + 2));
-      }
-      */
+      bool_character_list_received = true;
     }
 
+    else if (header == "EM")
+    {
+      QStringList f_music_list;
 
+      for(int n_music = 0 ; n_music < packet_contents.size() ; ++n_music)
+      {
+        // + 1 to skip the header (which is in index 0) and shift everything one position
+        f_music_list.insert(n_music, packet_contents.at(n_music + 1));
+      }
+
+      music_list_received(f_music_list);
+
+      bool_music_list_received = true;
+    }
+
+    //typically the first thing we get from the server when we connect
+    else if (header == "decryptor")
+    {
+      QNetworkInterface f_interface;
+
+      //we send HI# and our hardware address as our end of the handshake
+      QString packet = "HI#" + f_interface.hardwareAddress() + "#%";
+      server_socket->write(packet.toLocal8Bit());
+    }
+
+    //we usually receive this after sending HI#
     else if (header == "ID")
     {
       //if we receive ID# with server version we consider the handshake successful and the connection established
       server_connected = true;
     }
 
-
-    else if (header == "decryptor")
-    {
-      initiate_handshake();
-    }
-
     else if (header == "DONE")
     {
-      //make checks to make sure we got everything somewhere in the code, T0D0
+      //if (!bool_character_list_received)
+      //  server_socket->write("ALL#%");
+
       done_loading();
     }
     qDebug() << packet;

@@ -17,6 +17,7 @@ int main(int argc, char *argv[])
 
   QObject::connect(&main_networkhandler, SIGNAL(done_loading()), &main_courtroom, SLOT(initialize_courtroom()));
   QObject::connect(&main_networkhandler, SIGNAL(character_list_received(QVector<char_type>&)), &main_courtroom, SLOT(set_character_list(QVector<char_type>&)));
+  QObject::connect(&main_networkhandler, SIGNAL(music_list_received(QStringList&)), &main_courtroom, SLOT(set_music_list(QStringList&)));
 
   QObject::connect(&main_lobby, SIGNAL(all_servers_requested()), &main_networkhandler, SLOT(handle_all_servers_requested()));
   QObject::connect(&main_lobby, SIGNAL(server_connection_requested(QString,int)), &main_networkhandler, SLOT(connect_to_server(QString,int)));

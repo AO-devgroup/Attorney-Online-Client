@@ -41,13 +41,6 @@ void Lobby::setTheme()
   if (fileExists(favorites_path))
     ui->favorites->setStyleSheet("border-image:url(" + favorites_path + ")");
 
-  //
-  //LoadFavorites();
-
-  //connect(server_socket, SIGNAL(disconnected()), this, SLOT(server_disconnected()));
-
-
-
   ui->favoritelist->hide();
 }
 

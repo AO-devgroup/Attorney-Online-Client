@@ -35,9 +35,14 @@ void Courtroom::initialize_courtroom()
 
 }
 
-void Courtroom::set_character_list(QVector<char_type> &char_list)
+void Courtroom::set_character_list(QVector<char_type> &p_char_list)
 {
-  character_list = char_list;
+  m_character_list = p_char_list;
+}
+
+void Courtroom::set_music_list(QStringList &p_music_list)
+{
+  m_music_list = p_music_list;
 }
 
 void Courtroom::setTheme()
