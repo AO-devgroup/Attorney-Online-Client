@@ -188,10 +188,40 @@ void Networkhandler::handle_server_packet()
       onlinestatus_changed(players_online, max_players);
     }
 
-    //need updated network protocol before we can make this work
-    /*
+    //need updated network protocol before we can make this work properly
+
     else if (header == "CI")
     {
+
+      QVector<char_type> f_char_list;
+
+      for (int n_char = 0 ; n_char < packet_contents.size() ; ++n_char)
+      {
+        QStringList char_string_list = packet_contents.at(n_char + 1).split("&", QString::SplitBehavior(QString::SkipEmptyParts));
+
+        if (char_string_list.size() != 3)
+          callFatalError("malformed packet. expected char_string_list.size() to be 3, found" +
+                         QString::number(char_string_list.size()));
+
+        char_type f_char;
+
+        f_char.name = char_string_list.at(0);
+        f_char.description =  char_string_list.at(1);
+
+        if (char_string_list.at(2) == "1")
+          f_char.password = true;
+
+        else
+          f_char.password = false;
+
+        f_char_list.insert(n_char, f_char);
+      }
+
+      //we pass the vector to main_courtroom, because thats where its needed
+      //pass as reference for efficiency(it can get pretty big)
+      character_list_received(f_char_list);
+
+      /*
       //all instances of this are just placeholders for charlist_size until server protocol is fixed
       //
       int temp_charlist_size = 9;
@@ -216,8 +246,9 @@ void Networkhandler::handle_server_packet()
         //the 2 here accounts for CI and <cid>
         char_vector.insert(n_char, packet_contents.at(n_char + 2));
       }
+      */
     }
-    */
+
 
     else if (header == "ID")
     {
