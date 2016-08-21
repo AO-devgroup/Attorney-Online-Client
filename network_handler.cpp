@@ -8,7 +8,7 @@ Networkhandler::Networkhandler(QObject *parent) : QObject(parent)
   connect(ms_socket, &QTcpSocket::readyRead, this, &Networkhandler::handle_ms_packet);
   connect(server_socket, &QTcpSocket::readyRead, this, &Networkhandler::handle_server_packet);
 
-  connect(server_socket, SIGNAL(disconnected()), this, SLOT(handle_server_disconnect()));
+  connect(server_socket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(handle_server_disconnect()));
 
   connect (ms_socket, SIGNAL(connected()), this, SLOT(ms_connection_established()));
   connect (ms_socket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(ms_failed_to_connect()));
@@ -28,14 +28,26 @@ void Networkhandler::connect_to_master()
   ms_socket->connectToHost(ms_hostname, ms_port);
 }
 
-void Networkhandler::connect_to_server(QString hostname, int port)
+void Networkhandler::handle_server_disconnect()
+{
+  callError("Lost connection to server :v(");
+  disconnect_from_server();
+}
+
+void Networkhandler::disconnect_from_server()
 {
   server_connected = false;
   bool_character_list_received = false;
   bool_music_list_received = false;
+  bool_character_list_received = false;
 
   server_socket->close();
   server_socket->abort();
+}
+
+void Networkhandler::connect_to_server(QString hostname, int port)
+{
+  disconnect_from_server();
 
   server_socket->connectToHost(hostname, port);
 }
@@ -43,11 +55,6 @@ void Networkhandler::connect_to_server(QString hostname, int port)
 void Networkhandler::ms_failed_to_connect()
 {
   callError("could not connect to masterserver :v(");
-}
-
-void Networkhandler::handle_server_disconnect()
-{
-  server_connected = false;
 }
 
 void Networkhandler::ms_connection_established()
@@ -68,11 +75,6 @@ void Networkhandler::request_all_servers()
   ms_socket->write("ALL#%");
 }
 
-void Networkhandler::initiate_handshake()
-{
-
-}
-
 void Networkhandler::ms_send_message(QString packet)
 {
   if (!master_connected)
@@ -83,6 +85,9 @@ void Networkhandler::ms_send_message(QString packet)
 
 void Networkhandler::handle_enter_server_request()
 {
+  //HACK, workaround for debugging on old server versions
+  server_connected = true;
+
   if (!server_connected)
     return;
 
@@ -184,16 +189,34 @@ void Networkhandler::handle_server_packet()
 
     QString header = packet_contents.at(0);
 
-    if (header == "PN")
+    //typically the first thing we get from the server when we connect
+    if (header == "decryptor" || header == "HI")
+    {
+      //QNetworkInterface f_interface;
+
+      //we send HI# and our hardware address as our end of the handshake
+      //QString packet = "HI#" + f_interface.hardwareAddress() + "#%";
+      //callError(packet);
+      //server_socket->write(packet.toLocal8Bit());
+
+      //jk we send HI#<version>#% instead
+
+      server_socket->write("HI#AO2#1.0.0#%");
+    }
+
+    //we usually receive this after sending HI#
+    else if (header == "PN")
     {
       QString players_online = packet_contents.at(1);
       QString max_players = packet_contents.at(2);
 
       onlinestatus_changed(players_online, max_players);
+
+      //server is now connected, but nothing is loaded yet
+      server_connected = true;
     }
 
-    //need updated network protocol before we can make this work properly
-
+    //handles the character list packet
     else if (header == "CI")
     {
 
@@ -222,13 +245,15 @@ void Networkhandler::handle_server_packet()
         f_char_list.insert(n_char, f_char);
       }
 
-      //we pass the vector to main_courtroom, because thats where its needed
-      //pass as reference for efficiency(it can get pretty big)
+      //we pass the vector to main_courtroom, because thats where its needed, implementation details on connecting
+      //are found in main.cpp
+
       character_list_received(f_char_list);
 
       bool_character_list_received = true;
     }
 
+    //handles the music list packet
     else if (header == "EM")
     {
       QStringList f_music_list;
@@ -242,23 +267,6 @@ void Networkhandler::handle_server_packet()
       music_list_received(f_music_list);
 
       bool_music_list_received = true;
-    }
-
-    //typically the first thing we get from the server when we connect
-    else if (header == "decryptor")
-    {
-      QNetworkInterface f_interface;
-
-      //we send HI# and our hardware address as our end of the handshake
-      QString packet = "HI#" + f_interface.hardwareAddress() + "#%";
-      server_socket->write(packet.toLocal8Bit());
-    }
-
-    //we usually receive this after sending HI#
-    else if (header == "ID")
-    {
-      //if we receive ID# with server version we consider the handshake successful and the connection established
-      server_connected = true;
     }
 
     else if (header == "DONE")
