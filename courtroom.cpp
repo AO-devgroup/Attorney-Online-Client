@@ -16,19 +16,9 @@ Courtroom::~Courtroom()
 
 void Courtroom::initialize_courtroom()
 {
-  LoadConfig();
-  setTheme();
-
-  //char_select_list = getCharSelectList();
   char_select_list.clear();
 
-  /*
-  for (int n_char = 0 ; n_char < g_character_list.size() ; ++n_char)
-  {
-    char
-  }
-  */
-
+  setTheme();
   setCharSelect();
   setChar();
   show();
@@ -47,15 +37,15 @@ void Courtroom::set_music_list(QStringList &p_music_list)
 
 void Courtroom::setTheme()
 {
+  theme_path = getBasePath() + "/themes" + getTheme() + '/';
 
-
-  QString background_path = getImagePath("courtroombackground.png");
-  QString holdit_path = getImagePath("holdit_disabled.png");
-  QString objection_path = getImagePath("objection_disabled.png");
-  QString takethat_path = getImagePath("takethat_disabled.png");
-  QString present_path = getImagePath("present_disabled.png");
-  QString left_arrow_path = getImagePath("arrow_left.png");
-  QString right_arrow_path = getImagePath("arrow_right.png");
+  QString background_path = theme_path + "courtroombackground.png";
+  QString holdit_path = theme_path + "holdit_disabled.png";
+  QString objection_path = theme_path + "objection_disabled.png";
+  QString takethat_path = theme_path + "takethat_disabled.png";
+  QString present_path = theme_path + "present_disabled.png";
+  QString left_arrow_path = theme_path + "arrow_left.png";
+  QString right_arrow_path = theme_path + "arrow_right.png";
 
   if (fileExists(background_path))
     ui->background->setPixmap(QPixmap(background_path));
@@ -176,8 +166,8 @@ void Courtroom::setCharSelect()
 
   connect (signalMapper, SIGNAL(mapped(int)), this, SLOT(charChoose(int))) ;
 
-  QString left_arrow_path = getImagePath("arrow_left.png");
-  QString right_arrow_path = getImagePath("arrow_right.png");
+  QString left_arrow_path = theme_path + "arrow_left.png";
+  QString right_arrow_path = theme_path + "arrow_right.png";
 
   //setting images on arrow buttons
   if (fileExists(left_arrow_path))
@@ -199,19 +189,10 @@ void Courtroom::setCharSelect()
   else
     char_select_pages = (char_amount / 90) + 1;
 
-  QString char_select_path = getImagePath("charselect_background.png");
-  //QString char_selector_path = getImagePath("char_selector.png");
+  QString char_select_path = theme_path + "charselect_background.png";
 
   if (fileExists(char_select_path))
     ui->charselect->setPixmap(QPixmap(char_select_path));
-/*
-  if (fileExists(char_selector_path))
-  {
-    char_selector.setParent(ui->charselect);
-    char_selector.setPixmap(char_selector_path);
-    char_selector.hide();
-  }
-*/
 
   char_select_current_page = 1;
 
@@ -650,10 +631,10 @@ QString Courtroom::getEmoteIconPath(int emotenumber)
 
 void Courtroom::on_holdit_clicked()
 {
-  QString holdit_disabled_path = getImagePath("holdit_disabled.png");
-  QString holdit_path = getImagePath("holdit.png");
-  QString objection_path = getImagePath("objection_disabled.png");
-  QString takethat_path = getImagePath("takethat_disabled.png");
+  QString holdit_disabled_path = theme_path + "holdit_disabled.png";
+  QString holdit_path = theme_path + "holdit.png";
+  QString objection_path = theme_path + "objection_disabled.png";
+  QString takethat_path = theme_path + "takethat_disabled.png";
 
 
   //if holdit is already enabled
@@ -679,10 +660,10 @@ void Courtroom::on_holdit_clicked()
 
 void Courtroom::on_objection_clicked()
 {
-  QString objection_disabled_path = getImagePath("objection_disabled.png");
-  QString objection_path = getImagePath("objection.png");
-  QString holdit_path = getImagePath("holdit_disabled.png");
-  QString takethat_path = getImagePath("takethat_disabled.png");
+  QString objection_disabled_path = theme_path + "objection_disabled.png";
+  QString objection_path = theme_path + "objection.png";
+  QString holdit_path = theme_path + "holdit_disabled.png";
+  QString takethat_path = theme_path + "takethat_disabled.png";
 
 
   //if objection is already enabled
@@ -708,10 +689,10 @@ void Courtroom::on_objection_clicked()
 
 void Courtroom::on_takethat_clicked()
 {
-  QString takethat_disabled_path = getImagePath("takethat_disabled.png");
-  QString takethat_path = getImagePath("takethat.png");
-  QString holdit_path = getImagePath("holdit_disabled.png");
-  QString objection_path = getImagePath("objection_disabled.png");
+  QString takethat_disabled_path = theme_path + "takethat_disabled.png";
+  QString takethat_path = theme_path + "takethat.png";
+  QString holdit_path = theme_path + "holdit_disabled.png";
+  QString objection_path = theme_path + "objection_disabled.png";
 
 
   //if takethat is already enabled
@@ -739,8 +720,8 @@ void Courtroom::on_takethat_clicked()
 
 void Courtroom::on_present_clicked()
 {
-  QString present_on = getImagePath("present.png");
-  QString present_off = getImagePath("present_disabled.png");
+  QString present_on = theme_path + "present.png";
+  QString present_off = theme_path + "present_disabled.png";
 
   if (present_evidence)
   {
@@ -763,7 +744,7 @@ void Courtroom::on_chatLine_returnPressed()
 
   ui->playingbackground->setPixmap(getBasePath() + "background/gs4/defenseempty.png");
   ui->desk->setPixmap(getBasePath() + "background/gs4/bancodefensa.png");
-  ui->chatbubble->setPixmap(getImagePath("chat.png"));
+  ui->chatbubble->setPixmap(theme_path + "chat.png");
 
   QMovie *movie = new QMovie(getCharGifPath(playerChar, "(b)" + emote_list[getPressedEmote()].anim + ".gif"));
   ui->playingarea->setMovie(movie);

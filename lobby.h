@@ -12,9 +12,10 @@
 #include "courtroom.h"
 #include "ui_courtroom.h"
 
+#include "datatypes.h"
 #include "config_handler.h"
 #include "error_handler.h"
-#include "datatypes.h"
+
 
 namespace Ui {
 class Lobby;
@@ -29,6 +30,8 @@ public:
 
   void setTheme();
   void LoadFavorites();
+
+  QString theme_path;
 
   QVector<server_type> m_server_list;
 

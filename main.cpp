@@ -26,7 +26,8 @@ int main(int argc, char *argv[])
 
   main_networkhandler.connect_to_master();
 
-  LoadConfig();
+  //LoadConfig();
+
   main_lobby.setTheme();
 
   main_lobby.show();

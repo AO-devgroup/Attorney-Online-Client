@@ -1,5 +1,6 @@
 #include "character_handler.h"
 
+//obsolete, needs to be replaced #T0D0
 QStringList g_char_ini{"if this is visible anywhere, it means that char.ini failed to load into memory"};
 
 void LoadCharIni(QString character)

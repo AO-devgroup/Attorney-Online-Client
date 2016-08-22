@@ -17,7 +17,8 @@ Networkhandler::Networkhandler(QObject *parent) : QObject(parent)
 
 Networkhandler::~Networkhandler()
 {
-
+  delete ms_socket;
+  delete server_socket;
 }
 
 void Networkhandler::connect_to_master()

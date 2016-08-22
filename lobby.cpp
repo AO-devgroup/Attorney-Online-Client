@@ -11,17 +11,14 @@ Lobby::Lobby(QWidget *parent) :
 
 void Lobby::setTheme()
 {
-  //literally everything breaks if you remove this
-   //sets config.ini as a global variable !IMPORTANT!
+  theme_path = getBasePath() + "themes/" + getTheme() + "/";
 
-
-
-  QString background_path = getImagePath("lobbybackground.png");
-  QString refresh_path = getImagePath("refresh.png");
-  QString addtofav_path = getImagePath("addtofav.png");
-  QString connect_path = getImagePath("connect.png");
-  QString publicservers_path = getImagePath("publicservers_selected.png");
-  QString favorites_path = getImagePath("favorites.png");
+  QString background_path = (theme_path + "lobbybackground.png");
+  QString refresh_path = (theme_path + "refresh.png");
+  QString addtofav_path = (theme_path + "addtofav.png");
+  QString connect_path = (theme_path + "connect.png");
+  QString publicservers_path = (theme_path + "publicservers_selected.png");
+  QString favorites_path = (theme_path + "favorites.png");
 
   if (fileExists(background_path))
     ui->background->setPixmap(QPixmap(background_path));
@@ -51,7 +48,7 @@ Lobby::~Lobby()
 
 void Lobby::on_refresh_pressed()
 {
-  QString path = getImagePath("refresh_pressed.png");
+  QString path = theme_path + "refresh_pressed.png";
 
   if (fileExists(path))
     ui->refresh->setStyleSheet("border-image:url(" + path + ")");
@@ -59,7 +56,7 @@ void Lobby::on_refresh_pressed()
 
 void Lobby::on_refresh_released()
 {
-  QString path = getImagePath("refresh.png");
+  QString path = theme_path + "refresh.png";
 
   ui->refresh->setStyleSheet("border-image:url(" + path + ")");
 
@@ -68,7 +65,7 @@ void Lobby::on_refresh_released()
 
 void Lobby::on_addtofav_pressed()
 {
-  QString path = getImagePath("addtofav_pressed.png");
+  QString path = theme_path + "addtofav_pressed.png";
 
   if (fileExists(path))
       ui->addtofav->setStyleSheet("border-image:url(" + path + ")");
@@ -76,7 +73,7 @@ void Lobby::on_addtofav_pressed()
 
 void Lobby::on_addtofav_released()
 {
-  QString path = getImagePath("addtofav.png");
+  QString path = theme_path + "addtofav.png";
 
   if (fileExists(path))
     ui->addtofav->setStyleSheet("border-image:url(" + path + ")");
@@ -111,7 +108,7 @@ void Lobby::on_addtofav_released()
 
 void Lobby::on_connect_pressed()
 {
-  QString path = getImagePath("connect_pressed.png");
+  QString path = theme_path + "connect_pressed.png";
 
   if (fileExists(path))
     ui->connect->setStyleSheet("border-image:url(" + path + ")");
@@ -119,7 +116,7 @@ void Lobby::on_connect_pressed()
 
 void Lobby::on_connect_released()
 {
-  QString path = getImagePath("connect.png");
+  QString path = theme_path + "connect.png";
 
   if (fileExists(path))
   {
@@ -134,8 +131,8 @@ void Lobby::on_publicservers_clicked()
   public_servers_selected = true;
   int_selected_server = -1;
 
-  QString path_public = getImagePath("publicservers_selected.png");
-  QString path_favorites = getImagePath("favorites.png");
+  QString path_public = theme_path + "publicservers_selected.png";
+  QString path_favorites = theme_path + "favorites.png";
 
   if (fileExists(path_public))
     ui->publicservers->setStyleSheet("border-image:url(" + path_public + ")");
@@ -152,8 +149,8 @@ void Lobby::on_favorites_clicked()
   public_servers_selected = false;
   int_selected_server = -1;
 
-  QString path_favorites = getImagePath("favorites_selected.png");
-  QString path_public = getImagePath("publicservers.png");
+  QString path_favorites = theme_path + "favorites_selected.png";
+  QString path_public = theme_path + "publicservers.png";
 
   if (fileExists(path_favorites))
     ui->favorites->setStyleSheet("border-image:url(" + path_favorites + ")");

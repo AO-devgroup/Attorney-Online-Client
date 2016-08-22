@@ -10,21 +10,24 @@
 #include <QStringList>
 #include <QVector>
 
-#include "error_handler.h"
-#include "character_handler.h"
 #include "datatypes.h"
 
-extern QStringList g_config_file;
+#include "lobby.h"
+#include "error_handler.h"
+
+
+//obsolete
+//extern QStringList g_config_file;
 
 
 
 QString getBasePath();
 
-void LoadConfig();
+//void LoadConfig();
 
 QString getTheme();
 
-QString getImagePath(QString image);
+//QString getImagePath(QString image);
 
 bool fileExists(QString path, bool quiet = false);
 

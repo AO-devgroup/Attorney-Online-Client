@@ -14,12 +14,13 @@ charicon::charicon(int x_pos, int y_pos, QWidget *parent)
   this->move(x_pos, y_pos);
   //connect(this, SIGNAL (clicked()), this, SLOT (handleButton()));
   m_parent = parent;
+  theme_path = getBasePath() + "/themes/" + getTheme() + '/';
 
   //connect(this, SIGNAL(clicked()), this, SLOT(handleClick()));
 
   char_selector = new QLabel(parent);
   //char_selector->setParent(parent);
-  char_selector->setStyleSheet("border-image:url(" + getImagePath("char_selector.png") + ")");
+  char_selector->setStyleSheet("border-image:url(" + theme_path + "char_selector.png" + ")");
   char_selector->setAttribute(Qt::WA_TransparentForMouseEvents);
   char_selector->resize(62, 62);
   char_selector->move(x_pos - 1, y_pos - 1);
@@ -105,7 +106,9 @@ chartaken::chartaken(int x_pos, int y_pos, QWidget *parent)
   this->move(x_pos, y_pos);
   this->resize(60, 60);
 
-  QString path = getImagePath("char_taken.png");
+  theme_path = getBasePath() + "/themes/" + getTheme() + '/';
+
+  QString path = theme_path + "char_taken.png";
 
   if (fileExists(path))
     this->setPixmap(path);

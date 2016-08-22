@@ -32,9 +32,11 @@ class Courtroom : public QMainWindow
 public:
   explicit Courtroom(QWidget *parent = 0);
   void setTheme();                         //sets images according to theme in config.ini
-  void setChar();                          //loads appropriate char.ini into the global namespace
+  void setChar();
   void setCharSelect();
   void setCharSelectPage();
+
+  QString theme_path;
 
   QVector<charicon* > charicon_list;
   QVector<QLabel* > char_taken_list;

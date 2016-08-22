@@ -9,7 +9,6 @@
 #include "ui_courtroom.h"
 
 #include "error_handler.h"
-#include "character_handler.h"
 
 
 class charicon : public QPushButton
@@ -25,6 +24,9 @@ public:
   QLabel *char_selector;
   bool m_is_selected = false;
   void setIcon(QString character);
+
+  QString theme_path;
+
   ~charicon();
 
 //private slots:
@@ -47,6 +49,7 @@ class chartaken : public QLabel
 public:
   chartaken();
   chartaken(int x_pos, int y_pos, QWidget *parent);
+  QString theme_path;
 };
 
 #endif // CHARICON_H
