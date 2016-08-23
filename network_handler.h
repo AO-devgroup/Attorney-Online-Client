@@ -24,11 +24,6 @@ public:
   bool master_connected = false;
   bool server_connected = false;
 
-  //prefixed with bool_ to remove ambiguity with the signals, see below
-  bool bool_character_list_received = false;
-  bool bool_music_list_received = false;
-  bool bool_background_received = false;
-
   QString ms_hostname = "master.aceattorneyonline.com";
   int ms_port = 27016;
 
@@ -50,9 +45,13 @@ signals:
 
   void music_list_received(QStringList &f_music_list);
 
+  void background_received(QString background);
+
   void onlinestatus_changed(QString players_online, QString max_players);
 
   void done_loading();
+
+  void chatmessage_received(chatmessage_type &message);
 
 public slots:
   void connect_to_server(QString ip, int port);

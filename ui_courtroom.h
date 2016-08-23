@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'courtroom.ui'
 **
-** Created by: Qt User Interface Compiler version 5.6.1
+** Created by: Qt User Interface Compiler version 5.7.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -29,7 +29,7 @@ public:
     QWidget *centralwidget;
     QLabel *background;
     QPushButton *objection;
-    QPlainTextEdit *plainTextEdit;
+    QPlainTextEdit *chatlog;
     QPushButton *holdit;
     QPushButton *takethat;
     QLabel *playingarea;
@@ -78,17 +78,17 @@ public:
         objection->setObjectName(QStringLiteral("objection"));
         objection->setGeometry(QRect(90, 312, 76, 28));
         objection->setFlat(false);
-        plainTextEdit = new QPlainTextEdit(centralwidget);
-        plainTextEdit->setObjectName(QStringLiteral("plainTextEdit"));
-        plainTextEdit->setGeometry(QRect(300, 90, 161, 141));
+        chatlog = new QPlainTextEdit(centralwidget);
+        chatlog->setObjectName(QStringLiteral("chatlog"));
+        chatlog->setGeometry(QRect(270, 0, 211, 311));
         QPalette palette;
         QBrush brush(QColor(255, 255, 255, 0));
         brush.setStyle(Qt::SolidPattern);
         palette.setBrush(QPalette::Active, QPalette::Light, brush);
         palette.setBrush(QPalette::Inactive, QPalette::Light, brush);
         palette.setBrush(QPalette::Disabled, QPalette::Light, brush);
-        plainTextEdit->setPalette(palette);
-        plainTextEdit->setAutoFillBackground(false);
+        chatlog->setPalette(palette);
+        chatlog->setAutoFillBackground(false);
         holdit = new QPushButton(centralwidget);
         holdit->setObjectName(QStringLiteral("holdit"));
         holdit->setGeometry(QRect(10, 312, 76, 28));
@@ -215,7 +215,7 @@ public:
         Courtroom->setCentralWidget(centralwidget);
         charselect->raise();
         background->raise();
-        plainTextEdit->raise();
+        chatlog->raise();
         takethat->raise();
         holdit->raise();
         objection->raise();
@@ -254,7 +254,7 @@ public:
         Courtroom->setWindowTitle(QApplication::translate("Courtroom", "Attorney Online", 0));
         background->setText(QString());
         objection->setText(QString());
-        plainTextEdit->setPlainText(QApplication::translate("Courtroom", "hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh", 0));
+        chatlog->setPlainText(QString());
         holdit->setText(QString());
         takethat->setText(QString());
         playingarea->setText(QString());

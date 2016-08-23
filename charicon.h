@@ -22,34 +22,22 @@ public:
   QString m_character;
   QWidget *m_parent;
   QLabel *char_selector;
+  QLabel *taken_overlay;
+  QLabel *password_overlay;
   bool m_is_selected = false;
-  void setIcon(QString character);
 
-  QString theme_path;
+  void setIcon(QString character);
+  void set_taken();
+  void set_passworded();
+  void reset();
 
   ~charicon();
-
-//private slots:
-  //void handleClick(int char_number);
 
 protected:
   void enterEvent(QEvent *e);
   void leaveEvent(QEvent *e);
-  void released();
 
-//signals:
-  //void charClicked(int char_number);
-
-//private slots:
-  //void handleButton();
 };
 
-class chartaken : public QLabel
-{
-public:
-  chartaken();
-  chartaken(int x_pos, int y_pos, QWidget *parent);
-  QString theme_path;
-};
 
 #endif // CHARICON_H

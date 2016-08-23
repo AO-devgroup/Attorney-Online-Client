@@ -7,5 +7,6 @@
 #include "courtroom.h"
 #include "network_handler.h"
 #include "config_handler.h"
+#include "globals.h"
 
 #endif // MAIN_H

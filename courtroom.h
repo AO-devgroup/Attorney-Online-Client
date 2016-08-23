@@ -19,6 +19,7 @@
 #include "character_handler.h"
 #include "charicon.h"
 #include "datatypes.h"
+#include "globals.h"
 
 namespace Ui {
 class Courtroom;
@@ -37,6 +38,7 @@ public:
   void setCharSelectPage();
 
   QString theme_path;
+  QString background_path;
 
   QVector<charicon* > charicon_list;
   QVector<QLabel* > char_taken_list;
@@ -44,11 +46,13 @@ public:
   ~Courtroom();
 
 public slots:
-  void handleCharicon(QString character);
-
   void set_character_list(QVector<char_type> &p_char_list);
 
   void set_music_list(QStringList &p_music_list);
+
+  void set_background(QString background);
+
+  void handle_chatmessage(chatmessage_type &p_message);
 
   void initialize_courtroom();
 
@@ -75,8 +79,16 @@ private:
   void setTakenChars(QString string_from_server);
   QSettings ini_charini;
 
-  QVector<char_type> m_character_list;
-  QStringList m_music_list;
+  QSignalMapper *mapper;
+
+  QVector<char_type> character_list;
+  QStringList music_list;
+
+  bool char_list_set = false;
+  bool music_list_set = false;
+  bool background_set = false;
+
+  void enter_courtroom();
 
 private slots:
   void charChoose(int i);

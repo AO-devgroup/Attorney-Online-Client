@@ -12,19 +12,35 @@ charicon::charicon(int x_pos, int y_pos, QWidget *parent)
   this->setParent(parent);
   this->resize(60, 60);
   this->move(x_pos, y_pos);
-  //connect(this, SIGNAL (clicked()), this, SLOT (handleButton()));
+
   m_parent = parent;
-  theme_path = getBasePath() + "/themes/" + getTheme() + '/';
 
-  //connect(this, SIGNAL(clicked()), this, SLOT(handleClick()));
+  taken_overlay = new QLabel(parent);
 
+  if (fileExists(g_theme_path + "char_taken.png"))
+    taken_overlay->setStyleSheet("border-image:url(" + g_theme_path + "char_taken.png" + ")");
+
+  taken_overlay->setAttribute(Qt::WA_TransparentForMouseEvents);
+  taken_overlay->resize(60, 60);
+  taken_overlay->move(x_pos, y_pos);
+  taken_overlay->hide();
+
+  password_overlay = new QLabel(parent);
+
+  if (fileExists(g_theme_path + "char_taken.png"))
+    password_overlay->setStyleSheet("border-image:url(" + g_theme_path + "char_passworded.png" + ")");
+
+  password_overlay->setAttribute(Qt::WA_TransparentForMouseEvents);
+  password_overlay->resize(60, 60);
+  password_overlay->move(x_pos, y_pos);
+  password_overlay->hide();
+
+  // i dont even know if this code is used
   char_selector = new QLabel(parent);
-  //char_selector->setParent(parent);
-  char_selector->setStyleSheet("border-image:url(" + theme_path + "char_selector.png" + ")");
+  char_selector->setStyleSheet("border-image:url(" + g_theme_path + "char_selector.png" + ")");
   char_selector->setAttribute(Qt::WA_TransparentForMouseEvents);
   char_selector->resize(62, 62);
   char_selector->move(x_pos - 1, y_pos - 1);
-
   char_selector->hide();
 }
 
@@ -65,6 +81,25 @@ void charicon::setIcon(QString character)
 
 }
 
+void charicon::set_taken()
+{
+  taken_overlay->show();
+}
+
+void charicon::set_passworded()
+{
+  password_overlay->show();
+}
+
+void charicon::reset()
+{
+  this->setStyleSheet("border-image:url()");
+  this->setText("");
+  taken_overlay->hide();
+  password_overlay->hide();
+  this->hide();
+}
+
 void charicon::leaveEvent(QEvent * e)
 {
   //ui->char_selector->hide();
@@ -82,39 +117,8 @@ void charicon::enterEvent(QEvent * e)
   QPushButton::enterEvent(e);
 }
 
-void charicon::released()
-{
-  callError("ohai");
-  m_parent->hide();
-}
-/*
-void charicon::handleClick(int char_number)
-{
-  emit charClicked(char_number);
-}
-*/
 charicon::~charicon()
 {
-
-}
-
-chartaken::chartaken(int x_pos, int y_pos, QWidget *parent)
-{
-  this->setParent(parent);
-  this->setAttribute(Qt::WA_TransparentForMouseEvents);
-
-  this->move(x_pos, y_pos);
-  this->resize(60, 60);
-
-  theme_path = getBasePath() + "/themes/" + getTheme() + '/';
-
-  QString path = theme_path + "char_taken.png";
-
-  if (fileExists(path))
-    this->setPixmap(path);
-}
-
-chartaken::chartaken()
-{
-
+  delete taken_overlay;
+  delete char_selector;
 }

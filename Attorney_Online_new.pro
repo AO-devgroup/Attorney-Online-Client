@@ -24,7 +24,10 @@ SOURCES += \
     character_handler.cpp \
     charicon.cpp \
     datatypes.cpp \
-    network_handler.cpp
+    network_handler.cpp \
+    globals.cpp \
+    charselect.cpp \
+    emotes.cpp
 
 HEADERS  += \
     main.h \
@@ -35,7 +38,10 @@ HEADERS  += \
     character_handler.h \
     charicon.h \
     datatypes.h \
-    network_handler.h
+    network_handler.h \
+    globals.h \
+    charselect.h \
+    emotes.h
 
 FORMS    += \
     lobby.ui \

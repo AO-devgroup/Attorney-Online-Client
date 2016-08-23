@@ -38,9 +38,6 @@ void Networkhandler::handle_server_disconnect()
 void Networkhandler::disconnect_from_server()
 {
   server_connected = false;
-  bool_character_list_received = false;
-  bool_music_list_received = false;
-  bool_character_list_received = false;
 
   server_socket->close();
   server_socket->abort();
@@ -238,10 +235,10 @@ void Networkhandler::handle_server_packet()
         f_char.description =  char_string_list.at(1);
 
         if (char_string_list.at(2) == "1")
-          f_char.password = true;
+          f_char.passworded = true;
 
         else
-          f_char.password = false;
+          f_char.passworded = false;
 
         f_char_list.insert(n_char, f_char);
       }
@@ -250,8 +247,6 @@ void Networkhandler::handle_server_packet()
       //are found in main.cpp
 
       character_list_received(f_char_list);
-
-      bool_character_list_received = true;
     }
 
     //handles the music list packet
@@ -266,8 +261,6 @@ void Networkhandler::handle_server_packet()
       }
 
       music_list_received(f_music_list);
-
-      bool_music_list_received = true;
     }
 
     else if (header == "DONE")
@@ -276,6 +269,20 @@ void Networkhandler::handle_server_packet()
       //  server_socket->write("ALL#%");
 
       done_loading();
+    }
+
+    else if (header == "BN")
+    {
+      background_received(packet_contents.at(1));
+    }
+
+    else if (header == "MS")
+    {
+      chatmessage_type f_message;
+      f_message.message = packet_contents.at(2);
+      f_message.character = "Phoenix";
+      f_message.emote = "normal.gif";
+      chatmessage_received(f_message);
     }
     qDebug() << packet;
   }

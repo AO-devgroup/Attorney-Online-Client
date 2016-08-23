@@ -23,13 +23,22 @@ struct char_type
 {
   QString name;
   QString description;
-  bool password;
+  bool taken;
+  bool passworded;
 };
 
 struct evi_type
 {
   QString name;
   QString description;
+};
+
+struct chatmessage_type
+{
+  QString message;
+  QString character;
+  QString emote;
+  //a whole lot of other info #T0D0
 };
 
 #endif // DATATYPES_H

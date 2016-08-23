@@ -15,6 +15,7 @@
 #include "datatypes.h"
 #include "config_handler.h"
 #include "error_handler.h"
+#include "globals.h"
 
 
 namespace Ui {

@@ -62,13 +62,13 @@
      <bool>false</bool>
     </property>
    </widget>
-   <widget class="QPlainTextEdit" name="plainTextEdit">
+   <widget class="QPlainTextEdit" name="chatlog">
     <property name="geometry">
      <rect>
-      <x>300</x>
-      <y>90</y>
-      <width>161</width>
-      <height>141</height>
+      <x>270</x>
+      <y>0</y>
+      <width>211</width>
+      <height>311</height>
      </rect>
     </property>
     <property name="palette">
@@ -112,7 +112,7 @@
      <bool>false</bool>
     </property>
     <property name="plainText">
-     <string>hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh</string>
+     <string/>
     </property>
    </widget>
    <widget class="QPushButton" name="holdit">
@@ -689,7 +689,7 @@
    </widget>
    <zorder>charselect</zorder>
    <zorder>background</zorder>
-   <zorder>plainTextEdit</zorder>
+   <zorder>chatlog</zorder>
    <zorder>takethat</zorder>
    <zorder>holdit</zorder>
    <zorder>objection</zorder>
