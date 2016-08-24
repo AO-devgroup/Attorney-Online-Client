@@ -2,59 +2,8 @@
 
 void Courtroom::setCharSelect()
 {
-  ui->charselect->show();
-  //T0D0 fix this
-  //char_select_list = getCharSelectList();
-
-  //HACK, debug code until we get the networking sorted out
-  char_type phoenix;
-  phoenix.name = "Phoenix";
-  phoenix.description = "The worst lawyer";
-  phoenix.taken = true;
-  phoenix.passworded = false;
-
-  char_type miles;
-  miles.name = "Miles";
-  miles.description = "The best lawyer";
-  miles.taken = false;
-  miles.passworded = true;
-
-  char_type oldbag;
-  oldbag.name = "Oldbag";
-  oldbag.description = "que";
-  oldbag.taken = false;
-  oldbag.passworded = true;
-
-  char_type judge;
-  judge.name = "Judge";
-  judge.description = "que";
-  judge.taken = true;
-  judge.passworded = true;
-
-  char_type miles_d;
-  miles_d.name = "Miles D";
-  miles_d.description = "que";
-  miles_d.taken = true;
-  miles_d.passworded = true;
-
-  character_list.insert(0, phoenix);
-  character_list.insert(1, miles);
-  character_list.insert(2, oldbag);
-  character_list.insert(3, judge);
-  character_list.insert(4, miles_d);
-
   //might seem redundant, but we are going to use this value A LOT
   int char_list_size = character_list.size();
-
-  //T0D0 uncomment this, fix implementation
-  //setTakenChars();
-
-  //you raise me uup
-  //srs, tho. brings the ui in front of the rest of the courtroom
-  ui->charselect->raise();
-  ui->charselect_left->raise();
-  ui->charselect_right->raise();
-  ui->spectator->raise();
 
   //so when we show() and hide() charselect, children follow suit
   ui->charselect_left->setParent(ui->charselect);
@@ -74,7 +23,6 @@ void Courtroom::setCharSelect()
   //QSignalMapper* signalMapper = new QSignalMapper (this) ;
 
 
-
   //in this loop we simply make 90 widgets and connect them, they start off empty
   for(int n_icon{0} ; n_icon < 90 ; ++n_icon)
   {
@@ -84,7 +32,7 @@ void Courtroom::setCharSelect()
     charicon_list.insert(n_icon, new charicon(x_pos, y_pos, ui->charselect));
 
     connect (charicon_list.at(n_icon), SIGNAL(clicked()), mapper, SLOT(map())) ;
-    mapper -> setMapping (charicon_list.at(n_icon), n_icon) ;
+    mapper->setMapping (charicon_list.at(n_icon), n_icon) ;
 
     ++x_mod_count;
 
@@ -120,11 +68,23 @@ void Courtroom::setCharSelect()
   char_select_current_page = 1;
 
   setCharSelectPage();
+
+  //reminder -- this shows the courtroom window itself
+  show();
 }
 
 void Courtroom::setCharSelectPage()
 {
   int char_list_size = character_list.size();
+
+  ui->charselect->show();
+
+  //you raise me uup
+  //srs, tho. brings the ui in front of the rest of the courtroom
+  ui->charselect->raise();
+  ui->charselect_left->raise();
+  ui->charselect_right->raise();
+  ui->spectator->raise();
 
   //start by hiding left and right arrows because were
   //not certain at this point if they should appear or not

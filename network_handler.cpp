@@ -89,7 +89,11 @@ void Networkhandler::handle_enter_server_request()
   if (!server_connected)
     return;
 
-  initiate_loading_sequence();
+  //for debugging
+  handle_server_packet();
+
+  //probably obsolete?
+  //initiate_loading_sequence();
 }
 
 void Networkhandler::initiate_loading_sequence()
@@ -174,10 +178,22 @@ void Networkhandler::handle_ms_packet()
 
 void Networkhandler::handle_server_packet()
 {
-  char buffer[2048] = {0};
-  server_socket->read(buffer, server_socket->bytesAvailable());
 
-  QString in_data = buffer;
+  QString in_data;
+
+  //temporary code
+  if (packet_debugging)
+  {
+    in_data = "CI#Phoenix&&&#Miles&&&#Judge&&&#%EM#the worst song.mp3#why would anyone ever listen to this.mp1337#%";
+  }
+
+  else
+  {
+    char buffer[2048] = {0};
+    server_socket->read(buffer, server_socket->bytesAvailable());
+
+    in_data = buffer;
+  }
 
   QStringList packet_list = in_data.split("%", QString::SplitBehavior(QString::SkipEmptyParts));
 
@@ -220,21 +236,30 @@ void Networkhandler::handle_server_packet()
 
       QVector<char_type> f_char_list;
 
-      for (int n_char = 0 ; n_char < packet_contents.size() ; ++n_char)
+      //- 1 accounts for header
+      for (int n_char = 0 ; n_char < packet_contents.size() - 1 ; ++n_char)
       {
-        QStringList char_string_list =
-          packet_contents.at(n_char + 1).split("&", QString::SplitBehavior(QString::SkipEmptyParts));
+        QStringList char_arguments =
+          packet_contents.at(n_char + 1).split("&");
 
-        if (char_string_list.size() != 3)
-          callFatalError("malformed packet. expected char_string_list.size() to be 3, found" +
-                         QString::number(char_string_list.size()));
+        if (char_arguments.size() != 4)
+          callFatalError("malformed packet. expected char_arguments.size() to be 4, found" +
+                         QString::number(char_arguments.size()));
 
         char_type f_char;
 
-        f_char.name = char_string_list.at(0);
-        f_char.description =  char_string_list.at(1);
+        f_char.name = char_arguments.at(0);
+        qDebug() << "f_char.name: " << f_char.name;
+        f_char.description =  char_arguments.at(1);
+        qDebug() << "f_char.description: " << f_char.description;
 
-        if (char_string_list.at(2) == "1")
+        if (char_arguments.at(2) == "1")
+          f_char.taken = true;
+
+        else
+          f_char.taken = false;
+
+        if (char_arguments.at(3) == "1")
           f_char.passworded = true;
 
         else
@@ -254,7 +279,8 @@ void Networkhandler::handle_server_packet()
     {
       QStringList f_music_list;
 
-      for(int n_music = 0 ; n_music < packet_contents.size() ; ++n_music)
+      //again, - 1 accounts for the header
+      for(int n_music = 0 ; n_music < packet_contents.size() - 1 ; ++n_music)
       {
         // + 1 to skip the header (which is in index 0) and shift everything one position
         f_music_list.insert(n_music, packet_contents.at(n_music + 1));

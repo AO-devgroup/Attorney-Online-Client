@@ -16,6 +16,7 @@
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
+#include <QtWidgets/QListWidget>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QPlainTextEdit>
 #include <QtWidgets/QPushButton>
@@ -57,6 +58,7 @@ public:
     QPushButton *charselect_right;
     QPushButton *changecharacter;
     QLabel *charError;
+    QListWidget *musiclist;
 
     void setupUi(QMainWindow *Courtroom)
     {
@@ -212,6 +214,17 @@ public:
         charError = new QLabel(centralwidget);
         charError->setObjectName(QStringLiteral("charError"));
         charError->setGeometry(QRect(270, 50, 59, 15));
+        musiclist = new QListWidget(centralwidget);
+        new QListWidgetItem(musiclist);
+        musiclist->setObjectName(QStringLiteral("musiclist"));
+        musiclist->setGeometry(QRect(490, 340, 224, 329));
+        QPalette palette3;
+        palette3.setBrush(QPalette::Active, QPalette::Base, brush);
+        palette3.setBrush(QPalette::Inactive, QPalette::Base, brush);
+        palette3.setBrush(QPalette::Disabled, QPalette::Base, brush6);
+        musiclist->setPalette(palette3);
+        musiclist->setFrameShape(QFrame::NoFrame);
+        musiclist->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
         Courtroom->setCentralWidget(centralwidget);
         charselect->raise();
         background->raise();
@@ -243,6 +256,7 @@ public:
         charselect_right->raise();
         changecharacter->raise();
         charError->raise();
+        musiclist->raise();
 
         retranslateUi(Courtroom);
 
@@ -281,6 +295,13 @@ public:
         charselect_right->setText(QString());
         changecharacter->setText(QApplication::translate("Courtroom", "Change character", 0));
         charError->setText(QString());
+
+        const bool __sortingEnabled = musiclist->isSortingEnabled();
+        musiclist->setSortingEnabled(false);
+        QListWidgetItem *___qlistwidgetitem = musiclist->item(0);
+        ___qlistwidgetitem->setText(QApplication::translate("Courtroom", "u wot m8", 0));
+        musiclist->setSortingEnabled(__sortingEnabled);
+
     } // retranslateUi
 
 };

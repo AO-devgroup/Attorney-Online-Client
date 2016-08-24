@@ -32,8 +32,11 @@ class Courtroom : public QMainWindow
 
 public:
   explicit Courtroom(QWidget *parent = 0);
+
   void setTheme();                         //sets images according to theme in config.ini
   void setChar();
+  void update_music_list();
+
   void setCharSelect();
   void setCharSelectPage();
 

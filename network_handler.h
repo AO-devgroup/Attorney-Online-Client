@@ -34,6 +34,8 @@ public:
   void initiate_loading_sequence();
   void disconnect_from_server();
 
+  bool packet_debugging = true;
+
 
 signals:
 

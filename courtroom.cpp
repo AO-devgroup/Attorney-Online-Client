@@ -18,12 +18,8 @@ Courtroom::~Courtroom()
 
 void Courtroom::initialize_courtroom()
 {
-  qDebug() << background_path;
-
-  setTheme();
   setCharSelect();
   show();
-
 }
 
 void Courtroom::set_character_list(QVector<char_type> &p_char_list)
@@ -31,8 +27,11 @@ void Courtroom::set_character_list(QVector<char_type> &p_char_list)
   character_list = p_char_list;
   char_list_set = true;
 
-  if (music_list_set && background_set)
-    initialize_courtroom();
+  qDebug() << "set_character_list executed successfully";
+
+  //T0D0 uncomment in production, commented out for debugging
+  //if (music_list_set && background_set)
+    setCharSelect();
 }
 
 void Courtroom::set_music_list(QStringList &p_music_list)
@@ -40,8 +39,13 @@ void Courtroom::set_music_list(QStringList &p_music_list)
   music_list = p_music_list;
   music_list_set = true;
 
+  ui->musiclist->clear();
+
+  for (QString song : music_list)
+    ui->musiclist->addItem(song);
+
   if (char_list_set && background_set)
-    initialize_courtroom();
+    setCharSelect();
 }
 
 void Courtroom::set_background(QString p_background)
@@ -50,7 +54,12 @@ void Courtroom::set_background(QString p_background)
   background_set = true;
 
   if (music_list_set && char_list_set)
-    initialize_courtroom();
+    setCharSelect();
+}
+
+void Courtroom::update_music_list()
+{
+
 }
 
 void Courtroom::setTheme()
@@ -88,20 +97,21 @@ void Courtroom::setTheme()
 
 void Courtroom::enter_courtroom()
 {
-  ui->charselect->hide();
-
-  //getting that sweet memory back
-
+  //another failed attempt at optimizing
+  /*
   for (charicon *f_charicon : charicon_list)
   {
     delete f_charicon;
   }
 
   charicon_list.clear();
+  */
 
+  update_music_list();
   setChar();
+  setTheme();
 
-
+  ui->charselect->hide();
 }
 
 void Courtroom::setChar()
@@ -456,6 +466,9 @@ void Courtroom::on_changecharacter_clicked()
 {
   //T0D0
   //politely tell the server that we're not using our char anymore(playerChar)
-  setCharSelect();
-  ui->charselect->show();
+
+  char_select_current_page = 1;
+
+  //setCharSelect();
+  setCharSelectPage();
 }
