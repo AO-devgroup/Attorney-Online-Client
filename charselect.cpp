@@ -36,8 +36,8 @@ void Courtroom::setCharSelect()
 
     ++x_mod_count;
 
-    //if char number is divisible by ten then the next charicon should start on a new line
-    if (n_icon % 10 == 0 && n_icon != 0)
+    //if char number is divisible by ten with rest 9 then the next charicon should start on a new line
+    if (n_icon % 10 == 9 && n_icon != 0)
     {
       ++y_mod_count;
       x_mod_count = 0;

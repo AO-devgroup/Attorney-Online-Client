@@ -81,6 +81,13 @@ void Networkhandler::ms_send_message(QString packet)
   ms_socket->write(packet.toLocal8Bit());
 }
 
+void Networkhandler::handle_song_request(QString p_song_name)
+{
+  QString packet = "MC#" + p_song_name + "#%";
+
+  server_socket->write(packet.toLocal8Bit());
+}
+
 void Networkhandler::handle_enter_server_request()
 {
   //HACK, workaround for debugging on old server versions
@@ -121,17 +128,18 @@ void Networkhandler::handle_ms_packet()
   {
     QStringList packet_arguments = packet.split("#", QString::SplitBehavior(QString::SkipEmptyParts));
 
-    QString header = packet_arguments[0];
+    QString header = packet_arguments.at(0);
 
     if (header == "CT")
     {
       if (packet_arguments.size() == 3)
-        ms_message_received(packet_arguments[1] + ": " + packet_arguments[2]);
-      else if (packet_arguments.size() == 1)
-        ms_message_received(packet_arguments[1]);
+        ms_message_received(packet_arguments.at(1) + ": " + packet_arguments.at(2));
+      else if (packet_arguments.size() == 2)
+        ms_message_received(packet_arguments.at(1));
       else
       {
-        ;
+        QString errorstring = "malformed masterserver packet. expected 3 or 2 packet arguments, got " + packet_arguments.size();
+        callError(errorstring);
       }
     }
 
@@ -148,8 +156,6 @@ void Networkhandler::handle_ms_packet()
       int amount_of_servers = packet_arguments.size() - 2;
 
       qDebug() << "amount_of_servers: " << amount_of_servers;
-
-      QVector<server_type> server_list;
 
       m_server_list.clear();
 
@@ -175,7 +181,6 @@ void Networkhandler::handle_ms_packet()
 
 }
 
-
 void Networkhandler::handle_server_packet()
 {
 
@@ -184,7 +189,8 @@ void Networkhandler::handle_server_packet()
   //temporary code
   if (packet_debugging)
   {
-    in_data = "CI#Phoenix&&&#Miles&&&#Judge&&&#%EM#the worst song.mp3#why would anyone ever listen to this.mp1337#%";
+    //i sincerely apologize for this
+    in_data = "CI#Phoenix&&&#Miles&&&#Judge&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#%EM#the worst song.mp3#why would anyone ever listen to this.mp1337#Darude - Sandstorm#Darude - Sandstorm#Darude - Sandstorm#Darude - Sandstorm#Darude - Sandstorm#Darude - Sandstorm#Darude - Sandstorm#Darude - Sandstorm#Darude - Sandstorm#Darude - Sandstorm#Darude - Sandstorm#Darude - Sandstorm#Darude - Sandstorm#Darude - Sandstorm#Darude - Sandstorm#Darude - Sandstorm#Darude - Sandstorm#Darude - Sandstorm#Darude - Sandstorm#Darude - Sandstorm#Darude - Sandstorm#Darude - Sandstorm#Darude - Sandstorm#Darude - Sandstorm#Darude - Sandstorm#Darude - Sandstorm#Darude - Sandstorm#Darude - Sandstorm#Darude - Sandstorm#Darude - Sandstorm#Darude - Sandstorm#Darude - Sandstorm#Darude - Sandstorm#Darude - Sandstorm#Darude - Sandstorm#Darude - Sandstorm#Darude - Sandstorm#Darude - Sandstorm#Darude - Sandstorm#Darude - Sandstorm#Darude - Sandstorm#Darude - Sandstorm#%";
   }
 
   else
@@ -309,6 +315,13 @@ void Networkhandler::handle_server_packet()
       f_message.character = "Phoenix";
       f_message.emote = "normal.gif";
       chatmessage_received(f_message);
+    }
+
+    else if (header == "MC")
+    {
+      QString song_name = packet_contents.at(1);
+
+      song_received(song_name);
     }
     qDebug() << packet;
   }

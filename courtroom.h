@@ -11,6 +11,7 @@
 #include <QSignalMapper>
 #include <QSettings>
 #include <QDebug>
+#include <QModelIndex>
 
 #include "ui_courtroom.h"
 
@@ -132,9 +133,18 @@ private slots:
 
   void on_spectator_clicked();
 
+  void on_musiclist_doubleClicked(const QModelIndex &index);
+
+  void play_song(QString p_song_name);
+
   void on_charselect_left_clicked();
   void on_charselect_right_clicked();
   void on_changecharacter_clicked();
+
+signals:
+  void song_requested(QString p_song_name);
+
+
 };
 
 #endif // COURTROOM_H

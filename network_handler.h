@@ -24,7 +24,7 @@ public:
   bool master_connected = false;
   bool server_connected = false;
 
-  QString ms_hostname = "master.aceattorneyonline.com";
+  QString ms_hostname = "localhost";
   int ms_port = 27016;
 
   QVector<server_type> m_server_list;
@@ -55,6 +55,8 @@ signals:
 
   void chatmessage_received(chatmessage_type &message);
 
+  void song_received(QString song_name);
+
 public slots:
   void connect_to_server(QString ip, int port);
 
@@ -68,6 +70,8 @@ public slots:
   void handle_all_servers_requested();
 
   void handle_enter_server_request();
+
+  void handle_song_request(QString p_song_name);
 
 private slots:
   void handle_server_disconnect();

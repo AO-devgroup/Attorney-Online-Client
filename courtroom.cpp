@@ -29,20 +29,35 @@ void Courtroom::set_character_list(QVector<char_type> &p_char_list)
 
   qDebug() << "set_character_list executed successfully";
 
-  //T0D0 uncomment in production, commented out for debugging
+  //HACK uncomment in production, commented out for debugging
   //if (music_list_set && background_set)
     setCharSelect();
 }
 
 void Courtroom::set_music_list(QStringList &p_music_list)
 {
+  music_list.clear();
   music_list = p_music_list;
+
   music_list_set = true;
 
   ui->musiclist->clear();
 
-  for (QString song : music_list)
-    ui->musiclist->addItem(song);
+  for (int n_song = 0 ; n_song < music_list.size() ; ++n_song)
+  {
+    QString song_name = music_list.at(n_song);
+
+    ui->musiclist->addItem(song_name);
+
+    QString song_path = getBasePath() + "sounds/music/" + song_name;
+
+    if (fileExists(song_path, true))
+      ; //color background of ui->musiclist->at(n_song) green? check documentation and fix implementation #T0D0
+    else
+    {
+      ; //background goes red #T0D0 as well
+    }
+  }
 
   if (char_list_set && background_set)
     setCharSelect();
@@ -466,9 +481,24 @@ void Courtroom::on_changecharacter_clicked()
 {
   //T0D0
   //politely tell the server that we're not using our char anymore(playerChar)
+  //(the network specification for this does not exist yet)
 
   char_select_current_page = 1;
 
   //setCharSelect();
   setCharSelectPage();
+}
+
+void Courtroom::on_musiclist_doubleClicked(const QModelIndex &index)
+{
+  //T0D0 set song_name to what is actually clicked
+  QString song_name = "Darude - Sandstorm";
+
+  song_requested(song_name);
+}
+
+void Courtroom::play_song(QString p_song_name)
+{
+  //T0D0, add implementation
+  //QMusicPlayer.play() or something?
 }

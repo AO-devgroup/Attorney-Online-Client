@@ -224,7 +224,7 @@ public:
         palette3.setBrush(QPalette::Disabled, QPalette::Base, brush6);
         musiclist->setPalette(palette3);
         musiclist->setFrameShape(QFrame::NoFrame);
-        musiclist->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+        musiclist->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
         Courtroom->setCentralWidget(centralwidget);
         charselect->raise();
         background->raise();
