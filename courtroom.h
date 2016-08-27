@@ -58,6 +58,8 @@ public slots:
 
   void handle_chatmessage(chatmessage_type &p_message);
 
+  void handle_ms_message(QString p_message);
+
   void initialize_courtroom();
 
 private:
@@ -141,8 +143,12 @@ private slots:
   void on_charselect_right_clicked();
   void on_changecharacter_clicked();
 
+  void on_oocchatmessage_returnPressed();
+
 signals:
   void song_requested(QString p_song_name);
+
+  void ms_message_requested(QString p_packet);
 
 
 };

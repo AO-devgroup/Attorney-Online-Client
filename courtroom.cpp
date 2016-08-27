@@ -167,6 +167,11 @@ void Courtroom::handle_chatmessage(chatmessage_type &p_message)
   ui->chatlog->appendPlainText(p_message.message);
 }
 
+void Courtroom::handle_ms_message(QString p_message)
+{
+  ui->oocmasterchat->appendPlainText(p_message);
+}
+
 void Courtroom::on_holdit_clicked()
 {
   QString holdit_disabled_path = g_theme_path + "holdit_disabled.png";
@@ -492,13 +497,29 @@ void Courtroom::on_changecharacter_clicked()
 void Courtroom::on_musiclist_doubleClicked(const QModelIndex &index)
 {
   //T0D0 set song_name to what is actually clicked
-  QString song_name = "Darude - Sandstorm";
+  QString song_name = music_list.at(index.row());
 
   song_requested(song_name);
 }
 
 void Courtroom::play_song(QString p_song_name)
 {
+  QString err_msg = "Song played: " + p_song_name;
+  callError(err_msg);
   //T0D0, add implementation
   //QMusicPlayer.play() or something?
+}
+
+void Courtroom::on_oocchatmessage_returnPressed()
+{
+  QString name = ui->oocchatname->text();
+  QString message = ui->oocchatmessage->text();
+  QString packet = "CT#" + name + "#" + message + "#%";
+
+  //no you cant send empty messages
+  if ((name != "") && (message != ""))
+  {
+    ms_message_requested(packet);
+    ui->oocchatmessage->clear();
+  }
 }

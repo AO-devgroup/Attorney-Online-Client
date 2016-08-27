@@ -59,6 +59,10 @@ public:
     QPushButton *changecharacter;
     QLabel *charError;
     QListWidget *musiclist;
+    QPlainTextEdit *oocserverchat;
+    QPlainTextEdit *oocmasterchat;
+    QLineEdit *oocchatname;
+    QLineEdit *oocchatmessage;
 
     void setupUi(QMainWindow *Courtroom)
     {
@@ -136,16 +140,24 @@ public:
         QBrush brush5(QColor(99, 214, 255, 0));
         brush5.setStyle(Qt::SolidPattern);
         palette2.setBrush(QPalette::Active, QPalette::Base, brush5);
-        QBrush brush6(QColor(239, 235, 231, 255));
+        QBrush brush6(QColor(38, 134, 198, 255));
         brush6.setStyle(Qt::SolidPattern);
         palette2.setBrush(QPalette::Active, QPalette::Highlight, brush6);
+        QBrush brush7(QColor(255, 255, 255, 255));
+        brush7.setStyle(Qt::SolidPattern);
+        palette2.setBrush(QPalette::Active, QPalette::Link, brush7);
         palette2.setBrush(QPalette::Inactive, QPalette::Light, brush);
         palette2.setBrush(QPalette::Inactive, QPalette::Base, brush5);
         palette2.setBrush(QPalette::Inactive, QPalette::Highlight, brush6);
+        palette2.setBrush(QPalette::Inactive, QPalette::Link, brush7);
         palette2.setBrush(QPalette::Disabled, QPalette::Light, brush);
-        palette2.setBrush(QPalette::Disabled, QPalette::Base, brush6);
+        QBrush brush8(QColor(239, 235, 231, 255));
+        brush8.setStyle(Qt::SolidPattern);
+        palette2.setBrush(QPalette::Disabled, QPalette::Base, brush8);
         palette2.setBrush(QPalette::Disabled, QPalette::Highlight, brush4);
+        palette2.setBrush(QPalette::Disabled, QPalette::Link, brush7);
         chatLine->setPalette(palette2);
+        chatLine->setFrame(false);
         emote1 = new QPushButton(centralwidget);
         emote1->setObjectName(QStringLiteral("emote1"));
         emote1->setGeometry(QRect(10, 219, 40, 40));
@@ -221,10 +233,61 @@ public:
         QPalette palette3;
         palette3.setBrush(QPalette::Active, QPalette::Base, brush);
         palette3.setBrush(QPalette::Inactive, QPalette::Base, brush);
-        palette3.setBrush(QPalette::Disabled, QPalette::Base, brush6);
+        palette3.setBrush(QPalette::Disabled, QPalette::Base, brush8);
         musiclist->setPalette(palette3);
         musiclist->setFrameShape(QFrame::NoFrame);
         musiclist->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+        oocserverchat = new QPlainTextEdit(centralwidget);
+        oocserverchat->setObjectName(QStringLiteral("oocserverchat"));
+        oocserverchat->setGeometry(QRect(490, 1, 224, 277));
+        QPalette palette4;
+        palette4.setBrush(QPalette::Active, QPalette::Base, brush);
+        palette4.setBrush(QPalette::Inactive, QPalette::Base, brush);
+        palette4.setBrush(QPalette::Disabled, QPalette::Base, brush8);
+        oocserverchat->setPalette(palette4);
+        oocserverchat->setFrameShape(QFrame::NoFrame);
+        oocserverchat->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+        oocserverchat->setReadOnly(true);
+        oocmasterchat = new QPlainTextEdit(centralwidget);
+        oocmasterchat->setObjectName(QStringLiteral("oocmasterchat"));
+        oocmasterchat->setGeometry(QRect(490, 1, 224, 277));
+        QPalette palette5;
+        palette5.setBrush(QPalette::Active, QPalette::Base, brush);
+        palette5.setBrush(QPalette::Inactive, QPalette::Base, brush);
+        palette5.setBrush(QPalette::Disabled, QPalette::Base, brush8);
+        oocmasterchat->setPalette(palette5);
+        oocmasterchat->setFrameShape(QFrame::NoFrame);
+        oocmasterchat->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+        oocmasterchat->setReadOnly(true);
+        oocchatname = new QLineEdit(centralwidget);
+        oocchatname->setObjectName(QStringLiteral("oocchatname"));
+        oocchatname->setGeometry(QRect(492, 300, 85, 19));
+        QSizePolicy sizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+        sizePolicy.setHorizontalStretch(0);
+        sizePolicy.setVerticalStretch(0);
+        sizePolicy.setHeightForWidth(oocchatname->sizePolicy().hasHeightForWidth());
+        oocchatname->setSizePolicy(sizePolicy);
+        QPalette palette6;
+        palette6.setBrush(QPalette::Active, QPalette::Base, brush);
+        palette6.setBrush(QPalette::Inactive, QPalette::Base, brush);
+        palette6.setBrush(QPalette::Disabled, QPalette::Base, brush8);
+        oocchatname->setPalette(palette6);
+        QFont font;
+        font.setPointSize(9);
+        oocchatname->setFont(font);
+        oocchatname->setFrame(false);
+        oocchatmessage = new QLineEdit(centralwidget);
+        oocchatmessage->setObjectName(QStringLiteral("oocchatmessage"));
+        oocchatmessage->setGeometry(QRect(492, 281, 222, 19));
+        QPalette palette7;
+        palette7.setBrush(QPalette::Active, QPalette::Base, brush);
+        palette7.setBrush(QPalette::Inactive, QPalette::Base, brush);
+        palette7.setBrush(QPalette::Disabled, QPalette::Base, brush8);
+        oocchatmessage->setPalette(palette7);
+        QFont font1;
+        font1.setPointSize(10);
+        oocchatmessage->setFont(font1);
+        oocchatmessage->setFrame(false);
         Courtroom->setCentralWidget(centralwidget);
         charselect->raise();
         background->raise();
@@ -257,6 +320,10 @@ public:
         changecharacter->raise();
         charError->raise();
         musiclist->raise();
+        oocserverchat->raise();
+        oocchatname->raise();
+        oocchatmessage->raise();
+        oocmasterchat->raise();
 
         retranslateUi(Courtroom);
 
@@ -302,6 +369,7 @@ public:
         ___qlistwidgetitem->setText(QApplication::translate("Courtroom", "u wot m8", 0));
         musiclist->setSortingEnabled(__sortingEnabled);
 
+        oocchatname->setPlaceholderText(QApplication::translate("Courtroom", "Name", 0));
     } // retranslateUi
 
 };
