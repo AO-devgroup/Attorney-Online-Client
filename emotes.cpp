@@ -2,8 +2,8 @@
 
 void Courtroom::setEmotes()
 {
-//  bool found_emotions = false;
-//  QString line; //I don't think we'll need those things, keeping till we agreed on it
+  /*
+//   //I don't think we'll need those things, keeping till we agreed on it
   QSettings* ini_charini = new QSettings(getCharPath(playerChar) + "char.ini", QSettings::IniFormat);
 
   emote_number = -1;
@@ -50,52 +50,138 @@ void Courtroom::setEmotes()
       }
 }
 
+*/
+
+  //catching the spectator :v)
+  if (playerChar == "null")
+  {
+    qDebug() << "playerChar = " << playerChar;
+    return;
+  }
+
+  QString char_ini_path = getBasePath() + "characters/" + playerChar + "/char.ini";
+
+  QFile char_ini(char_ini_path);
+  if (!char_ini.open(QIODevice::ReadOnly))
+  {
+      callFatalError("failed to open " + char_ini_path + " for reading.");
+      return;
+  }
+
+  QTextStream in(&char_ini);
+  QStringList char_ini_list;
+  QString line;
+  for(int line_number{0} ; !in.atEnd() ; ++line_number)
+  {
+    line = in.readLine();
+
+    char_ini_list.insert(line_number, line);
+  }
+
+  int int_emotions_line = -1;
+  int int_soundn_line = -1;
+
+  for(int n_line = 0 ; n_line < char_ini_list.size() ; ++n_line)
+  {
+    QString line = char_ini_list.at(n_line);
+
+    if (line.startsWith("[Emotions]"))
+      int_emotions_line = n_line;
+
+    if (line.startsWith("[SoundN]"))
+      int_soundn_line = n_line;
+  }
+
+  //checks that we actually found what we need
+  if (int_emotions_line == -1)
+  {
+    QString err_str = "Could not find [Emotions] in " + char_ini_path;
+    callError(err_str);
+    return;
+  }
+
+  if (int_soundn_line == -1)
+  {
+    QString err_str = "Could not find [SoundN] in " + char_ini_path;
+    callError(err_str);
+    return;
+  }
+
+  int emote_counter = 1;
+  emote_list.clear();
+
+  for(int n_line = int_emotions_line ; n_line < int_soundn_line ; ++n_line)
+  {
+    QString line = char_ini_list.at(n_line);
+    QString search_line = QString::number(emote_counter) + " = ";
+
+    if (line.startsWith(search_line))
+    {
+      //removes "x = " from the start of the string
+      QString cropped_line = line.remove(0, 4);
+      QStringList single_emote_line = cropped_line.split("#");
+      emote_type f_emote;
+
+      //dodging those silly index out of range crashes
+      if (single_emote_line.size() < 4)
+      {
+        QString err_str = "Misformatted emote line in file " + char_ini_path + " on line " + n_line;
+        callError(err_str);
+      }
+
+      f_emote.comment = single_emote_line.at(0);
+      f_emote.preanim = single_emote_line.at(1);
+      f_emote.anim = single_emote_line.at(2);
+      f_emote.mod = single_emote_line.at(3);
+
+      emote_list.insert(emote_counter - 1, f_emote);
+
+      ++emote_counter;
+
+    }
+  }
+
+  int n_emotes = emote_list.size();
+  qDebug() << "n_emotes = " << n_emotes;
+
+  if (n_emotes == 0)
+  {
+    callError("Something went horribly wrong with setting the emotes. (emote_list.size() = 0)");
+    return;
+  }
+
+  if (n_emotes % 10 == 0)
+    emote_pages = n_emotes / 10;
+
+  else
+    emote_pages = (n_emotes / 10) + 1;
 
 
-//this is a really long comment isn't it :( BTW the closing '}' is under the comment-out
+  /*
 
-//  for(int line_number{0} ; line_number < g_char_ini.size() ; ++line_number)
-//  {
-//    line = g_char_ini.at(line_number);
+    if (!(emote_number == -1) && line.startsWith("1 = "))
+    {
 
-//    //we are satisified if the line starts with target string
-//    //in case someone adds a space and wonders why things break
-//    if (line.startsWith("[Emotions]"))
-//      found_emotions = true;
+      for(int emote_n{0} ; emote_n <= emote_number ; ++emote_n)
+      {
+        int current_line_n = line_number + emote_n - 1;
+        QString current_line = g_char_ini[current_line_n];
+        QStringList line_list = current_line.split("#");
 
-//    if (line.startsWith("number = ") && found_emotions)
-//    {
-//      //removes "number = " from the start of the string
-//      QString newline = line.remove(0, 9);
-
-//      //SANITY CHECK
-//      if (newline.toInt() < 1)
-//        callFatalError("number of emotes appear to be zero or negative");
-
-//      emote_number = newline.toInt();
-//    }
-
-//    if (!(emote_number == -1) && line.startsWith("1 = "))
-//    {
-
-//      for(int emote_n{1} ; emote_n <= emote_number ; ++emote_n)
-//      {
-//        int current_line_n = line_number + emote_n - 1;
-//        QString current_line = g_char_ini[current_line_n];
-//        QStringList line_list = current_line.split("#");
-
-//        emote_list.insert(emote_n, line_list[2]);
-//      }
-//      break;
-//    }
+        emote_list.insert(emote_n, line_list[2]);
+      }
+      break;
+    }
 
 
-//    //in the unlikely event that we reach EOF
-//    if (line_number == (g_char_ini.size() - 1))
-//    {
-//      callError("could not find [Emotions] in char.ini");
-//    }
-//  }
+   //in the unlikely event that we reach EOF
+   if (line_number == (g_char_ini.size() - 1))
+    {
+      callError("could not find [Emotions] in char.ini");
+    }
+  }
+  */
+}
 
 
 //called every time the emote page is changed

@@ -131,6 +131,7 @@ void Courtroom::enter_courtroom()
 
 void Courtroom::setChar()
 {
+  qDebug() << "setChar() called";
 //  LoadCharIni(playerChar); //This isn't needed anymore since we'll use QSettings from now on.
 
   //i. e. spectator

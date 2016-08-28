@@ -176,7 +176,7 @@ void Networkhandler::handle_ms_packet()
 
     }
 
-    qDebug() << packet;
+    //qDebug() << packet;
   }
 
 }
@@ -255,9 +255,9 @@ void Networkhandler::handle_server_packet()
         char_type f_char;
 
         f_char.name = char_arguments.at(0);
-        qDebug() << "f_char.name: " << f_char.name;
+        //qDebug() << "f_char.name: " << f_char.name;
         f_char.description =  char_arguments.at(1);
-        qDebug() << "f_char.description: " << f_char.description;
+        //qDebug() << "f_char.description: " << f_char.description;
 
         if (char_arguments.at(2) == "1")
           f_char.taken = true;
@@ -323,6 +323,6 @@ void Networkhandler::handle_server_packet()
 
       song_received(song_name);
     }
-    qDebug() << packet;
+    //qDebug() << packet;
   }
 }
