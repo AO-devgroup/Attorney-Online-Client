@@ -7,6 +7,11 @@ Courtroom::Courtroom(QWidget *parent) :
 {
   ui->setupUi(this);
   mapper = new QSignalMapper(this);
+  emote_mapper = new QSignalMapper(this);
+
+
+
+  construct_emotes();
   this->setWindowTitle("Attorney Online");
 }
 
@@ -14,23 +19,20 @@ Courtroom::~Courtroom()
 {
   delete ui;
   delete mapper;
+  delete emote_mapper;
+  delete emote_left_button;
+  delete emote_right_button;
 }
 
-void Courtroom::initialize_courtroom()
-{
-  setCharSelect();
-  show();
-}
-
+//called on character_list_received from network handler
 void Courtroom::set_character_list(QVector<char_type> &p_char_list)
 {
   character_list = p_char_list;
   char_list_set = true;
 
-  qDebug() << "set_character_list executed successfully";
-
-  //HACK uncomment in production, commented out for debugging
+  //debug, uncomment in production
   //if (music_list_set && background_set)
+    entering_server();
     setCharSelect();
 }
 
@@ -72,11 +74,6 @@ void Courtroom::set_background(QString p_background)
     setCharSelect();
 }
 
-void Courtroom::update_music_list()
-{
-
-}
-
 void Courtroom::setTheme()
 {
   QString background_path = g_theme_path + "courtroombackground.png";
@@ -103,69 +100,79 @@ void Courtroom::setTheme()
     ui->present->setStyleSheet("border-image:url(" + present_path + ")");
 
   if (fileExists(left_arrow_path))
-    ui->emote_left->setStyleSheet("border-image:url(" + left_arrow_path + ")");
+    emote_left_button->setStyleSheet("border-image:url(" + left_arrow_path + ")");
+
 
   if (fileExists(right_arrow_path))
-    ui->emote_right->setStyleSheet("border-image:url(" + right_arrow_path + ")");
+    emote_right_button->setStyleSheet("border-image:url(" + right_arrow_path + ")");
+
+  emote_left_button->hide();
+  emote_right_button->hide();
 
 }
 
 void Courtroom::enter_courtroom()
 {
-  //another failed attempt at optimizing
-  /*
-  for (charicon *f_charicon : charicon_list)
+  setTheme();
+
+  if (playerChar == "null")
   {
-    delete f_charicon;
+    ui->chatLine->hide();
+    ui->objection->hide();
+    ui->holdit->hide();
+    ui->takethat->hide();
+    ui->present->hide();
+    emote_left_button->hide();
+    emote_right_button->hide();
+
+    for(emoteicon *i_icon : emoteicon_list)
+    {
+      i_icon->hide();
+    }
+  }
+  else
+  {
+    setEmotes();
+    setEmotePage();
   }
 
-  charicon_list.clear();
-  */
-
-  update_music_list();
-  setChar();
-  setTheme();
+  ui->chatLine->clear();
+  ui->chatLine->show();
 
   ui->charselect->hide();
 }
 
-void Courtroom::setChar()
+void Courtroom::on_chatLine_returnPressed()
 {
-  qDebug() << "setChar() called";
-//  LoadCharIni(playerChar); //This isn't needed anymore since we'll use QSettings from now on.
-
-  //i. e. spectator
-  if (playerChar == "null")
+  QString f_message = ui->chatLine->text();
+  if(f_message == "")
+  {
     return;
+  }
 
-  setEmotes();
+  chatmessage_type f_chatmessage;
 
-  emote_pressed = 1;
+  f_chatmessage.character = playerChar;
+  f_chatmessage.emote = emote_list.at(emote_selected).anim;
+  f_chatmessage.message = f_message;
 
-  if (emote_number == -1)
-    callFatalError("failed to get emote_number (-1)");
+  chatmessage_requested(f_chatmessage);
 
-  if ((emote_number % 10) == 0)             //we check if the amount of emotes is divisible by ten
-    emote_pages = (emote_number / 10);
-  else
-    emote_pages = ((emote_number / 10) + 1);
-
-  emote_current_page = 1;
-
-  setEmotePage();
-
-  ui->emote1->setStyleSheet("border-image:url(" + getEmoteIconPath(1) + "_on.png" + ")");
-
-  ui->chatLine->show();
-  ui->objection->show();
-  ui->holdit->show();
-  ui->takethat->show();
-  ui->present->show();
+  ui->chatLine->clear();
 }
 
 void Courtroom::handle_chatmessage(chatmessage_type &p_message)
 {
   ui->chatlog->appendPlainText(p_message.message);
+
+  ui->playingbackground->setPixmap(background_path + "defenseempty.png");
+  ui->desk->setPixmap(background_path + "bancodefensa.png");
+  ui->chatbubble->setPixmap(g_theme_path + "chat.png");
+
+  QMovie *movie = new QMovie(getCharGifPath(p_message.character, "(b)" + p_message.emote + ".gif"));
+  ui->playingarea->setMovie(movie);
+
+  movie->start();
 }
 
 void Courtroom::handle_ms_message(QString p_message)
@@ -280,166 +287,15 @@ void Courtroom::on_present_clicked()
   }
 }
 
-void Courtroom::on_chatLine_returnPressed()
-{
-  QString chatMessage = ui->chatLine->text();
-  ui->chatlog->appendPlainText(chatMessage);
-  ui->chatLine->clear();
-
-  ui->playingbackground->setPixmap(getBasePath() + "background/gs4/defenseempty.png");
-  ui->desk->setPixmap(getBasePath() + "background/gs4/bancodefensa.png");
-  ui->chatbubble->setPixmap(g_theme_path + "chat.png");
-
-  QMovie *movie = new QMovie(getCharGifPath(playerChar, "(b)" + emote_list[getPressedEmote()].anim + ".gif"));
-  ui->playingarea->setMovie(movie);
-
-  movie->start();
-}
-
-void Courtroom::on_emote1_clicked()
-{
-  ui->chatLine->setFocus();
-
-  int n = 1;
-
-  setAllEmotesOff();
-
-  ui->emote1->setStyleSheet("border-image:url(" +
-                            getEmoteIconPath(n) +
-                            "_on.png" + ")");
-  emote_pressed = n;
-}
-
-void Courtroom::on_emote2_clicked()
-{
-  ui->chatLine->setFocus();
-
-  int n = 2;
-
-  setAllEmotesOff();
-
-  ui->emote2->setStyleSheet("border-image:url(" +
-                            getEmoteIconPath(n) +
-                            "_on.png" + ")");
-  emote_pressed = n;
-}
-
-void Courtroom::on_emote3_clicked()
-{
-  ui->chatLine->setFocus();
-
-  int n = 3;
-
-  setAllEmotesOff();
-
-  ui->emote3->setStyleSheet("border-image:url(" +
-                            getEmoteIconPath(n) +
-                            "_on.png" + ")");
-  emote_pressed = n;
-}
-
-void Courtroom::on_emote4_clicked()
-{
-  ui->chatLine->setFocus();
-
-  int n = 4;
-
-  setAllEmotesOff();
-
-  ui->emote4->setStyleSheet("border-image:url(" +
-                            getEmoteIconPath(n) +
-                            "_on.png" + ")");
-  emote_pressed = n;
-}
-
-void Courtroom::on_emote5_clicked()
-{
-  ui->chatLine->setFocus();
-
-  int n = 5;
-
-  setAllEmotesOff();
-
-  ui->emote5->setStyleSheet("border-image:url(" +
-                            getEmoteIconPath(n) +
-                            "_on.png" + ")");
-  emote_pressed = n;
-}
-
-void Courtroom::on_emote6_clicked()
-{
-  ui->chatLine->setFocus();
-
-  int n = 6;
-
-  setAllEmotesOff();
-
-  ui->emote6->setStyleSheet("border-image:url(" +
-                            getEmoteIconPath(n) +
-                            "_on.png" + ")");
-  emote_pressed = n;
-}
-
-void Courtroom::on_emote7_clicked()
-{
-  ui->chatLine->setFocus();
-
-  int n = 7;
-
-  setAllEmotesOff();
-
-  ui->emote7->setStyleSheet("border-image:url(" +
-                            getEmoteIconPath(n) +
-                            "_on.png" + ")");
-  emote_pressed = n;
-}
-
-void Courtroom::on_emote8_clicked()
-{
-  ui->chatLine->setFocus();
-
-  int n = 8;
-
-  setAllEmotesOff();
-
-  ui->emote8->setStyleSheet("border-image:url(" +
-                            getEmoteIconPath(n) +
-                            "_on.png" + ")");
-  emote_pressed = n;
-}
-
-void Courtroom::on_emote9_clicked()
-{
-  ui->chatLine->setFocus();
-
-  int n = 9;
-
-  setAllEmotesOff();
-
-  ui->emote9->setStyleSheet("border-image:url(" + getEmoteIconPath(n) + "_on.png" + ")");
-  emote_pressed = n;
-}
-
-void Courtroom::on_emote10_clicked()
-{
-  ui->chatLine->setFocus();
-
-  int n = 10;
-
-  setAllEmotesOff();
-
-  ui->emote10->setStyleSheet("border-image:url(" + getEmoteIconPath(n) + "_on.png" + ")");
-  emote_pressed = n;
-}
-
-void Courtroom::on_emote_left_clicked()
+void Courtroom::emote_left_clicked()
 {
   --emote_current_page;
   setEmotePage();
 }
 
-void Courtroom::on_emote_right_clicked()
+void Courtroom::emote_right_clicked()
 {
+  qDebug() << "emote_right_clicked called";
   ++emote_current_page;
   setEmotePage();
 }
@@ -447,28 +303,9 @@ void Courtroom::on_emote_right_clicked()
 
 void Courtroom::on_spectator_clicked()
 {
-    ui->objection->hide();
-    ui->holdit->hide();
-    ui->takethat->hide();
-    ui->present->hide();
+    playerChar = "null";
 
-    ui->emote10->hide();
-    ui->emote9->hide();
-    ui->emote8->hide();
-    ui->emote7->hide();
-    ui->emote6->hide();
-    ui->emote5->hide();
-    ui->emote4->hide();
-    ui->emote3->hide();
-    ui->emote2->hide();
-    ui->emote1->hide();
-
-    ui->emote_left->hide();
-    ui->emote_right->hide();
-
-    ui->chatLine->hide();
-
-    ui->charselect->hide();
+    enter_courtroom();
 }
 
 void Courtroom::on_charselect_left_clicked()
@@ -489,15 +326,21 @@ void Courtroom::on_changecharacter_clicked()
   //politely tell the server that we're not using our char anymore(playerChar)
   //(the network specification for this does not exist yet)
 
+  for (emoteicon *i_emote : emoteicon_list)
+  {
+    i_emote->hide();
+  }
+
+  emote_right_button->hide();
+  emote_left_button->hide();
+
   char_select_current_page = 1;
 
-  //setCharSelect();
   setCharSelectPage();
 }
 
 void Courtroom::on_musiclist_doubleClicked(const QModelIndex &index)
 {
-  //T0D0 set song_name to what is actually clicked
   QString song_name = music_list.at(index.row());
 
   song_requested(song_name);

@@ -31,7 +31,6 @@ public:
 
   void connect_to_master();
   void request_all_servers();
-  void initiate_loading_sequence();
   void disconnect_from_server();
 
   bool packet_debugging = true;
@@ -51,8 +50,6 @@ signals:
 
   void onlinestatus_changed(QString players_online, QString max_players);
 
-  void done_loading();
-
   void chatmessage_received(chatmessage_type &message);
 
   void song_received(QString song_name);
@@ -70,6 +67,8 @@ public slots:
   void handle_all_servers_requested();
 
   void handle_enter_server_request();
+
+  void handle_chatmessage_request(chatmessage_type &p_chatmessage);
 
   void handle_song_request(QString p_song_name);
 

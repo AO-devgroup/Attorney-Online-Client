@@ -1,39 +1,24 @@
 #include "config_handler.h"
 
-//obsolete, see below
-//QStringList g_config_file{"if this is visible anywhere, it means something broke"};
-
-
-
 QString getBasePath()
 {
   return (QDir::currentPath() + "/base/");
 }
 
-
-//obsolete, the whole config file is no longer loaded into a global list
-/*
-void LoadConfig()
+QString getCharPath(QString character)
 {
-  QFile config_file(getBasePath() + "config.ini");
-  if (!config_file.open(QIODevice::ReadOnly))
-  {
-      callError("FATAL ERROR: Failed to read " + getBasePath() + "config.ini");
-      //QApplication::quit();
-      qApp->quit();
-  }
-  QTextStream in(&config_file);
-
-  int line_count{0};
-
-  while(!in.atEnd())
-  {
-    g_config_file.insert(line_count, in.readLine());
-    ++line_count;
-  }
+  return (getBasePath() + "characters/" + character + "/");
 }
-*/
 
+QString getCharGifPath(QString character, QString image)
+{
+  return (getCharPath(character) + image);
+}
+
+QString getCharEmotePath(QString character, QString emote)
+{
+  return (getCharPath(character) + emote);
+}
 
 QString getTheme()
 {
@@ -62,14 +47,6 @@ QString getTheme()
   return "default";
 }
 
-//obsolete, use theme_path member instead
-/*
-QString getImagePath(QString image)
-{
-  return (getBasePath() + "themes/" + getTheme() + "/" + image);
-}
-*/
-
 bool fileExists(QString path, bool quiet)
 {
   QFileInfo check_file(path);
@@ -86,6 +63,9 @@ bool fileExists(QString path, bool quiet)
     return false;
   }
 }
+
+
+
 
 
 

@@ -307,3 +307,8 @@ void Lobby::LoadFavorites()
 
   favoritefile.close();
 }
+
+void Lobby::handle_server_entry()
+{
+  this->hide();
+}

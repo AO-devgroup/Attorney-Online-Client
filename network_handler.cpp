@@ -81,6 +81,20 @@ void Networkhandler::ms_send_message(QString packet)
   ms_socket->write(packet.toLocal8Bit());
 }
 
+void Networkhandler::handle_chatmessage_request(chatmessage_type &p_chatmessage)
+{
+  QString packet = "MS#" + p_chatmessage.character + "#" +
+                           p_chatmessage.emote + "#"+
+                           p_chatmessage.message + "#%";
+
+  if (!server_connected)
+    return;
+
+  qDebug() << "sent packet: " << packet;
+
+  server_socket->write(packet.toLocal8Bit());
+}
+
 void Networkhandler::handle_song_request(QString p_song_name)
 {
   QString packet = "MC#" + p_song_name + "#%";
@@ -90,27 +104,13 @@ void Networkhandler::handle_song_request(QString p_song_name)
 
 void Networkhandler::handle_enter_server_request()
 {
-  //HACK, workaround for debugging on old server versions
-  server_connected = true;
-
   if (!server_connected)
     return;
 
-  //for debugging
-  handle_server_packet();
-
-  //probably obsolete?
-  //initiate_loading_sequence();
-}
-
-void Networkhandler::initiate_loading_sequence()
-{
-
-  //server_socket->write("askchaa#%");
-
-  //we cheat a bit because the network protocol isnt done yet
-  //T0D0, fix when protocol is figured out
-  done_loading();
+  //request characters, music and background
+  server_socket->write("RC#%");
+  server_socket->write("RM#%");
+  server_socket->write("RB#%");
 }
 
 void Networkhandler::handle_ms_packet()
@@ -186,20 +186,22 @@ void Networkhandler::handle_server_packet()
 
   QString in_data;
 
+  /*
   //temporary code
   if (packet_debugging)
   {
-    //i sincerely apologize for this
-    in_data = "CI#Phoenix&&&#Miles&&&#Judge&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#Miles&&&#%EM#the worst song.mp3#why would anyone ever listen to this.mp1337#Darude - Sandstorm#Darude - Sandstorm#Darude - Sandstorm#Darude - Sandstorm#Darude - Sandstorm#Darude - Sandstorm#Darude - Sandstorm#Darude - Sandstorm#Darude - Sandstorm#Darude - Sandstorm#Darude - Sandstorm#Darude - Sandstorm#Darude - Sandstorm#Darude - Sandstorm#Darude - Sandstorm#Darude - Sandstorm#Darude - Sandstorm#Darude - Sandstorm#Darude - Sandstorm#Darude - Sandstorm#Darude - Sandstorm#Darude - Sandstorm#Darude - Sandstorm#Darude - Sandstorm#Darude - Sandstorm#Darude - Sandstorm#Darude - Sandstorm#Darude - Sandstorm#Darude - Sandstorm#Darude - Sandstorm#Darude - Sandstorm#Darude - Sandstorm#Darude - Sandstorm#Darude - Sandstorm#Darude - Sandstorm#Darude - Sandstorm#Darude - Sandstorm#Darude - Sandstorm#Darude - Sandstorm#Darude - Sandstorm#Darude - Sandstorm#Darude - Sandstorm#%";
+    //we pretend that we receive this for debugging
+    in_data = "CI#Phoenix&&&#Miles&&&#Judge&&&#%EM#the best song.mp3#the worst song.mp3#%BN#gs4#%";
   }
+  */
 
-  else
-  {
+  //else
+  //{
     char buffer[2048] = {0};
     server_socket->read(buffer, server_socket->bytesAvailable());
 
     in_data = buffer;
-  }
+  //}
 
   QStringList packet_list = in_data.split("%", QString::SplitBehavior(QString::SkipEmptyParts));
 
@@ -212,15 +214,6 @@ void Networkhandler::handle_server_packet()
     //typically the first thing we get from the server when we connect
     if (header == "decryptor" || header == "HI")
     {
-      //QNetworkInterface f_interface;
-
-      //we send HI# and our hardware address as our end of the handshake
-      //QString packet = "HI#" + f_interface.hardwareAddress() + "#%";
-      //callError(packet);
-      //server_socket->write(packet.toLocal8Bit());
-
-      //jk we send HI#<version>#% instead
-
       server_socket->write("HI#AO2#1.0.0#%");
     }
 
@@ -237,7 +230,7 @@ void Networkhandler::handle_server_packet()
     }
 
     //handles the character list packet
-    else if (header == "CI")
+    else if (header == "RC")
     {
 
       QVector<char_type> f_char_list;
@@ -281,7 +274,7 @@ void Networkhandler::handle_server_packet()
     }
 
     //handles the music list packet
-    else if (header == "EM")
+    else if (header == "RM")
     {
       QStringList f_music_list;
 
@@ -295,15 +288,7 @@ void Networkhandler::handle_server_packet()
       music_list_received(f_music_list);
     }
 
-    else if (header == "DONE")
-    {
-      //if (!bool_character_list_received)
-      //  server_socket->write("ALL#%");
-
-      done_loading();
-    }
-
-    else if (header == "BN")
+    else if (header == "RB")
     {
       background_received(packet_contents.at(1));
     }
@@ -311,9 +296,10 @@ void Networkhandler::handle_server_packet()
     else if (header == "MS")
     {
       chatmessage_type f_message;
-      f_message.message = packet_contents.at(2);
-      f_message.character = "Phoenix";
-      f_message.emote = "normal.gif";
+      f_message.character = packet_contents.at(1);
+      f_message.emote = packet_contents.at(2);
+      f_message.message = packet_contents.at(3);
+
       chatmessage_received(f_message);
     }
 
@@ -323,6 +309,6 @@ void Networkhandler::handle_server_packet()
 
       song_received(song_name);
     }
-    //qDebug() << packet;
+    qDebug() << packet;
   }
 }

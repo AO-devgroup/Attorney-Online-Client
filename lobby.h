@@ -79,6 +79,8 @@ private slots:
 
   void on_favoritelist_clicked(const QModelIndex &index);
 
+  void handle_server_entry();
+
 private:
   Ui::Lobby *ui;
   bool court_exists = false;
