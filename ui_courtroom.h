@@ -51,6 +51,7 @@ public:
     QPlainTextEdit *oocmasterchat;
     QLineEdit *oocchatname;
     QLineEdit *oocchatmessage;
+    QLabel *chattext;
 
     void setupUi(QMainWindow *Courtroom)
     {
@@ -148,7 +149,7 @@ public:
         chatLine->setFrame(false);
         desk = new QLabel(centralwidget);
         desk->setObjectName(QStringLiteral("desk"));
-        desk->setGeometry(QRect(0, 149, 256, 42));
+        desk->setGeometry(QRect(0, 150, 256, 42));
         playingbackground = new QLabel(centralwidget);
         playingbackground->setObjectName(QStringLiteral("playingbackground"));
         playingbackground->setGeometry(QRect(0, 0, 256, 192));
@@ -239,6 +240,27 @@ public:
         font1.setPointSize(10);
         oocchatmessage->setFont(font1);
         oocchatmessage->setFrame(false);
+        chattext = new QLabel(centralwidget);
+        chattext->setObjectName(QStringLiteral("chattext"));
+        chattext->setGeometry(QRect(3, 132, 250, 60));
+        QPalette palette8;
+        palette8.setBrush(QPalette::Active, QPalette::WindowText, brush7);
+        palette8.setBrush(QPalette::Active, QPalette::Text, brush7);
+        palette8.setBrush(QPalette::Active, QPalette::ButtonText, brush7);
+        palette8.setBrush(QPalette::Inactive, QPalette::WindowText, brush7);
+        palette8.setBrush(QPalette::Inactive, QPalette::Text, brush7);
+        palette8.setBrush(QPalette::Inactive, QPalette::ButtonText, brush7);
+        QBrush brush9(QColor(190, 190, 190, 255));
+        brush9.setStyle(Qt::SolidPattern);
+        palette8.setBrush(QPalette::Disabled, QPalette::WindowText, brush9);
+        palette8.setBrush(QPalette::Disabled, QPalette::Text, brush9);
+        palette8.setBrush(QPalette::Disabled, QPalette::ButtonText, brush9);
+        chattext->setPalette(palette8);
+        QFont font2;
+        font2.setBold(false);
+        font2.setWeight(50);
+        chattext->setFont(font2);
+        chattext->setAlignment(Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop);
         Courtroom->setCentralWidget(centralwidget);
         charselect->raise();
         background->raise();
@@ -263,6 +285,7 @@ public:
         oocchatname->raise();
         oocchatmessage->raise();
         oocmasterchat->raise();
+        chattext->raise();
 
         retranslateUi(Courtroom);
 
@@ -297,6 +320,7 @@ public:
         musiclist->setSortingEnabled(__sortingEnabled);
 
         oocchatname->setPlaceholderText(QApplication::translate("Courtroom", "Name", 0));
+        chattext->setText(QString());
     } // retranslateUi
 
 };

@@ -93,6 +93,8 @@ private:
 
   void enter_courtroom();
 
+  void set_scene(QString p_bgimage, QString p_desk = "");
+
 private slots:
   void charChoose(int i);
 

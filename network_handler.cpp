@@ -83,9 +83,10 @@ void Networkhandler::ms_send_message(QString packet)
 
 void Networkhandler::handle_chatmessage_request(chatmessage_type &p_chatmessage)
 {
-  QString packet = "MS#" + p_chatmessage.character + "#" +
-                           p_chatmessage.emote + "#"+
-                           p_chatmessage.message + "#%";
+  QString packet = "MS#" + p_chatmessage.message + "#" +
+                           p_chatmessage.character + "#" +
+                           p_chatmessage.emote + "#" +
+                           p_chatmessage.side + "#%";
 
   if (!server_connected)
     return;
@@ -296,9 +297,11 @@ void Networkhandler::handle_server_packet()
     else if (header == "MS")
     {
       chatmessage_type f_message;
-      f_message.character = packet_contents.at(1);
-      f_message.emote = packet_contents.at(2);
-      f_message.message = packet_contents.at(3);
+
+      f_message.message = packet_contents.at(1);
+      f_message.character = packet_contents.at(2);
+      f_message.emote = packet_contents.at(3);
+      f_message.side = packet_contents.at(4);
 
       chatmessage_received(f_message);
     }

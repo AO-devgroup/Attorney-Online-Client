@@ -39,6 +39,7 @@ struct chatmessage_type
   QString message;
   QString character;
   QString emote;
+  QString side;
   //a whole lot of other info #T0D0
 };
 

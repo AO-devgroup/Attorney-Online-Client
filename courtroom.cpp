@@ -30,10 +30,11 @@ void Courtroom::set_character_list(QVector<char_type> &p_char_list)
   character_list = p_char_list;
   char_list_set = true;
 
-  //debug, uncomment in production
-  //if (music_list_set && background_set)
+  if (music_list_set && background_set)
+  {
     entering_server();
     setCharSelect();
+  }
 }
 
 void Courtroom::set_music_list(QStringList &p_music_list)
@@ -62,16 +63,22 @@ void Courtroom::set_music_list(QStringList &p_music_list)
   }
 
   if (char_list_set && background_set)
+  {
+    entering_server();
     setCharSelect();
+  }
 }
 
 void Courtroom::set_background(QString p_background)
 {
-  background_path = getBasePath() + "background/" + p_background + '/';
+  background_path = getBasePath() + "background/" + p_background + "/";
   background_set = true;
 
   if (music_list_set && char_list_set)
+  {
+    entering_server();
     setCharSelect();
+  }
 }
 
 void Courtroom::setTheme()
@@ -101,7 +108,6 @@ void Courtroom::setTheme()
 
   if (fileExists(left_arrow_path))
     emote_left_button->setStyleSheet("border-image:url(" + left_arrow_path + ")");
-
 
   if (fileExists(right_arrow_path))
     emote_right_button->setStyleSheet("border-image:url(" + right_arrow_path + ")");
@@ -152,6 +158,29 @@ void Courtroom::on_chatLine_returnPressed()
 
   chatmessage_type f_chatmessage;
 
+  QFile char_ini(getCharPath(playerChar) + "char.ini");
+  if (!char_ini.open(QIODevice::ReadOnly))
+  {
+      callError("failed to open " + getCharPath(playerChar) + "char.ini for reading.");
+  }
+
+  QTextStream in(&char_ini);
+  QString f_side = "";
+
+  for(; !in.atEnd() ;)
+  {
+    QString line = in.readLine();
+    if (line.startsWith("side = "))
+    {
+      f_side = line.remove(0, 7);
+      break;
+    }
+  }
+
+  if (f_side == "")
+    callError("could not find side = in char.ini");
+
+  f_chatmessage.side = f_side;
   f_chatmessage.character = playerChar;
   f_chatmessage.emote = emote_list.at(emote_selected).anim;
   f_chatmessage.message = f_message;
@@ -161,13 +190,58 @@ void Courtroom::on_chatLine_returnPressed()
   ui->chatLine->clear();
 }
 
-void Courtroom::handle_chatmessage(chatmessage_type &p_message)
+void Courtroom::set_scene(QString bg_image, QString desk)
 {
+  QString img_path = background_path + bg_image;
+  QString default_img_path = getBasePath() + "background/default/" + bg_image;
+
+  QString desk_path = background_path + desk;
+  QString default_desk_path = getBasePath() + "background/default/" + desk;
+
+  if (fileExists(img_path, true))
+    ui->playingbackground->setPixmap(img_path);
+  else if (fileExists(default_img_path, true))
+    ui->playingbackground->setPixmap(default_img_path);
+  else
+    ui->playingbackground->clear();
+
+  if (fileExists(desk_path, true))
+    ui->desk->setPixmap(desk_path);
+  else if (fileExists(default_desk_path, true))
+    ui->desk->setPixmap(default_desk_path);
+  else
+    ui->desk->clear();
+}
+
+void Courtroom::handle_chatmessage(chatmessage_type &p_message)
+{ 
   ui->chatlog->appendPlainText(p_message.message);
 
-  ui->playingbackground->setPixmap(background_path + "defenseempty.png");
-  ui->desk->setPixmap(background_path + "bancodefensa.png");
-  ui->chatbubble->setPixmap(g_theme_path + "chat.png");
+  if (p_message.side == "jud")
+    set_scene("judgestand.png");
+  else if (p_message.side == "def")
+    set_scene("defenseempty.png", "bancodefensa.png");
+  else if (p_message.side == "pro")
+    set_scene("prosecutorempty.png", "bancoacusacion.png");
+  else if (p_message.side == "wit")
+    set_scene("witnessempty.png", "estrado.png");
+  else if (p_message.side == "hld")
+    set_scene("helperstand.png");
+  else if (p_message.side == "hlp")
+    set_scene("helperstandpro.png");
+  else
+    set_scene("witnessempty.png", "estrado.png");
+
+  if(fileExists(g_theme_path + "chat.png"))
+    ui->chatbubble->setPixmap(g_theme_path + "chat.png");
+
+  else
+    ui->chatbubble->setPixmap(getBasePath() + "background/default/chat.png");
+
+
+  ui->chattext->setText(p_message.message);
+  ui->chattext->show();
+  ui->chatbubble->show();
 
   QMovie *movie = new QMovie(getCharGifPath(p_message.character, "(b)" + p_message.emote + ".gif"));
   ui->playingarea->setMovie(movie);
