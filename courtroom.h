@@ -22,6 +22,7 @@
 #include "charicon.h"
 #include "datatypes.h"
 #include "globals.h"
+#include "file_handler.h"
 
 
 namespace Ui {

@@ -24,7 +24,7 @@ Courtroom::~Courtroom()
   delete emote_right_button;
 }
 
-//called on character_list_received from network handler
+//called on character_list_ from network handler
 void Courtroom::set_character_list(QVector<char_type> &p_char_list)
 {
   character_list = p_char_list;
@@ -161,7 +161,7 @@ void Courtroom::on_chatLine_returnPressed()
   QFile char_ini(getCharPath(playerChar) + "char.ini");
   if (!char_ini.open(QIODevice::ReadOnly))
   {
-      callError("failed to open " + getCharPath(playerChar) + "char.ini for reading.");
+    callError("failed to open " + getCharPath(playerChar) + "char.ini for reading.");
   }
 
   QTextStream in(&char_ini);
@@ -215,7 +215,9 @@ void Courtroom::set_scene(QString bg_image, QString desk)
 
 void Courtroom::handle_chatmessage(chatmessage_type &p_message)
 { 
-  ui->chatlog->appendPlainText(p_message.message);
+  QString showname = getShowname(p_message.character);
+
+  ui->chatlog->appendPlainText(p_message.character + ": " + p_message.message);
 
   if (p_message.side == "jud")
     set_scene("judgestand.png");
@@ -238,9 +240,9 @@ void Courtroom::handle_chatmessage(chatmessage_type &p_message)
   else
     ui->chatbubble->setPixmap(getBasePath() + "background/default/chat.png");
 
-
-  ui->chattext->setText(p_message.message);
+  ui->chattext->setPlainText(p_message.message);
   ui->chattext->show();
+  ui->charname->setText(showname);
   ui->chatbubble->show();
 
   QMovie *movie = new QMovie(getCharGifPath(p_message.character, "(b)" + p_message.emote + ".gif"));
