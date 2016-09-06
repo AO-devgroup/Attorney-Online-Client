@@ -53,6 +53,8 @@ public:
     QLineEdit *oocchatmessage;
     QLabel *charname;
     QPlainTextEdit *chattext;
+    QPushButton *ooc_master;
+    QPushButton *ooc_server;
 
     void setupUi(QMainWindow *Courtroom)
     {
@@ -284,6 +286,12 @@ public:
         chattext->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
         chattext->setReadOnly(true);
         chattext->setTextInteractionFlags(Qt::NoTextInteraction);
+        ooc_master = new QPushButton(centralwidget);
+        ooc_master->setObjectName(QStringLiteral("ooc_master"));
+        ooc_master->setGeometry(QRect(580, 300, 60, 19));
+        ooc_server = new QPushButton(centralwidget);
+        ooc_server->setObjectName(QStringLiteral("ooc_server"));
+        ooc_server->setGeometry(QRect(645, 300, 60, 19));
         Courtroom->setCentralWidget(centralwidget);
         charselect->raise();
         background->raise();
@@ -310,6 +318,8 @@ public:
         oocmasterchat->raise();
         charname->raise();
         chattext->raise();
+        ooc_master->raise();
+        ooc_server->raise();
 
         retranslateUi(Courtroom);
 
@@ -345,6 +355,8 @@ public:
 
         oocchatname->setPlaceholderText(QApplication::translate("Courtroom", "Name", 0));
         charname->setText(QString());
+        ooc_master->setText(QApplication::translate("Courtroom", "Master", 0));
+        ooc_server->setText(QApplication::translate("Courtroom", "Server", 0));
     } // retranslateUi
 
 };

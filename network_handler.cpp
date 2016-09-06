@@ -8,7 +8,7 @@ Networkhandler::Networkhandler(QObject *parent) : QObject(parent)
   connect(ms_socket, &QTcpSocket::readyRead, this, &Networkhandler::handle_ms_packet);
   connect(server_socket, &QTcpSocket::readyRead, this, &Networkhandler::handle_server_packet);
 
-  connect(server_socket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(handle_server_disconnect()));
+  connect(server_socket, SIGNAL(error(QAbstractSocket::disconnect())), this, SLOT(handle_server_disconnect()));
 
   connect (ms_socket, SIGNAL(connected()), this, SLOT(ms_connection_established()));
   connect (ms_socket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(ms_failed_to_connect()));
@@ -73,12 +73,20 @@ void Networkhandler::request_all_servers()
   ms_socket->write("ALL#%");
 }
 
-void Networkhandler::ms_send_message(QString packet)
+void Networkhandler::ms_send_message(QString p_packet)
 {
   if (!master_connected)
     return;
 
-  ms_socket->write(packet.toLocal8Bit());
+  ms_socket->write(p_packet.toLocal8Bit());
+}
+
+void Networkhandler::ooc_send_message(QString p_packet)
+{
+  if (!server_connected)
+    return;
+
+  server_socket->write(p_packet.toLocal8Bit());
 }
 
 void Networkhandler::handle_chatmessage_request(chatmessage_type &p_chatmessage)
@@ -154,7 +162,7 @@ void Networkhandler::handle_ms_packet()
 
     else if (header == "ALL")
     {
-      int amount_of_servers = packet_arguments.size() - 2;
+      int amount_of_servers = packet_arguments.size() - 1;
 
       qDebug() << "amount_of_servers: " << amount_of_servers;
 
@@ -177,7 +185,7 @@ void Networkhandler::handle_ms_packet()
 
     }
 
-    //qDebug() << packet;
+    qDebug() << packet;
   }
 
 }
@@ -312,6 +320,16 @@ void Networkhandler::handle_server_packet()
 
       song_received(song_name);
     }
+
+    else if (header == "CT")
+    {
+      QString name = packet_contents.at(1);
+      QString message = packet_contents.at(2);
+
+      ooc_message_received(name + ": " + message);
+    }
+
+
     qDebug() << packet;
   }
 }

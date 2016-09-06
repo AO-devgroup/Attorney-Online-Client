@@ -8,6 +8,7 @@ Courtroom::Courtroom(QWidget *parent) :
   ui->setupUi(this);
   mapper = new QSignalMapper(this);
   emote_mapper = new QSignalMapper(this);
+  songplayer = new QMediaPlayer(this);
 
 
 
@@ -22,6 +23,7 @@ Courtroom::~Courtroom()
   delete emote_mapper;
   delete emote_left_button;
   delete emote_right_button;
+  delete songplayer;
 }
 
 //called on character_list_ from network handler
@@ -144,6 +146,7 @@ void Courtroom::enter_courtroom()
 
   ui->chatLine->clear();
   ui->chatLine->show();
+  ui->chatLine->setFocus();
 
   ui->charselect->hide();
 }
@@ -254,6 +257,11 @@ void Courtroom::handle_chatmessage(chatmessage_type &p_message)
 void Courtroom::handle_ms_message(QString p_message)
 {
   ui->oocmasterchat->appendPlainText(p_message);
+}
+
+void Courtroom::handle_ooc_message(QString p_message)
+{
+  ui->oocserverchat->appendPlainText(p_message);
 }
 
 void Courtroom::on_holdit_clicked()
@@ -424,10 +432,20 @@ void Courtroom::on_musiclist_doubleClicked(const QModelIndex &index)
 
 void Courtroom::play_song(QString p_song_name)
 {
-  QString err_msg = "Song played: " + p_song_name;
-  callError(err_msg);
-  //T0D0, add implementation
-  //QMusicPlayer.play() or something?
+  QString song_path = getBasePath() + "sounds/music/" + p_song_name;
+
+  if (fileExists(song_path))
+  {
+    songplayer->setMedia(QUrl::fromLocalFile(song_path));
+    songplayer->setVolume(50);
+    songplayer->play();
+  }
+
+  //assume "stop.mp3" or something
+  else
+  {
+    songplayer->setVolume(0);
+  }
 }
 
 void Courtroom::on_oocchatmessage_returnPressed()
@@ -439,7 +457,26 @@ void Courtroom::on_oocchatmessage_returnPressed()
   //no you cant send empty messages
   if ((name != "") && (message != ""))
   {
-    ms_message_requested(packet);
+    //true is ms toggled
+    if (ms_or_server_ooc)
+      ms_message_requested(packet);
+    else
+      ooc_message_requested(packet);
+
     ui->oocchatmessage->clear();
   }
+}
+
+void Courtroom::on_ooc_master_clicked()
+{
+  ms_or_server_ooc = true;
+  ui->oocserverchat->hide();
+  ui->oocmasterchat->show();
+}
+
+void Courtroom::on_ooc_server_clicked()
+{
+  ms_or_server_ooc = false;
+  ui->oocmasterchat->hide();
+  ui->oocserverchat->show();
 }

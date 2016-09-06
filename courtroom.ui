@@ -1087,6 +1087,32 @@
      <set>Qt::NoTextInteraction</set>
     </property>
    </widget>
+   <widget class="QPushButton" name="ooc_master">
+    <property name="geometry">
+     <rect>
+      <x>580</x>
+      <y>300</y>
+      <width>60</width>
+      <height>19</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Master</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="ooc_server">
+    <property name="geometry">
+     <rect>
+      <x>645</x>
+      <y>300</y>
+      <width>60</width>
+      <height>19</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Server</string>
+    </property>
+   </widget>
    <zorder>charselect</zorder>
    <zorder>background</zorder>
    <zorder>chatlog</zorder>
@@ -1112,6 +1138,8 @@
    <zorder>oocmasterchat</zorder>
    <zorder>charname</zorder>
    <zorder>chattext</zorder>
+   <zorder>ooc_master</zorder>
+   <zorder>ooc_server</zorder>
   </widget>
  </widget>
  <resources>

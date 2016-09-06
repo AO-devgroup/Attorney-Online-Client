@@ -12,6 +12,7 @@
 #include <QSettings>
 #include <QDebug>
 #include <QModelIndex>
+#include <QMediaPlayer>
 
 #include "ui_courtroom.h"
 
@@ -40,17 +41,6 @@ public:
   void setTheme();
 
   ~Courtroom();
-
-public slots:
-  void set_character_list(QVector<char_type> &p_char_list);
-
-  void set_music_list(QStringList &p_music_list);
-
-  void set_background(QString background);
-
-  void handle_chatmessage(chatmessage_type &p_message);
-
-  void handle_ms_message(QString p_message);
 
 private:
   Ui::Courtroom *ui;
@@ -84,17 +74,33 @@ private:
 
   //QSettings ini_charini;
 
+  QMediaPlayer *songplayer;
   QStringList music_list;
 
   bool char_list_set = false;
   bool music_list_set = false;
   bool background_set = false;
 
+  //true is ms, false is server
+  bool ms_or_server_ooc = true;
+
   QString background_path;
 
   void enter_courtroom();
 
   void set_scene(QString p_bgimage, QString p_desk = "");
+
+public slots:
+  void set_character_list(QVector<char_type> &p_char_list);
+
+  void set_music_list(QStringList &p_music_list);
+
+  void set_background(QString background);
+
+  void handle_chatmessage(chatmessage_type &p_message);
+
+  void handle_ms_message(QString p_message);
+  void handle_ooc_message(QString p_message);
 
 private slots:
   void charChoose(int i);
@@ -127,6 +133,10 @@ private slots:
 
   void on_oocchatmessage_returnPressed();
 
+  void on_ooc_master_clicked();
+
+  void on_ooc_server_clicked();
+
 signals:
   void entering_server();
 
@@ -135,6 +145,8 @@ signals:
   void song_requested(QString p_song_name);
 
   void ms_message_requested(QString p_packet);
+
+  void ooc_message_requested(QString p_packet);
 
 
 };

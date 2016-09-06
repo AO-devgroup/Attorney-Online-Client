@@ -24,7 +24,7 @@ public:
   bool master_connected = false;
   bool server_connected = false;
 
-  QString ms_hostname = "localhost";
+  QString ms_hostname = "dev.aceattorneyonline.com";
   int ms_port = 27016;
 
   QVector<server_type> m_server_list;
@@ -39,6 +39,7 @@ public:
 signals:
 
   void ms_message_received(QString message);
+  void ooc_message_received(QString p_message);
 
   void server_list_received(QVector<server_type> &f_server_list);
 
@@ -62,7 +63,8 @@ public slots:
 
   void ms_connection_established();
   void ms_failed_to_connect();
-  void ms_send_message(QString packet);
+  void ms_send_message(QString p_packet);
+  void ooc_send_message(QString p_packet);
 
   void handle_all_servers_requested();
 
