@@ -21,7 +21,7 @@ public:
   emoteicon(int x_pos, int y_pos, QWidget *parent);
   QWidget *m_parent;
 
-  QLabel *notselected_overlay;
+  QLabel *selected_overlay;
   bool is_selected = false;
 
   void setIcon(QString character, int n_emote);

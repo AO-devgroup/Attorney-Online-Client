@@ -12,21 +12,21 @@ emoteicon::emoteicon(int x_pos, int y_pos, QWidget *parent)
   this->move(x_pos, y_pos);
   this->hide();
 
-  notselected_overlay = new QLabel(this);
+  selected_overlay = new QLabel(this);
 
   if (fileExists(g_theme_path + "emote_selected.png"))
-    notselected_overlay->setStyleSheet("border-image:url(" + g_theme_path + "emote_selected.png" + ")");
+    selected_overlay->setStyleSheet("border-image:url(" + g_theme_path + "emote_selected.png" + ")");
 
-  notselected_overlay->setAttribute(Qt::WA_TransparentForMouseEvents);
-  notselected_overlay->resize(40, 40);
-  notselected_overlay->move(0, 0);
+  selected_overlay->setAttribute(Qt::WA_TransparentForMouseEvents);
+  selected_overlay->resize(40, 40);
+  selected_overlay->move(0, 0);
 
   this->hide();
 }
 
 emoteicon::~emoteicon()
 {
-  delete notselected_overlay;
+  delete selected_overlay;
 }
 
 void emoteicon::setIcon(QString character, int n_emote)

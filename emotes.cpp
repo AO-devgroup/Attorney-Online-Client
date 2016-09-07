@@ -223,10 +223,10 @@ void Courtroom::setEmotePage()
 
     if(emote_selected == n_real_emote)
     {
-      emoteicon_list.at(n_local_emote)->notselected_overlay->hide();
+      emoteicon_list.at(n_local_emote)->selected_overlay->show();
     }
     else
-      emoteicon_list.at(n_local_emote)->notselected_overlay->show();
+      emoteicon_list.at(n_local_emote)->selected_overlay->hide();
   }
 }
 
@@ -239,10 +239,10 @@ void Courtroom::emote_choose(int local_emote_number)
 
   for(emoteicon *i_emote : emoteicon_list)
   {
-    i_emote->notselected_overlay->show();
+    i_emote->selected_overlay->hide();
   }
 
-  emoteicon_list.at(local_emote_number)->notselected_overlay->hide();
+  emoteicon_list.at(local_emote_number)->selected_overlay->show();
   emote_selected = n_real_emote;
 }
 
