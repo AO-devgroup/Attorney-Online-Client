@@ -8,9 +8,11 @@ masterchat works 100%, favorites work and servers show online staus and clicking
 
 MAKE SURE THE CODE BUILDS BEFORE PUSHING
 
-here is a working windows build:
+here is a working windows build(UPDATED 8th sept. 2016)(runs smooth on wine):
 
 http://tiny.cc/getao2
+
+keep in mind it is a work in progress
 
 # Images
 
