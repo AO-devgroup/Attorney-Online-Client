@@ -26,17 +26,15 @@ Courtroom::~Courtroom()
   delete songplayer;
 }
 
-//called on character_list_ from network handler
+//called on character_list_received from network handler
 void Courtroom::set_character_list(QVector<char_type> &p_char_list)
 {
   character_list = p_char_list;
   char_list_set = true;
 
-  if (music_list_set && background_set)
-  {
-    entering_server();
-    setCharSelect();
-  }
+
+    //entering_server();
+    //setCharSelect();
 }
 
 void Courtroom::set_music_list(QStringList &p_music_list)
@@ -63,24 +61,14 @@ void Courtroom::set_music_list(QStringList &p_music_list)
       ; //background goes red #T0D0 as well
     }
   }
-
-  if (char_list_set && background_set)
-  {
-    entering_server();
-    setCharSelect();
-  }
 }
 
-void Courtroom::set_background(QString p_background)
+void Courtroom::set_area_list(QVector<area_type> &p_area_list)
 {
-  background_path = getBasePath() + "background/" + p_background + "/";
-  background_set = true;
+  area_list.clear();
+  area_list = p_area_list;
 
-  if (music_list_set && char_list_set)
-  {
-    entering_server();
-    setCharSelect();
-  }
+  area_list_set = true;
 }
 
 void Courtroom::setTheme()

@@ -38,9 +38,22 @@ struct chatmessage_type
 {
   QString message;
   QString character;
-  QString emote;
   QString side;
-  //a whole lot of other info #T0D0
+  QString sfx_name;
+  QString pre_emote;
+  QString emote;
+  int emote_modifier;
+  int objection_modifier;
+  int realization;
+  int text_color;
+  int evidence;
+};
+
+struct area_type
+{
+  QString name;
+  QString background;
+  bool passworded;
 };
 
 #endif // DATATYPES_H

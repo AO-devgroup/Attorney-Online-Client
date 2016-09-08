@@ -41,13 +41,13 @@ signals:
   void ms_message_received(QString message);
   void ooc_message_received(QString p_message);
 
-  void server_list_received(QVector<server_type> &f_server_list);
+  void server_list_received(QVector<server_type> &p_server_list);
 
-  void character_list_received(QVector<char_type> &f_char_list);
+  void character_list_received(QVector<char_type> &p_char_list);
 
-  void music_list_received(QStringList &f_music_list);
+  void music_list_received(QStringList &p_music_list);
 
-  void background_received(QString background);
+  void area_list_received(QVector<area_type> &p_area_list);
 
   void onlinestatus_changed(QString players_online, QString max_players);
 

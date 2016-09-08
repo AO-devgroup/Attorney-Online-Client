@@ -19,7 +19,7 @@ int main(int argc, char *argv[])
 
   QObject::connect(&main_networkhandler, SIGNAL(character_list_received(QVector<char_type>&)), &main_courtroom, SLOT(set_character_list(QVector<char_type>&)));
   QObject::connect(&main_networkhandler, SIGNAL(music_list_received(QStringList&)), &main_courtroom, SLOT(set_music_list(QStringList&)));
-  QObject::connect(&main_networkhandler, SIGNAL(background_received(QString)), &main_courtroom, SLOT(set_background(QString)));
+  QObject::connect(&main_networkhandler, SIGNAL(area_list_received(QVector<area_type>&)), &main_courtroom, SLOT(set_area_list(QVector<area_type>&)));
   QObject::connect(&main_networkhandler, SIGNAL(chatmessage_received(chatmessage_type&)), &main_courtroom, SLOT(handle_chatmessage(chatmessage_type&)));
   QObject::connect(&main_networkhandler, SIGNAL(ms_message_received(QString)), &main_courtroom, SLOT(handle_ms_message(QString)));
   QObject::connect(&main_networkhandler, SIGNAL(ooc_message_received(QString)), &main_courtroom, SLOT(handle_ooc_message(QString)));

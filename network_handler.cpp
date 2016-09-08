@@ -239,7 +239,7 @@ void Networkhandler::handle_server_packet()
     }
 
     //handles the character list packet
-    else if (header == "RC")
+    else if (header == "SC")
     {
 
       QVector<char_type> f_char_list;
@@ -257,9 +257,7 @@ void Networkhandler::handle_server_packet()
         char_type f_char;
 
         f_char.name = char_arguments.at(0);
-        //qDebug() << "f_char.name: " << f_char.name;
         f_char.description =  char_arguments.at(1);
-        //qDebug() << "f_char.description: " << f_char.description;
 
         if (char_arguments.at(2) == "1")
           f_char.taken = true;
@@ -283,7 +281,7 @@ void Networkhandler::handle_server_packet()
     }
 
     //handles the music list packet
-    else if (header == "RM")
+    else if (header == "SM")
     {
       QStringList f_music_list;
 
@@ -297,19 +295,83 @@ void Networkhandler::handle_server_packet()
       music_list_received(f_music_list);
     }
 
-    else if (header == "RB")
+    else if (header == "SB")
     {
-      background_received(packet_contents.at(1));
+      QVector<area_type> f_area_list;
+
+      //- 1 accounts for header
+      for (int n_area = 0 ; n_area < packet_contents.size() - 1 ; ++n_area)
+      {
+        QStringList area_arguments =
+          packet_contents.at(n_area + 1).split("&");
+
+        if (area_arguments.size() != 3)
+          callFatalError("malformed packet. expected area_arguments.size() to be 3, found" +
+                         QString::number(area_arguments.size()));
+
+        area_type f_area;
+
+        f_area.name = area_arguments.at(0);
+        f_area.background =  area_arguments.at(1);
+
+        if (area_arguments.at(2) == "1")
+          f_area.passworded = true;
+
+        else
+          f_area.passworded = false;
+
+        f_area_list.insert(n_area, f_area);
+
+        area_list_received(f_area_list);
+      }
     }
 
     else if (header == "MS")
     {
       chatmessage_type f_message;
 
-      f_message.message = packet_contents.at(1);
-      f_message.character = packet_contents.at(2);
-      f_message.emote = packet_contents.at(3);
-      f_message.side = packet_contents.at(4);
+      if (packet_contents.size() == 12)
+      {
+        //message format:
+        //0MS#1message#2character#3side#4sfx-name#5pre_emote#6emote#7emote_modifier#8objection_modifier#9realization#10text_color#11evidence#%
+
+        f_message.message = packet_contents.at(1);
+        f_message.character = packet_contents.at(2);
+        f_message.side = packet_contents.at(3);
+        f_message.sfx_name = packet_contents.at(4);
+        f_message.pre_emote = packet_contents.at(5);
+        f_message.emote = packet_contents.at(6);
+        f_message.emote_modifier = packet_contents.at(7).toInt();
+        f_message.objection_modifier = packet_contents.at(8).toInt();
+        f_message.realization = packet_contents.at(9).toInt();
+        f_message.text_color = packet_contents.at(10).toInt();
+        f_message.evidence = packet_contents.at(11).toInt();
+      }
+
+      else if (packet_contents.size() == 16)
+      {
+        //uh oh, we have a vanilla chatmessage on our hands
+        //legacy message format:
+        //MS0#1chat#2<pre emo>#3<char>#4<emo>#5<mes>#6<pos>#7<sfxname>#8<zoom>#9<cid>#10,1#11,0#12<evi>#13<cid>#14<bling>#15<color>#% main chat
+
+        f_message.pre_emote = packet_contents.at(2);
+        f_message.character = packet_contents.at(3);
+        f_message.emote = packet_contents.at(4);
+        f_message.message = packet_contents.at(5);
+        f_message.side = packet_contents.at(6);
+        f_message.sfx_name = packet_contents.at(7);
+        f_message.emote_modifier = packet_contents.at(8).toInt();
+        f_message.objection_modifier = packet_contents.at(11).toInt();
+        f_message.evidence = packet_contents.at(12).toInt();
+        f_message.realization = packet_contents.at(14).toInt();
+        f_message.text_color = packet_contents.at(15).toInt();
+      }
+
+      else
+      {
+        callError("MALFORMED CHAT MESSAGE, expected size to be 12, found " + packet_contents.size());
+        return;
+      }
 
       chatmessage_received(f_message);
     }

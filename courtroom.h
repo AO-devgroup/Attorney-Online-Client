@@ -65,6 +65,8 @@ private:
   QVector<emoteicon* > emoteicon_list; //qpushbutton inherited(widget)
   QSignalMapper *emote_mapper;
 
+  QVector<area_type> area_list;
+
   void construct_emotes();
   void setEmotes();
   void setEmotePage();
@@ -79,7 +81,7 @@ private:
 
   bool char_list_set = false;
   bool music_list_set = false;
-  bool background_set = false;
+  bool area_list_set = false;
 
   //true is ms, false is server
   bool ms_or_server_ooc = true;
@@ -95,7 +97,7 @@ public slots:
 
   void set_music_list(QStringList &p_music_list);
 
-  void set_background(QString background);
+  void set_area_list(QVector<area_type> &p_area_list);
 
   void handle_chatmessage(chatmessage_type &p_message);
 
