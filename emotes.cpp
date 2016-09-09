@@ -142,16 +142,24 @@ void Courtroom::setEmotes()
       f_emote.anim = single_emote_line.at(2);
       f_emote.mod = single_emote_line.at(3).toInt();
 
+      qDebug() << "f_emote.mod == " << f_emote.mod;
+
       emote_list.insert(emote_counter - 1, f_emote);
 
       ++emote_counter;
     }
   }
 
+  qDebug() << "emote_list.size == " << emote_list.size();
+
   emote_counter = 1;
 
   for(int n_line = int_soundn_line ; n_line < int_soundt_line ; ++n_line)
   {
+    //dodging index out of range
+    if (emote_counter - 1 >= emote_list.size())
+      break;
+
     QString line = char_ini_list.at(n_line);
     QString search_line = QString::number(emote_counter) + " = ";
 
@@ -160,7 +168,9 @@ void Courtroom::setEmotes()
       //removes "x = " from the start of the string
       QString f_sfx_name = line.remove(0, 4);
 
-      emote_list[emote_counter].sfx_name = f_sfx_name;
+      qDebug() << emote_counter - 1;
+
+      emote_list[emote_counter - 1].sfx_name = f_sfx_name;
 
       ++emote_counter;
     }

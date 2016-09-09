@@ -13,6 +13,7 @@
 #include <QDebug>
 #include <QModelIndex>
 #include <QMediaPlayer>
+#include <QTextCursor>
 
 #include "ui_courtroom.h"
 
@@ -98,9 +99,12 @@ private:
 
   bool legacy_mode = false;
 
+  QMovie *charmovie;
+  QMovie *speedlinesmovie;
+
   void enter_courtroom();
 
-  void set_scene(QString p_bgimage, QString p_desk = "");
+  void set_scene(QString p_side);
 
 public slots:
   void set_character_list(QVector<char_type> &p_char_list);

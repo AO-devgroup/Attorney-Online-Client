@@ -24,7 +24,8 @@ public:
   bool master_connected = false;
   bool server_connected = false;
 
-  QString ms_hostname = "dev.aceattorneyonline.com";
+  //QString ms_hostname = "dev.aceattorneyonline.com";
+  QString ms_hostname = "localhost";
   int ms_port = 27016;
 
   QVector<server_type> m_server_list;

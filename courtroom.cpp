@@ -9,8 +9,8 @@ Courtroom::Courtroom(QWidget *parent) :
   mapper = new QSignalMapper(this);
   emote_mapper = new QSignalMapper(this);
   songplayer = new QMediaPlayer(this);
-
-
+  charmovie = new QMovie(this);
+  speedlinesmovie = new QMovie(this);
 
   construct_emotes();
   this->setWindowTitle("Attorney Online");
@@ -135,6 +135,7 @@ void Courtroom::enter_courtroom()
     setEmotePage();
   }
 
+  ui->oocserverchat->hide();
   ui->chatLine->clear();
   ui->chatLine->show();
   ui->chatLine->setFocus();
@@ -203,13 +204,27 @@ void Courtroom::on_chatLine_returnPressed()
   ui->chatLine->clear();
 }
 
-void Courtroom::set_scene(QString bg_image, QString desk)
+void Courtroom::set_scene(QString p_side)
 {
-  QString img_path = background_path + bg_image;
-  QString default_img_path = getBasePath() + "background/default/" + bg_image;
+  QString f_background_path = background_path;
+  QString f_default_background_path = getBasePath() + "background/default/";
 
-  QString desk_path = background_path + desk;
-  QString default_desk_path = getBasePath() + "background/default/" + desk;
+  QString speedlines_path = g_theme_path;
+
+  QString desk_path = background_path;
+  QString default_desk_path = getBasePath() + "background/default/";
+
+  if (p_side == "wit"){
+    f_background_path += "witnessempty.png";
+    f_default_background_path += "witnessempty.png";
+  }
+
+  if (bg_image == "defenseempty.png")
+    speedlines_path += "defense_speedlines.gif";
+  else if (bg_image == "prosecutorempty.png" ||
+           bg_image == "prohelperstand.png" ||
+           bg_image == "prosecutorempty.png")
+    speedlines_path += "prosection_speedlines.gif"
 
   if (fileExists(img_path, true))
     ui->playingbackground->setPixmap(img_path);
@@ -224,28 +239,20 @@ void Courtroom::set_scene(QString bg_image, QString desk)
     ui->desk->setPixmap(default_desk_path);
   else
     ui->desk->clear();
+
+  if (fileExists())
 }
 
 void Courtroom::handle_chatmessage(chatmessage_type &p_message)
 { 
   QString showname = getShowname(p_message.character);
+  //QTextCursor bruh = new QTextCursor(ui->chatlog);
 
-  ui->chatlog->appendPlainText(p_message.character + ": " + p_message.message);
+  //bruh.setPosition(0);
 
-  if (p_message.side == "jud")
-    set_scene("judgestand.png");
-  else if (p_message.side == "def")
-    set_scene("defenseempty.png", "bancodefensa.png");
-  else if (p_message.side == "pro")
-    set_scene("prosecutorempty.png", "bancoacusacion.png");
-  else if (p_message.side == "wit")
-    set_scene("witnessempty.png", "estrado.png");
-  else if (p_message.side == "hld")
-    set_scene("helperstand.png");
-  else if (p_message.side == "hlp")
-    set_scene("helperstandpro.png");
-  else
-    set_scene("witnessempty.png", "estrado.png");
+  ui->chatlog->appendPlainText(showname + ": " + p_message.message);
+
+  set_scene(p_message.side);
 
   if(fileExists(g_theme_path + "chat.png"))
     ui->chatbubble->setPixmap(g_theme_path + "chat.png");
@@ -258,10 +265,15 @@ void Courtroom::handle_chatmessage(chatmessage_type &p_message)
   ui->charname->setText(showname);
   ui->chatbubble->show();
 
-  QMovie *movie = new QMovie(getCharGifPath(p_message.character, "(b)" + p_message.emote + ".gif"));
-  ui->playingarea->setMovie(movie);
+  //g_theme_path + "defense_speedlines.gif"
+  QMovie *speedlines = new QMovie();
+  speedlines->fileName()
+  //QMovie *movie = new QMovie(getCharGifPath(p_message.character, "(b)" + p_message.emote + ".gif"));
+  //ui->playingarea->setMovie(movie);
+  ui->playingbackground->setMovie(speedlines);
 
-  movie->start();
+  //movie->start();
+  speedlines->start();
 }
 
 void Courtroom::handle_ms_message(QString p_message)

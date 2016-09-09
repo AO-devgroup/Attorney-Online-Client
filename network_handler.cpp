@@ -8,7 +8,8 @@ Networkhandler::Networkhandler(QObject *parent) : QObject(parent)
   connect(ms_socket, &QTcpSocket::readyRead, this, &Networkhandler::handle_ms_packet);
   connect(server_socket, &QTcpSocket::readyRead, this, &Networkhandler::handle_server_packet);
 
-  connect(server_socket, SIGNAL(error(QAbstractSocket::disconnect())), this, SLOT(handle_server_disconnect()));
+  //T0D0: find a way to gracefully handle disconnects
+  //connect(server_socket, SIGNAL(error(QAbstractSocket::disconnect())), this, SLOT(handle_server_disconnect()));
 
   connect (ms_socket, SIGNAL(connected()), this, SLOT(ms_connection_established()));
   connect (ms_socket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(ms_failed_to_connect()));
@@ -94,6 +95,8 @@ void Networkhandler::handle_chatmessage_request(chatmessage_type &p_chatmessage)
   if (!server_connected)
     return;
 
+  qDebug() << "p_chatmessage.emote_modifier = " << p_chatmessage.emote_modifier;
+
   QString packet = "MS#" +
       p_chatmessage.message + "#" +
       p_chatmessage.character + "#" +
@@ -101,11 +104,11 @@ void Networkhandler::handle_chatmessage_request(chatmessage_type &p_chatmessage)
       p_chatmessage.sfx_name + "#" +
       p_chatmessage.pre_emote + "#" +
       p_chatmessage.emote + "#" +
-      p_chatmessage.emote_modifier + "#" +
-      p_chatmessage.objection_modifier + "#" +
-      p_chatmessage.realization + "#" +
-      p_chatmessage.text_color + "#" +
-      p_chatmessage.evidence + "#%";
+      QString::number(p_chatmessage.emote_modifier) + "#" +
+      QString::number(p_chatmessage.objection_modifier) + "#" +
+      QString::number(p_chatmessage.realization) + "#" +
+      QString::number(p_chatmessage.text_color) + "#" +
+      QString::number(p_chatmessage.evidence) + "#%";
 
 
   qDebug() << "sent packet: " << packet;

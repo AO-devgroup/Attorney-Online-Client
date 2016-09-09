@@ -1099,18 +1099,27 @@
     <property name="text">
      <string>Master</string>
     </property>
+    <property name="default">
+     <bool>false</bool>
+    </property>
+    <property name="flat">
+     <bool>true</bool>
+    </property>
    </widget>
    <widget class="QPushButton" name="ooc_server">
     <property name="geometry">
      <rect>
-      <x>645</x>
+      <x>646</x>
       <y>300</y>
-      <width>60</width>
+      <width>64</width>
       <height>19</height>
      </rect>
     </property>
     <property name="text">
      <string>Server</string>
+    </property>
+    <property name="flat">
+     <bool>true</bool>
     </property>
    </widget>
    <zorder>charselect</zorder>

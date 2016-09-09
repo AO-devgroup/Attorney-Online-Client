@@ -289,9 +289,11 @@ public:
         ooc_master = new QPushButton(centralwidget);
         ooc_master->setObjectName(QStringLiteral("ooc_master"));
         ooc_master->setGeometry(QRect(580, 300, 60, 19));
+        ooc_master->setFlat(true);
         ooc_server = new QPushButton(centralwidget);
         ooc_server->setObjectName(QStringLiteral("ooc_server"));
-        ooc_server->setGeometry(QRect(645, 300, 60, 19));
+        ooc_server->setGeometry(QRect(646, 300, 64, 19));
+        ooc_server->setFlat(true);
         Courtroom->setCentralWidget(centralwidget);
         charselect->raise();
         background->raise();
@@ -322,6 +324,9 @@ public:
         ooc_server->raise();
 
         retranslateUi(Courtroom);
+
+        ooc_master->setDefault(false);
+
 
         QMetaObject::connectSlotsByName(Courtroom);
     } // setupUi

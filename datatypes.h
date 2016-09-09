@@ -18,6 +18,8 @@ struct emote_type
   QString anim;
   int mod;
   QString sfx_name;
+  int sfx_delay;
+  int sfx_duration;
 };
 
 struct char_type
