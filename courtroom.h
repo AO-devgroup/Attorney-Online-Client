@@ -45,7 +45,15 @@ public:
 private:
   Ui::Courtroom *ui;
   bool present_evidence = false;
-  int objection_state{0};       // 0 is nothing, 1 is holdit, 2 is objection 3 is takethat
+
+  //0 is no realization(bling), 1 is
+  int realization_state = 0;
+  //0 is nothing, 1 is holdit, 2 is objection 3 is takethat
+  int objection_state = 0;
+  //0 is no evidence, the rest is NYI
+  int evidence_state = 0;
+  //0 is white, 1 is blue, 2 is green, 3 is orange and 4 is red
+  int text_color_state = 0;
 
   int char_select_pages;
   int char_select_current_page;
@@ -88,6 +96,8 @@ private:
 
   QString background_path;
 
+  bool legacy_mode = false;
+
   void enter_courtroom();
 
   void set_scene(QString p_bgimage, QString p_desk = "");
@@ -98,6 +108,8 @@ public slots:
   void set_music_list(QStringList &p_music_list);
 
   void set_area_list(QVector<area_type> &p_area_list);
+
+  void go_to_charselect();
 
   void handle_chatmessage(chatmessage_type &p_message);
 
@@ -143,6 +155,7 @@ signals:
   void entering_server();
 
   void chatmessage_requested(chatmessage_type &p_chatmessage);
+  void legacy_chatmessage_requested(chatmessage_type &p_chatmessage);
 
   void song_requested(QString p_song_name);
 

@@ -16,8 +16,8 @@ struct emote_type
   QString comment;
   QString preanim;
   QString anim;
-  //this is always a number but since we never do arithmetic on it, we make it a string
-  QString mod;
+  int mod;
+  QString sfx_name;
 };
 
 struct char_type

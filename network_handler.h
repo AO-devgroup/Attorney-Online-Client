@@ -55,6 +55,8 @@ signals:
 
   void song_received(QString song_name);
 
+  void done_signal();
+
 public slots:
   void connect_to_server(QString ip, int port);
 
@@ -71,6 +73,7 @@ public slots:
   void handle_enter_server_request();
 
   void handle_chatmessage_request(chatmessage_type &p_chatmessage);
+  void handle_legacy_chatmessage_request(chatmessage_type &p_chatmessage);
 
   void handle_song_request(QString p_song_name);
 

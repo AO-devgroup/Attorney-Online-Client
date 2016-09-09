@@ -75,6 +75,7 @@ void Courtroom::setEmotes()
 
   int int_emotions_line = -1;
   int int_soundn_line = -1;
+  int int_soundt_line = -1;
 
   for(int n_line = 0 ; n_line < char_ini_list.size() ; ++n_line)
   {
@@ -85,6 +86,9 @@ void Courtroom::setEmotes()
 
     if (line.startsWith("[SoundN]"))
       int_soundn_line = n_line;
+
+    if (line.startsWith("[SoundT]"))
+      int_soundt_line = n_line;
   }
 
   //checks that we actually found what we need
@@ -102,8 +106,17 @@ void Courtroom::setEmotes()
     return;
   }
 
+  if (int_soundn_line == -1)
+  {
+    QString err_str = "Could not find [SoundT] in " + char_ini_path;
+    callError(err_str);
+    return;
+  }
+
   int emote_counter = 1;
   emote_list.clear();
+
+  emote_type f_emote;
 
   for(int n_line = int_emotions_line ; n_line < int_soundn_line ; ++n_line)
   {
@@ -115,7 +128,6 @@ void Courtroom::setEmotes()
       //removes "x = " from the start of the string
       QString cropped_line = line.remove(0, 4);
       QStringList single_emote_line = cropped_line.split("#");
-      emote_type f_emote;
 
       //dodging those silly index out of range crashes
       if (single_emote_line.size() < 4)
@@ -128,9 +140,27 @@ void Courtroom::setEmotes()
       f_emote.comment = single_emote_line.at(0);
       f_emote.preanim = single_emote_line.at(1);
       f_emote.anim = single_emote_line.at(2);
-      f_emote.mod = single_emote_line.at(3);
+      f_emote.mod = single_emote_line.at(3).toInt();
 
       emote_list.insert(emote_counter - 1, f_emote);
+
+      ++emote_counter;
+    }
+  }
+
+  emote_counter = 1;
+
+  for(int n_line = int_soundn_line ; n_line < int_soundt_line ; ++n_line)
+  {
+    QString line = char_ini_list.at(n_line);
+    QString search_line = QString::number(emote_counter) + " = ";
+
+    if (line.startsWith(search_line))
+    {
+      //removes "x = " from the start of the string
+      QString f_sfx_name = line.remove(0, 4);
+
+      emote_list[emote_counter].sfx_name = f_sfx_name;
 
       ++emote_counter;
     }

@@ -30,11 +30,7 @@ Courtroom::~Courtroom()
 void Courtroom::set_character_list(QVector<char_type> &p_char_list)
 {
   character_list = p_char_list;
-  char_list_set = true;
-
-
-    //entering_server();
-    //setCharSelect();
+  char_list_set = true;  
 }
 
 void Courtroom::set_music_list(QStringList &p_music_list)
@@ -69,6 +65,13 @@ void Courtroom::set_area_list(QVector<area_type> &p_area_list)
   area_list = p_area_list;
 
   area_list_set = true;
+}
+
+//called whenever DONE#% is received
+void Courtroom::go_to_charselect()
+{
+  entering_server();
+  setCharSelect();
 }
 
 void Courtroom::setTheme()
@@ -171,12 +174,31 @@ void Courtroom::on_chatLine_returnPressed()
   if (f_side == "")
     callError("could not find side = in char.ini");
 
-  f_chatmessage.side = f_side;
-  f_chatmessage.character = playerChar;
-  f_chatmessage.emote = emote_list.at(emote_selected).anim;
-  f_chatmessage.message = f_message;
+  emote_type f_emote = emote_list.at(emote_selected);
 
-  chatmessage_requested(f_chatmessage);
+  f_chatmessage.message = f_message;
+  f_chatmessage.character = playerChar;
+  f_chatmessage.side = f_side;
+
+  f_chatmessage.sfx_name = f_emote.sfx_name;
+  f_chatmessage.pre_emote = f_emote.preanim;
+  f_chatmessage.emote = f_emote.anim;
+  f_chatmessage.emote_modifier = f_emote.mod;
+
+  f_chatmessage.objection_modifier = objection_state;
+  f_chatmessage.realization = realization_state;
+  f_chatmessage.text_color = text_color_state;
+  f_chatmessage.evidence = evidence_state;
+
+  //legacy mode sends the message in the old format, check network handler for more info
+  if (legacy_mode)
+    legacy_chatmessage_requested(f_chatmessage);
+
+  else
+    chatmessage_requested(f_chatmessage);
+
+
+
 
   ui->chatLine->clear();
 }

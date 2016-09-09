@@ -91,15 +91,49 @@ void Networkhandler::ooc_send_message(QString p_packet)
 
 void Networkhandler::handle_chatmessage_request(chatmessage_type &p_chatmessage)
 {
-  QString packet = "MS#" + p_chatmessage.message + "#" +
-                           p_chatmessage.character + "#" +
-                           p_chatmessage.emote + "#" +
-                           p_chatmessage.side + "#%";
-
   if (!server_connected)
     return;
 
+  QString packet = "MS#" +
+      p_chatmessage.message + "#" +
+      p_chatmessage.character + "#" +
+      p_chatmessage.side + "#" +
+      p_chatmessage.sfx_name + "#" +
+      p_chatmessage.pre_emote + "#" +
+      p_chatmessage.emote + "#" +
+      p_chatmessage.emote_modifier + "#" +
+      p_chatmessage.objection_modifier + "#" +
+      p_chatmessage.realization + "#" +
+      p_chatmessage.text_color + "#" +
+      p_chatmessage.evidence + "#%";
+
+
   qDebug() << "sent packet: " << packet;
+
+  server_socket->write(packet.toLocal8Bit());
+}
+
+void Networkhandler::handle_legacy_chatmessage_request(chatmessage_type &p_chatmessage)
+{
+  if (!server_connected)
+    return;
+
+  QString packet = "MS#chat#" +
+      p_chatmessage.pre_emote + "#" +
+      p_chatmessage.character + "#" +
+      p_chatmessage.emote + "#" +
+      p_chatmessage.message + "#";
+      p_chatmessage.side + "#" +
+      p_chatmessage.sfx_name + "#" +
+      p_chatmessage.emote_modifier + "#0#0#" +
+      p_chatmessage.objection_modifier + "#" +
+      p_chatmessage.evidence + "#0#" +
+      p_chatmessage.realization + "#" +
+      p_chatmessage.text_color + "#%";
+
+
+
+  qDebug() << "sent legacy packet: " << packet;
 
   server_socket->write(packet.toLocal8Bit());
 }
@@ -326,8 +360,14 @@ void Networkhandler::handle_server_packet()
       }
     }
 
+    else if (header == "DONE")
+    {
+      done_signal();
+    }
+
     else if (header == "MS")
     {
+      qDebug() << packet;
       chatmessage_type f_message;
 
       if (packet_contents.size() == 12)
