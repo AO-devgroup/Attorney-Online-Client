@@ -206,41 +206,99 @@ void Courtroom::on_chatLine_returnPressed()
 
 void Courtroom::set_scene(QString p_side)
 {
+  QString default_path = getBasePath() + "background/default/";
+
   QString f_background_path = background_path;
-  QString f_default_background_path = getBasePath() + "background/default/";
+  QString f_default_background_path = default_path;
 
-  QString speedlines_path = g_theme_path;
+  QString f_speedlines_path = g_theme_path;
+  QString f_default_speedlines_path = getBasePath() + "themes/default/";
 
-  QString desk_path = background_path;
-  QString default_desk_path = getBasePath() + "background/default/";
+  QString f_desk_path = background_path;
+  QString f_default_desk_path = default_path;
 
-  if (p_side == "wit"){
+  if (p_side == "wit")
+  {
     f_background_path += "witnessempty.png";
     f_default_background_path += "witnessempty.png";
+    f_speedlines_path += "prosecution_speedlines.gif";
+    f_default_speedlines_path += "prosecution_speedlines.gif";
+    f_desk_path += "estrado.png";
+    f_default_desk_path += "estrado.png";
+  }
+  else if (p_side == "def")
+  {
+    f_background_path += "defenseempty.png";
+    f_default_background_path += "defenseempty.png";
+    f_speedlines_path += "defense_speedlines.gif";
+    f_default_speedlines_path += "defense_speedlines.gif";
+    f_desk_path += "bancodefensa.png";
+    f_default_desk_path += "bancodefensa.png";
+  }
+  else if (p_side == "pro")
+  {
+    f_background_path += "prosecutorempty.png";
+    f_default_background_path += "prosecutorempty.png";
+    f_speedlines_path += "prosecution_speedlines.gif";
+    f_default_speedlines_path += "prosecution_speedlines.gif";
+    f_desk_path += "bancoacusacion.png";
+    f_default_desk_path += "bancoacusacion.png";
+  }
+  else if (p_side == "jud")
+  {
+    f_background_path += "judgestand.png";
+    f_default_background_path += "judgestand.png";
+    f_speedlines_path += "defense_speedlines.gif";
+    f_default_speedlines_path += "defense_speedlines.gif";
+    f_desk_path = "";
+    f_default_desk_path = "";
+  }
+  else if (p_side == "hld")
+  {
+    f_background_path += "helperstand.png";
+    f_default_background_path += "helperstand.png";
+    f_speedlines_path += "defense_speedlines.gif";
+    f_default_speedlines_path += "defense_speedlines.gif";
+    f_desk_path = "";
+    f_default_desk_path = "";
+  }
+  else if (p_side == "hlp")
+  {
+    f_background_path += "prohelperstand.png";
+    f_default_background_path += "prohelperstand.png";
+    f_speedlines_path += "prosecution_speedlines.gif";
+    f_default_speedlines_path += "prosecution_speedlines.gif";
+    f_desk_path = "";
+    f_default_desk_path = "";
+  }
+  else
+  {
+    callError("Something went hilariously wrong. (Invalid side: " + p_side + ")");
+    return;
   }
 
-  if (bg_image == "defenseempty.png")
-    speedlines_path += "defense_speedlines.gif";
-  else if (bg_image == "prosecutorempty.png" ||
-           bg_image == "prohelperstand.png" ||
-           bg_image == "prosecutorempty.png")
-    speedlines_path += "prosection_speedlines.gif"
-
-  if (fileExists(img_path, true))
-    ui->playingbackground->setPixmap(img_path);
-  else if (fileExists(default_img_path, true))
-    ui->playingbackground->setPixmap(default_img_path);
+  if (fileExists(f_background_path, true))
+    ui->playingbackground->setPixmap(f_background_path);
+  else if (fileExists(f_default_background_path, true))
+    ui->playingbackground->setPixmap(f_default_background_path);
   else
     ui->playingbackground->clear();
 
-  if (fileExists(desk_path, true))
-    ui->desk->setPixmap(desk_path);
-  else if (fileExists(default_desk_path, true))
-    ui->desk->setPixmap(default_desk_path);
+  if (fileExists(f_speedlines_path, true))
+    speedlinesmovie->setFileName(f_speedlines_path);
+  else if (fileExists(f_default_speedlines_path, true))
+    speedlinesmovie->setFileName(f_default_speedlines_path);
+  else
+  {
+    ;
+  }
+
+  if (fileExists(f_desk_path, true))
+    ui->desk->setPixmap(f_desk_path);
+  else if (fileExists(f_default_desk_path, true))
+    ui->desk->setPixmap(f_default_desk_path);
   else
     ui->desk->clear();
-
-  if (fileExists())
 }
 
 void Courtroom::handle_chatmessage(chatmessage_type &p_message)
@@ -265,15 +323,18 @@ void Courtroom::handle_chatmessage(chatmessage_type &p_message)
   ui->charname->setText(showname);
   ui->chatbubble->show();
 
-  //g_theme_path + "defense_speedlines.gif"
-  QMovie *speedlines = new QMovie();
-  speedlines->fileName()
   //QMovie *movie = new QMovie(getCharGifPath(p_message.character, "(b)" + p_message.emote + ".gif"));
   //ui->playingarea->setMovie(movie);
-  ui->playingbackground->setMovie(speedlines);
+  if (p_message.emote_modifier == 5)
+  {
+    ui->playingbackground->setMovie(speedlinesmovie);
+    speedlinesmovie->start();
+  }
+  QString gif_path = getCharGifPath(p_message.character, "(b)" + p_message.emote + ".gif");
 
-  //movie->start();
-  speedlines->start();
+  charmovie->setFileName(gif_path);
+  ui->playingarea->setMovie(charmovie);
+  charmovie->start();
 }
 
 void Courtroom::handle_ms_message(QString p_message)
