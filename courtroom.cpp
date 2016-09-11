@@ -70,7 +70,11 @@ void Courtroom::set_area_list(QVector<area_type> &p_area_list)
 //called whenever DONE#% is received
 void Courtroom::go_to_charselect()
 {
+  //the ONLY thing this does is hide the lobby window!! dont worry about it!!
   entering_server();
+
+
+
   setCharSelect();
 }
 
@@ -510,21 +514,7 @@ void Courtroom::on_charselect_right_clicked()
 
 void Courtroom::on_changecharacter_clicked()
 {
-  //T0D0
-  //politely tell the server that we're not using our char anymore(playerChar)
-  //(the network specification for this does not exist yet)
-
-  for (emoteicon *i_emote : emoteicon_list)
-  {
-    i_emote->hide();
-  }
-
-  emote_right_button->hide();
-  emote_left_button->hide();
-
-  char_select_current_page = 1;
-
-  setCharSelectPage();
+  request_packet("FC#%");
 }
 
 void Courtroom::on_musiclist_doubleClicked(const QModelIndex &index)

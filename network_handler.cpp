@@ -447,3 +447,11 @@ void Networkhandler::handle_server_packet()
     qDebug() << packet;
   }
 }
+
+void Networkhandler::send_packet(QString p_packet)
+{
+  if (!server_connected)
+    return;
+
+  server_socket->write(p_packet.toLocal8Bit());
+}

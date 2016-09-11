@@ -82,6 +82,8 @@ public slots:
 
   void handle_song_request(QString p_song_name);
 
+  void send_packet(QString p_packet);
+
 private slots:
   void handle_server_disconnect();
 

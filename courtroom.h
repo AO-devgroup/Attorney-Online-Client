@@ -171,6 +171,8 @@ signals:
 
   void ooc_message_requested(QString p_packet);
 
+  void request_packet(QString p_packet);
+
 
 };
 

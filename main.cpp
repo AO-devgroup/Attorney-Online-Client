@@ -38,6 +38,7 @@ int main(int argc, char *argv[])
   QObject::connect(&main_courtroom, SIGNAL(ms_message_requested(QString)), &main_networkhandler, SLOT(ms_send_message(QString)));
   QObject::connect(&main_courtroom, SIGNAL(ooc_message_requested(QString)), &main_networkhandler, SLOT(ooc_send_message(QString)));
   QObject::connect(&main_courtroom, SIGNAL(song_requested(QString)), &main_networkhandler, SLOT(handle_song_request(QString)));
+  QObject::connect(&main_courtroom, SIGNAL(request_packet(QString)), &main_networkhandler, SLOT(send_packet(QString)));
 
   QObject::connect(&main_courtroom, SIGNAL(entering_server()), &main_lobby, SLOT(handle_server_entry()));
 
