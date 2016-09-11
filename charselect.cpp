@@ -183,7 +183,7 @@ void Courtroom::charChoose(int local_charnumber)
   real_char_number = local_charnumber + (90 * (char_select_current_page - 1));
   real_char = character_list.at(real_char_number).name;
 
-  QString f_password = ui->charpass->getText();
+  QString f_password = ui->charpass->text();
 
   character_requested(real_char, f_password);
 }
