@@ -110,6 +110,27 @@ void Courtroom::setTheme()
 
 }
 
+void Courtroom::set_character(QString p_character, int p_mod)
+{
+  switch (p_mod)
+  {
+  case 0:
+    playerChar = p_character;
+    enter_courtroom();
+    break;
+  case 1:
+    ui->charError->setText("This character is already taken.");
+    break;
+  case 2:
+    ui->charError->setText("Wrong password");
+    break;
+  default:
+    callError("Unexpected reply from server! Expected 0, 1 or 2 in OC packet, received " + p_mod);
+
+  }
+
+}
+
 void Courtroom::enter_courtroom()
 {
   setTheme();

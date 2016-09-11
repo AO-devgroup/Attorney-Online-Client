@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'courtroom.ui'
 **
-** Created by: Qt User Interface Compiler version 5.7.0
+** Created by: Qt User Interface Compiler version 4.8.7
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -10,17 +10,17 @@
 #define UI_COURTROOM_H
 
 #include <QtCore/QVariant>
-#include <QtWidgets/QAction>
-#include <QtWidgets/QApplication>
-#include <QtWidgets/QButtonGroup>
-#include <QtWidgets/QHeaderView>
-#include <QtWidgets/QLabel>
-#include <QtWidgets/QLineEdit>
-#include <QtWidgets/QListWidget>
-#include <QtWidgets/QMainWindow>
-#include <QtWidgets/QPlainTextEdit>
-#include <QtWidgets/QPushButton>
-#include <QtWidgets/QWidget>
+#include <QtGui/QAction>
+#include <QtGui/QApplication>
+#include <QtGui/QButtonGroup>
+#include <QtGui/QHeaderView>
+#include <QtGui/QLabel>
+#include <QtGui/QLineEdit>
+#include <QtGui/QListWidget>
+#include <QtGui/QMainWindow>
+#include <QtGui/QPlainTextEdit>
+#include <QtGui/QPushButton>
+#include <QtGui/QWidget>
 
 QT_BEGIN_NAMESPACE
 
@@ -55,29 +55,30 @@ public:
     QPlainTextEdit *chattext;
     QPushButton *ooc_master;
     QPushButton *ooc_server;
+    QLineEdit *charpass;
 
     void setupUi(QMainWindow *Courtroom)
     {
         if (Courtroom->objectName().isEmpty())
-            Courtroom->setObjectName(QStringLiteral("Courtroom"));
+            Courtroom->setObjectName(QString::fromUtf8("Courtroom"));
         Courtroom->resize(714, 668);
         Courtroom->setMinimumSize(QSize(256, 192));
         Courtroom->setMaximumSize(QSize(714, 668));
         QIcon icon;
-        icon.addFile(QStringLiteral(":/resource/logo.png"), QSize(), QIcon::Normal, QIcon::Off);
+        icon.addFile(QString::fromUtf8(":/resource/logo.png"), QSize(), QIcon::Normal, QIcon::Off);
         Courtroom->setWindowIcon(icon);
         centralwidget = new QWidget(Courtroom);
-        centralwidget->setObjectName(QStringLiteral("centralwidget"));
+        centralwidget->setObjectName(QString::fromUtf8("centralwidget"));
         background = new QLabel(centralwidget);
-        background->setObjectName(QStringLiteral("background"));
+        background->setObjectName(QString::fromUtf8("background"));
         background->setGeometry(QRect(0, 0, 714, 668));
         background->setPixmap(QPixmap(QString::fromUtf8("../build-Attorney_Online_new-Desktop_Qt_5_7_0_GCC_64bit-Debug/base/themes/default/courtroombackground.png")));
         objection = new QPushButton(centralwidget);
-        objection->setObjectName(QStringLiteral("objection"));
+        objection->setObjectName(QString::fromUtf8("objection"));
         objection->setGeometry(QRect(90, 312, 76, 28));
         objection->setFlat(false);
         chatlog = new QPlainTextEdit(centralwidget);
-        chatlog->setObjectName(QStringLiteral("chatlog"));
+        chatlog->setObjectName(QString::fromUtf8("chatlog"));
         chatlog->setGeometry(QRect(260, 0, 231, 319));
         QPalette palette;
         QBrush brush(QColor(255, 255, 255, 0));
@@ -105,7 +106,7 @@ public:
         chatlog->setReadOnly(true);
         chatlog->setTextInteractionFlags(Qt::NoTextInteraction);
         holdit = new QPushButton(centralwidget);
-        holdit->setObjectName(QStringLiteral("holdit"));
+        holdit->setObjectName(QString::fromUtf8("holdit"));
         holdit->setGeometry(QRect(10, 312, 76, 28));
         QPalette palette1;
         QBrush brush4(QColor(48, 140, 198, 0));
@@ -131,18 +132,18 @@ public:
         holdit->setPalette(palette1);
         holdit->setFlat(false);
         takethat = new QPushButton(centralwidget);
-        takethat->setObjectName(QStringLiteral("takethat"));
+        takethat->setObjectName(QString::fromUtf8("takethat"));
         takethat->setGeometry(QRect(170, 312, 76, 28));
         takethat->setFlat(false);
         playingarea = new QLabel(centralwidget);
-        playingarea->setObjectName(QStringLiteral("playingarea"));
+        playingarea->setObjectName(QString::fromUtf8("playingarea"));
         playingarea->setGeometry(QRect(0, 0, 256, 192));
         present = new QPushButton(centralwidget);
-        present->setObjectName(QStringLiteral("present"));
+        present->setObjectName(QString::fromUtf8("present"));
         present->setGeometry(QRect(171, 626, 158, 41));
         present->setFlat(false);
         chatLine = new QLineEdit(centralwidget);
-        chatLine->setObjectName(QStringLiteral("chatLine"));
+        chatLine->setObjectName(QString::fromUtf8("chatLine"));
         chatLine->setGeometry(QRect(0, 192, 256, 23));
         QPalette palette2;
         palette2.setBrush(QPalette::Active, QPalette::Light, brush);
@@ -164,39 +165,39 @@ public:
         chatLine->setPalette(palette2);
         chatLine->setFrame(false);
         desk = new QLabel(centralwidget);
-        desk->setObjectName(QStringLiteral("desk"));
+        desk->setObjectName(QString::fromUtf8("desk"));
         desk->setGeometry(QRect(0, 150, 256, 42));
         playingbackground = new QLabel(centralwidget);
-        playingbackground->setObjectName(QStringLiteral("playingbackground"));
+        playingbackground->setObjectName(QString::fromUtf8("playingbackground"));
         playingbackground->setGeometry(QRect(0, 0, 256, 192));
         chatbubble = new QLabel(centralwidget);
-        chatbubble->setObjectName(QStringLiteral("chatbubble"));
+        chatbubble->setObjectName(QString::fromUtf8("chatbubble"));
         chatbubble->setGeometry(QRect(0, 114, 256, 78));
         charselect = new QLabel(centralwidget);
-        charselect->setObjectName(QStringLiteral("charselect"));
+        charselect->setObjectName(QString::fromUtf8("charselect"));
         charselect->setGeometry(QRect(0, 0, 714, 668));
         charselect->setPixmap(QPixmap(QString::fromUtf8("../build-Attorney_Online_new-Desktop_Qt_5_7_0_GCC_64bit-Debug/base/themes/default/charselect_background.png")));
         spectator = new QPushButton(centralwidget);
-        spectator->setObjectName(QStringLiteral("spectator"));
+        spectator->setObjectName(QString::fromUtf8("spectator"));
         spectator->setGeometry(QRect(317, 640, 80, 23));
         charselector = new QLabel(centralwidget);
-        charselector->setObjectName(QStringLiteral("charselector"));
+        charselector->setObjectName(QString::fromUtf8("charselector"));
         charselector->setGeometry(QRect(370, 260, 62, 62));
         charselect_left = new QPushButton(centralwidget);
-        charselect_left->setObjectName(QStringLiteral("charselect_left"));
+        charselect_left->setObjectName(QString::fromUtf8("charselect_left"));
         charselect_left->setGeometry(QRect(2, 325, 20, 20));
         charselect_right = new QPushButton(centralwidget);
-        charselect_right->setObjectName(QStringLiteral("charselect_right"));
+        charselect_right->setObjectName(QString::fromUtf8("charselect_right"));
         charselect_right->setGeometry(QRect(691, 325, 20, 20));
         changecharacter = new QPushButton(centralwidget);
-        changecharacter->setObjectName(QStringLiteral("changecharacter"));
+        changecharacter->setObjectName(QString::fromUtf8("changecharacter"));
         changecharacter->setGeometry(QRect(250, 327, 131, 23));
         charError = new QLabel(centralwidget);
-        charError->setObjectName(QStringLiteral("charError"));
+        charError->setObjectName(QString::fromUtf8("charError"));
         charError->setGeometry(QRect(270, 50, 59, 15));
         musiclist = new QListWidget(centralwidget);
         new QListWidgetItem(musiclist);
-        musiclist->setObjectName(QStringLiteral("musiclist"));
+        musiclist->setObjectName(QString::fromUtf8("musiclist"));
         musiclist->setGeometry(QRect(490, 340, 224, 329));
         QPalette palette3;
         palette3.setBrush(QPalette::Active, QPalette::Base, brush);
@@ -206,7 +207,7 @@ public:
         musiclist->setFrameShape(QFrame::NoFrame);
         musiclist->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
         oocserverchat = new QPlainTextEdit(centralwidget);
-        oocserverchat->setObjectName(QStringLiteral("oocserverchat"));
+        oocserverchat->setObjectName(QString::fromUtf8("oocserverchat"));
         oocserverchat->setGeometry(QRect(490, 1, 224, 277));
         QPalette palette4;
         palette4.setBrush(QPalette::Active, QPalette::Base, brush);
@@ -217,7 +218,7 @@ public:
         oocserverchat->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
         oocserverchat->setReadOnly(true);
         oocmasterchat = new QPlainTextEdit(centralwidget);
-        oocmasterchat->setObjectName(QStringLiteral("oocmasterchat"));
+        oocmasterchat->setObjectName(QString::fromUtf8("oocmasterchat"));
         oocmasterchat->setGeometry(QRect(490, 1, 224, 277));
         QPalette palette5;
         palette5.setBrush(QPalette::Active, QPalette::Base, brush);
@@ -228,7 +229,7 @@ public:
         oocmasterchat->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
         oocmasterchat->setReadOnly(true);
         oocchatname = new QLineEdit(centralwidget);
-        oocchatname->setObjectName(QStringLiteral("oocchatname"));
+        oocchatname->setObjectName(QString::fromUtf8("oocchatname"));
         oocchatname->setGeometry(QRect(492, 300, 85, 19));
         QSizePolicy sizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
         sizePolicy.setHorizontalStretch(0);
@@ -245,7 +246,7 @@ public:
         oocchatname->setFont(font);
         oocchatname->setFrame(false);
         oocchatmessage = new QLineEdit(centralwidget);
-        oocchatmessage->setObjectName(QStringLiteral("oocchatmessage"));
+        oocchatmessage->setObjectName(QString::fromUtf8("oocchatmessage"));
         oocchatmessage->setGeometry(QRect(492, 281, 222, 19));
         QPalette palette7;
         palette7.setBrush(QPalette::Active, QPalette::Base, brush);
@@ -257,7 +258,7 @@ public:
         oocchatmessage->setFont(font1);
         oocchatmessage->setFrame(false);
         charname = new QLabel(centralwidget);
-        charname->setObjectName(QStringLiteral("charname"));
+        charname->setObjectName(QString::fromUtf8("charname"));
         charname->setGeometry(QRect(6, 113, 59, 15));
         QPalette palette8;
         palette8.setBrush(QPalette::Active, QPalette::WindowText, brush1);
@@ -271,7 +272,7 @@ public:
         font2.setPointSize(8);
         charname->setFont(font2);
         chattext = new QPlainTextEdit(centralwidget);
-        chattext->setObjectName(QStringLiteral("chattext"));
+        chattext->setObjectName(QString::fromUtf8("chattext"));
         chattext->setGeometry(QRect(3, 132, 250, 60));
         QPalette palette9;
         palette9.setBrush(QPalette::Active, QPalette::Text, brush1);
@@ -287,13 +288,17 @@ public:
         chattext->setReadOnly(true);
         chattext->setTextInteractionFlags(Qt::NoTextInteraction);
         ooc_master = new QPushButton(centralwidget);
-        ooc_master->setObjectName(QStringLiteral("ooc_master"));
+        ooc_master->setObjectName(QString::fromUtf8("ooc_master"));
         ooc_master->setGeometry(QRect(580, 300, 60, 19));
+        ooc_master->setDefault(false);
         ooc_master->setFlat(true);
         ooc_server = new QPushButton(centralwidget);
-        ooc_server->setObjectName(QStringLiteral("ooc_server"));
+        ooc_server->setObjectName(QString::fromUtf8("ooc_server"));
         ooc_server->setGeometry(QRect(646, 300, 64, 19));
         ooc_server->setFlat(true);
+        charpass = new QLineEdit(centralwidget);
+        charpass->setObjectName(QString::fromUtf8("charpass"));
+        charpass->setGeometry(QRect(270, 10, 113, 22));
         Courtroom->setCentralWidget(centralwidget);
         charselect->raise();
         background->raise();
@@ -322,18 +327,16 @@ public:
         chattext->raise();
         ooc_master->raise();
         ooc_server->raise();
+        charpass->raise();
 
         retranslateUi(Courtroom);
-
-        ooc_master->setDefault(false);
-
 
         QMetaObject::connectSlotsByName(Courtroom);
     } // setupUi
 
     void retranslateUi(QMainWindow *Courtroom)
     {
-        Courtroom->setWindowTitle(QApplication::translate("Courtroom", "Attorney Online", 0));
+        Courtroom->setWindowTitle(QApplication::translate("Courtroom", "Attorney Online", 0, QApplication::UnicodeUTF8));
         background->setText(QString());
         objection->setText(QString());
         chatlog->setPlainText(QString());
@@ -345,23 +348,23 @@ public:
         playingbackground->setText(QString());
         chatbubble->setText(QString());
         charselect->setText(QString());
-        spectator->setText(QApplication::translate("Courtroom", "Spectator", 0));
+        spectator->setText(QApplication::translate("Courtroom", "Spectator", 0, QApplication::UnicodeUTF8));
         charselector->setText(QString());
         charselect_left->setText(QString());
         charselect_right->setText(QString());
-        changecharacter->setText(QApplication::translate("Courtroom", "Change character", 0));
+        changecharacter->setText(QApplication::translate("Courtroom", "Change character", 0, QApplication::UnicodeUTF8));
         charError->setText(QString());
 
         const bool __sortingEnabled = musiclist->isSortingEnabled();
         musiclist->setSortingEnabled(false);
         QListWidgetItem *___qlistwidgetitem = musiclist->item(0);
-        ___qlistwidgetitem->setText(QApplication::translate("Courtroom", "u wot m8", 0));
+        ___qlistwidgetitem->setText(QApplication::translate("Courtroom", "u wot m8", 0, QApplication::UnicodeUTF8));
         musiclist->setSortingEnabled(__sortingEnabled);
 
-        oocchatname->setPlaceholderText(QApplication::translate("Courtroom", "Name", 0));
+        oocchatname->setPlaceholderText(QApplication::translate("Courtroom", "Name", 0, QApplication::UnicodeUTF8));
         charname->setText(QString());
-        ooc_master->setText(QApplication::translate("Courtroom", "Master", 0));
-        ooc_server->setText(QApplication::translate("Courtroom", "Server", 0));
+        ooc_master->setText(QApplication::translate("Courtroom", "Master", 0, QApplication::UnicodeUTF8));
+        ooc_server->setText(QApplication::translate("Courtroom", "Server", 0, QApplication::UnicodeUTF8));
     } // retranslateUi
 
 };

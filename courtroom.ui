@@ -1122,6 +1122,16 @@
      <bool>true</bool>
     </property>
    </widget>
+   <widget class="QLineEdit" name="charpass">
+    <property name="geometry">
+     <rect>
+      <x>270</x>
+      <y>10</y>
+      <width>113</width>
+      <height>22</height>
+     </rect>
+    </property>
+   </widget>
    <zorder>charselect</zorder>
    <zorder>background</zorder>
    <zorder>chatlog</zorder>
@@ -1149,6 +1159,7 @@
    <zorder>chattext</zorder>
    <zorder>ooc_master</zorder>
    <zorder>ooc_server</zorder>
+   <zorder>charpass</zorder>
   </widget>
  </widget>
  <resources>

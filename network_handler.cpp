@@ -159,6 +159,13 @@ void Networkhandler::handle_enter_server_request()
   server_socket->write("RB#%");
 }
 
+void Networkhandler::handle_character_request(QString p_character, QString p_password)
+{
+  QString packet = "AC#" + p_character + "#" + p_password + "#%";
+
+  server_socket->write(packet.toLocal8Bit());
+}
+
 void Networkhandler::handle_ms_packet()
 {
   master_connected = true;
@@ -232,22 +239,10 @@ void Networkhandler::handle_server_packet()
 
   QString in_data;
 
-  /*
-  //temporary code
-  if (packet_debugging)
-  {
-    //we pretend that we receive this for debugging
-    in_data = "CI#Phoenix&&&#Miles&&&#Judge&&&#%EM#the best song.mp3#the worst song.mp3#%BN#gs4#%";
-  }
-  */
 
-  //else
-  //{
-    char buffer[2048] = {0};
-    server_socket->read(buffer, server_socket->bytesAvailable());
-
-    in_data = buffer;
-  //}
+  char buffer[2048] = {0};
+  server_socket->read(buffer, server_socket->bytesAvailable());
+  in_data = buffer;
 
   QStringList packet_list = in_data.split("%", QString::SplitBehavior(QString::SkipEmptyParts));
 
@@ -366,6 +361,20 @@ void Networkhandler::handle_server_packet()
     else if (header == "DONE")
     {
       done_signal();
+    }
+
+    else if (header == "OC")
+    {
+      if (packet_contents.size() != 3)
+      {
+        callError("(header = OC) Expected packet_contents.size() to be 3, but found " + packet_contents.size());
+        return;
+      }
+
+      QString f_character = packet_contents.at(1);
+      int f_mod = packet_contents.at(2).toInt();
+
+      character_reply_received(f_character, f_mod);
     }
 
     else if (header == "MS")

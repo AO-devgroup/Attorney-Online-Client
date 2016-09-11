@@ -115,6 +115,8 @@ public slots:
 
   void go_to_charselect();
 
+  void set_character(QString p_character, int p_mod);
+
   void handle_chatmessage(chatmessage_type &p_message);
 
   void handle_ms_message(QString p_message);
@@ -160,6 +162,8 @@ signals:
 
   void chatmessage_requested(chatmessage_type &p_chatmessage);
   void legacy_chatmessage_requested(chatmessage_type &p_chatmessage);
+
+  void character_requested(QString p_character, QString p_password);
 
   void song_requested(QString p_song_name);
 

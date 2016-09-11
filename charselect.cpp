@@ -183,13 +183,7 @@ void Courtroom::charChoose(int local_charnumber)
   real_char_number = local_charnumber + (90 * (char_select_current_page - 1));
   real_char = character_list.at(real_char_number).name;
 
-  //T0D0
-  //hello mister server, can we has real_char pls?
-  //if (serversaysyes)
-  playerChar = real_char;
+  QString f_password = ui->charpass->getText();
 
-  enter_courtroom();
-
-  //else
-  //ui->errorlabel->setText("Character is already taken.");
+  character_requested(real_char, f_password);
 }
