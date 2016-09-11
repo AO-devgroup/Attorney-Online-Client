@@ -2,12 +2,6 @@
 
 this project uses QT 5.7
 
-you will need to make a qt project then add these files to the project. Then, you need to add characters/ and background/ from a vanill ao installation
-
-masterchat works 100%, favorites work and servers show online staus and clicking "connect" will bring up a prototype playing window(will not connect to the selected server yet)
-
-MAKE SURE THE CODE BUILDS BEFORE PUSHING
-
 here is a working windows build(UPDATED 8th sept. 2016)(runs smooth on wine):
 
 http://tiny.cc/getao2
@@ -27,34 +21,48 @@ Comparison between AO2 char select and AO Classic(right)
 # Changelog
 these are the changes from the old client made by FanatSors. the ones listed here are already done
 
+- "firstmode" in char.ini is now obsolete
+- "number" in char.ini is now obsolete
+- the entire misc folder is now obsolete
+- "char_chosen" pngs are now obsolete
+- "button_off" pngs are now obsolete
+- Moved character icons from base/misc/DemoThings/ to their respective character folder
 - Removed emote limit
+- Removed character limit
 - Increased characters per page from 20 to 90
-- "firstmode" in char.ini is now deprecated
-- Added theme support
+- The client is now customizable(added theme support)
 - Added actual error messages when something is wrong
 - Added "config.ini" with user-defined settings
 - Slightly changed the UI to make the playing area clearer
 - Slightly rearranged the directory structure
-- Moved character icons from base/misc/DemoThings/ to their respective character folder
 - Client window is now scaleable
 - Added "change character" button
 - Servers now show up all at once in the public serverlist
 - Added dynamic sizing to char select(remove blank char pages and remove character limit, essentially)
-
+- Loading times have been reduced drastically
+- Readded the "spectator" functionality
+- Added moving speedlines(in both defense and prosecution directions)
+- Added indicator for passworded characters
+- Improved network protocol
+- Added a whole lot of other things i forgot to mention
+- Removed kebab
 
 # Planned changes
 these are changes that will happen if everything goes smooth
 
-- Remove/decrease loading times(for servers and for the masterserver)
-- Readd the long-lost "Spectator" function
 - Add area support
 - Add separate volume sliders for music, character blips and sfx
-- Add moving speedlines
-- Increase character customization options
-- Improve network protocol
 - Add EVIDENCE support
-- Remove kebab
+- Add a settings area
 
+# Things left to implement
+In addition to the things listed in "planned changes", this is what is left to be done
+
+- Add witness testimony/cross examination buttons
+- Add health bars
+- Add scrolling chat
+- Add pre-emote support
+- Add sound effect support
 
 # Credits
 
