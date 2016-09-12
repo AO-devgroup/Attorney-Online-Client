@@ -1149,7 +1149,6 @@
    <zorder>charselect_left</zorder>
    <zorder>charselect_right</zorder>
    <zorder>changecharacter</zorder>
-   <zorder>charError</zorder>
    <zorder>musiclist</zorder>
    <zorder>oocserverchat</zorder>
    <zorder>oocchatname</zorder>
@@ -1160,6 +1159,7 @@
    <zorder>ooc_master</zorder>
    <zorder>ooc_server</zorder>
    <zorder>charpass</zorder>
+   <zorder>charError</zorder>
   </widget>
  </widget>
  <resources>

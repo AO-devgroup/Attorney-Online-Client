@@ -316,7 +316,6 @@ public:
         charselect_left->raise();
         charselect_right->raise();
         changecharacter->raise();
-        charError->raise();
         musiclist->raise();
         oocserverchat->raise();
         oocchatname->raise();
@@ -327,6 +326,7 @@ public:
         ooc_master->raise();
         ooc_server->raise();
         charpass->raise();
+        charError->raise();
 
         retranslateUi(Courtroom);
 

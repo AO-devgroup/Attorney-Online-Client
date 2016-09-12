@@ -85,6 +85,8 @@ void Courtroom::setCharSelectPage()
   ui->charselect_left->raise();
   ui->charselect_right->raise();
   ui->spectator->raise();
+  ui->charpass->raise();
+  ui->charError->raise();
 
   //start by hiding left and right arrows because were
   //not certain at this point if they should appear or not

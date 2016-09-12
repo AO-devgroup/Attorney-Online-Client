@@ -95,8 +95,8 @@ void Networkhandler::handle_chatmessage_request(chatmessage_type &p_chatmessage)
   if (!server_connected)
     return;
 
-  qDebug() << "p_chatmessage.emote_modifier = " << p_chatmessage.emote_modifier;
-
+  //old format
+  /*
   QString packet = "MS#" +
       p_chatmessage.message + "#" +
       p_chatmessage.character + "#" +
@@ -109,6 +109,23 @@ void Networkhandler::handle_chatmessage_request(chatmessage_type &p_chatmessage)
       QString::number(p_chatmessage.realization) + "#" +
       QString::number(p_chatmessage.text_color) + "#" +
       QString::number(p_chatmessage.evidence) + "#%";
+  */
+
+  //MS#chat#<pre-emote>#<char>#<emote>#<message>#<side>#<sfx-name>#<emote_modifier>#<objection_modifier>#<realization>#<text_color>#<evidence>#<cid>#%
+  QString packet = "MS#chat#" +
+      p_chatmessage.pre_emote + "#" +
+      p_chatmessage.character + "#" +
+      p_chatmessage.emote + "#" +
+      p_chatmessage.message + "#" +
+      p_chatmessage.side + "#" +
+      p_chatmessage.sfx_name + "#" +
+      QString::number(p_chatmessage.emote_modifier) + "#" +
+      QString::number(p_chatmessage.objection_modifier) + "#" +
+      QString::number(p_chatmessage.realization) + "#" +
+      QString::number(p_chatmessage.text_color) + "#" +
+      QString::number(p_chatmessage.evidence) + "#" +
+      //cid goes here
+      "#%";
 
 
   qDebug() << "sent packet: " << packet;
@@ -379,9 +396,10 @@ void Networkhandler::handle_server_packet()
 
     else if (header == "MS")
     {
-      qDebug() << packet;
       chatmessage_type f_message;
 
+      //old format
+      /*
       if (packet_contents.size() == 12)
       {
         //message format:
@@ -398,6 +416,25 @@ void Networkhandler::handle_server_packet()
         f_message.realization = packet_contents.at(9).toInt();
         f_message.text_color = packet_contents.at(10).toInt();
         f_message.evidence = packet_contents.at(11).toInt();
+      }
+      */
+
+      if (packet_contents.size() == 14)
+      {
+        //format:
+        //MS#chat#<pre-emote>#<char>#<emote>#<message>#<side>#<sfx-name>#<emote_modifier>#<objection_modifier>#<realization>#<text_color>#<evidence>#<cid>#%
+
+        f_message.pre_emote = packet_contents.at(2);
+        f_message.character = packet_contents.at(3);
+        f_message.emote = packet_contents.at(4);
+        f_message.message = packet_contents.at(5);
+        f_message.side = packet_contents.at(6);
+        f_message.sfx_name = packet_contents.at(7);
+        f_message.emote_modifier = packet_contents.at(8).toInt();
+        f_message.objection_modifier = packet_contents.at(9).toInt();
+        f_message.evidence = packet_contents.at(10).toInt();
+        f_message.realization = packet_contents.at(11).toInt();
+        f_message.text_color = packet_contents.at(12).toInt();
       }
 
       else if (packet_contents.size() == 16)
@@ -421,7 +458,7 @@ void Networkhandler::handle_server_packet()
 
       else
       {
-        callError("MALFORMED CHAT MESSAGE, expected size to be 12, found " + packet_contents.size());
+        callError("MALFORMED CHAT MESSAGE, expected size to be 13, found " + packet_contents.size());
         return;
       }
 
@@ -444,7 +481,7 @@ void Networkhandler::handle_server_packet()
     }
 
 
-    qDebug() << packet;
+    qDebug() << "received packet: " << packet;
   }
 }
 

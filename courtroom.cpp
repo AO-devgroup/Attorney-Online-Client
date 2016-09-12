@@ -335,7 +335,9 @@ void Courtroom::handle_chatmessage(chatmessage_type &p_message)
 
   ui->chatlog->appendPlainText(showname + ": " + p_message.message);
 
+  qDebug() << "executing set_scene";
   set_scene(p_message.side);
+  qDebug() << "set_scene executed";
 
   if(fileExists(g_theme_path + "chat.png"))
     ui->chatbubble->setPixmap(g_theme_path + "chat.png");
@@ -360,6 +362,8 @@ void Courtroom::handle_chatmessage(chatmessage_type &p_message)
   charmovie->setFileName(gif_path);
   ui->playingarea->setMovie(charmovie);
   charmovie->start();
+
+  qDebug() << "handle_chatmessage executed";
 }
 
 void Courtroom::handle_ms_message(QString p_message)
