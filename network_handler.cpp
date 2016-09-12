@@ -161,7 +161,7 @@ void Networkhandler::handle_enter_server_request()
 
 void Networkhandler::handle_character_request(QString p_character, QString p_password)
 {
-  QString packet = "AC#" + p_character + "#" + p_password + "#%";
+  QString packet = "UC#" + p_character + "#" + p_password + "#%";
 
   server_socket->write(packet.toLocal8Bit());
 }
