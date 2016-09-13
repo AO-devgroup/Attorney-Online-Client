@@ -125,7 +125,7 @@ void Networkhandler::handle_chatmessage_request(chatmessage_type &p_chatmessage)
       QString::number(p_chatmessage.text_color) + "#" +
       QString::number(p_chatmessage.evidence) + "#" +
       //cid goes here
-      "#%";
+      "0#%";
 
 
   qDebug() << "sent packet: " << packet;

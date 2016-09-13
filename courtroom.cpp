@@ -14,6 +14,11 @@ Courtroom::Courtroom(QWidget *parent) :
 
   construct_emotes();
   this->setWindowTitle("Attorney Online");
+
+  //so when we show() and hide() charselect, children follow suit
+  ui->charselect_left->setParent(ui->charselect);
+  ui->charselect_right->setParent(ui->charselect);
+  ui->spectator->setParent(ui->charselect);
 }
 
 Courtroom::~Courtroom()
@@ -30,7 +35,9 @@ Courtroom::~Courtroom()
 void Courtroom::set_character_list(QVector<char_type> &p_char_list)
 {
   character_list = p_char_list;
-  char_list_set = true;  
+  char_list_set = true;
+
+  setCharSelect();
 }
 
 void Courtroom::set_music_list(QStringList &p_music_list)
@@ -73,9 +80,9 @@ void Courtroom::go_to_charselect()
   //the ONLY thing this does is hide the lobby window!! dont worry about it!!
   entering_server();
 
-
-
-  setCharSelect();
+  show();
+  ui->charselect->show();
+  ui->charselect->raise();
 }
 
 void Courtroom::setTheme()

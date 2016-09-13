@@ -5,10 +5,7 @@ void Courtroom::setCharSelect()
   //might seem redundant, but we are going to use this value A LOT
   int char_list_size = character_list.size();
 
-  //so when we show() and hide() charselect, children follow suit
-  ui->charselect_left->setParent(ui->charselect);
-  ui->charselect_right->setParent(ui->charselect);
-  ui->spectator->setParent(ui->charselect);
+
 
   //setting up the grid and positions
   const int base_x_pos{25};
@@ -69,15 +66,14 @@ void Courtroom::setCharSelect()
 
   setCharSelectPage();
 
-  //reminder -- this shows the courtroom window itself
-  show();
+
 }
 
 void Courtroom::setCharSelectPage()
 {
   int char_list_size = character_list.size();
 
-  ui->charselect->show();
+
 
   //you raise me uup
   //srs, tho. brings the ui in front of the rest of the courtroom
