@@ -36,7 +36,7 @@ public:
 
   bool packet_debugging = true;
 
-  int cid;
+
 
 
 signals:

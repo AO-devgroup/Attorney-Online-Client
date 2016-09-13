@@ -1,12 +1,7 @@
 #include "charselect.h"
 
-void Courtroom::setCharSelect()
+void Courtroom::construct_charselect()
 {
-  //might seem redundant, but we are going to use this value A LOT
-  int char_list_size = character_list.size();
-
-
-
   //setting up the grid and positions
   const int base_x_pos{25};
   const int base_y_pos{36};
@@ -43,24 +38,58 @@ void Courtroom::setCharSelect()
 
   connect (mapper, SIGNAL(mapped(int)), this, SLOT(charChoose(int))) ;
 
+  QString d_path = getBasePath() + "themes/default/";
+
   QString char_select_path = g_theme_path + "charselect_background.png";
+  QString d_char_select_path = d_path + "charselect_background.png";
+
   QString left_arrow_path = g_theme_path + "arrow_left.png";
+  QString d_left_arrow_path = d_path + "arrow_left.png";
+
   QString right_arrow_path = g_theme_path + "arrow_right.png";
+  QString d_right_arrow_path = d_path + "arrow_right.png";
 
-  if (fileExists(char_select_path))
+  if (fileExists(char_select_path, true))
     ui->charselect->setPixmap(QPixmap(char_select_path));
+  else if (fileExists(d_char_select_path))
+    ui->charselect->setPixmap(QPixmap(d_char_select_path));
 
-  if (fileExists(left_arrow_path))
+  if (fileExists(left_arrow_path, true))
     ui->charselect_left->setStyleSheet("border-image:url(" + left_arrow_path + ")");
+  else if (fileExists(d_left_arrow_path))
+    ui->charselect_left->setStyleSheet("border-image:url(" + d_left_arrow_path + ")");
 
-  if (fileExists(right_arrow_path))
+  if (fileExists(right_arrow_path, true))
     ui->charselect_right->setStyleSheet("border-image:url(" + right_arrow_path + ")");
+  else if (fileExists(d_right_arrow_path))
+    ui->charselect_right->setStyleSheet("border-image:url(" + d_right_arrow_path + ")");
 
+  for (charicon *f_icon : charicon_list){
+    f_icon->hide();
+  }
+}
 
-  if (char_list_size % 90 == 0)
-    char_select_pages = char_list_size / 90;
+//called on character_list_received from network handler
+void Courtroom::set_character_list(QVector<char_type> &p_char_list)
+{
+  character_list = p_char_list;
+  char_list_set = true;
+
+  if (character_list.size() % 90 == 0)
+    char_select_pages = character_list.size() / 90;
   else
-    char_select_pages = (char_list_size / 90) + 1;
+    char_select_pages = (character_list.size() / 90) + 1;
+
+  char_select_current_page = 1;
+
+  setCharSelectPage();
+}
+
+//obsolete
+/*
+void Courtroom::setCharSelect()
+{
+
 
   char_select_current_page = 1;
 
@@ -68,21 +97,12 @@ void Courtroom::setCharSelect()
 
 
 }
+*/
 
 void Courtroom::setCharSelectPage()
 {
   int char_list_size = character_list.size();
 
-
-
-  //you raise me uup
-  //srs, tho. brings the ui in front of the rest of the courtroom
-  ui->charselect->raise();
-  ui->charselect_left->raise();
-  ui->charselect_right->raise();
-  ui->spectator->raise();
-  ui->charpass->raise();
-  ui->charError->raise();
 
   //start by hiding left and right arrows because were
   //not certain at this point if they should appear or not
@@ -182,6 +202,8 @@ void Courtroom::charChoose(int local_charnumber)
   real_char = character_list.at(real_char_number).name;
 
   QString f_password = ui->charpass->text();
+
+  m_cid = real_char_number;
 
   character_requested(real_char, f_password);
 }

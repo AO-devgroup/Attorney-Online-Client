@@ -49,6 +49,7 @@ struct chatmessage_type
   int realization;
   int text_color;
   int evidence;
+  int cid;
 };
 
 struct area_type

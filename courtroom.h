@@ -63,7 +63,8 @@ private:
   QVector<charicon* > charicon_list; //qpushbutton inherited(widget)
   QSignalMapper *mapper;
 
-  void setCharSelect();
+  void construct_charselect();
+  //void setCharSelect();
   void setCharSelectPage();
 
   int emote_pages;
@@ -101,6 +102,8 @@ private:
 
   QMovie *charmovie;
   QMovie *speedlinesmovie;
+
+  int m_cid = -1;
 
   void enter_courtroom();
 

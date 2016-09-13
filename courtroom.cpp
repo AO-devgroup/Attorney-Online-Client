@@ -12,6 +12,7 @@ Courtroom::Courtroom(QWidget *parent) :
   charmovie = new QMovie(this);
   speedlinesmovie = new QMovie(this);
 
+  construct_charselect();
   construct_emotes();
   this->setWindowTitle("Attorney Online");
 
@@ -19,6 +20,15 @@ Courtroom::Courtroom(QWidget *parent) :
   ui->charselect_left->setParent(ui->charselect);
   ui->charselect_right->setParent(ui->charselect);
   ui->spectator->setParent(ui->charselect);
+  ui->charpass->setParent(ui->charselect);
+  ui->charError->setParent(ui->charselect);
+
+  ui->charselect->raise();
+  ui->charselect_left->raise();
+  ui->charselect_right->raise();
+  ui->spectator->raise();
+  ui->charpass->raise();
+  ui->charError->raise();
 }
 
 Courtroom::~Courtroom()
@@ -29,15 +39,6 @@ Courtroom::~Courtroom()
   delete emote_left_button;
   delete emote_right_button;
   delete songplayer;
-}
-
-//called on character_list_received from network handler
-void Courtroom::set_character_list(QVector<char_type> &p_char_list)
-{
-  character_list = p_char_list;
-  char_list_set = true;
-
-  setCharSelect();
 }
 
 void Courtroom::set_music_list(QStringList &p_music_list)
@@ -77,12 +78,21 @@ void Courtroom::set_area_list(QVector<area_type> &p_area_list)
 //called whenever DONE#% is received
 void Courtroom::go_to_charselect()
 {
+  m_cid = -1;
+
+  for(emoteicon *f_icon : emoteicon_list)
+  {
+    f_icon->hide();
+  }
+
+  emote_left_button->hide();
+  emote_right_button->hide();
+
   //the ONLY thing this does is hide the lobby window!! dont worry about it!!
   entering_server();
 
   show();
   ui->charselect->show();
-  ui->charselect->raise();
 }
 
 void Courtroom::setTheme()
@@ -222,6 +232,7 @@ void Courtroom::on_chatLine_returnPressed()
   f_chatmessage.realization = realization_state;
   f_chatmessage.text_color = text_color_state;
   f_chatmessage.evidence = evidence_state;
+  f_chatmessage.cid = m_cid;
 
   //legacy mode sends the message in the old format, check network handler for more info
   if (legacy_mode)
@@ -238,7 +249,7 @@ void Courtroom::on_chatLine_returnPressed()
 
 void Courtroom::set_scene(QString p_side)
 {
-  QString default_path = getBasePath() + "background/default/";
+  QString default_path = getBasePath() + "background/gs4/";
 
   QString f_background_path = background_path;
   QString f_default_background_path = default_path;
@@ -311,14 +322,14 @@ void Courtroom::set_scene(QString p_side)
 
   if (fileExists(f_background_path, true))
     ui->playingbackground->setPixmap(f_background_path);
-  else if (fileExists(f_default_background_path, true))
+  else if (fileExists(f_default_background_path))
     ui->playingbackground->setPixmap(f_default_background_path);
   else
     ui->playingbackground->clear();
 
   if (fileExists(f_speedlines_path, true))
     speedlinesmovie->setFileName(f_speedlines_path);
-  else if (fileExists(f_default_speedlines_path, true))
+  else if (fileExists(f_default_speedlines_path))
     speedlinesmovie->setFileName(f_default_speedlines_path);
   else
   {
@@ -327,7 +338,7 @@ void Courtroom::set_scene(QString p_side)
 
   if (fileExists(f_desk_path, true))
     ui->desk->setPixmap(f_desk_path);
-  else if (fileExists(f_default_desk_path, true))
+  else if (fileExists(f_default_desk_path))
     ui->desk->setPixmap(f_default_desk_path);
   else
     ui->desk->clear();
@@ -341,6 +352,7 @@ void Courtroom::handle_chatmessage(chatmessage_type &p_message)
   //bruh.setPosition(0);
 
   ui->chatlog->appendPlainText(showname + ": " + p_message.message);
+  ui->desk->show();
 
   qDebug() << "executing set_scene";
   set_scene(p_message.side);
@@ -361,11 +373,15 @@ void Courtroom::handle_chatmessage(chatmessage_type &p_message)
   //ui->playingarea->setMovie(movie);
   if (p_message.emote_modifier == 5)
   {
+    speedlinesmovie->stop();
+    ui->desk->hide();
     ui->playingbackground->setMovie(speedlinesmovie);
-    speedlinesmovie->start();
+    speedlinesmovie->start(); 
   }
+
   QString gif_path = getCharGifPath(p_message.character, "(b)" + p_message.emote + ".gif");
 
+  charmovie->stop();
   charmovie->setFileName(gif_path);
   ui->playingarea->setMovie(charmovie);
   charmovie->start();
@@ -539,7 +555,7 @@ void Courtroom::play_song(QString p_song_name)
 {
   QString song_path = getBasePath() + "sounds/music/" + p_song_name;
 
-  if (fileExists(song_path))
+  if (fileExists(song_path, true))
   {
     songplayer->setMedia(QUrl::fromLocalFile(song_path));
     songplayer->setVolume(50);
@@ -549,7 +565,7 @@ void Courtroom::play_song(QString p_song_name)
   //assume "stop.mp3" or something
   else
   {
-    songplayer->setVolume(0);
+    songplayer->stop();
   }
 }
 
