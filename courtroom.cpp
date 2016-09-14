@@ -59,11 +59,9 @@ void Courtroom::set_music_list(QStringList &p_music_list)
     QString song_path = getBasePath() + "sounds/music/" + song_name;
 
     if (fileExists(song_path, true))
-      ; //color background of ui->musiclist->at(n_song) green? check documentation and fix implementation #T0D0
+      ui->musiclist->item(n_song)->setBackground(Qt::green);
     else
-    {
-      ; //background goes red #T0D0 as well
-    }
+      ui->musiclist->item(n_song)->setBackground(Qt::red);
   }
 }
 

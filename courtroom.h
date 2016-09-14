@@ -14,6 +14,8 @@
 #include <QModelIndex>
 #include <QMediaPlayer>
 #include <QTextCursor>
+#include <QBrush>
+#include <QColor>
 
 #include "ui_courtroom.h"
 
