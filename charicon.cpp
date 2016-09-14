@@ -17,8 +17,7 @@ charicon::charicon(int x_pos, int y_pos, QWidget *parent)
 
   taken_overlay = new QLabel(parent);
 
-  if (fileExists(g_theme_path + "char_taken.png"))
-    taken_overlay->setStyleSheet("border-image:url(" + g_theme_path + "char_taken.png" + ")");
+  taken_overlay->setStyleSheet("border-image:url(" + get_image_path("char_taken.png") + ")");
 
   taken_overlay->setAttribute(Qt::WA_TransparentForMouseEvents);
   taken_overlay->resize(60, 60);
@@ -27,8 +26,7 @@ charicon::charicon(int x_pos, int y_pos, QWidget *parent)
 
   password_overlay = new QLabel(parent);
 
-  if (fileExists(g_theme_path + "char_taken.png"))
-    password_overlay->setStyleSheet("border-image:url(" + g_theme_path + "char_passworded.png" + ")");
+  password_overlay->setStyleSheet("border-image:url(" + get_image_path("char_passworded.png") + ")");
 
   password_overlay->setAttribute(Qt::WA_TransparentForMouseEvents);
   password_overlay->resize(60, 60);
@@ -37,7 +35,7 @@ charicon::charicon(int x_pos, int y_pos, QWidget *parent)
 
   // i dont even know if this code is used
   char_selector = new QLabel(parent);
-  char_selector->setStyleSheet("border-image:url(" + g_theme_path + "char_selector.png" + ")");
+  char_selector->setStyleSheet("border-image:url(" + get_image_path("char_selector.png") + ")");
   char_selector->setAttribute(Qt::WA_TransparentForMouseEvents);
   char_selector->resize(62, 62);
   char_selector->move(x_pos - 1, y_pos - 1);

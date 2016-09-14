@@ -11,9 +11,18 @@ Lobby::Lobby(QWidget *parent) :
 
 void Lobby::setTheme()
 {
+  /*
+  QString default_path = getBasePath() + "themes/default/";
+
   QString background_path = (g_theme_path + "lobbybackground.png");
+  QString d_background_path = (default_path + "lobbybackground.png");
+
   QString refresh_path = (g_theme_path + "refresh.png");
+  QString d_refresh_path = (default_path + "refresh.png");
+
   QString addtofav_path = (g_theme_path + "addtofav.png");
+  QString d_addtofav_path = (default_path + "addtofav.png");
+
   QString connect_path = (g_theme_path + "connect.png");
   QString publicservers_path = (g_theme_path + "publicservers_selected.png");
   QString favorites_path = (g_theme_path + "favorites.png");
@@ -35,6 +44,15 @@ void Lobby::setTheme()
 
   if (fileExists(favorites_path))
     ui->favorites->setStyleSheet("border-image:url(" + favorites_path + ")");
+
+  */
+
+  ui->background->setPixmap(get_image_path("lobbybackground.png"));
+  ui->refresh->setStyleSheet("border-image:url(" + get_image_path("refresh.png") + ")");
+  ui->addtofav->setStyleSheet("border-image:url(" + get_image_path("addtofav.png") + ")");
+  ui->connect->setStyleSheet("border-image:url(" + get_image_path("connect.png") + ")");
+  ui->publicservers->setStyleSheet("border-image:url(" + get_image_path("publicservers_selected.png") + ")");
+  ui->favorites->setStyleSheet("border-image:url(" + get_image_path("favorites.png") + ")");
 
   ui->favoritelist->hide();
 }

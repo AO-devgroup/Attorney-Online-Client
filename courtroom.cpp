@@ -124,6 +124,11 @@ void Courtroom::setTheme()
   if (fileExists(right_arrow_path))
     emote_right_button->setStyleSheet("border-image:url(" + right_arrow_path + ")");
 
+  ui->defminus->setStyleSheet("border-image:url(" + get_image_path("defminus.png") + ")");
+  ui->defplus->setStyleSheet("border-image:url(" + get_image_path("defplus.png") + ")");
+  ui->prominus->setStyleSheet("border-image:url(" + get_image_path("prominus.png") + ")");
+  ui->proplus->setStyleSheet("border-image:url(" + get_image_path("proplus.png") + ")");
+
   emote_left_button->hide();
   emote_right_button->hide();
 

@@ -14,8 +14,7 @@ emoteicon::emoteicon(int x_pos, int y_pos, QWidget *parent)
 
   selected_overlay = new QLabel(this);
 
-  if (fileExists(g_theme_path + "emote_selected.png"))
-    selected_overlay->setStyleSheet("border-image:url(" + g_theme_path + "emote_selected.png" + ")");
+  selected_overlay->setStyleSheet("border-image:url(" + get_image_path("emote_selected.png") + ")");
 
   selected_overlay->setAttribute(Qt::WA_TransparentForMouseEvents);
   selected_overlay->resize(40, 40);

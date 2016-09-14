@@ -1132,6 +1132,90 @@
      </rect>
     </property>
    </widget>
+   <widget class="QLabel" name="defense_bar">
+    <property name="geometry">
+     <rect>
+      <x>390</x>
+      <y>323</y>
+      <width>84</width>
+      <height>14</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="pixmap">
+     <pixmap>../build-Attorney_Online_new-Desktop_Qt_5_7_0_GCC_64bit-Debug/base/misc/advocat.png</pixmap>
+    </property>
+   </widget>
+   <widget class="QLabel" name="prosecution_bar">
+    <property name="geometry">
+     <rect>
+      <x>390</x>
+      <y>340</y>
+      <width>84</width>
+      <height>14</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="pixmap">
+     <pixmap>../build-Attorney_Online_new-Desktop_Qt_5_7_0_GCC_64bit-Debug/base/misc/procuror.png</pixmap>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="defplus">
+    <property name="geometry">
+     <rect>
+      <x>470</x>
+      <y>320</y>
+      <width>9</width>
+      <height>9</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="defminus">
+    <property name="geometry">
+     <rect>
+      <x>390</x>
+      <y>320</y>
+      <width>9</width>
+      <height>9</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="proplus">
+    <property name="geometry">
+     <rect>
+      <x>470</x>
+      <y>340</y>
+      <width>9</width>
+      <height>9</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="prominus">
+    <property name="geometry">
+     <rect>
+      <x>390</x>
+      <y>340</y>
+      <width>9</width>
+      <height>9</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
    <zorder>charselect</zorder>
    <zorder>background</zorder>
    <zorder>chatlog</zorder>
@@ -1160,6 +1244,12 @@
    <zorder>ooc_server</zorder>
    <zorder>charpass</zorder>
    <zorder>charError</zorder>
+   <zorder>defense_bar</zorder>
+   <zorder>prosecution_bar</zorder>
+   <zorder>defplus</zorder>
+   <zorder>defminus</zorder>
+   <zorder>proplus</zorder>
+   <zorder>prominus</zorder>
   </widget>
  </widget>
  <resources>

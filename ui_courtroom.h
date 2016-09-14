@@ -56,6 +56,12 @@ public:
     QPushButton *ooc_master;
     QPushButton *ooc_server;
     QLineEdit *charpass;
+    QLabel *defense_bar;
+    QLabel *prosecution_bar;
+    QPushButton *defplus;
+    QPushButton *defminus;
+    QPushButton *proplus;
+    QPushButton *prominus;
 
     void setupUi(QMainWindow *Courtroom)
     {
@@ -298,6 +304,26 @@ public:
         charpass = new QLineEdit(centralwidget);
         charpass->setObjectName(QStringLiteral("charpass"));
         charpass->setGeometry(QRect(270, 10, 113, 22));
+        defense_bar = new QLabel(centralwidget);
+        defense_bar->setObjectName(QStringLiteral("defense_bar"));
+        defense_bar->setGeometry(QRect(390, 323, 84, 14));
+        defense_bar->setPixmap(QPixmap(QString::fromUtf8("../build-Attorney_Online_new-Desktop_Qt_5_7_0_GCC_64bit-Debug/base/misc/advocat.png")));
+        prosecution_bar = new QLabel(centralwidget);
+        prosecution_bar->setObjectName(QStringLiteral("prosecution_bar"));
+        prosecution_bar->setGeometry(QRect(390, 340, 84, 14));
+        prosecution_bar->setPixmap(QPixmap(QString::fromUtf8("../build-Attorney_Online_new-Desktop_Qt_5_7_0_GCC_64bit-Debug/base/misc/procuror.png")));
+        defplus = new QPushButton(centralwidget);
+        defplus->setObjectName(QStringLiteral("defplus"));
+        defplus->setGeometry(QRect(470, 320, 9, 9));
+        defminus = new QPushButton(centralwidget);
+        defminus->setObjectName(QStringLiteral("defminus"));
+        defminus->setGeometry(QRect(390, 320, 9, 9));
+        proplus = new QPushButton(centralwidget);
+        proplus->setObjectName(QStringLiteral("proplus"));
+        proplus->setGeometry(QRect(470, 340, 9, 9));
+        prominus = new QPushButton(centralwidget);
+        prominus->setObjectName(QStringLiteral("prominus"));
+        prominus->setGeometry(QRect(390, 340, 9, 9));
         Courtroom->setCentralWidget(centralwidget);
         charselect->raise();
         background->raise();
@@ -327,6 +353,12 @@ public:
         ooc_server->raise();
         charpass->raise();
         charError->raise();
+        defense_bar->raise();
+        prosecution_bar->raise();
+        defplus->raise();
+        defminus->raise();
+        proplus->raise();
+        prominus->raise();
 
         retranslateUi(Courtroom);
 
@@ -367,6 +399,12 @@ public:
         charname->setText(QString());
         ooc_master->setText(QApplication::translate("Courtroom", "Master", 0));
         ooc_server->setText(QApplication::translate("Courtroom", "Server", 0));
+        defense_bar->setText(QString());
+        prosecution_bar->setText(QString());
+        defplus->setText(QString());
+        defminus->setText(QString());
+        proplus->setText(QString());
+        prominus->setText(QString());
     } // retranslateUi
 
 };
