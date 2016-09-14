@@ -58,6 +58,9 @@ private:
   //0 is white, 1 is blue, 2 is green, 3 is orange and 4 is red
   int text_color_state = 0;
 
+  int defense_health = 10;
+  int prosecution_health = 10;
+
   int char_select_pages;
   int char_select_current_page;
   QString playerChar = "null";  //null in effect means spectator
@@ -127,6 +130,8 @@ public slots:
   void handle_ms_message(QString p_message);
   void handle_ooc_message(QString p_message);
 
+  void handle_server_packet(QString &p_packet);
+
 private slots:
   void charChoose(int i);
 
@@ -161,6 +166,14 @@ private slots:
   void on_ooc_master_clicked();
 
   void on_ooc_server_clicked();
+
+  void on_defminus_clicked();
+
+  void on_defplus_clicked();
+
+  void on_prominus_clicked();
+
+  void on_proplus_clicked();
 
 signals:
   void entering_server();

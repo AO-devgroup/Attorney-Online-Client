@@ -572,6 +572,11 @@ void Courtroom::play_song(QString p_song_name)
   }
 }
 
+void Courtroom::handle_server_packet(QString &p_packet)
+{
+  ;
+}
+
 void Courtroom::on_oocchatmessage_returnPressed()
 {
   QString name = ui->oocchatname->text();
@@ -603,4 +608,36 @@ void Courtroom::on_ooc_server_clicked()
   ms_or_server_ooc = false;
   ui->oocmasterchat->hide();
   ui->oocserverchat->show();
+}
+
+void Courtroom::on_defminus_clicked()
+{
+  if (defense_health <= 0)
+    request_packet("HP#def#0#%");
+  else
+    request_packet("HP#def#" + QString::number(defense_health - 1) + "#%");
+}
+
+void Courtroom::on_defplus_clicked()
+{
+  if (defense_health >= 10)
+    request_packet("HP#def#10#%");
+  else
+    request_packet("HP#def#" + QString::number(defense_health + 1) + "#%");
+}
+
+void Courtroom::on_prominus_clicked()
+{
+  if (prosecution_health <= 0)
+    request_packet("HP#pro#0#%");
+  else
+    request_packet("HP#pro#" + QString::number(prosecution_health - 1) + "#%");
+}
+
+void Courtroom::on_proplus_clicked()
+{
+  if (prosecution_health >= 10)
+    request_packet("HP#pro#10#%");
+  else
+    request_packet("HP#pro#" + QString::number(prosecution_health + 1) + "#%");
 }

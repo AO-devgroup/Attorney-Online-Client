@@ -169,19 +169,19 @@
      <enum>QFrame::NoFrame</enum>
     </property>
     <property name="verticalScrollBarPolicy">
-     <enum>Qt::ScrollBarAlwaysOff</enum>
+     <enum>Qt::ScrollBarAlwaysOn</enum>
     </property>
     <property name="horizontalScrollBarPolicy">
      <enum>Qt::ScrollBarAlwaysOff</enum>
     </property>
     <property name="readOnly">
-     <bool>true</bool>
+     <bool>false</bool>
     </property>
     <property name="plainText">
      <string/>
     </property>
     <property name="textInteractionFlags">
-     <set>Qt::NoTextInteraction</set>
+     <set>Qt::TextEditorInteraction</set>
     </property>
    </widget>
    <widget class="QPushButton" name="holdit">
@@ -1216,6 +1216,16 @@
      <string/>
     </property>
    </widget>
+   <widget class="QLineEdit" name="musicsearch">
+    <property name="geometry">
+     <rect>
+      <x>490</x>
+      <y>319</y>
+      <width>226</width>
+      <height>23</height>
+     </rect>
+    </property>
+   </widget>
    <zorder>charselect</zorder>
    <zorder>background</zorder>
    <zorder>chatlog</zorder>
@@ -1250,6 +1260,7 @@
    <zorder>defminus</zorder>
    <zorder>proplus</zorder>
    <zorder>prominus</zorder>
+   <zorder>musicsearch</zorder>
   </widget>
  </widget>
  <resources>

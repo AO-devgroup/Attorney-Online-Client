@@ -480,6 +480,11 @@ void Networkhandler::handle_server_packet()
       ooc_message_received(name + ": " + message);
     }
 
+    else if (header == "HP")
+    {
+      server_packet_received(packet);
+    }
+
 
     qDebug() << "received packet: " << packet;
   }

@@ -26,6 +26,7 @@ int main(int argc, char *argv[])
   QObject::connect(&main_networkhandler, SIGNAL(ms_message_received(QString)), &main_courtroom, SLOT(handle_ms_message(QString)));
   QObject::connect(&main_networkhandler, SIGNAL(ooc_message_received(QString)), &main_courtroom, SLOT(handle_ooc_message(QString)));
   QObject::connect(&main_networkhandler, SIGNAL(song_received(QString)), &main_courtroom, SLOT(play_song(QString)));
+  QObject::connect(&main_networkhandler, SIGNAL(server_packet_received(QString&)), &main_courtroom, SLOT(handle_server_packet(QString&)));
 
   QObject::connect(&main_lobby, SIGNAL(all_servers_requested()), &main_networkhandler, SLOT(handle_all_servers_requested()));
   QObject::connect(&main_lobby, SIGNAL(server_connection_requested(QString,int)), &main_networkhandler, SLOT(connect_to_server(QString,int)));

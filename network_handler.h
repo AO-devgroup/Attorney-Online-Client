@@ -62,6 +62,8 @@ signals:
 
   void done_signal();
 
+  void server_packet_received(QString &p_packet);
+
 public slots:
   void connect_to_server(QString ip, int port);
 
