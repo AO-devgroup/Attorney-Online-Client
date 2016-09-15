@@ -333,7 +333,7 @@ void Networkhandler::handle_server_packet()
     {
       QStringList f_music_list;
 
-      for(int n_music = 0 ; n_music < packet_contents.size(); ++n_music)
+      for(int n_music = 0 ; n_music < packet_contents.size() - 2; ++n_music)
       {
         // + 1 to skip the header (which is in index 0) and shift everything one position
         f_music_list.insert(n_music, packet_contents.at(n_music + 1));
@@ -347,7 +347,7 @@ void Networkhandler::handle_server_packet()
       QVector<area_type> f_area_list;
 
       //- 1 accounts for header
-      for (int n_area = 0 ; n_area < packet_contents.size() ; ++n_area)
+      for (int n_area = 0 ; n_area < packet_contents.size() - 2; ++n_area)
       {
         QStringList area_arguments =
           packet_contents.at(n_area + 1).split("&");
