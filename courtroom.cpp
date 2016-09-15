@@ -574,7 +574,30 @@ void Courtroom::play_song(QString p_song_name)
 
 void Courtroom::handle_server_packet(QString &p_packet)
 {
-  ;
+  QStringList packet_contents = p_packet.split("#", QString::SplitBehavior(QString::SkipEmptyParts));
+
+  QString header = packet_contents.at(0);
+
+  if (header == "HP"){
+    QString side = packet_contents.at(1);
+    QString str_hp_amount = packet_contents.at(2);
+    int hp_amount = str_hp_amount.toInt();
+
+    if (hp_amount > 5 || hp_amount < 0)
+      return;
+
+    if (side == "def")
+    {
+      ui->defense_bar->setPixmap(get_image_path("defensebar" + str_hp_amount + ".png"));
+      defense_health = hp_amount;
+    }
+
+    if (side == "pro")
+    {
+      ui->prosecution_bar->setPixmap(get_image_path("prosecutionbar" + str_hp_amount + ".png"));
+      prosecution_health = hp_amount;
+    }
+  }
 }
 
 void Courtroom::on_oocchatmessage_returnPressed()
@@ -620,8 +643,8 @@ void Courtroom::on_defminus_clicked()
 
 void Courtroom::on_defplus_clicked()
 {
-  if (defense_health >= 10)
-    request_packet("HP#def#10#%");
+  if (defense_health >= 5)
+    request_packet("HP#def#5#%");
   else
     request_packet("HP#def#" + QString::number(defense_health + 1) + "#%");
 }
@@ -636,8 +659,8 @@ void Courtroom::on_prominus_clicked()
 
 void Courtroom::on_proplus_clicked()
 {
-  if (prosecution_health >= 10)
-    request_packet("HP#pro#10#%");
+  if (prosecution_health >= 5)
+    request_packet("HP#pro#5#%");
   else
     request_packet("HP#pro#" + QString::number(prosecution_health + 1) + "#%");
 }

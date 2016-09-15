@@ -1168,7 +1168,7 @@
     <property name="geometry">
      <rect>
       <x>470</x>
-      <y>320</y>
+      <y>325</y>
       <width>9</width>
       <height>9</height>
      </rect>
@@ -1180,8 +1180,8 @@
    <widget class="QPushButton" name="defminus">
     <property name="geometry">
      <rect>
-      <x>390</x>
-      <y>320</y>
+      <x>387</x>
+      <y>325</y>
       <width>9</width>
       <height>9</height>
      </rect>
@@ -1194,7 +1194,7 @@
     <property name="geometry">
      <rect>
       <x>470</x>
-      <y>340</y>
+      <y>342</y>
       <width>9</width>
       <height>9</height>
      </rect>
@@ -1206,8 +1206,8 @@
    <widget class="QPushButton" name="prominus">
     <property name="geometry">
      <rect>
-      <x>390</x>
-      <y>340</y>
+      <x>387</x>
+      <y>342</y>
       <width>9</width>
       <height>9</height>
      </rect>

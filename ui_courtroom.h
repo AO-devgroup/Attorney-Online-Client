@@ -62,6 +62,7 @@ public:
     QPushButton *defminus;
     QPushButton *proplus;
     QPushButton *prominus;
+    QLineEdit *musicsearch;
 
     void setupUi(QMainWindow *Courtroom)
     {
@@ -107,10 +108,10 @@ public:
         chatlog->setPalette(palette);
         chatlog->setAutoFillBackground(false);
         chatlog->setFrameShape(QFrame::NoFrame);
-        chatlog->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+        chatlog->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
         chatlog->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-        chatlog->setReadOnly(true);
-        chatlog->setTextInteractionFlags(Qt::NoTextInteraction);
+        chatlog->setReadOnly(false);
+        chatlog->setTextInteractionFlags(Qt::TextEditorInteraction);
         holdit = new QPushButton(centralwidget);
         holdit->setObjectName(QStringLiteral("holdit"));
         holdit->setGeometry(QRect(10, 312, 76, 28));
@@ -314,16 +315,19 @@ public:
         prosecution_bar->setPixmap(QPixmap(QString::fromUtf8("../build-Attorney_Online_new-Desktop_Qt_5_7_0_GCC_64bit-Debug/base/misc/procuror.png")));
         defplus = new QPushButton(centralwidget);
         defplus->setObjectName(QStringLiteral("defplus"));
-        defplus->setGeometry(QRect(470, 320, 9, 9));
+        defplus->setGeometry(QRect(470, 325, 9, 9));
         defminus = new QPushButton(centralwidget);
         defminus->setObjectName(QStringLiteral("defminus"));
-        defminus->setGeometry(QRect(390, 320, 9, 9));
+        defminus->setGeometry(QRect(387, 325, 9, 9));
         proplus = new QPushButton(centralwidget);
         proplus->setObjectName(QStringLiteral("proplus"));
-        proplus->setGeometry(QRect(470, 340, 9, 9));
+        proplus->setGeometry(QRect(470, 342, 9, 9));
         prominus = new QPushButton(centralwidget);
         prominus->setObjectName(QStringLiteral("prominus"));
-        prominus->setGeometry(QRect(390, 340, 9, 9));
+        prominus->setGeometry(QRect(387, 342, 9, 9));
+        musicsearch = new QLineEdit(centralwidget);
+        musicsearch->setObjectName(QStringLiteral("musicsearch"));
+        musicsearch->setGeometry(QRect(490, 319, 226, 23));
         Courtroom->setCentralWidget(centralwidget);
         charselect->raise();
         background->raise();
@@ -359,6 +363,7 @@ public:
         defminus->raise();
         proplus->raise();
         prominus->raise();
+        musicsearch->raise();
 
         retranslateUi(Courtroom);
 
