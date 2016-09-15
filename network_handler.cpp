@@ -196,19 +196,19 @@ void Networkhandler::handle_ms_packet()
 
   for (QString packet : packet_list)
   {
-    QStringList packet_arguments = packet.split("#", QString::SplitBehavior(QString::SkipEmptyParts));
+    QStringList packet_arguments = packet.split("#");
 
     QString header = packet_arguments.at(0);
 
     if (header == "CT")
     {
-      if (packet_arguments.size() == 3)
+      if (packet_arguments.size() == 4)
         ms_message_received(packet_arguments.at(1) + ": " + packet_arguments.at(2));
-      else if (packet_arguments.size() == 2)
+      else if (packet_arguments.size() == 3)
         ms_message_received(packet_arguments.at(1));
       else
       {
-        QString errorstring = "malformed masterserver packet. expected 3 or 2 packet arguments, got " + packet_arguments.size();
+        QString errorstring = "malformed masterserver packet. expected 4 or 3 packet arguments, got " + packet_arguments.size();
         callError(errorstring);
       }
     }
@@ -223,7 +223,7 @@ void Networkhandler::handle_ms_packet()
 
     else if (header == "ALL")
     {
-      int amount_of_servers = packet_arguments.size() - 1;
+      int amount_of_servers = packet_arguments.size();
 
       qDebug() << "amount_of_servers: " << amount_of_servers;
 
@@ -265,7 +265,7 @@ void Networkhandler::handle_server_packet()
 
   for(QString packet : packet_list)
   {
-    QStringList packet_contents = packet.split("#", QString::SplitBehavior(QString::SkipEmptyParts));
+    QStringList packet_contents = packet.split("#");
 
     QString header = packet_contents.at(0);
 
@@ -293,8 +293,7 @@ void Networkhandler::handle_server_packet()
 
       QVector<char_type> f_char_list;
 
-      //- 1 accounts for header
-      for (int n_char = 0 ; n_char < packet_contents.size() - 1 ; ++n_char)
+      for (int n_char = 0 ; n_char < packet_contents.size() - 2 ; ++n_char)
       {
         QStringList char_arguments =
           packet_contents.at(n_char + 1).split("&");
@@ -334,8 +333,7 @@ void Networkhandler::handle_server_packet()
     {
       QStringList f_music_list;
 
-      //again, - 1 accounts for the header
-      for(int n_music = 0 ; n_music < packet_contents.size() - 1 ; ++n_music)
+      for(int n_music = 0 ; n_music < packet_contents.size(); ++n_music)
       {
         // + 1 to skip the header (which is in index 0) and shift everything one position
         f_music_list.insert(n_music, packet_contents.at(n_music + 1));
@@ -349,7 +347,7 @@ void Networkhandler::handle_server_packet()
       QVector<area_type> f_area_list;
 
       //- 1 accounts for header
-      for (int n_area = 0 ; n_area < packet_contents.size() - 1 ; ++n_area)
+      for (int n_area = 0 ; n_area < packet_contents.size() ; ++n_area)
       {
         QStringList area_arguments =
           packet_contents.at(n_area + 1).split("&");
@@ -382,9 +380,9 @@ void Networkhandler::handle_server_packet()
 
     else if (header == "OC")
     {
-      if (packet_contents.size() != 3)
+      if (packet_contents.size() != 4)
       {
-        callError("(header = OC) Expected packet_contents.size() to be 3, but found " + packet_contents.size());
+        callError("(header = OC) Expected packet_contents.size() to be 4, but found " + packet_contents.size());
         return;
       }
 
@@ -419,7 +417,7 @@ void Networkhandler::handle_server_packet()
       }
       */
 
-      if (packet_contents.size() == 14)
+      if (packet_contents.size() == 15)
       {
         //format:
         //MS#chat#<pre-emote>#<char>#<emote>#<message>#<side>#<sfx-name>#<emote_modifier>#<objection_modifier>#<realization>#<text_color>#<evidence>#<cid>#%
@@ -437,7 +435,7 @@ void Networkhandler::handle_server_packet()
         f_message.text_color = packet_contents.at(12).toInt();
       }
 
-      else if (packet_contents.size() == 16)
+      else if (packet_contents.size() == 17)
       {
         //uh oh, we have a vanilla chatmessage on our hands
         //legacy message format:
@@ -458,7 +456,7 @@ void Networkhandler::handle_server_packet()
 
       else
       {
-        callError("MALFORMED CHAT MESSAGE, expected size to be 13, found " + packet_contents.size());
+        callError("MALFORMED CHAT MESSAGE, expected size to be 15, found " + packet_contents.size());
         return;
       }
 
