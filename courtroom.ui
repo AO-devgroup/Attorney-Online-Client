@@ -348,6 +348,9 @@
     </property>
    </widget>
    <widget class="QPushButton" name="present">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>171</x>
@@ -604,8 +607,8 @@
    <widget class="QPushButton" name="changecharacter">
     <property name="geometry">
      <rect>
-      <x>250</x>
-      <y>327</y>
+      <x>350</x>
+      <y>360</y>
       <width>131</width>
       <height>23</height>
      </rect>
@@ -631,9 +634,9 @@
     <property name="geometry">
      <rect>
       <x>490</x>
-      <y>340</y>
+      <y>342</y>
       <width>224</width>
-      <height>329</height>
+      <height>327</height>
      </rect>
     </property>
     <property name="palette">
@@ -1135,7 +1138,7 @@
    <widget class="QLabel" name="defense_bar">
     <property name="geometry">
      <rect>
-      <x>390</x>
+      <x>393</x>
       <y>323</y>
       <width>84</width>
       <height>14</height>
@@ -1151,7 +1154,7 @@
    <widget class="QLabel" name="prosecution_bar">
     <property name="geometry">
      <rect>
-      <x>390</x>
+      <x>393</x>
       <y>340</y>
       <width>84</width>
       <height>14</height>
@@ -1167,7 +1170,7 @@
    <widget class="QPushButton" name="defplus">
     <property name="geometry">
      <rect>
-      <x>470</x>
+      <x>477</x>
       <y>325</y>
       <width>9</width>
       <height>9</height>
@@ -1180,7 +1183,7 @@
    <widget class="QPushButton" name="defminus">
     <property name="geometry">
      <rect>
-      <x>387</x>
+      <x>385</x>
       <y>325</y>
       <width>9</width>
       <height>9</height>
@@ -1193,7 +1196,7 @@
    <widget class="QPushButton" name="proplus">
     <property name="geometry">
      <rect>
-      <x>470</x>
+      <x>477</x>
       <y>342</y>
       <width>9</width>
       <height>9</height>
@@ -1206,7 +1209,7 @@
    <widget class="QPushButton" name="prominus">
     <property name="geometry">
      <rect>
-      <x>387</x>
+      <x>385</x>
       <y>342</y>
       <width>9</width>
       <height>9</height>
@@ -1226,13 +1229,13 @@
      </rect>
     </property>
    </widget>
+   <zorder>present</zorder>
    <zorder>charselect</zorder>
    <zorder>background</zorder>
    <zorder>chatlog</zorder>
    <zorder>takethat</zorder>
    <zorder>holdit</zorder>
    <zorder>objection</zorder>
-   <zorder>present</zorder>
    <zorder>chatLine</zorder>
    <zorder>playingbackground</zorder>
    <zorder>playingarea</zorder>

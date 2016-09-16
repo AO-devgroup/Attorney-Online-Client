@@ -41,6 +41,7 @@ public:
     QPlainTextEdit *chatbox;
     QListWidget *favoritelist;
     QLabel *onlinestatus;
+    QPushButton *about;
 
     void setupUi(QMainWindow *Lobby)
     {
@@ -188,6 +189,9 @@ public:
         onlinestatus->setFont(font3);
         onlinestatus->setLayoutDirection(Qt::LeftToRight);
         onlinestatus->setAlignment(Qt::AlignCenter);
+        about = new QPushButton(centralwidget);
+        about->setObjectName(QStringLiteral("about"));
+        about->setGeometry(QRect(428, 1, 88, 21));
         Lobby->setCentralWidget(centralwidget);
 
         retranslateUi(Lobby);
@@ -207,6 +211,7 @@ public:
         chatname->setPlaceholderText(QApplication::translate("Lobby", "Name", 0));
         description->setPlainText(QString());
         onlinestatus->setText(QApplication::translate("Lobby", "Offline", 0));
+        about->setText(QString());
     } // retranslateUi
 
 };

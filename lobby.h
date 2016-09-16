@@ -81,6 +81,8 @@ private slots:
 
   void handle_server_entry();
 
+  void on_about_clicked();
+
 private:
   Ui::Lobby *ui;
   bool court_exists = false;

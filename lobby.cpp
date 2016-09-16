@@ -53,6 +53,7 @@ void Lobby::setTheme()
   ui->connect->setStyleSheet("border-image:url(" + get_image_path("connect.png") + ")");
   ui->publicservers->setStyleSheet("border-image:url(" + get_image_path("publicservers_selected.png") + ")");
   ui->favorites->setStyleSheet("border-image:url(" + get_image_path("favorites.png") + ")");
+  ui->about->setStyleSheet("border-image:url(" + get_image_path("about.png") +")");
 
   ui->favoritelist->hide();
 }
@@ -329,4 +330,28 @@ void Lobby::LoadFavorites()
 void Lobby::handle_server_entry()
 {
   this->hide();
+}
+
+void Lobby::on_about_clicked()
+{
+  QMessageBox *msgBox = new QMessageBox;
+  msgBox->setText("Client version: 1.0.0\n"
+                  "\n"
+                  "Credits:\n"
+                  "\n"
+                  "Development:\n"
+                  "OmniTroid\n"
+                  "\n"
+                  "Design:\n"
+                  "Draxirch\n"
+                  "Ruekasu\n"
+                  "Cronnicossy\n"
+                  "\n"
+                  "Original concept:\n"
+                  "FanatSors\n"
+                  "\n"
+                  "All characters, images, names, songs and sound effects belong to their respective owners.");
+  msgBox->setWindowTitle("About");
+  msgBox->setWindowModality(Qt::NonModal);
+  msgBox->show();
 }

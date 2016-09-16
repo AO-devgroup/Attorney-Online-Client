@@ -175,6 +175,8 @@ private slots:
 
   void on_proplus_clicked();
 
+  void on_musicsearch_textEdited(const QString &p_text);
+
 signals:
   void entering_server();
 

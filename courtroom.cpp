@@ -222,9 +222,9 @@ void Courtroom::on_chatLine_returnPressed()
 
   emote_type f_emote = emote_list.at(emote_selected);
 
-  f_chatmessage.message = f_message;
-  f_chatmessage.character = playerChar;
-  f_chatmessage.side = f_side;
+  f_chatmessage.message = f_message.replace("#", "<num>");
+  f_chatmessage.character = playerChar.replace("#", "<num>");
+  f_chatmessage.side = f_side.replace("#", "<num>");
 
   f_chatmessage.sfx_name = f_emote.sfx_name;
   f_chatmessage.pre_emote = f_emote.preanim;
@@ -319,8 +319,12 @@ void Courtroom::set_scene(QString p_side)
   }
   else
   {
-    callError("Something went hilariously wrong. (Invalid side: " + p_side + ")");
-    return;
+    f_background_path += "witnessempty.png";
+    f_default_background_path += "witnessempty.png";
+    f_speedlines_path += "prosecution_speedlines.gif";
+    f_default_speedlines_path += "prosecution_speedlines.gif";
+    f_desk_path += "estrado.png";
+    f_default_desk_path += "estrado.png";
   }
 
   if (fileExists(f_background_path, true))
@@ -354,7 +358,9 @@ void Courtroom::handle_chatmessage(chatmessage_type &p_message)
 
   //bruh.setPosition(0);
 
-  ui->chatlog->appendPlainText(showname + ": " + p_message.message);
+  QString f_message = (p_message.message).replace("<num>", "#");
+
+  ui->chatlog->appendPlainText(showname + ": " + f_message);
   ui->desk->show();
 
   qDebug() << "executing set_scene";
@@ -367,7 +373,7 @@ void Courtroom::handle_chatmessage(chatmessage_type &p_message)
   else
     ui->chatbubble->setPixmap(getBasePath() + "background/default/chat.png");
 
-  ui->chattext->setPlainText(p_message.message);
+  ui->chattext->setPlainText(f_message);
   ui->chattext->show();
   ui->charname->setText(showname);
   ui->chatbubble->show();
@@ -394,12 +400,16 @@ void Courtroom::handle_chatmessage(chatmessage_type &p_message)
 
 void Courtroom::handle_ms_message(QString p_message)
 {
-  ui->oocmasterchat->appendPlainText(p_message);
+  QString message = p_message.replace("<num>", "#");
+
+  ui->oocmasterchat->appendPlainText(message);
 }
 
 void Courtroom::handle_ooc_message(QString p_message)
 {
-  ui->oocserverchat->appendPlainText(p_message);
+  QString message = p_message.replace("<num>", "#");
+
+  ui->oocserverchat->appendPlainText(message);
 }
 
 void Courtroom::on_holdit_clicked()
@@ -602,8 +612,8 @@ void Courtroom::handle_server_packet(QString &p_packet)
 
 void Courtroom::on_oocchatmessage_returnPressed()
 {
-  QString name = ui->oocchatname->text();
-  QString message = ui->oocchatmessage->text();
+  QString name = ui->oocchatname->text().replace("#", "<num>");
+  QString message = ui->oocchatmessage->text().replace("#", "<num>");
   QString packet = "CT#" + name + "#" + message + "#%";
 
   //no you cant send empty messages
@@ -664,3 +674,35 @@ void Courtroom::on_proplus_clicked()
   else
     request_packet("HP#pro#" + QString::number(prosecution_health + 1) + "#%");
 }
+
+void Courtroom::on_musicsearch_textEdited(const QString &p_text)
+{
+
+  ui->musiclist->clear();
+
+  QVector<QString> new_list;
+
+  for (int index = 0 ; index < music_list.size() ; ++index)
+  {
+    QString song = music_list.at(index);
+
+    if (song.contains(p_text))
+    {
+      ui->musiclist->addItem(song);
+      new_list.append(song);
+    }
+  }
+
+  for (int index = 0 ; index < new_list.size() ; ++index)
+  {
+    QString song_path = getBasePath() + "sounds/music/" + new_list.at(index);
+
+    if (fileExists(song_path, true))
+      ui->musiclist->item(index)->setBackground(Qt::green);
+    else
+      ui->musiclist->item(index)->setBackground(Qt::red);
+
+  }
+
+}
+
