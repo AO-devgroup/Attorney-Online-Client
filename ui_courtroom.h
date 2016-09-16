@@ -63,6 +63,9 @@ public:
     QPushButton *proplus;
     QPushButton *prominus;
     QLineEdit *musicsearch;
+    QPushButton *ooc_toggle;
+    QPushButton *realization;
+    QPushButton *mute;
 
     void setupUi(QMainWindow *Courtroom)
     {
@@ -297,11 +300,19 @@ public:
         chattext->setTextInteractionFlags(Qt::NoTextInteraction);
         ooc_master = new QPushButton(centralwidget);
         ooc_master->setObjectName(QStringLiteral("ooc_master"));
-        ooc_master->setGeometry(QRect(580, 300, 60, 19));
+        ooc_master->setGeometry(QRect(80, 360, 60, 19));
+        ooc_master->setStyleSheet(QLatin1String("QPushButton {\n"
+"    background-color: rgba( 255, 0, 0, 0% );\n"
+"}\n"
+""));
+        ooc_master->setAutoDefault(false);
         ooc_master->setFlat(true);
         ooc_server = new QPushButton(centralwidget);
         ooc_server->setObjectName(QStringLiteral("ooc_server"));
-        ooc_server->setGeometry(QRect(646, 300, 64, 19));
+        ooc_server->setGeometry(QRect(230, 370, 64, 19));
+        ooc_server->setStyleSheet(QLatin1String("QPushButton {\n"
+"    background-color: rgba( 255, 0, 0, 0% );\n"
+"}"));
         ooc_server->setFlat(true);
         charpass = new QLineEdit(centralwidget);
         charpass->setObjectName(QStringLiteral("charpass"));
@@ -329,7 +340,18 @@ public:
         musicsearch = new QLineEdit(centralwidget);
         musicsearch->setObjectName(QStringLiteral("musicsearch"));
         musicsearch->setGeometry(QRect(490, 319, 226, 23));
+        ooc_toggle = new QPushButton(centralwidget);
+        ooc_toggle->setObjectName(QStringLiteral("ooc_toggle"));
+        ooc_toggle->setGeometry(QRect(580, 300, 133, 19));
+        realization = new QPushButton(centralwidget);
+        realization->setObjectName(QStringLiteral("realization"));
+        realization->setGeometry(QRect(240, 360, 40, 40));
+        mute = new QPushButton(centralwidget);
+        mute->setObjectName(QStringLiteral("mute"));
+        mute->setGeometry(QRect(290, 370, 40, 40));
         Courtroom->setCentralWidget(centralwidget);
+        ooc_master->raise();
+        ooc_server->raise();
         present->raise();
         charselect->raise();
         background->raise();
@@ -354,8 +376,6 @@ public:
         oocmasterchat->raise();
         charname->raise();
         chattext->raise();
-        ooc_master->raise();
-        ooc_server->raise();
         charpass->raise();
         charError->raise();
         defense_bar->raise();
@@ -365,6 +385,9 @@ public:
         proplus->raise();
         prominus->raise();
         musicsearch->raise();
+        ooc_toggle->raise();
+        realization->raise();
+        mute->raise();
 
         retranslateUi(Courtroom);
 
@@ -411,6 +434,9 @@ public:
         defminus->setText(QString());
         proplus->setText(QString());
         prominus->setText(QString());
+        ooc_toggle->setText(QApplication::translate("Courtroom", "Master", 0));
+        realization->setText(QString());
+        mute->setText(QString());
     } // retranslateUi
 
 };

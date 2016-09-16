@@ -96,24 +96,12 @@ void Courtroom::go_to_charselect()
 void Courtroom::setTheme()
 {
   QString background_path = g_theme_path + "courtroombackground.png";
-  QString holdit_path = g_theme_path + "holdit_disabled.png";
-  QString objection_path = g_theme_path + "objection_disabled.png";
-  QString takethat_path = g_theme_path + "takethat_disabled.png";
   QString present_path = g_theme_path + "present_disabled.png";
   QString left_arrow_path = g_theme_path + "arrow_left.png";
   QString right_arrow_path = g_theme_path + "arrow_right.png";
 
   if (fileExists(background_path))
     ui->background->setPixmap(QPixmap(background_path));
-
-  if (fileExists(holdit_path))
-    ui->holdit->setStyleSheet("border-image:url(" + holdit_path + ")");
-
-  if (fileExists(objection_path))
-    ui->objection->setStyleSheet("border-image:url(" + objection_path + ")");
-
-  if (fileExists(takethat_path))
-    ui->takethat->setStyleSheet("border-image:url(" + takethat_path + ")");
 
   if (fileExists(present_path))
     ui->present->setStyleSheet("border-image:url(" + present_path + ")");
@@ -124,10 +112,16 @@ void Courtroom::setTheme()
   if (fileExists(right_arrow_path))
     emote_right_button->setStyleSheet("border-image:url(" + right_arrow_path + ")");
 
+  ui->holdit->setStyleSheet("border-image:url(" + get_image_path("holdit.png") + ")");
+  ui->objection->setStyleSheet("border-image:url(" + get_image_path("objection.png") + ")");
+  ui->takethat->setStyleSheet("border-image:url(" + get_image_path("takethat.png") + ")");
+
   ui->defminus->setStyleSheet("border-image:url(" + get_image_path("defminus.png") + ")");
   ui->defplus->setStyleSheet("border-image:url(" + get_image_path("defplus.png") + ")");
   ui->prominus->setStyleSheet("border-image:url(" + get_image_path("prominus.png") + ")");
   ui->proplus->setStyleSheet("border-image:url(" + get_image_path("proplus.png") + ")");
+  ui->realization->setStyleSheet("border-image:url(" + get_image_path("realization.png") + ")");
+  ui->mute->setStyleSheet("border-image:url(" + get_image_path("mute.png") + ")");
 
   emote_left_button->hide();
   emote_right_button->hide();
@@ -191,6 +185,8 @@ void Courtroom::enter_courtroom()
 void Courtroom::on_chatLine_returnPressed()
 {
   QString f_message = ui->chatLine->text();
+
+  //no you cant send empty messages
   if(f_message == "")
   {
     return;
@@ -244,7 +240,13 @@ void Courtroom::on_chatLine_returnPressed()
   else
     chatmessage_requested(f_chatmessage);
 
+  objection_state = 0;
+  ui->holdit->setStyleSheet("border-image:url(" + get_image_path("holdit.png") + ")");
+  ui->objection->setStyleSheet("border-image:url(" + get_image_path("objection.png") + ")");
+  ui->takethat->setStyleSheet("border-image:url(" + get_image_path("takethat.png") + ")");
 
+  realization_state = 0;
+  ui->realization->setStyleSheet("border-image:url(" + get_image_path("realization.png") + ")");
 
 
   ui->chatLine->clear();
@@ -354,18 +356,14 @@ void Courtroom::set_scene(QString p_side)
 void Courtroom::handle_chatmessage(chatmessage_type &p_message)
 { 
   QString showname = getShowname(p_message.character);
-  //QTextCursor bruh = new QTextCursor(ui->chatlog);
-
-  //bruh.setPosition(0);
 
   QString f_message = (p_message.message).replace("<num>", "#");
 
-  ui->chatlog->appendPlainText(showname + ": " + f_message);
+  ui->chatlog->moveCursor(QTextCursor::Start, QTextCursor::MoveAnchor);
+  ui->chatlog->insertPlainText(showname + ": " + f_message + '\n');
   ui->desk->show();
 
-  qDebug() << "executing set_scene";
   set_scene(p_message.side);
-  qDebug() << "set_scene executed";
 
   if(fileExists(g_theme_path + "chat.png"))
     ui->chatbubble->setPixmap(g_theme_path + "chat.png");
@@ -414,91 +412,63 @@ void Courtroom::handle_ooc_message(QString p_message)
 
 void Courtroom::on_holdit_clicked()
 {
-  QString holdit_disabled_path = g_theme_path + "holdit_disabled.png";
-  QString holdit_path = g_theme_path + "holdit.png";
-  QString objection_path = g_theme_path + "objection_disabled.png";
-  QString takethat_path = g_theme_path + "takethat_disabled.png";
-
-
   //if holdit is already enabled
   if (objection_state == 1)
   {
     objection_state = 0;
-    if (fileExists(holdit_disabled_path))
-      ui->holdit->setStyleSheet("border-image:url(" + holdit_disabled_path + ")");
+
+    ui->holdit->setStyleSheet("border-image:url(" + get_image_path("holdit.png") + ")");
   }
   else
   {
     objection_state = 1;
-    if (fileExists(holdit_path))
-      ui->holdit->setStyleSheet("border-image:url(" + holdit_path + ")");
 
-    if (fileExists(objection_path))
-      ui->objection->setStyleSheet("border-image:url(" + objection_path + ")");
-
-    if (fileExists(takethat_path))
-      ui->takethat->setStyleSheet("border-image:url(" + takethat_path + ")");
+    ui->holdit->setStyleSheet("border-image:url(" + get_image_path("holdit_selected.png") + ")");
+    ui->objection->setStyleSheet("border-image:url(" + get_image_path("objection.png") + ")");
+    ui->takethat->setStyleSheet("border-image:url(" + get_image_path("takethat.png") + ")");
   }
 }
 
 void Courtroom::on_objection_clicked()
 {
-  QString objection_disabled_path = g_theme_path + "objection_disabled.png";
-  QString objection_path = g_theme_path + "objection.png";
-  QString holdit_path = g_theme_path + "holdit_disabled.png";
-  QString takethat_path = g_theme_path + "takethat_disabled.png";
-
-
   //if objection is already enabled
   if (objection_state == 2)
   {
     objection_state = 0;
-    if (fileExists(objection_disabled_path))
-      ui->objection->setStyleSheet("border-image:url(" + objection_disabled_path + ")");
+
+    ui->objection->setStyleSheet("border-image:url(" + get_image_path("objection.png") + ")");
   }
   else
   {
     objection_state = 2;
-    if (fileExists(objection_path))
-      ui->objection->setStyleSheet("border-image:url(" + objection_path + ")");
 
-    if (fileExists(holdit_path))
-      ui->holdit->setStyleSheet("border-image:url(" + holdit_path + ")");
-
-    if (fileExists(takethat_path))
-      ui->takethat->setStyleSheet("border-image:url(" + takethat_path + ")");
+    ui->objection->setStyleSheet("border-image:url(" + get_image_path("objection_selected.png") + ")");
+    ui->holdit->setStyleSheet("border-image:url(" + get_image_path("holdit.png") + ")");
+    ui->takethat->setStyleSheet("border-image:url(" + get_image_path("takethat.png") + ")");
   }
+
+  ui->chatLine->setFocus();
 }
 
 void Courtroom::on_takethat_clicked()
 {
-  QString takethat_disabled_path = g_theme_path + "takethat_disabled.png";
-  QString takethat_path = g_theme_path + "takethat.png";
-  QString holdit_path = g_theme_path + "holdit_disabled.png";
-  QString objection_path = g_theme_path + "objection_disabled.png";
-
-
   //if takethat is already enabled
   if (objection_state == 3)
   {
     objection_state = 0;
 
-    if (fileExists(takethat_disabled_path))
-      ui->takethat->setStyleSheet("border-image:url(" + takethat_disabled_path + ")");
+    ui->takethat->setStyleSheet("border-image:url(" + get_image_path("takethat.png") + ")");
   }
   else
   {
     objection_state = 3;
 
-    if (fileExists(takethat_path))
-      ui->takethat->setStyleSheet("border-image:url(" + takethat_path + ")");
-
-    if (fileExists(objection_path))
-      ui->objection->setStyleSheet("border-image:url(" + objection_path + ")");
-
-    if (fileExists(holdit_path))
-      ui->holdit->setStyleSheet("border-image:url(" + holdit_path + ")");
+    ui->takethat->setStyleSheet("border-image:url(" + get_image_path("takethat_selected.png") + ")");
+    ui->objection->setStyleSheet("border-image:url(" + get_image_path("objection.png") + ")");
+    ui->holdit->setStyleSheet("border-image:url(" + get_image_path("holdit.png") + ")");
   }
+
+  ui->chatLine->setFocus();
 }
 
 void Courtroom::on_present_clicked()
@@ -517,6 +487,8 @@ void Courtroom::on_present_clicked()
     ui->present->setStyleSheet("border-image:url(" + present_on + ")");
     present_evidence = true;
   }
+
+  ui->chatLine->setFocus();
 }
 
 void Courtroom::emote_left_clicked()
@@ -629,20 +601,6 @@ void Courtroom::on_oocchatmessage_returnPressed()
   }
 }
 
-void Courtroom::on_ooc_master_clicked()
-{
-  ms_or_server_ooc = true;
-  ui->oocserverchat->hide();
-  ui->oocmasterchat->show();
-}
-
-void Courtroom::on_ooc_server_clicked()
-{
-  ms_or_server_ooc = false;
-  ui->oocmasterchat->hide();
-  ui->oocserverchat->show();
-}
-
 void Courtroom::on_defminus_clicked()
 {
   if (defense_health <= 0)
@@ -706,3 +664,48 @@ void Courtroom::on_musicsearch_textEdited(const QString &p_text)
 
 }
 
+void Courtroom::on_ooc_master_clicked()
+{
+  ms_or_server_ooc = true;
+  ui->oocserverchat->hide();
+  ui->oocmasterchat->show();
+}
+
+void Courtroom::on_ooc_server_clicked()
+{
+  ms_or_server_ooc = false;
+  ui->oocmasterchat->hide();
+  ui->oocserverchat->show();
+}
+
+void Courtroom::on_ooc_toggle_clicked()
+{
+  if (ms_or_server_ooc)
+  {
+    ui->ooc_toggle->setText("Server");
+    ms_or_server_ooc = false;
+    ui->oocmasterchat->hide();
+    ui->oocserverchat->show();
+  }
+  else
+  {
+    ui->ooc_toggle->setText("Master");
+    ms_or_server_ooc = true;
+    ui->oocserverchat->hide();
+    ui->oocmasterchat->show();
+  }
+}
+
+void Courtroom::on_realization_clicked()
+{
+  if (realization_state == 0)
+  {
+    realization_state = 1;
+    ui->realization->setStyleSheet("border-image:url(" + get_image_path("realization_pressed.png") + ")");
+  }
+  else
+  {
+    realization_state = 0;
+    ui->realization->setStyleSheet("border-image:url(" + get_image_path("realization.png") + ")");
+  }
+}

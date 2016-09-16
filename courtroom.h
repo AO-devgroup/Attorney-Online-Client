@@ -177,6 +177,10 @@ private slots:
 
   void on_musicsearch_textEdited(const QString &p_text);
 
+  void on_ooc_toggle_clicked();
+
+  void on_realization_clicked();
+
 signals:
   void entering_server();
 
