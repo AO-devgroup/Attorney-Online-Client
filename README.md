@@ -20,7 +20,7 @@ Comparison between AO2 char select and AO Classic(right)
 
 ![Epic charselect](http://i.imgur.com/4A3AiPX.png)
 <br />
-Current look of the courtroom
+Current look of the courtroom, the UI is still a work in progress
 
 
 # Changelog
@@ -53,7 +53,6 @@ these are the changes from the old client made by FanatSors. the ones listed her
 - Removed kebab
 
 # Things left to implement
-In addition to the things listed in "planned changes", this is what is left to be done
 
 - Add witness testimony/cross examination buttons
 - Add pre-emote support
