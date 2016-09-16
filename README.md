@@ -18,6 +18,11 @@ Comparison between AO2(left) and AO Classic(right) UI
 <br />
 Comparison between AO2 char select and AO Classic(right)
 
+![Epic charselect](http://i.imgur.com/4A3AiPX.png)
+<br />
+Current look of the courtroom
+
+
 # Changelog
 these are the changes from the old client made by FanatSors. the ones listed here are already done
 
@@ -47,22 +52,15 @@ these are the changes from the old client made by FanatSors. the ones listed her
 - Added a whole lot of other things i forgot to mention
 - Removed kebab
 
-# Planned changes
-these are changes that will happen if everything goes smooth
-
-- Add area support
-- Add separate volume sliders for music, character blips and sfx
-- Add EVIDENCE support
-- Add a settings area
-
 # Things left to implement
 In addition to the things listed in "planned changes", this is what is left to be done
 
 - Add witness testimony/cross examination buttons
-- Add health bars
-- Add scrolling chat
 - Add pre-emote support
 - Add sound effect support
+- Add area support
+- Add volume sliders for music, character blips and sfx
+- Add objection/holdit/takethat support
 
 # Credits
 
