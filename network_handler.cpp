@@ -328,6 +328,20 @@ void Networkhandler::handle_server_packet()
       character_list_received(f_char_list);
     }
 
+    else if (header == "TC")
+    {
+      QVector<int> f_taken_list;
+
+      for (int n_char = 0 ; n_char < packet_contents.size() - 2 ; ++n_char)
+      {
+        int f_taken = packet_contents.at(n_char + 1).toInt();
+
+        f_taken_list.insert(n_char, f_taken);
+      }
+
+      taken_list_received(f_taken_list);
+    }
+
     //handles the music list packet
     else if (header == "SM")
     {

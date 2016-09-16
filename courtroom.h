@@ -67,6 +67,7 @@ private:
   QVector<char_type> character_list; //custom datatype
   QVector<charicon* > charicon_list; //qpushbutton inherited(widget)
   QSignalMapper *mapper;
+  QVector<int> taken_list;
 
   void construct_charselect();
   //void setCharSelect();

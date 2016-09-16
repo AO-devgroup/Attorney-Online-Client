@@ -48,6 +48,8 @@ signals:
 
   void character_list_received(QVector<char_type> &p_char_list);
 
+  void taken_list_received(QVector<int> &p_taken_list);
+
   void music_list_received(QStringList &p_music_list);
 
   void area_list_received(QVector<area_type> &p_area_list);
