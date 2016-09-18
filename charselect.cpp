@@ -82,8 +82,12 @@ void Courtroom::set_character_list(QVector<char_type> &p_char_list)
 
   char_select_current_page = 1;
 
-  if (taken_list_set)
+  if (taken_list_set && done_received)
+  {
     setCharSelectPage();
+    enter_courtroom();
+    show();
+  }
 }
 
 void Courtroom::set_taken_list(QVector<int> &p_taken_list)
@@ -91,7 +95,7 @@ void Courtroom::set_taken_list(QVector<int> &p_taken_list)
   taken_list = p_taken_list;
   taken_list_set = true;
 
-  if (char_list_set)
+  if (char_list_set && done_received)
   {
     if (character_list.size() != taken_list.size())
     {
@@ -99,6 +103,8 @@ void Courtroom::set_taken_list(QVector<int> &p_taken_list)
       return;
     }
     setCharSelectPage();
+    enter_courtroom();
+    show();
   }
 }
 
