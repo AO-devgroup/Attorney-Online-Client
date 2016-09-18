@@ -58,8 +58,8 @@ private:
   //0 is white, 1 is blue, 2 is green, 3 is orange and 4 is red
   int text_color_state = 0;
 
-  int defense_health = 5;
-  int prosecution_health = 5;
+  int defense_health = 10;
+  int prosecution_health = 10;
 
   int char_select_pages;
   int char_select_current_page;
