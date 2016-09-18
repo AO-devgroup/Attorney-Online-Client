@@ -497,6 +497,11 @@ void Networkhandler::handle_server_packet()
       server_packet_received(packet);
     }
 
+    else if (header == "RT")
+    {
+      server_packet_received(packet);
+    }
+
 
     qDebug() << "received packet: " << packet;
   }

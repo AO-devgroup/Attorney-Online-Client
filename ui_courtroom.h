@@ -13,6 +13,7 @@
 #include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QButtonGroup>
+#include <QtWidgets/QComboBox>
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
@@ -66,6 +67,11 @@ public:
     QPushButton *ooc_toggle;
     QPushButton *realization;
     QPushButton *mute;
+    QPushButton *witnesstestimony;
+    QPushButton *crossexamination;
+    QPushButton *reload_theme;
+    QLabel *testimony;
+    QComboBox *textcolor;
 
     void setupUi(QMainWindow *Courtroom)
     {
@@ -202,7 +208,7 @@ public:
         charselect_right->setGeometry(QRect(691, 325, 20, 20));
         changecharacter = new QPushButton(centralwidget);
         changecharacter->setObjectName(QStringLiteral("changecharacter"));
-        changecharacter->setGeometry(QRect(350, 360, 131, 23));
+        changecharacter->setGeometry(QRect(360, 360, 121, 23));
         charError = new QLabel(centralwidget);
         charError->setObjectName(QStringLiteral("charError"));
         charError->setGeometry(QRect(270, 50, 59, 15));
@@ -349,6 +355,21 @@ public:
         mute = new QPushButton(centralwidget);
         mute->setObjectName(QStringLiteral("mute"));
         mute->setGeometry(QRect(290, 370, 40, 40));
+        witnesstestimony = new QPushButton(centralwidget);
+        witnesstestimony->setObjectName(QStringLiteral("witnesstestimony"));
+        witnesstestimony->setGeometry(QRect(30, 370, 85, 42));
+        crossexamination = new QPushButton(centralwidget);
+        crossexamination->setObjectName(QStringLiteral("crossexamination"));
+        crossexamination->setGeometry(QRect(130, 370, 85, 42));
+        reload_theme = new QPushButton(centralwidget);
+        reload_theme->setObjectName(QStringLiteral("reload_theme"));
+        reload_theme->setGeometry(QRect(380, 390, 101, 23));
+        testimony = new QLabel(centralwidget);
+        testimony->setObjectName(QStringLiteral("testimony"));
+        testimony->setGeometry(QRect(0, 0, 256, 192));
+        textcolor = new QComboBox(centralwidget);
+        textcolor->setObjectName(QStringLiteral("textcolor"));
+        textcolor->setGeometry(QRect(400, 420, 79, 23));
         Courtroom->setCentralWidget(centralwidget);
         ooc_master->raise();
         ooc_server->raise();
@@ -388,6 +409,11 @@ public:
         ooc_toggle->raise();
         realization->raise();
         mute->raise();
+        witnesstestimony->raise();
+        crossexamination->raise();
+        reload_theme->raise();
+        testimony->raise();
+        textcolor->raise();
 
         retranslateUi(Courtroom);
 
@@ -437,6 +463,18 @@ public:
         ooc_toggle->setText(QApplication::translate("Courtroom", "Master", 0));
         realization->setText(QString());
         mute->setText(QString());
+        witnesstestimony->setText(QString());
+        crossexamination->setText(QString());
+        reload_theme->setText(QApplication::translate("Courtroom", "Reload theme", 0));
+        testimony->setText(QString());
+        textcolor->clear();
+        textcolor->insertItems(0, QStringList()
+         << QApplication::translate("Courtroom", "White", 0)
+         << QApplication::translate("Courtroom", "Blue", 0)
+         << QApplication::translate("Courtroom", "Green", 0)
+         << QApplication::translate("Courtroom", "Orange", 0)
+         << QApplication::translate("Courtroom", "Red", 0)
+        );
     } // retranslateUi
 
 };

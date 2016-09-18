@@ -11,6 +11,7 @@ Courtroom::Courtroom(QWidget *parent) :
   songplayer = new QMediaPlayer(this);
   charmovie = new QMovie(this);
   speedlinesmovie = new QMovie(this);
+  testimonymovie = new QMovie(this);
 
   construct_charselect();
   construct_emotes();
@@ -95,22 +96,13 @@ void Courtroom::go_to_charselect()
 
 void Courtroom::setTheme()
 {
-  QString background_path = g_theme_path + "courtroombackground.png";
-  QString present_path = g_theme_path + "present_disabled.png";
-  QString left_arrow_path = g_theme_path + "arrow_left.png";
-  QString right_arrow_path = g_theme_path + "arrow_right.png";
+  ui->background->setPixmap(QPixmap(get_image_path("courtroombackground.png")));
 
-  if (fileExists(background_path))
-    ui->background->setPixmap(QPixmap(background_path));
+  ui->present->setStyleSheet("border-image:url(" + get_image_path("present_disabled.png") + ")");
 
-  if (fileExists(present_path))
-    ui->present->setStyleSheet("border-image:url(" + present_path + ")");
+  emote_left_button->setStyleSheet("border-image:url(" + get_image_path("arrow_left.png") + ")");
 
-  if (fileExists(left_arrow_path))
-    emote_left_button->setStyleSheet("border-image:url(" + left_arrow_path + ")");
-
-  if (fileExists(right_arrow_path))
-    emote_right_button->setStyleSheet("border-image:url(" + right_arrow_path + ")");
+  emote_right_button->setStyleSheet("border-image:url(" + get_image_path("arrow_right.png") + ")");
 
   ui->holdit->setStyleSheet("border-image:url(" + get_image_path("holdit.png") + ")");
   ui->objection->setStyleSheet("border-image:url(" + get_image_path("objection.png") + ")");
@@ -123,8 +115,8 @@ void Courtroom::setTheme()
   ui->realization->setStyleSheet("border-image:url(" + get_image_path("realization.png") + ")");
   ui->mute->setStyleSheet("border-image:url(" + get_image_path("mute.png") + ")");
 
-  emote_left_button->hide();
-  emote_right_button->hide();
+  ui->witnesstestimony->setStyleSheet("border-image:url(" + get_image_path("witnesstestimony.png") + ")");
+  ui->crossexamination->setStyleSheet("border-image:url(" + get_image_path("crossexamination.png") + ")");
 
 }
 
@@ -560,7 +552,8 @@ void Courtroom::handle_server_packet(QString &p_packet)
 
   QString header = packet_contents.at(0);
 
-  if (header == "HP"){
+  if (header == "HP")
+  {
     QString side = packet_contents.at(1);
     QString str_hp_amount = packet_contents.at(2);
     int hp_amount = str_hp_amount.toInt();
@@ -578,6 +571,33 @@ void Courtroom::handle_server_packet(QString &p_packet)
     {
       ui->prosecution_bar->setPixmap(get_image_path("prosecutionbar" + str_hp_amount + ".png"));
       prosecution_health = hp_amount;
+    }
+  }
+
+  else if (header == "RT")
+  {
+    if (packet_contents.size() < 3)
+    {
+      callError("Malformed packet; " + p_packet);
+      return;
+    }
+
+    QString argument = packet_contents.at(1);
+
+    if (argument == "testimony1")
+    {
+      testimonymovie->stop();
+      ui->testimony->setMovie(testimonymovie);
+      testimonymovie->setFileName(get_image_path("witnesstestimony.gif"));
+      testimonymovie->start();
+    }
+
+    else if (argument == "testimony2")
+    {
+      testimonymovie->stop();
+      ui->testimony->setMovie(testimonymovie);
+      testimonymovie->setFileName(get_image_path("crossexamination.gif"));
+      testimonymovie->start();
     }
   }
 }
@@ -708,4 +728,21 @@ void Courtroom::on_realization_clicked()
     realization_state = 0;
     ui->realization->setStyleSheet("border-image:url(" + get_image_path("realization.png") + ")");
   }
+}
+
+void Courtroom::on_reload_theme_clicked()
+{
+  set_theme_path();
+
+  setTheme();
+}
+
+void Courtroom::on_witnesstestimony_clicked()
+{
+  request_packet("RT#testimony1#%");
+}
+
+void Courtroom::on_crossexamination_clicked()
+{
+  request_packet("RT#testimony2#%");
 }

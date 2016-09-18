@@ -109,6 +109,7 @@ private:
 
   QMovie *charmovie;
   QMovie *speedlinesmovie;
+  QMovie *testimonymovie;
 
   int m_cid = -1;
 
@@ -184,6 +185,12 @@ private slots:
   void on_ooc_toggle_clicked();
 
   void on_realization_clicked();
+
+  void on_reload_theme_clicked();
+
+  void on_witnesstestimony_clicked();
+
+  void on_crossexamination_clicked();
 
 signals:
   void entering_server();
