@@ -21,6 +21,7 @@
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QPlainTextEdit>
 #include <QtWidgets/QPushButton>
+#include <QtWidgets/QSlider>
 #include <QtWidgets/QWidget>
 
 QT_BEGIN_NAMESPACE
@@ -72,6 +73,14 @@ public:
     QPushButton *reload_theme;
     QLabel *testimony;
     QComboBox *textcolor;
+    QSlider *sfxslider;
+    QSlider *musicslider;
+    QSlider *blipslider;
+    QLabel *label;
+    QLabel *label_2;
+    QLabel *label_3;
+    QListWidget *arealist;
+    QLabel *areapreview;
 
     void setupUi(QMainWindow *Courtroom)
     {
@@ -208,7 +217,7 @@ public:
         charselect_right->setGeometry(QRect(691, 325, 20, 20));
         changecharacter = new QPushButton(centralwidget);
         changecharacter->setObjectName(QStringLiteral("changecharacter"));
-        changecharacter->setGeometry(QRect(360, 360, 121, 23));
+        changecharacter->setGeometry(QRect(5, 390, 121, 23));
         charError = new QLabel(centralwidget);
         charError->setObjectName(QStringLiteral("charError"));
         charError->setGeometry(QRect(270, 50, 59, 15));
@@ -351,25 +360,64 @@ public:
         ooc_toggle->setGeometry(QRect(580, 300, 133, 19));
         realization = new QPushButton(centralwidget);
         realization->setObjectName(QStringLiteral("realization"));
-        realization->setGeometry(QRect(240, 360, 40, 40));
+        realization->setGeometry(QRect(260, 330, 40, 40));
         mute = new QPushButton(centralwidget);
         mute->setObjectName(QStringLiteral("mute"));
-        mute->setGeometry(QRect(290, 370, 40, 40));
+        mute->setGeometry(QRect(305, 330, 40, 40));
         witnesstestimony = new QPushButton(centralwidget);
         witnesstestimony->setObjectName(QStringLiteral("witnesstestimony"));
-        witnesstestimony->setGeometry(QRect(30, 370, 85, 42));
+        witnesstestimony->setGeometry(QRect(5, 345, 85, 42));
         crossexamination = new QPushButton(centralwidget);
         crossexamination->setObjectName(QStringLiteral("crossexamination"));
-        crossexamination->setGeometry(QRect(130, 370, 85, 42));
+        crossexamination->setGeometry(QRect(95, 345, 85, 42));
         reload_theme = new QPushButton(centralwidget);
         reload_theme->setObjectName(QStringLiteral("reload_theme"));
-        reload_theme->setGeometry(QRect(380, 390, 101, 23));
+        reload_theme->setGeometry(QRect(5, 415, 101, 23));
         testimony = new QLabel(centralwidget);
         testimony->setObjectName(QStringLiteral("testimony"));
         testimony->setGeometry(QRect(0, 0, 256, 192));
         textcolor = new QComboBox(centralwidget);
         textcolor->setObjectName(QStringLiteral("textcolor"));
-        textcolor->setGeometry(QRect(400, 420, 79, 23));
+        textcolor->setGeometry(QRect(390, 360, 79, 23));
+        sfxslider = new QSlider(centralwidget);
+        sfxslider->setObjectName(QStringLiteral("sfxslider"));
+        sfxslider->setGeometry(QRect(310, 412, 160, 16));
+        sfxslider->setMaximum(100);
+        sfxslider->setOrientation(Qt::Horizontal);
+        musicslider = new QSlider(centralwidget);
+        musicslider->setObjectName(QStringLiteral("musicslider"));
+        musicslider->setGeometry(QRect(310, 392, 160, 16));
+        musicslider->setMaximum(100);
+        musicslider->setOrientation(Qt::Horizontal);
+        musicslider->setInvertedAppearance(false);
+        blipslider = new QSlider(centralwidget);
+        blipslider->setObjectName(QStringLiteral("blipslider"));
+        blipslider->setGeometry(QRect(310, 432, 160, 16));
+        blipslider->setMaximum(100);
+        blipslider->setOrientation(Qt::Horizontal);
+        label = new QLabel(centralwidget);
+        label->setObjectName(QStringLiteral("label"));
+        label->setGeometry(QRect(260, 390, 41, 16));
+        label_2 = new QLabel(centralwidget);
+        label_2->setObjectName(QStringLiteral("label_2"));
+        label_2->setGeometry(QRect(260, 410, 21, 16));
+        label_3 = new QLabel(centralwidget);
+        label_3->setObjectName(QStringLiteral("label_3"));
+        label_3->setGeometry(QRect(260, 430, 31, 16));
+        arealist = new QListWidget(centralwidget);
+        new QListWidgetItem(arealist);
+        arealist->setObjectName(QStringLiteral("arealist"));
+        arealist->setGeometry(QRect(266, 471, 224, 197));
+        QPalette palette10;
+        palette10.setBrush(QPalette::Active, QPalette::Base, brush);
+        palette10.setBrush(QPalette::Inactive, QPalette::Base, brush);
+        palette10.setBrush(QPalette::Disabled, QPalette::Base, brush3);
+        arealist->setPalette(palette10);
+        arealist->setFrameShape(QFrame::NoFrame);
+        arealist->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+        areapreview = new QLabel(centralwidget);
+        areapreview->setObjectName(QStringLiteral("areapreview"));
+        areapreview->setGeometry(QRect(5, 471, 256, 192));
         Courtroom->setCentralWidget(centralwidget);
         ooc_master->raise();
         ooc_server->raise();
@@ -414,6 +462,14 @@ public:
         reload_theme->raise();
         testimony->raise();
         textcolor->raise();
+        sfxslider->raise();
+        musicslider->raise();
+        blipslider->raise();
+        label->raise();
+        label_2->raise();
+        label_3->raise();
+        arealist->raise();
+        areapreview->raise();
 
         retranslateUi(Courtroom);
 
@@ -475,6 +531,17 @@ public:
          << QApplication::translate("Courtroom", "Orange", 0)
          << QApplication::translate("Courtroom", "Red", 0)
         );
+        label->setText(QApplication::translate("Courtroom", "Music", 0));
+        label_2->setText(QApplication::translate("Courtroom", "Sfx", 0));
+        label_3->setText(QApplication::translate("Courtroom", "Blips", 0));
+
+        const bool __sortingEnabled1 = arealist->isSortingEnabled();
+        arealist->setSortingEnabled(false);
+        QListWidgetItem *___qlistwidgetitem1 = arealist->item(0);
+        ___qlistwidgetitem1->setText(QApplication::translate("Courtroom", "bestarea", 0));
+        arealist->setSortingEnabled(__sortingEnabled1);
+
+        areapreview->setText(QString());
     } // retranslateUi
 
 };

@@ -746,3 +746,28 @@ void Courtroom::on_crossexamination_clicked()
 {
   request_packet("RT#testimony2#%");
 }
+
+void Courtroom::on_musicslider_sliderMoved(int p_position)
+{
+  songplayer->setVolume(p_position);
+}
+
+void Courtroom::on_sfxslider_sliderMoved(int p_position)
+{
+  //setvolume of sfxplayer
+}
+
+void Courtroom::on_blipslider_sliderMoved(int p_position)
+{
+  //setvolume of blipplayer
+}
+
+void Courtroom::on_arealist_clicked(const QModelIndex &index)
+{
+
+}
+
+void Courtroom::on_arealist_doubleClicked(const QModelIndex &index)
+{
+
+}

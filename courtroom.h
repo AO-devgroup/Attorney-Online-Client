@@ -192,6 +192,16 @@ private slots:
 
   void on_crossexamination_clicked();
 
+  void on_musicslider_sliderMoved(int p_position);
+
+  void on_sfxslider_sliderMoved(int p_position);
+
+  void on_blipslider_sliderMoved(int p_position);
+
+  void on_arealist_clicked(const QModelIndex &index);
+
+  void on_arealist_doubleClicked(const QModelIndex &index);
+
 signals:
   void entering_server();
 
