@@ -96,6 +96,7 @@ private:
   QStringList music_list;
 
   bool char_list_set = false;
+  bool taken_list_set = false;
   bool music_list_set = false;
   bool area_list_set = false;
 
@@ -117,6 +118,8 @@ private:
 
 public slots:
   void set_character_list(QVector<char_type> &p_char_list);
+
+  void set_taken_list(QVector<int> &p_taken_list);
 
   void set_music_list(QStringList &p_music_list);
 

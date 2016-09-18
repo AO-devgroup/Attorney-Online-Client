@@ -82,7 +82,24 @@ void Courtroom::set_character_list(QVector<char_type> &p_char_list)
 
   char_select_current_page = 1;
 
-  setCharSelectPage();
+  if (taken_list_set)
+    setCharSelectPage();
+}
+
+void Courtroom::set_taken_list(QVector<int> &p_taken_list)
+{
+  taken_list = p_taken_list;
+  taken_list_set = true;
+
+  if (char_list_set)
+  {
+    if (character_list.size() != taken_list.size())
+    {
+      callError("CRITICAL FISSION MAILURE: taken_list.size did not match char_list.size");
+      return;
+    }
+    setCharSelectPage();
+  }
 }
 
 //obsolete
@@ -171,11 +188,36 @@ void Courtroom::setCharSelectPage()
 
     f_charicon->setIcon(f_char.name);
 
+    int f_mod = taken_list.at(real_char_number);
+
+    qDebug() << "character " << f_char.name << " f_mod = " << f_mod;
+
+    switch (f_mod)
+    {
+    case 0:
+      break;
+    case 1:
+      f_charicon->set_taken();
+      break;
+    case 2:
+      f_charicon->set_passworded();
+      break;
+    case 3:
+      f_charicon->set_taken();
+      f_charicon->set_passworded();
+      break;
+    default:
+      callError("SOMETHING BROKE. f_mod in function setCharSelectPage was not in 0-3, but rather " + f_mod);
+
+    }
+
+    /*
     if (f_char.taken)
       f_charicon->set_taken();
 
     if (f_char.passworded)
       f_charicon->set_passworded();
+     */
 
     f_charicon->show();
   }
