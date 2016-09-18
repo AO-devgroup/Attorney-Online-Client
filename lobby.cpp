@@ -338,7 +338,6 @@ void Lobby::on_about_clicked()
   msgBox->setText("Client version: 1.0.0\n"
                   "\n"
                   "Credits:\n"
-                  "\n"
                   "Development:\n"
                   "OmniTroid\n"
                   "\n"

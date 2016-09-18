@@ -79,6 +79,8 @@ void Courtroom::go_to_charselect()
 {
   m_cid = -1;
 
+  done_received = true;
+
   for(emoteicon *f_icon : emoteicon_list)
   {
     f_icon->hide();
@@ -87,11 +89,14 @@ void Courtroom::go_to_charselect()
   emote_left_button->hide();
   emote_right_button->hide();
 
-  //the ONLY thing this does is hide the lobby window!! dont worry about it!!
-  entering_server();
-
-  show();
   ui->charselect->show();
+
+  if (char_list_set && taken_list_set)
+  {
+    setCharSelectPage();
+    entering_server();
+    show();
+  }
 }
 
 void Courtroom::setTheme()

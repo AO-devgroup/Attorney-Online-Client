@@ -97,6 +97,7 @@ private:
 
   bool char_list_set = false;
   bool taken_list_set = false;
+  bool done_received = false;
   bool music_list_set = false;
   bool area_list_set = false;
 
