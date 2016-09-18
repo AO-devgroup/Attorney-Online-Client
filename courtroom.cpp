@@ -123,6 +123,12 @@ void Courtroom::setTheme()
   ui->witnesstestimony->setStyleSheet("border-image:url(" + get_image_path("witnesstestimony.png") + ")");
   ui->crossexamination->setStyleSheet("border-image:url(" + get_image_path("crossexamination.png") + ")");
 
+  ui->defense_bar->setStyleSheet("border-image:url(" + get_image_path("defensebar10.png") + ")");
+  ui->prosecution_bar->setStyleSheet("border-image:url(" + get_image_path("prosecutionbar10.png") + ")");
+
+  //HACK
+  ui->areapreview->setPixmap(getBasePath() + "background/gs4/witnessempty.png");
+
 }
 
 void Courtroom::set_character(QString p_character, int p_mod)
