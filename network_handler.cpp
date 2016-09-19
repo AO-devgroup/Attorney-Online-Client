@@ -360,7 +360,6 @@ void Networkhandler::handle_server_packet()
     {
       QVector<area_type> f_area_list;
 
-      //- 1 accounts for header
       for (int n_area = 0 ; n_area < packet_contents.size() - 2; ++n_area)
       {
         QStringList area_arguments =
@@ -382,9 +381,22 @@ void Networkhandler::handle_server_packet()
           f_area.passworded = false;
 
         f_area_list.insert(n_area, f_area);
-
-        area_list_received(f_area_list);
       }
+
+      area_list_received(f_area_list);
+    }
+
+    else if (header == "TA")
+    {
+      QVector<int> f_area_taken_list;
+
+      for (int n_area = 0; n_area < packet_contents.size() - 2 ; ++n_area)
+      {
+        f_area_taken_list.insert(n_area, packet_contents.at(n_area + 1).toInt());
+      }
+
+      area_taken_list_received(f_area_taken_list);
+
     }
 
     else if (header == "DONE")

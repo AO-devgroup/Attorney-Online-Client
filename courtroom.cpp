@@ -73,14 +73,38 @@ void Courtroom::set_area_list(QVector<area_type> &p_area_list)
 
   area_list_set = true;
 
+  if (!area_taken_list_set)
+    return;
+
   ui->arealist->clear();
 
   for (int n_area = 0 ; n_area < area_list.size() ; ++n_area)
   {
     QString area_name = area_list.at(n_area).name;
+    int area_population = area_taken_list.at(n_area);
 
-    //T0D0: replace (0) placeholder with a amount of players in area
-    ui->arealist->addItem(area_name + " (0)");
+    ui->arealist->addItem(area_name + " (" + QString::number(area_population) + ")");
+  }
+}
+
+void Courtroom::set_area_taken_list(QVector<int> &p_area_taken_list)
+{
+  area_taken_list.clear();
+  area_taken_list = p_area_taken_list;
+
+  area_taken_list_set = true;
+
+  if (!area_list_set)
+    return;
+
+  ui->arealist->clear();
+
+  for (int n_area = 0 ; n_area < area_list.size() ; ++n_area)
+  {
+    QString area_name = area_list.at(n_area).name;
+    int area_population = area_taken_list.at(n_area);
+
+    ui->arealist->addItem(area_name + " (" + QString::number(area_population) + ")");
   }
 }
 

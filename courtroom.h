@@ -82,6 +82,7 @@ private:
   QSignalMapper *emote_mapper;
 
   QVector<area_type> area_list;
+  QVector<int> area_taken_list;
 
   void construct_emotes();
   void setEmotes();
@@ -100,6 +101,7 @@ private:
   bool done_received = false;
   bool music_list_set = false;
   bool area_list_set = false;
+  bool area_taken_list_set = false;
 
   //true is ms, false is server
   bool ms_or_server_ooc = true;
@@ -126,6 +128,8 @@ public slots:
   void set_music_list(QStringList &p_music_list);
 
   void set_area_list(QVector<area_type> &p_area_list);
+
+  void set_area_taken_list(QVector<int> &p_area_taken_list);
 
   void go_to_charselect();
 

@@ -54,6 +54,8 @@ signals:
 
   void area_list_received(QVector<area_type> &p_area_list);
 
+  void area_taken_list_received(QVector<int> &p_area_taken_list);
+
   void onlinestatus_changed(QString players_online, QString max_players);
 
   void character_reply_received(QString p_character, int p_mod);
