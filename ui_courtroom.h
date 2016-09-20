@@ -226,7 +226,7 @@ public:
         musiclist = new QListWidget(centralwidget);
         new QListWidgetItem(musiclist);
         musiclist->setObjectName(QStringLiteral("musiclist"));
-        musiclist->setGeometry(QRect(490, 342, 224, 327));
+        musiclist->setGeometry(QRect(490, 342, 224, 326));
         QPalette palette3;
         palette3.setBrush(QPalette::Active, QPalette::Base, brush);
         palette3.setBrush(QPalette::Inactive, QPalette::Base, brush);
@@ -409,7 +409,7 @@ public:
         arealist = new QListWidget(centralwidget);
         new QListWidgetItem(arealist);
         arealist->setObjectName(QStringLiteral("arealist"));
-        arealist->setGeometry(QRect(266, 499, 224, 169));
+        arealist->setGeometry(QRect(266, 494, 224, 174));
         QPalette palette10;
         palette10.setBrush(QPalette::Active, QPalette::Base, brush);
         palette10.setBrush(QPalette::Inactive, QPalette::Base, brush);

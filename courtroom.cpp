@@ -46,6 +46,7 @@ void Courtroom::set_music_list(QStringList &p_music_list)
 {
   music_list.clear();
   music_list = p_music_list;
+  ui_music_list = music_list;
 
   music_list_set = true;
 
@@ -565,7 +566,7 @@ void Courtroom::on_changecharacter_clicked()
 
 void Courtroom::on_musiclist_doubleClicked(const QModelIndex &index)
 {
-  QString song_name = music_list.at(index.row());
+  QString song_name = ui_music_list.at(index.row());
 
   song_requested(song_name);
 }
@@ -699,6 +700,7 @@ void Courtroom::on_musicsearch_textEdited(const QString &p_text)
 {
 
   ui->musiclist->clear();
+  ui_music_list.clear();
 
   QVector<QString> new_list;
 
@@ -710,6 +712,7 @@ void Courtroom::on_musicsearch_textEdited(const QString &p_text)
     {
       ui->musiclist->addItem(song);
       new_list.append(song);
+      ui_music_list.append(song);
     }
   }
 

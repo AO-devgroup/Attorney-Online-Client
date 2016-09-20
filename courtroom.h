@@ -95,6 +95,7 @@ private:
 
   QMediaPlayer *songplayer;
   QStringList music_list;
+  QStringList ui_music_list;
 
   bool char_list_set = false;
   bool taken_list_set = false;

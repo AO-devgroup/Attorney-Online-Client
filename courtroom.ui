@@ -636,7 +636,7 @@
       <x>490</x>
       <y>342</y>
       <width>224</width>
-      <height>327</height>
+      <height>326</height>
      </rect>
     </property>
     <property name="palette">
@@ -1463,9 +1463,9 @@
     <property name="geometry">
      <rect>
       <x>266</x>
-      <y>499</y>
+      <y>494</y>
       <width>224</width>
-      <height>169</height>
+      <height>174</height>
      </rect>
     </property>
     <property name="palette">
