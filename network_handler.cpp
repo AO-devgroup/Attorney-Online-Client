@@ -514,6 +514,11 @@ void Networkhandler::handle_server_packet()
       server_packet_received(packet);
     }
 
+    else if (header == "OA")
+    {
+      server_packet_received(packet);
+    }
+
     else if (header == "PING")
     {
       server_socket->write("PONG#%");
@@ -530,4 +535,5 @@ void Networkhandler::send_packet(QString p_packet)
     return;
 
   server_socket->write(p_packet.toLocal8Bit());
+  qDebug() << "Sent packet: " << p_packet;
 }

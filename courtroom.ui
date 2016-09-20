@@ -1553,6 +1553,19 @@
      <string/>
     </property>
    </widget>
+   <widget class="QPushButton" name="callmod">
+    <property name="geometry">
+     <rect>
+      <x>5</x>
+      <y>440</y>
+      <width>71</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Call mod</string>
+    </property>
+   </widget>
    <zorder>ooc_master</zorder>
    <zorder>ooc_server</zorder>
    <zorder>present</zorder>
@@ -1606,6 +1619,7 @@
    <zorder>areapreview</zorder>
    <zorder>areapassword</zorder>
    <zorder>deskpreview</zorder>
+   <zorder>callmod</zorder>
   </widget>
  </widget>
  <resources>

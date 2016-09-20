@@ -83,6 +83,7 @@ public:
     QLabel *areapreview;
     QLineEdit *areapassword;
     QLabel *deskpreview;
+    QPushButton *callmod;
 
     void setupUi(QMainWindow *Courtroom)
     {
@@ -426,6 +427,9 @@ public:
         deskpreview = new QLabel(centralwidget);
         deskpreview->setObjectName(QStringLiteral("deskpreview"));
         deskpreview->setGeometry(QRect(5, 621, 256, 42));
+        callmod = new QPushButton(centralwidget);
+        callmod->setObjectName(QStringLiteral("callmod"));
+        callmod->setGeometry(QRect(5, 440, 71, 23));
         Courtroom->setCentralWidget(centralwidget);
         ooc_master->raise();
         ooc_server->raise();
@@ -480,6 +484,7 @@ public:
         areapreview->raise();
         areapassword->raise();
         deskpreview->raise();
+        callmod->raise();
 
         retranslateUi(Courtroom);
 
@@ -553,6 +558,7 @@ public:
 
         areapreview->setText(QString());
         deskpreview->setText(QString());
+        callmod->setText(QApplication::translate("Courtroom", "Call mod", 0));
     } // retranslateUi
 
 };

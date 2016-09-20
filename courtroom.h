@@ -94,6 +94,9 @@ private:
   //QSettings ini_charini;
 
   QMediaPlayer *songplayer;
+  QMediaPlayer *sfxplayer;
+  QMediaPlayer *blipplayer;
+
   QStringList music_list;
   QStringList ui_music_list;
 
@@ -114,6 +117,10 @@ private:
   QMovie *charmovie;
   QMovie *speedlinesmovie;
   QMovie *testimonymovie;
+
+  //0 is nothing, 1 is WT, 2 is between WT and CE and 3 is CE
+  //needed because gifs are dum
+  int testimonystate = 0;
 
   int m_cid = -1;
 
@@ -146,6 +153,8 @@ public slots:
   void handle_server_packet(QString &p_packet);
 
 private slots:
+  void testimony_gif_framechange(int p_frame);
+
   void charChoose(int i);
 
   void emote_choose(int local_emote_number);
@@ -209,6 +218,8 @@ private slots:
   void on_arealist_clicked(const QModelIndex &index);
 
   void on_arealist_doubleClicked(const QModelIndex &index);
+
+  void on_callmod_clicked();
 
 signals:
   void entering_server();

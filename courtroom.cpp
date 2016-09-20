@@ -9,9 +9,13 @@ Courtroom::Courtroom(QWidget *parent) :
   mapper = new QSignalMapper(this);
   emote_mapper = new QSignalMapper(this);
   songplayer = new QMediaPlayer(this);
+  sfxplayer = new QMediaPlayer(this);
+  blipplayer = new QMediaPlayer(this);
   charmovie = new QMovie(this);
   speedlinesmovie = new QMovie(this);
   testimonymovie = new QMovie(this);
+
+  connect(testimonymovie, SIGNAL(frameChanged(int)), this, SLOT(testimony_gif_framechange(int)));
 
   construct_charselect();
   construct_emotes();
@@ -161,6 +165,8 @@ void Courtroom::setTheme()
   ui->defense_bar->setStyleSheet("border-image:url(" + get_image_path("defensebar10.png") + ")");
   ui->prosecution_bar->setStyleSheet("border-image:url(" + get_image_path("prosecutionbar10.png") + ")");
 
+  ui->areapreview->hide();
+  ui->deskpreview->hide();
 }
 
 void Courtroom::set_character(QString p_character, int p_mod)
@@ -186,7 +192,48 @@ void Courtroom::set_character(QString p_character, int p_mod)
 
 void Courtroom::enter_courtroom()
 {
+  QFile char_ini(getCharPath(playerChar) + "char.ini");
+  if (!char_ini.open(QIODevice::ReadOnly))
+  {
+    callError("failed to open " + getCharPath(playerChar) + "char.ini for reading.");
+  }
+
+  QTextStream in(&char_ini);
+  QString f_side = "";
+
+  while(!in.atEnd())
+  {
+    QString line = in.readLine();
+    if (line.startsWith("side = "))
+    {
+      f_side = line.remove(0, 7);
+      break;
+    }
+  }
+
+  if (f_side == "")
+    callError("could not find side = in char.ini");
+
   setTheme();
+
+  if (f_side == "jud")
+  {
+    ui->witnesstestimony->show();
+    ui->crossexamination->show();
+    ui->proplus->show();
+    ui->prominus->show();
+    ui->defplus->show();
+    ui->defminus->show();
+  }
+  else
+  {
+    ui->witnesstestimony->hide();
+    ui->crossexamination->hide();
+    ui->proplus->hide();
+    ui->prominus->hide();
+    ui->defplus->hide();
+    ui->defminus->hide();
+  }
 
   if (playerChar == "null")
   {
@@ -629,19 +676,39 @@ void Courtroom::handle_server_packet(QString &p_packet)
 
     if (argument == "testimony1")
     {
+      testimonystate = 1;
       testimonymovie->stop();
+      sfxplayer->stop();
       ui->testimony->setMovie(testimonymovie);
+      sfxplayer->setMedia(QUrl::fromLocalFile(getBasePath() + "sounds/general/sfx-testimony2.wav"));
       testimonymovie->setFileName(get_image_path("witnesstestimony.gif"));
+      sfxplayer->play();
       testimonymovie->start();
     }
 
     else if (argument == "testimony2")
     {
+      testimonystate = 3;
       testimonymovie->stop();
+      sfxplayer->stop();
       ui->testimony->setMovie(testimonymovie);
+      sfxplayer->setMedia(QUrl::fromLocalFile(getBasePath() + "sounds/general/sfx-testimony.wav"));
       testimonymovie->setFileName(get_image_path("crossexamination.gif"));
+      sfxplayer->play();
       testimonymovie->start();
     }
+  }
+  else if (header == "OA")
+  {
+    if (packet_contents.at(2) == "0")
+    {
+      int bg_index = packet_contents.at(1).toInt();
+
+      background_path = getBasePath() + "background/" + area_list.at(bg_index).background + "/";
+      //more things to do for area switch probably #T0D0
+    }
+    else if (packet_contents.at(2) == "1")
+      callError("Wrong password :v(");
   }
 }
 
@@ -799,12 +866,12 @@ void Courtroom::on_musicslider_sliderMoved(int p_position)
 
 void Courtroom::on_sfxslider_sliderMoved(int p_position)
 {
-  //setvolume of sfxplayer
+  sfxplayer->setVolume(p_position);
 }
 
 void Courtroom::on_blipslider_sliderMoved(int p_position)
 {
-  //setvolume of blipplayer
+  blipplayer->setVolume(p_position);
 }
 
 void Courtroom::on_arealist_clicked(const QModelIndex &index)
@@ -813,9 +880,39 @@ void Courtroom::on_arealist_clicked(const QModelIndex &index)
 
   ui->areapreview->setPixmap(get_background_path(background, "defenseempty.png"));
   ui->deskpreview->setPixmap(get_background_path(background, "bancodefensa.png"));
+
+  ui->areapreview->show();
+  ui->deskpreview->show();
 }
 
 void Courtroom::on_arealist_doubleClicked(const QModelIndex &index)
-{
+{ 
+  QString n_area = QString::number(index.row());
 
+  request_packet("AA#" + n_area + "#" + ui->areapassword->text() + "#%");
+}
+
+void Courtroom::testimony_gif_framechange(int p_frame)
+{
+  if (p_frame == (testimonymovie->frameCount()-1))
+  {
+    if (testimonystate == 1)
+    {
+      //so that the testimony blinks between WT and CE
+      testimonymovie->stop();
+      testimonymovie->setFileName(get_image_path("testimony.gif"));
+      testimonymovie->start();
+      testimonystate = 2;
+    }
+
+    else if (testimonystate == 2)
+      ;
+    else
+      testimonymovie->stop();
+  }
+}
+
+void Courtroom::on_callmod_clicked()
+{
+  request_packet("ZZ#%");
 }
