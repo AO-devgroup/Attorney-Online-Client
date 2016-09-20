@@ -221,6 +221,8 @@ private slots:
 
   void on_callmod_clicked();
 
+  void on_textcolor_activated(int index);
+
 signals:
   void entering_server();
 

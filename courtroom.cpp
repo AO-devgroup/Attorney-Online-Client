@@ -445,6 +445,33 @@ void Courtroom::handle_chatmessage(chatmessage_type &p_message)
   ui->chatlog->insertPlainText(showname + ": " + f_message + '\n');
   ui->desk->show();
 
+  switch(text_color_state)
+  {
+  case 0:
+    ui->chattext->setStyleSheet("QPlainTextEdit{color: white;}");
+    //ui->chatLine->setStyleSheet("QLineEdit{color: white;}");
+    break;
+  case 1:
+    ui->chattext->setStyleSheet("QPlainTextEdit{color: blue;}");
+    //ui->chatLine->setStyleSheet("color: blue;");
+    break;
+  case 2:
+    ui->chattext->setStyleSheet("QPlainTextEdit{color: rgb(0, 255, 0);}");
+    //ui->chatLine->setStyleSheet("QLineEdit{color: rgb(0, 255, 0);}");
+    break;
+  case 3:
+    ui->chattext->setStyleSheet("QPlainTextEdit{color: orange;}");
+    //ui->chatLine->setStyleSheet("QLineEdit{color: orange;}");
+    break;
+  case 4:
+    ui->chattext->setStyleSheet("QPlainTextEdit{color: red;}");
+    //ui->chatLine->setStyleSheet("QLineEdit{color: red;}");
+    break;
+  default:
+    ui->chattext->setStyleSheet("QPlainTextEdit{color: white;}");
+    //ui->chatLine->setStyleSheet("QLineEdit{color: white;}");
+  }
+
   set_scene(p_message.side);
 
   if(fileExists(g_theme_path + "chat.png"))
@@ -915,4 +942,9 @@ void Courtroom::testimony_gif_framechange(int p_frame)
 void Courtroom::on_callmod_clicked()
 {
   request_packet("ZZ#%");
+}
+
+void Courtroom::on_textcolor_activated(int index)
+{
+  text_color_state = index;
 }
