@@ -18,7 +18,7 @@ Comparison between AO2(left) and AO Classic(right) UI
 <br />
 Comparison between AO2 char select and AO Classic(right)
 
-![Epic charselect](http://i.imgur.com/4A3AiPX.png)
+![Epic UI2](http://i.imgur.com/2g6idNS.png)
 <br />
 Current look of the courtroom, the UI is still a work in progress
 
