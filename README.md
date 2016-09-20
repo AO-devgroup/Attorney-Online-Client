@@ -54,11 +54,8 @@ these are the changes from the old client made by FanatSors. the ones listed her
 
 # Things left to implement
 
-- Add witness testimony/cross examination buttons
 - Add pre-emote support
 - Add sound effect support
-- Add area support
-- Add volume sliders for music, character blips and sfx
 - Add objection/holdit/takethat support
 
 # Credits
