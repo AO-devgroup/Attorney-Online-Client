@@ -76,15 +76,7 @@ void Courtroom::set_area_list(QVector<area_type> &p_area_list)
   if (!area_taken_list_set)
     return;
 
-  ui->arealist->clear();
-
-  for (int n_area = 0 ; n_area < area_list.size() ; ++n_area)
-  {
-    QString area_name = area_list.at(n_area).name;
-    int area_population = area_taken_list.at(n_area);
-
-    ui->arealist->addItem(area_name + " (" + QString::number(area_population) + ")");
-  }
+  set_area_ui();
 }
 
 void Courtroom::set_area_taken_list(QVector<int> &p_area_taken_list)
@@ -97,6 +89,11 @@ void Courtroom::set_area_taken_list(QVector<int> &p_area_taken_list)
   if (!area_list_set)
     return;
 
+  set_area_ui();
+}
+
+void Courtroom::set_area_ui()
+{
   ui->arealist->clear();
 
   for (int n_area = 0 ; n_area < area_list.size() ; ++n_area)
@@ -104,7 +101,10 @@ void Courtroom::set_area_taken_list(QVector<int> &p_area_taken_list)
     QString area_name = area_list.at(n_area).name;
     int area_population = area_taken_list.at(n_area);
 
-    ui->arealist->addItem(area_name + " (" + QString::number(area_population) + ")");
+    if(area_list.at(n_area).passworded)
+      ui->arealist->addItem(area_name + " (" + QString::number(area_population) + ")*");
+    else
+      ui->arealist->addItem(area_name + " (" + QString::number(area_population) + ")");
   }
 }
 
@@ -159,9 +159,6 @@ void Courtroom::setTheme()
 
   ui->defense_bar->setStyleSheet("border-image:url(" + get_image_path("defensebar10.png") + ")");
   ui->prosecution_bar->setStyleSheet("border-image:url(" + get_image_path("prosecutionbar10.png") + ")");
-
-  //HACK
-  ui->areapreview->setPixmap(getBasePath() + "background/gs4/witnessempty.png");
 
 }
 
@@ -809,7 +806,10 @@ void Courtroom::on_blipslider_sliderMoved(int p_position)
 
 void Courtroom::on_arealist_clicked(const QModelIndex &index)
 {
+  QString background = area_list.at(index.row()).background;
 
+  ui->areapreview->setPixmap(get_background_path(background, "defenseempty.png"));
+  ui->deskpreview->setPixmap(get_background_path(background, "bancodefensa.png"));
 }
 
 void Courtroom::on_arealist_doubleClicked(const QModelIndex &index)

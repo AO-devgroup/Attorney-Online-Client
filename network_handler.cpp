@@ -173,7 +173,7 @@ void Networkhandler::handle_enter_server_request()
   //request characters, music and background
   server_socket->write("RC#%");
   server_socket->write("RM#%");
-  server_socket->write("RB#%");
+  server_socket->write("RA#%");
 }
 
 void Networkhandler::handle_character_request(QString p_character, QString p_password)
@@ -356,7 +356,7 @@ void Networkhandler::handle_server_packet()
       music_list_received(f_music_list);
     }
 
-    else if (header == "SB")
+    else if (header == "SA")
     {
       QVector<area_type> f_area_list;
 

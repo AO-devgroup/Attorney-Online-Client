@@ -76,11 +76,13 @@ public:
     QSlider *sfxslider;
     QSlider *musicslider;
     QSlider *blipslider;
-    QLabel *label;
-    QLabel *label_2;
-    QLabel *label_3;
+    QLabel *musiclabel;
+    QLabel *sfxlabel;
+    QLabel *bliplabel;
     QListWidget *arealist;
     QLabel *areapreview;
+    QLineEdit *areapassword;
+    QLabel *deskpreview;
 
     void setupUi(QMainWindow *Courtroom)
     {
@@ -395,19 +397,19 @@ public:
         blipslider->setGeometry(QRect(310, 432, 160, 16));
         blipslider->setMaximum(100);
         blipslider->setOrientation(Qt::Horizontal);
-        label = new QLabel(centralwidget);
-        label->setObjectName(QStringLiteral("label"));
-        label->setGeometry(QRect(260, 390, 41, 16));
-        label_2 = new QLabel(centralwidget);
-        label_2->setObjectName(QStringLiteral("label_2"));
-        label_2->setGeometry(QRect(260, 410, 21, 16));
-        label_3 = new QLabel(centralwidget);
-        label_3->setObjectName(QStringLiteral("label_3"));
-        label_3->setGeometry(QRect(260, 430, 31, 16));
+        musiclabel = new QLabel(centralwidget);
+        musiclabel->setObjectName(QStringLiteral("musiclabel"));
+        musiclabel->setGeometry(QRect(260, 390, 41, 16));
+        sfxlabel = new QLabel(centralwidget);
+        sfxlabel->setObjectName(QStringLiteral("sfxlabel"));
+        sfxlabel->setGeometry(QRect(260, 410, 21, 16));
+        bliplabel = new QLabel(centralwidget);
+        bliplabel->setObjectName(QStringLiteral("bliplabel"));
+        bliplabel->setGeometry(QRect(260, 430, 31, 16));
         arealist = new QListWidget(centralwidget);
         new QListWidgetItem(arealist);
         arealist->setObjectName(QStringLiteral("arealist"));
-        arealist->setGeometry(QRect(266, 471, 224, 197));
+        arealist->setGeometry(QRect(266, 499, 224, 169));
         QPalette palette10;
         palette10.setBrush(QPalette::Active, QPalette::Base, brush);
         palette10.setBrush(QPalette::Inactive, QPalette::Base, brush);
@@ -418,6 +420,12 @@ public:
         areapreview = new QLabel(centralwidget);
         areapreview->setObjectName(QStringLiteral("areapreview"));
         areapreview->setGeometry(QRect(5, 471, 256, 192));
+        areapassword = new QLineEdit(centralwidget);
+        areapassword->setObjectName(QStringLiteral("areapassword"));
+        areapassword->setGeometry(QRect(266, 471, 224, 23));
+        deskpreview = new QLabel(centralwidget);
+        deskpreview->setObjectName(QStringLiteral("deskpreview"));
+        deskpreview->setGeometry(QRect(5, 621, 256, 42));
         Courtroom->setCentralWidget(centralwidget);
         ooc_master->raise();
         ooc_server->raise();
@@ -465,11 +473,13 @@ public:
         sfxslider->raise();
         musicslider->raise();
         blipslider->raise();
-        label->raise();
-        label_2->raise();
-        label_3->raise();
+        musiclabel->raise();
+        sfxlabel->raise();
+        bliplabel->raise();
         arealist->raise();
         areapreview->raise();
+        areapassword->raise();
+        deskpreview->raise();
 
         retranslateUi(Courtroom);
 
@@ -531,9 +541,9 @@ public:
          << QApplication::translate("Courtroom", "Orange", 0)
          << QApplication::translate("Courtroom", "Red", 0)
         );
-        label->setText(QApplication::translate("Courtroom", "Music", 0));
-        label_2->setText(QApplication::translate("Courtroom", "Sfx", 0));
-        label_3->setText(QApplication::translate("Courtroom", "Blips", 0));
+        musiclabel->setText(QApplication::translate("Courtroom", "Music", 0));
+        sfxlabel->setText(QApplication::translate("Courtroom", "Sfx", 0));
+        bliplabel->setText(QApplication::translate("Courtroom", "Blips", 0));
 
         const bool __sortingEnabled1 = arealist->isSortingEnabled();
         arealist->setSortingEnabled(false);
@@ -542,6 +552,7 @@ public:
         arealist->setSortingEnabled(__sortingEnabled1);
 
         areapreview->setText(QString());
+        deskpreview->setText(QString());
     } // retranslateUi
 
 };

@@ -120,6 +120,8 @@ private:
 
   void set_scene(QString p_side);
 
+  void set_area_ui();
+
 public slots:
   void set_character_list(QVector<char_type> &p_char_list);
 
