@@ -223,7 +223,7 @@ void Networkhandler::handle_ms_packet()
 
     else if (header == "ALL")
     { 
-      int amount_of_servers = packet_arguments.size() - 3;
+      int amount_of_servers = packet_arguments.size() - 2;
 
       qDebug() << "amount_of_servers: " << amount_of_servers;
 

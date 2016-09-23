@@ -8,7 +8,7 @@ Courtroom::Courtroom(QWidget *parent) :
   ui->setupUi(this);
   mapper = new QSignalMapper(this);
   emote_mapper = new QSignalMapper(this);
-  songplayer = new QMediaPlayer(this);
+  musicplayer = new QMediaPlayer(this);
   sfxplayer = new QMediaPlayer(this);
   blipplayer = new QMediaPlayer(this);
   charmovie = new QMovie(this);
@@ -23,6 +23,10 @@ Courtroom::Courtroom(QWidget *parent) :
   construct_charselect();
   construct_emotes();
   this->setWindowTitle("Attorney Online");
+
+  musicplayer->setVolume(50);
+  sfxplayer->setVolume(50);
+  blipplayer->setVolume(50);
 
   //so when we show() and hide() charselect, children follow suit
   ui->charselect_left->setParent(ui->charselect);
@@ -46,7 +50,7 @@ Courtroom::~Courtroom()
   delete emote_mapper;
   delete emote_left_button;
   delete emote_right_button;
-  delete songplayer;
+  delete musicplayer;
 }
 
 void Courtroom::set_music_list(QStringList &p_music_list)
@@ -195,47 +199,67 @@ void Courtroom::set_character(QString p_character, int p_mod)
 
 void Courtroom::enter_courtroom()
 {
-  QFile char_ini(getCharPath(playerChar) + "char.ini");
-  if (!char_ini.open(QIODevice::ReadOnly))
+  if (playerChar != "null")
   {
-    callError("failed to open " + getCharPath(playerChar) + "char.ini for reading.");
-  }
-
-  QTextStream in(&char_ini);
-  QString f_side = "";
-
-  while(!in.atEnd())
-  {
-    QString line = in.readLine();
-    if (line.startsWith("side = "))
+    QFile char_ini(getCharPath(playerChar) + "char.ini");
+    if (!char_ini.open(QIODevice::ReadOnly))
     {
-      f_side = line.remove(0, 7);
-      break;
+      callError("failed to open " + getCharPath(playerChar) + "char.ini for reading.");
     }
-  }
 
-  if (f_side == "")
-    callError("could not find side = in char.ini");
+    QTextStream in(&char_ini);
+    QString f_side = "";
 
-  setTheme();
+    while(!in.atEnd())
+    {
+      QString line = in.readLine();
+      if (line.startsWith("side = "))
+      {
+        f_side = line.remove(0, 7);
+        break;
+      }
 
-  if (f_side == "jud")
-  {
-    ui->witnesstestimony->show();
-    ui->crossexamination->show();
-    ui->proplus->show();
-    ui->prominus->show();
-    ui->defplus->show();
-    ui->defminus->show();
-  }
-  else
-  {
-    ui->witnesstestimony->hide();
-    ui->crossexamination->hide();
-    ui->proplus->hide();
-    ui->prominus->hide();
-    ui->defplus->hide();
-    ui->defminus->hide();
+      else if (line.startsWith("side ="))
+      {
+        f_side = line.remove(0, 6);
+        break;
+      }
+
+      else if (line.startsWith("side= "))
+      {
+        f_side = line.remove(0, 6);
+        break;
+      }
+
+      else if (line.startsWith("side="))
+      {
+        f_side = line.remove(0, 5);
+        break;
+      }
+    }
+
+
+    if (f_side == "")
+      callError("could not find side = in char.ini");
+
+    if (f_side == "jud")
+    {
+      ui->witnesstestimony->show();
+      ui->crossexamination->show();
+      ui->proplus->show();
+      ui->prominus->show();
+      ui->defplus->show();
+      ui->defminus->show();
+    }
+    else
+    {
+      ui->witnesstestimony->hide();
+      ui->crossexamination->hide();
+      ui->proplus->hide();
+      ui->prominus->hide();
+      ui->defplus->hide();
+      ui->defminus->hide();
+    }
   }
 
   if (playerChar == "null")
@@ -245,6 +269,12 @@ void Courtroom::enter_courtroom()
     ui->holdit->hide();
     ui->takethat->hide();
     ui->present->hide();
+    ui->witnesstestimony->hide();
+    ui->crossexamination->hide();
+    ui->proplus->hide();
+    ui->prominus->hide();
+    ui->defplus->hide();
+    ui->defminus->hide();
     emote_left_button->hide();
     emote_right_button->hide();
 
@@ -257,12 +287,17 @@ void Courtroom::enter_courtroom()
   {
     setEmotes();
     setEmotePage();
+    ui->holdit->show();
+    ui->objection->show();
+    ui->takethat->show();
+    ui->chatLine->show();
+    ui->chatLine->setFocus();
   }
 
   ui->oocserverchat->hide();
   ui->chatLine->clear();
-  ui->chatLine->show();
-  ui->chatLine->setFocus();
+
+  setTheme();
 
   ui->charselect->hide();
 }
@@ -294,6 +329,24 @@ void Courtroom::on_chatLine_returnPressed()
     if (line.startsWith("side = "))
     {
       f_side = line.remove(0, 7);
+      break;
+    }
+
+    else if (line.startsWith("side ="))
+    {
+      f_side = line.remove(0, 6);
+      break;
+    }
+
+    else if (line.startsWith("side= "))
+    {
+      f_side = line.remove(0, 6);
+      break;
+    }
+
+    else if (line.startsWith("side="))
+    {
+      f_side = line.remove(0, 5);
       break;
     }
   }
@@ -432,7 +485,7 @@ void Courtroom::set_scene(QString p_side)
 
   if (fileExists(f_desk_path, true))
     ui->desk->setPixmap(f_desk_path);
-  else if (fileExists(f_default_desk_path))
+  else if (fileExists(f_default_desk_path, true))
     ui->desk->setPixmap(f_default_desk_path);
   else
     ui->desk->clear();
@@ -441,6 +494,8 @@ void Courtroom::set_scene(QString p_side)
 void Courtroom::handle_chatmessage(chatmessage_type &p_message)
 { 
   current_chatmessage = p_message;
+
+  QString char_path = getBasePath() + "characters/";
 
   qDebug() << "p_message.objection_modifier: " << p_message.objection_modifier;
 
@@ -455,18 +510,24 @@ void Courtroom::handle_chatmessage(chatmessage_type &p_message)
     objectionmovie->setFileName(get_image_path("holdit.gif"));
     qDebug() << "objectionmovie->setFileName(get_image_path(\"holdit.gif\")); called";
     ui->objectiongif->setMovie(objectionmovie);
+    sfxplayer->setMedia(QUrl::fromLocalFile(char_path + '/' + p_message.character + "/holdit.wav"));
+    sfxplayer->play();
     objectionmovie->start(); //handle_chatmessage2 is called when this is done playing, continuing the logic
     break;
   case 2:
     objectionmovie->stop();
     objectionmovie->setFileName(get_image_path("objection.gif"));
     ui->objectiongif->setMovie(objectionmovie);
+    sfxplayer->setMedia(QUrl::fromLocalFile(char_path + '/' + p_message.character + "/objection.wav"));
+    sfxplayer->play();
     objectionmovie->start();
     break;
   case 3:
     objectionmovie->stop();
     objectionmovie->setFileName(get_image_path("takethat.gif"));
     ui->objectiongif->setMovie(objectionmovie);
+    sfxplayer->setMedia(QUrl::fromLocalFile(char_path + '/' + p_message.character + "/takethat.wav"));
+    sfxplayer->play();
     objectionmovie->start();
     break;
   default:
@@ -573,6 +634,8 @@ void Courtroom::on_holdit_clicked()
     ui->objection->setStyleSheet("border-image:url(" + get_image_path("objection.png") + ")");
     ui->takethat->setStyleSheet("border-image:url(" + get_image_path("takethat.png") + ")");
   }
+
+  ui->chatLine->setFocus();
 }
 
 void Courtroom::on_objection_clicked()
@@ -691,15 +754,14 @@ void Courtroom::play_song(QString p_song_name)
 
   if (fileExists(song_path, true))
   {
-    songplayer->setMedia(QUrl::fromLocalFile(song_path));
-    songplayer->setVolume(50);
-    songplayer->play();
+    musicplayer->setMedia(QUrl::fromLocalFile(song_path));
+    musicplayer->play();
   }
 
   //assume "stop.mp3" or something
   else
   {
-    songplayer->stop();
+    musicplayer->stop();
   }
 }
 
@@ -928,7 +990,7 @@ void Courtroom::on_crossexamination_clicked()
 
 void Courtroom::on_musicslider_sliderMoved(int p_position)
 {
-  songplayer->setVolume(p_position);
+  musicplayer->setVolume(p_position);
 }
 
 void Courtroom::on_sfxslider_sliderMoved(int p_position)

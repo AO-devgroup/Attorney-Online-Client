@@ -93,7 +93,7 @@ private:
 
   //QSettings ini_charini;
 
-  QMediaPlayer *songplayer;
+  QMediaPlayer *musicplayer;
   QMediaPlayer *sfxplayer;
   QMediaPlayer *blipplayer;
 

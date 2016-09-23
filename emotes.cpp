@@ -121,12 +121,68 @@ void Courtroom::setEmotes()
   for(int n_line = int_emotions_line ; n_line < int_soundn_line ; ++n_line)
   {
     QString line = char_ini_list.at(n_line);
+
+    //we need a whopping three of these because INCONSISTENCIES
     QString search_line = QString::number(emote_counter) + " = ";
+    QString search_line2 = QString::number(emote_counter) + "= ";
+    QString search_line3 = QString::number(emote_counter) + "=";
 
     if (line.startsWith(search_line))
     {
       //removes "x = " from the start of the string
       QString cropped_line = line.remove(0, 4);
+      QStringList single_emote_line = cropped_line.split("#");
+
+      //dodging those silly index out of range crashes
+      if (single_emote_line.size() < 4)
+      {
+        QString err_str = "Misformatted emote line in file " + char_ini_path + " on line " + n_line;
+        callFatalError(err_str);
+        return;
+      }
+
+      f_emote.comment = single_emote_line.at(0);
+      f_emote.preanim = single_emote_line.at(1);
+      f_emote.anim = single_emote_line.at(2);
+      f_emote.mod = single_emote_line.at(3).toInt();
+
+      qDebug() << "f_emote.mod == " << f_emote.mod;
+
+      emote_list.insert(emote_counter - 1, f_emote);
+
+      ++emote_counter;
+    }
+
+    else if (line.startsWith(search_line2))
+    {
+      //removes "x= " from the start of the string
+      QString cropped_line = line.remove(0, 3);
+      QStringList single_emote_line = cropped_line.split("#");
+
+      //dodging those silly index out of range crashes
+      if (single_emote_line.size() < 4)
+      {
+        QString err_str = "Misformatted emote line in file " + char_ini_path + " on line " + n_line;
+        callFatalError(err_str);
+        return;
+      }
+
+      f_emote.comment = single_emote_line.at(0);
+      f_emote.preanim = single_emote_line.at(1);
+      f_emote.anim = single_emote_line.at(2);
+      f_emote.mod = single_emote_line.at(3).toInt();
+
+      qDebug() << "f_emote.mod == " << f_emote.mod;
+
+      emote_list.insert(emote_counter - 1, f_emote);
+
+      ++emote_counter;
+    }
+
+    else if (line.startsWith(search_line3))
+    {
+      //removes "x=" from the start of the string
+      QString cropped_line = line.remove(0, 2);
       QStringList single_emote_line = cropped_line.split("#");
 
       //dodging those silly index out of range crashes
@@ -229,7 +285,13 @@ void Courtroom::setEmotePage()
     emotes_on_page = total_emotes;
 
   else if(emote_current_page == emote_pages) //if not, then we check if we're on the last page
-    emotes_on_page = (total_emotes % 10);
+  {
+    //it total_emotes is a multiple of ten, the page obviously has 10 emotes
+    if (total_emotes % 10 == 0)
+      emotes_on_page = 10;
+    else
+      emotes_on_page = (total_emotes % 10);
+  }
 
   else if(emote_current_page < emote_pages)  //if not, we should be on a page that is not the last page
     emotes_on_page = 10;                     //conclusion: 10 emotes on the page
