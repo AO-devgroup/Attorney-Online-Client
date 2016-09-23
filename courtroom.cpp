@@ -903,13 +903,16 @@ void Courtroom::on_blipslider_sliderMoved(int p_position)
 
 void Courtroom::on_arealist_clicked(const QModelIndex &index)
 {
-  QString background = area_list.at(index.row()).background;
+  if (area_list_set && area_taken_list_set)
+  {
+    QString background = area_list.at(index.row()).background;
 
-  ui->areapreview->setPixmap(get_background_path(background, "defenseempty.png"));
-  ui->deskpreview->setPixmap(get_background_path(background, "bancodefensa.png"));
+    ui->areapreview->setPixmap(get_background_path(background, "defenseempty.png"));
+    ui->deskpreview->setPixmap(get_background_path(background, "bancodefensa.png"));
 
-  ui->areapreview->show();
-  ui->deskpreview->show();
+    ui->areapreview->show();
+    ui->deskpreview->show();
+  }
 }
 
 void Courtroom::on_arealist_doubleClicked(const QModelIndex &index)

@@ -117,6 +117,7 @@ private:
   QMovie *charmovie;
   QMovie *speedlinesmovie;
   QMovie *testimonymovie;
+  QMovie *objectionmovie;
 
   //0 is nothing, 1 is WT, 2 is between WT and CE and 3 is CE
   //needed because gifs are dum
