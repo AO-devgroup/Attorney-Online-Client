@@ -187,7 +187,7 @@ void Networkhandler::handle_ms_packet()
 {
   master_connected = true;
 
-  char buffer[2048] = {0};
+  char buffer[6144] = {0};
   ms_socket->read(buffer, ms_socket->bytesAvailable());
 
   QString in_data = buffer;
@@ -222,8 +222,8 @@ void Networkhandler::handle_ms_packet()
       continue;
 
     else if (header == "ALL")
-    {
-      int amount_of_servers = packet_arguments.size();
+    { 
+      int amount_of_servers = packet_arguments.size() - 3;
 
       qDebug() << "amount_of_servers: " << amount_of_servers;
 
@@ -257,7 +257,7 @@ void Networkhandler::handle_server_packet()
   QString in_data;
 
 
-  char buffer[2048] = {0};
+  char buffer[6144] = {0};
   server_socket->read(buffer, server_socket->bytesAvailable());
   in_data = buffer;
 

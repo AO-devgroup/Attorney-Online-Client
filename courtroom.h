@@ -119,6 +119,8 @@ private:
   QMovie *testimonymovie;
   QMovie *objectionmovie;
 
+  chatmessage_type current_chatmessage;
+
   //0 is nothing, 1 is WT, 2 is between WT and CE and 3 is CE
   //needed because gifs are dum
   int testimonystate = 0;
@@ -130,6 +132,8 @@ private:
   void set_scene(QString p_side);
 
   void set_area_ui();
+
+  void handle_chatmessage2();
 
 public slots:
   void set_character_list(QVector<char_type> &p_char_list);
@@ -155,6 +159,8 @@ public slots:
 
 private slots:
   void testimony_gif_framechange(int p_frame);
+
+  void objection_gif_framechange(int p_frame);
 
   void charChoose(int i);
 

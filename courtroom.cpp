@@ -14,8 +14,11 @@ Courtroom::Courtroom(QWidget *parent) :
   charmovie = new QMovie(this);
   speedlinesmovie = new QMovie(this);
   testimonymovie = new QMovie(this);
+  objectionmovie = new QMovie(this);
 
   connect(testimonymovie, SIGNAL(frameChanged(int)), this, SLOT(testimony_gif_framechange(int)));
+
+  connect(objectionmovie, SIGNAL(frameChanged(int)), this, SLOT(objection_gif_framechange(int)));
 
   construct_charselect();
   construct_emotes();
@@ -437,15 +440,51 @@ void Courtroom::set_scene(QString p_side)
 
 void Courtroom::handle_chatmessage(chatmessage_type &p_message)
 { 
-  QString showname = getShowname(p_message.character);
+  current_chatmessage = p_message;
 
-  QString f_message = (p_message.message).replace("<num>", "#");
+  qDebug() << "p_message.objection_modifier: " << p_message.objection_modifier;
+
+  switch(p_message.objection_modifier)
+  {
+  case 0:
+    objectionmovie->stop();
+    handle_chatmessage2(); //rest of the stuff that needs to happen is called here
+    break;
+  case 1:
+    objectionmovie->stop();
+    objectionmovie->setFileName(get_image_path("holdit.gif"));
+    qDebug() << "objectionmovie->setFileName(get_image_path(\"holdit.gif\")); called";
+    ui->objectiongif->setMovie(objectionmovie);
+    objectionmovie->start(); //handle_chatmessage2 is called when this is done playing, continuing the logic
+    break;
+  case 2:
+    objectionmovie->stop();
+    objectionmovie->setFileName(get_image_path("objection.gif"));
+    ui->objectiongif->setMovie(objectionmovie);
+    objectionmovie->start();
+    break;
+  case 3:
+    objectionmovie->stop();
+    objectionmovie->setFileName(get_image_path("takethat.gif"));
+    ui->objectiongif->setMovie(objectionmovie);
+    objectionmovie->start();
+    break;
+  default:
+    handle_chatmessage2();
+  }
+}
+
+void Courtroom::handle_chatmessage2()
+{
+  QString showname = getShowname(current_chatmessage.character);
+
+  QString f_message = (current_chatmessage.message).replace("<num>", "#");
 
   ui->chatlog->moveCursor(QTextCursor::Start, QTextCursor::MoveAnchor);
   ui->chatlog->insertPlainText(showname + ": " + f_message + '\n');
   ui->desk->show();
 
-  switch(text_color_state)
+  switch(current_chatmessage.text_color)
   {
   case 0:
     ui->chattext->setStyleSheet("QPlainTextEdit{color: white;}");
@@ -472,7 +511,7 @@ void Courtroom::handle_chatmessage(chatmessage_type &p_message)
     //ui->chatLine->setStyleSheet("QLineEdit{color: white;}");
   }
 
-  set_scene(p_message.side);
+  set_scene(current_chatmessage.side);
 
   if(fileExists(g_theme_path + "chat.png"))
     ui->chatbubble->setPixmap(g_theme_path + "chat.png");
@@ -485,9 +524,7 @@ void Courtroom::handle_chatmessage(chatmessage_type &p_message)
   ui->charname->setText(showname);
   ui->chatbubble->show();
 
-  //QMovie *movie = new QMovie(getCharGifPath(p_message.character, "(b)" + p_message.emote + ".gif"));
-  //ui->playingarea->setMovie(movie);
-  if (p_message.emote_modifier == 5)
+  if (current_chatmessage.emote_modifier == 5)
   {
     speedlinesmovie->stop();
     ui->desk->hide();
@@ -495,7 +532,7 @@ void Courtroom::handle_chatmessage(chatmessage_type &p_message)
     speedlinesmovie->start(); 
   }
 
-  QString gif_path = getCharGifPath(p_message.character, "(b)" + p_message.emote + ".gif");
+  QString gif_path = getCharGifPath(current_chatmessage.character, "(b)" + current_chatmessage.emote + ".gif");
 
   charmovie->stop();
   charmovie->setFileName(gif_path);
@@ -641,8 +678,11 @@ void Courtroom::on_changecharacter_clicked()
 void Courtroom::on_musiclist_doubleClicked(const QModelIndex &index)
 {
   QString song_name = ui_music_list.at(index.row());
+  QString str_cid = QString::number(m_cid);
 
-  song_requested(song_name);
+  request_packet("MC#" + song_name + "#" + str_cid + "#%");
+
+  //song_requested(song_name);
 }
 
 void Courtroom::play_song(QString p_song_name)
@@ -939,6 +979,15 @@ void Courtroom::testimony_gif_framechange(int p_frame)
       ;
     else
       testimonymovie->stop();
+  }
+}
+
+void Courtroom::objection_gif_framechange(int p_frame)
+{
+  if (p_frame >= (objectionmovie->frameCount()-1))
+  {
+    objectionmovie->stop();
+    handle_chatmessage2();
   }
 }
 

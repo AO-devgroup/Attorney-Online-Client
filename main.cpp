@@ -12,6 +12,7 @@ int main(int argc, char *argv[])
   Networkhandler main_networkhandler;
 
   main_courtroom.hide();
+  //main_courtroom.show();
 
   QObject::connect(&main_networkhandler, SIGNAL(ms_message_received(QString)), &main_lobby, SLOT(handle_ms_message(QString)));
   QObject::connect(&main_networkhandler, SIGNAL(server_list_received(QVector<server_type>&)), &main_lobby, SLOT(update_server_list(QVector<server_type>&)));
