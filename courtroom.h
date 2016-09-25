@@ -16,6 +16,7 @@
 #include <QTextCursor>
 #include <QBrush>
 #include <QColor>
+#include <QTimer>
 
 #include "ui_courtroom.h"
 
@@ -118,6 +119,7 @@ private:
   QMovie *speedlinesmovie;
   QMovie *testimonymovie;
   QMovie *objectionmovie;
+  QTimer *chattimer;
 
   chatmessage_type current_chatmessage;
 
@@ -153,12 +155,13 @@ public slots:
 
   void set_character(QString p_character, int p_mod);
 
-  void handle_chatmessage(chatmessage_type &p_message);
+  //void handle_chatmessage(chatmessage_type &p_message);
+  void handle_chatmessage();
 
   void handle_ms_message(QString p_message);
   void handle_ooc_message(QString p_message);
 
-  void handle_server_packet(QString &p_packet);
+  void handle_server_packet(QString p_packet);
 
 private slots:
   void testimony_gif_framechange(int p_frame);
@@ -170,6 +173,8 @@ private slots:
   void charChoose(int i);
 
   void emote_choose(int local_emote_number);
+
+  void chat_tick();
 
   void on_holdit_clicked();
 

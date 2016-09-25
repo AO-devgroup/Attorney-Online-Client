@@ -420,31 +420,11 @@ void Networkhandler::handle_server_packet()
 
     else if (header == "MS")
     {
-      chatmessage_type f_message;
-
-      //old format
-      /*
-      if (packet_contents.size() == 12)
-      {
-        //message format:
-        //0MS#1message#2character#3side#4sfx-name#5pre_emote#6emote#7emote_modifier#8objection_modifier#9realization#10text_color#11evidence#%
-
-        f_message.message = packet_contents.at(1);
-        f_message.character = packet_contents.at(2);
-        f_message.side = packet_contents.at(3);
-        f_message.sfx_name = packet_contents.at(4);
-        f_message.pre_emote = packet_contents.at(5);
-        f_message.emote = packet_contents.at(6);
-        f_message.emote_modifier = packet_contents.at(7).toInt();
-        f_message.objection_modifier = packet_contents.at(8).toInt();
-        f_message.realization = packet_contents.at(9).toInt();
-        f_message.text_color = packet_contents.at(10).toInt();
-        f_message.evidence = packet_contents.at(11).toInt();
-      }
-      */
+      //chatmessage_type f_message;
 
       if (packet_contents.size() == 15)
       {
+        /*
         //format:
         //MS#chat#<pre-emote>#<char>#<emote>#<message>#<side>#<sfx-name>#<emote_modifier>#<objection_modifier>#<realization>#<text_color>#<evidence>#<cid>#%
 
@@ -459,8 +439,12 @@ void Networkhandler::handle_server_packet()
         f_message.evidence = packet_contents.at(10).toInt();
         f_message.realization = packet_contents.at(11).toInt();
         f_message.text_color = packet_contents.at(12).toInt();
+        */
+
+        server_packet_received(packet);
       }
 
+      /*
       else if (packet_contents.size() == 17)
       {
         //uh oh, we have a vanilla chatmessage on our hands
@@ -479,6 +463,7 @@ void Networkhandler::handle_server_packet()
         f_message.realization = packet_contents.at(14).toInt();
         f_message.text_color = packet_contents.at(15).toInt();
       }
+      */
 
       else
       {
@@ -486,7 +471,7 @@ void Networkhandler::handle_server_packet()
         return;
       }
 
-      chatmessage_received(f_message);
+      //chatmessage_received(f_message);
     }
 
     else if (header == "MC")

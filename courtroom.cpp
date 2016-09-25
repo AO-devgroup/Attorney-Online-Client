@@ -15,12 +15,15 @@ Courtroom::Courtroom(QWidget *parent) :
   speedlinesmovie = new QMovie(this);
   testimonymovie = new QMovie(this);
   objectionmovie = new QMovie(this);
+  chattimer = new QTimer(this);
 
   connect(testimonymovie, SIGNAL(frameChanged(int)), this, SLOT(testimony_gif_framechange(int)));
 
   connect(objectionmovie, SIGNAL(frameChanged(int)), this, SLOT(objection_gif_framechange(int)));
 
   connect(charmovie, SIGNAL(frameChanged(int)), this, SLOT(char_gif_framechange(int)));
+
+  connect(chattimer, SIGNAL(timeout()), this, SLOT(chat_tick()));
 
   construct_charselect();
   construct_emotes();
@@ -29,6 +32,11 @@ Courtroom::Courtroom(QWidget *parent) :
   musicplayer->setVolume(50);
   sfxplayer->setVolume(50);
   blipplayer->setVolume(50);
+
+  ui->playingarea->setMovie(charmovie);
+  ui->objectiongif->setMovie(objectionmovie);
+  ui->testimony->setMovie(testimonymovie);
+  ui->playingbackground->setMovie(speedlinesmovie);
 
   //so when we show() and hide() charselect, children follow suit
   ui->charselect_left->setParent(ui->charselect);
@@ -493,15 +501,14 @@ void Courtroom::set_scene(QString p_side)
     ui->desk->clear();
 }
 
-void Courtroom::handle_chatmessage(chatmessage_type &p_message)
+//void Courtroom::handle_chatmessage(chatmessage_type &p_message)
+void Courtroom::handle_chatmessage()
 { 
-  current_chatmessage = p_message;
+  //current_chatmessage = p_message;
 
   QString char_path = getBasePath() + "characters/";
 
-  qDebug() << "p_message.objection_modifier: " << p_message.objection_modifier;
-
-  switch(p_message.objection_modifier)
+  switch(current_chatmessage.objection_modifier)
   {
   case 0:
     objectionmovie->stop();
@@ -510,30 +517,30 @@ void Courtroom::handle_chatmessage(chatmessage_type &p_message)
   case 1:
     objectionmovie->stop();
     objectionmovie->setFileName(get_image_path("holdit.gif"));
-    qDebug() << "objectionmovie->setFileName(get_image_path(\"holdit.gif\")); called";
-    ui->objectiongif->setMovie(objectionmovie);
-    sfxplayer->setMedia(QUrl::fromLocalFile(char_path + '/' + p_message.character + "/holdit.wav"));
+    //ui->objectiongif->setMovie(objectionmovie);
+    sfxplayer->setMedia(QUrl::fromLocalFile(char_path + '/' + current_chatmessage.character + "/holdit.wav"));
     sfxplayer->play();
     objectionmovie->start(); //handle_chatmessage2 is called when this is done playing, continuing the logic
     break;
   case 2:
     objectionmovie->stop();
     objectionmovie->setFileName(get_image_path("objection.gif"));
-    ui->objectiongif->setMovie(objectionmovie);
-    sfxplayer->setMedia(QUrl::fromLocalFile(char_path + '/' + p_message.character + "/objection.wav"));
+    //ui->objectiongif->setMovie(objectionmovie);
+    sfxplayer->setMedia(QUrl::fromLocalFile(char_path + '/' + current_chatmessage.character + "/objection.wav"));
     sfxplayer->play();
     objectionmovie->start();
     break;
   case 3:
     objectionmovie->stop();
     objectionmovie->setFileName(get_image_path("takethat.gif"));
-    ui->objectiongif->setMovie(objectionmovie);
-    sfxplayer->setMedia(QUrl::fromLocalFile(char_path + '/' + p_message.character + "/takethat.wav"));
+    //ui->objectiongif->setMovie(objectionmovie);
+    sfxplayer->setMedia(QUrl::fromLocalFile(char_path + '/' + current_chatmessage.character + "/takethat.wav"));
     sfxplayer->play();
     objectionmovie->start();
     break;
   default:
     handle_chatmessage2();
+    ;
   }
 }
 
@@ -543,8 +550,8 @@ void Courtroom::handle_chatmessage2()
 
   QString f_message = (current_chatmessage.message).replace("<num>", "#");
 
-  //ui->chatlog->moveCursor(QTextCursor::Start, QTextCursor::MoveAnchor);
-  //ui->chatlog->insertPlainText(showname + ": " + f_message + '\n');
+  ui->chatlog->moveCursor(QTextCursor::Start, QTextCursor::MoveAnchor);
+  ui->chatlog->insertPlainText(showname + ": " + f_message + '\n');
   ui->desk->show();
 
   if (current_chatmessage.sfx_name != "1")
@@ -589,7 +596,10 @@ void Courtroom::handle_chatmessage2()
   else
     ui->chatbubble->setPixmap(getBasePath() + "background/default/chat.png");
 
-  ui->chattext->setPlainText(f_message);
+  //ui->chattext->setPlainText(f_message);
+
+  chattimer->stop();
+  chattimer->start(100);
   ui->chattext->show();
   ui->charname->setText(showname);
   ui->chatbubble->show();
@@ -600,7 +610,7 @@ void Courtroom::handle_chatmessage2()
   charmovie->stop();
   speedlinesmovie->stop();
 
-  ui->playingarea->setMovie(charmovie);
+
 
   switch (current_chatmessage.emote_modifier)
   {
@@ -628,7 +638,7 @@ void Courtroom::handle_chatmessage2()
     ui->desk->hide();
     charmovie->setFileName(gif_path);
     charmovie_state = 1;
-    ui->playingbackground->setMovie(speedlinesmovie);
+    //ui->playingbackground->setMovie(speedlinesmovie);
     speedlinesmovie->start();
     charmovie->start();
     qDebug() << "case 5";
@@ -800,13 +810,31 @@ void Courtroom::play_song(QString p_song_name)
   }
 }
 
-void Courtroom::handle_server_packet(QString &p_packet)
+void Courtroom::handle_server_packet(QString p_packet)
 {
   QStringList packet_contents = p_packet.split("#");
 
   QString header = packet_contents.at(0);
 
-  if (header == "HP")
+  if (header == "MS")
+  {
+    current_chatmessage.pre_emote = packet_contents.at(2);
+    current_chatmessage.character = packet_contents.at(3);
+    current_chatmessage.emote = packet_contents.at(4);
+    current_chatmessage.message = packet_contents.at(5);
+    current_chatmessage.side = packet_contents.at(6);
+    current_chatmessage.sfx_name = packet_contents.at(7);
+    current_chatmessage.emote_modifier = packet_contents.at(8).toInt();
+    current_chatmessage.objection_modifier = packet_contents.at(9).toInt();
+    current_chatmessage.realization = packet_contents.at(10).toInt();
+    current_chatmessage.text_color = packet_contents.at(11).toInt();
+    current_chatmessage.evidence = packet_contents.at(12).toInt();
+    current_chatmessage.cid = packet_contents.at(13).toInt();
+
+    handle_chatmessage();
+  }
+
+  else if (header == "HP")
   {
     QString side = packet_contents.at(1);
     QString str_hp_amount = packet_contents.at(2);
@@ -843,7 +871,7 @@ void Courtroom::handle_server_packet(QString &p_packet)
       testimonystate = 1;
       testimonymovie->stop();
       sfxplayer->stop();
-      ui->testimony->setMovie(testimonymovie);
+      //ui->testimony->setMovie(testimonymovie);
       sfxplayer->setMedia(QUrl::fromLocalFile(getBasePath() + "sounds/general/sfx-testimony2.wav"));
       testimonymovie->setFileName(get_image_path("witnesstestimony.gif"));
       sfxplayer->play();
@@ -855,7 +883,7 @@ void Courtroom::handle_server_packet(QString &p_packet)
       testimonystate = 3;
       testimonymovie->stop();
       sfxplayer->stop();
-      ui->testimony->setMovie(testimonymovie);
+      //ui->testimony->setMovie(testimonymovie);
       sfxplayer->setMedia(QUrl::fromLocalFile(getBasePath() + "sounds/general/sfx-testimony.wav"));
       testimonymovie->setFileName(get_image_path("crossexamination.gif"));
       sfxplayer->play();
@@ -1112,4 +1140,13 @@ void Courtroom::on_callmod_clicked()
 void Courtroom::on_textcolor_activated(int index)
 {
   text_color_state = index;
+}
+
+void Courtroom::chat_tick()
+{
+
+  sfxplayer->stop();
+  sfxplayer->setMedia(QUrl::fromLocalFile(getBasePath() + "sounds/general/sfx-blipmale.wav"));
+  sfxplayer->play();
+  ui->chattext->appendHtml("a");
 }
