@@ -22,6 +22,7 @@
 #include <QtWidgets/QPlainTextEdit>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QSlider>
+#include <QtWidgets/QTextEdit>
 #include <QtWidgets/QWidget>
 
 QT_BEGIN_NAMESPACE
@@ -85,6 +86,7 @@ public:
     QLabel *deskpreview;
     QPushButton *callmod;
     QLabel *objectiongif;
+    QTextEdit *test;
 
     void setupUi(QMainWindow *Courtroom)
     {
@@ -434,6 +436,9 @@ public:
         objectiongif = new QLabel(centralwidget);
         objectiongif->setObjectName(QStringLiteral("objectiongif"));
         objectiongif->setGeometry(QRect(0, 0, 256, 192));
+        test = new QTextEdit(centralwidget);
+        test->setObjectName(QStringLiteral("test"));
+        test->setGeometry(QRect(100, 500, 141, 51));
         Courtroom->setCentralWidget(centralwidget);
         ooc_master->raise();
         ooc_server->raise();
@@ -490,6 +495,7 @@ public:
         deskpreview->raise();
         callmod->raise();
         objectiongif->raise();
+        test->raise();
 
         retranslateUi(Courtroom);
 

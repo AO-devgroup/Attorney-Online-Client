@@ -598,8 +598,8 @@ void Courtroom::handle_chatmessage2()
 
   //ui->chattext->setPlainText(f_message);
 
-  chattimer->stop();
-  chattimer->start(100);
+  ui->chattext->clear();
+
   ui->chattext->show();
   ui->charname->setText(showname);
   ui->chatbubble->show();
@@ -1124,9 +1124,12 @@ void Courtroom::char_gif_framechange(int p_frame)
     {
       //this is called when the preanimation has played once
       charmovie_state = 1;
+      chattimer->stop();
       charmovie->stop();
       charmovie->setFileName(getCharGifPath(current_chatmessage.character, ("(b)" + current_chatmessage.emote + ".gif")));
+      //"character talking gif" starts here
       charmovie->start();
+      chattimer->start(100);
     }
   }
 
@@ -1148,5 +1151,5 @@ void Courtroom::chat_tick()
   sfxplayer->stop();
   sfxplayer->setMedia(QUrl::fromLocalFile(getBasePath() + "sounds/general/sfx-blipmale.wav"));
   sfxplayer->play();
-  ui->chattext->appendHtml("a");
+  ui->chattext->insertPlainText("a");
 }
