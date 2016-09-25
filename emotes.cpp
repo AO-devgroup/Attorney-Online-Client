@@ -212,19 +212,48 @@ void Courtroom::setEmotes()
 
   for(int n_line = int_soundn_line ; n_line < int_soundt_line ; ++n_line)
   {
+    //what we are doing here is finding sound effect names
     //dodging index out of range
     if (emote_counter - 1 >= emote_list.size())
       break;
 
     QString line = char_ini_list.at(n_line);
     QString search_line = QString::number(emote_counter) + " = ";
+    QString search_line2 = QString::number(emote_counter) + "= ";
+    QString search_line3 = QString::number(emote_counter) + " =";
+    QString search_line4 = QString::number(emote_counter) + "=";
 
     if (line.startsWith(search_line))
     {
       //removes "x = " from the start of the string
       QString f_sfx_name = line.remove(0, 4);
 
-      qDebug() << emote_counter - 1;
+      emote_list[emote_counter - 1].sfx_name = f_sfx_name;
+
+      ++emote_counter;
+    }
+
+    else if (line.startsWith(search_line2))
+    {
+      QString f_sfx_name = line.remove(0, 3);
+
+      emote_list[emote_counter - 1].sfx_name = f_sfx_name;
+
+      ++emote_counter;
+    }
+
+    else if (line.startsWith(search_line3))
+    {
+      QString f_sfx_name = line.remove(0, 3);
+
+      emote_list[emote_counter - 1].sfx_name = f_sfx_name;
+
+      ++emote_counter;
+    }
+
+    else if (line.startsWith(search_line4))
+    {
+      QString f_sfx_name = line.remove(0, 2);
 
       emote_list[emote_counter - 1].sfx_name = f_sfx_name;
 

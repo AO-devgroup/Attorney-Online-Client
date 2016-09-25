@@ -20,6 +20,21 @@ QString getShowname(QString p_character)
       //removes showname = and returns
       return line.remove(0, 11);
     }
+
+    else if (line.startsWith("showname ="))
+    {
+      return line.remove(0, 10);
+    }
+
+    else if (line.startsWith("showname= "))
+    {
+      return line.remove(0, 10);
+    }
+
+    else if (line.startsWith("showname="))
+    {
+      return line.remove(0, 9);
+    }
   }
 
   //if a showname couldnt be found, we simply return the characters technical name

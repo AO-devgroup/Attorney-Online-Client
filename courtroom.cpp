@@ -20,6 +20,8 @@ Courtroom::Courtroom(QWidget *parent) :
 
   connect(objectionmovie, SIGNAL(frameChanged(int)), this, SLOT(objection_gif_framechange(int)));
 
+  connect(charmovie, SIGNAL(frameChanged(int)), this, SLOT(char_gif_framechange(int)));
+
   construct_charselect();
   construct_emotes();
   this->setWindowTitle("Attorney Online");
@@ -541,9 +543,16 @@ void Courtroom::handle_chatmessage2()
 
   QString f_message = (current_chatmessage.message).replace("<num>", "#");
 
-  ui->chatlog->moveCursor(QTextCursor::Start, QTextCursor::MoveAnchor);
-  ui->chatlog->insertPlainText(showname + ": " + f_message + '\n');
+  //ui->chatlog->moveCursor(QTextCursor::Start, QTextCursor::MoveAnchor);
+  //ui->chatlog->insertPlainText(showname + ": " + f_message + '\n');
   ui->desk->show();
+
+  if (current_chatmessage.sfx_name != "1")
+  {
+    sfxplayer->stop();
+    sfxplayer->setMedia(QUrl::fromLocalFile(getBasePath() + "sounds/general/" + current_chatmessage.sfx_name + ".wav"));
+    sfxplayer->play();
+  }
 
   switch(current_chatmessage.text_color)
   {
@@ -585,22 +594,48 @@ void Courtroom::handle_chatmessage2()
   ui->charname->setText(showname);
   ui->chatbubble->show();
 
-  if (current_chatmessage.emote_modifier == 5)
-  {
-    speedlinesmovie->stop();
-    ui->desk->hide();
-    ui->playingbackground->setMovie(speedlinesmovie);
-    speedlinesmovie->start(); 
-  }
-
   QString gif_path = getCharGifPath(current_chatmessage.character, "(b)" + current_chatmessage.emote + ".gif");
+  QString gif_preanim_path = getCharGifPath(current_chatmessage.character, current_chatmessage.pre_emote + ".gif");
 
   charmovie->stop();
-  charmovie->setFileName(gif_path);
-  ui->playingarea->setMovie(charmovie);
-  charmovie->start();
+  speedlinesmovie->stop();
 
-  qDebug() << "handle_chatmessage executed";
+  ui->playingarea->setMovie(charmovie);
+
+  switch (current_chatmessage.emote_modifier)
+  {
+  case 0:
+    if (current_chatmessage.objection_modifier == 0)
+    {
+      charmovie->setFileName(gif_path);
+      charmovie_state = 1;
+    }
+    else
+    {
+      charmovie->setFileName(gif_preanim_path);
+      charmovie_state = 0;
+    }
+    qDebug() << "case 0";
+    charmovie->start();
+    break;
+  case 1:
+    charmovie->setFileName(gif_preanim_path);
+    charmovie_state = 0;
+    charmovie->start();
+    qDebug() << "case 1";
+    break;
+  case 5:
+    ui->desk->hide();
+    charmovie->setFileName(gif_path);
+    charmovie_state = 1;
+    ui->playingbackground->setMovie(speedlinesmovie);
+    speedlinesmovie->start();
+    charmovie->start();
+    qDebug() << "case 5";
+    break;
+  default:
+    ;
+  }
 }
 
 void Courtroom::handle_ms_message(QString p_message)
@@ -1051,6 +1086,22 @@ void Courtroom::objection_gif_framechange(int p_frame)
     objectionmovie->stop();
     handle_chatmessage2();
   }
+}
+
+void Courtroom::char_gif_framechange(int p_frame)
+{
+  if (p_frame == (charmovie->frameCount()-1))
+  {
+    if (charmovie_state == 0)
+    {
+      //this is called when the preanimation has played once
+      charmovie_state = 1;
+      charmovie->stop();
+      charmovie->setFileName(getCharGifPath(current_chatmessage.character, ("(b)" + current_chatmessage.emote + ".gif")));
+      charmovie->start();
+    }
+  }
+
 }
 
 void Courtroom::on_callmod_clicked()

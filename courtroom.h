@@ -125,6 +125,9 @@ private:
   //needed because gifs are dum
   int testimonystate = 0;
 
+  //0 is during preanim, 1 is talking and 2 is idle after talking.
+  int charmovie_state = 0;
+
   int m_cid = -1;
 
   void enter_courtroom();
@@ -161,6 +164,8 @@ private slots:
   void testimony_gif_framechange(int p_frame);
 
   void objection_gif_framechange(int p_frame);
+
+  void char_gif_framechange(int p_frame);
 
   void charChoose(int i);
 
