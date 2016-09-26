@@ -89,6 +89,7 @@ public:
     QCheckBox *prebox;
     QCheckBox *guardbox;
     QListWidget *mutelist;
+    QLabel *muted;
 
     void setupUi(QMainWindow *Courtroom)
     {
@@ -391,17 +392,20 @@ public:
         sfxslider->setObjectName(QStringLiteral("sfxslider"));
         sfxslider->setGeometry(QRect(310, 412, 160, 16));
         sfxslider->setMaximum(100);
+        sfxslider->setSliderPosition(50);
         sfxslider->setOrientation(Qt::Horizontal);
         musicslider = new QSlider(centralwidget);
         musicslider->setObjectName(QStringLiteral("musicslider"));
         musicslider->setGeometry(QRect(310, 392, 160, 16));
         musicslider->setMaximum(100);
+        musicslider->setSliderPosition(50);
         musicslider->setOrientation(Qt::Horizontal);
         musicslider->setInvertedAppearance(false);
         blipslider = new QSlider(centralwidget);
         blipslider->setObjectName(QStringLiteral("blipslider"));
         blipslider->setGeometry(QRect(310, 432, 160, 16));
         blipslider->setMaximum(100);
+        blipslider->setSliderPosition(50);
         blipslider->setOrientation(Qt::Horizontal);
         musiclabel = new QLabel(centralwidget);
         musiclabel->setObjectName(QStringLiteral("musiclabel"));
@@ -447,6 +451,9 @@ public:
         mutelist = new QListWidget(centralwidget);
         mutelist->setObjectName(QStringLiteral("mutelist"));
         mutelist->setGeometry(QRect(260, 160, 231, 159));
+        muted = new QLabel(centralwidget);
+        muted->setObjectName(QStringLiteral("muted"));
+        muted->setGeometry(QRect(0, 192, 258, 145));
         Courtroom->setCentralWidget(centralwidget);
         ooc_master->raise();
         ooc_server->raise();
@@ -506,6 +513,7 @@ public:
         prebox->raise();
         guardbox->raise();
         mutelist->raise();
+        muted->raise();
 
         retranslateUi(Courtroom);
 
@@ -583,6 +591,7 @@ public:
         objectiongif->setText(QString());
         prebox->setText(QApplication::translate("Courtroom", "Pre", 0));
         guardbox->setText(QApplication::translate("Courtroom", "Guard", 0));
+        muted->setText(QString());
     } // retranslateUi
 
 };

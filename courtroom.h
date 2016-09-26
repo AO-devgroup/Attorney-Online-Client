@@ -98,6 +98,8 @@ private:
   QMediaPlayer *musicplayer;
   QMediaPlayer *sfxplayer;
   QMediaPlayer *blipplayer;
+  QMediaPlayer *blipplayer2;
+  QMediaPlayer *guardplayer;
 
   QStringList music_list;
   QStringList ui_music_list;
@@ -121,6 +123,7 @@ private:
   QMovie *testimonymovie;
   QMovie *objectionmovie;
   QTimer *chattimer;
+  QTimer *sfxdelaytimer;
 
   int chatpos = 0;
 
@@ -131,12 +134,14 @@ private:
   int testimonystate = 0;
 
   //0 is during preanim, 1 is talking and 2 is idle after talking.
-  int charmovie_state = 0;
+  int charmovie_state = 2;
 
   QVector<bool> mutelist;
   bool show_mutelist = false;
 
   const int chat_timing = 60;
+
+  bool muted = false;
 
   int m_cid = -1;
 
@@ -161,7 +166,7 @@ public slots:
 
   void go_to_charselect();
 
-  void set_character(QString p_character, int p_mod);
+  void set_character(int p_character, int p_mod);
 
   //void handle_chatmessage(chatmessage_type &p_message);
   void handle_chatmessage();
@@ -252,13 +257,17 @@ private slots:
 
   void on_mutelist_clicked(const QModelIndex &index);
 
+  void on_prebox_clicked();
+
+  void play_sfx();
+
 signals:
   void entering_server();
 
   void chatmessage_requested(chatmessage_type &p_chatmessage);
   void legacy_chatmessage_requested(chatmessage_type &p_chatmessage);
 
-  void character_requested(QString p_character, QString p_password);
+  void character_requested(int p_character, QString p_password);
 
   void song_requested(QString p_song_name);
 
@@ -267,6 +276,8 @@ signals:
   void ooc_message_requested(QString p_packet);
 
   void request_packet(QString p_packet);
+
+  void close_socket_request();
 
 
 };

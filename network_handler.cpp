@@ -95,23 +95,6 @@ void Networkhandler::handle_chatmessage_request(chatmessage_type &p_chatmessage)
   if (!server_connected)
     return;
 
-  //old format
-  /*
-  QString packet = "MS#" +
-      p_chatmessage.message + "#" +
-      p_chatmessage.character + "#" +
-      p_chatmessage.side + "#" +
-      p_chatmessage.sfx_name + "#" +
-      p_chatmessage.pre_emote + "#" +
-      p_chatmessage.emote + "#" +
-      QString::number(p_chatmessage.emote_modifier) + "#" +
-      QString::number(p_chatmessage.objection_modifier) + "#" +
-      QString::number(p_chatmessage.realization) + "#" +
-      QString::number(p_chatmessage.text_color) + "#" +
-      QString::number(p_chatmessage.evidence) + "#%";
-  */
-
-  //MS#chat#<pre-emote>#<char>#<emote>#<message>#<side>#<sfx-name>#<emote_modifier>#<objection_modifier>#<realization>#<text_color>#<evidence>#<cid>#%
   QString packet = "MS#chat#" +
       p_chatmessage.pre_emote + "#" +
       p_chatmessage.character + "#" +
@@ -120,11 +103,13 @@ void Networkhandler::handle_chatmessage_request(chatmessage_type &p_chatmessage)
       p_chatmessage.side + "#" +
       p_chatmessage.sfx_name + "#" +
       QString::number(p_chatmessage.emote_modifier) + "#" +
+      QString::number(p_chatmessage.cid) + "#" +
+      QString::number(p_chatmessage.sfx_delay) + "#" +
       QString::number(p_chatmessage.objection_modifier) + "#" +
-      QString::number(p_chatmessage.realization) + "#" +
-      QString::number(p_chatmessage.text_color) + "#" +
       QString::number(p_chatmessage.evidence) + "#" +
-      QString::number(p_chatmessage.cid) + "#%";
+      "0#" + //placeholder
+      QString::number(p_chatmessage.realization) + "#" +
+      QString::number(p_chatmessage.text_color) + "#%";
 
   qDebug() << "sent packet: " << packet;
 
@@ -174,9 +159,9 @@ void Networkhandler::handle_enter_server_request()
   server_socket->write("RA#%");
 }
 
-void Networkhandler::handle_character_request(QString p_character, QString p_password)
+void Networkhandler::handle_character_request(int p_character, QString p_password)
 {
-  QString packet = "UC#" + p_character + "#" + p_password + "#%";
+  QString packet = "UC#" + QString::number(p_character) + "#" + p_password + "#%";
 
   server_socket->write(packet.toLocal8Bit());
 }
@@ -356,6 +341,8 @@ void Networkhandler::handle_server_packet()
 
     else if (header == "SA")
     {
+      qDebug() << "SA received";
+
       QVector<area_type> f_area_list;
 
       for (int n_area = 0 ; n_area < packet_contents.size() - 2; ++n_area)
@@ -410,7 +397,7 @@ void Networkhandler::handle_server_packet()
         return;
       }
 
-      QString f_character = packet_contents.at(1);
+      int f_character = packet_contents.at(1).toInt();
       int f_mod = packet_contents.at(2).toInt();
 
       character_reply_received(f_character, f_mod);
@@ -420,7 +407,7 @@ void Networkhandler::handle_server_packet()
     {
       //chatmessage_type f_message;
 
-      if (packet_contents.size() == 15)
+      if (packet_contents.size() == 17)
       {
         /*
         //format:
@@ -507,6 +494,14 @@ void Networkhandler::handle_server_packet()
       server_socket->write("PONG#%");
     }
 
+    else if (header == "BD")
+    {
+      callError("You are banned on this server.");
+    }
+
+    else
+      server_packet_received(packet);
+
 
     qDebug() << "received packet: " << packet;
   }
@@ -519,4 +514,9 @@ void Networkhandler::send_packet(QString p_packet)
 
   server_socket->write(p_packet.toLocal8Bit());
   qDebug() << "Sent packet: " << p_packet;
+}
+
+void Networkhandler::close_socket()
+{
+  server_socket->close();
 }

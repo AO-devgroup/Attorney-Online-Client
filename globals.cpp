@@ -34,3 +34,20 @@ QString get_background_path(QString p_background, QString p_bg_image)
   else
     return "";
 }
+
+bool cyclic_function()
+{
+  static bool cycle = true;
+
+  if (cycle)
+  {
+    cycle = false;
+    return cycle;
+  }
+
+  else
+  {
+    cycle = true;
+    return cycle;
+  }
+}

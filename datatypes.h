@@ -50,6 +50,7 @@ struct chatmessage_type
   int text_color;
   int evidence;
   int cid;
+  int sfx_delay;
 };
 
 struct area_type

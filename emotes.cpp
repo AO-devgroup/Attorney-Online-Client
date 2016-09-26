@@ -76,6 +76,7 @@ void Courtroom::setEmotes()
   int int_emotions_line = -1;
   int int_soundn_line = -1;
   int int_soundt_line = -1;
+  int n_emotes_ini = -1;
 
   for(int n_line = 0 ; n_line < char_ini_list.size() ; ++n_line)
   {
@@ -89,6 +90,23 @@ void Courtroom::setEmotes()
 
     if (line.startsWith("[SoundT]"))
       int_soundt_line = n_line;
+
+    if (line.startsWith("number = "))
+    {
+      n_emotes_ini = line.remove(0, 9).toInt();
+    }
+    if (line.startsWith("number= "))
+    {
+      n_emotes_ini = line.remove(0, 8).toInt();
+    }
+    if (line.startsWith("number ="))
+    {
+      n_emotes_ini = line.remove(0, 8).toInt();
+    }
+    if (line.startsWith("number="))
+    {
+      n_emotes_ini = line.remove(0, 7).toInt();
+    }
   }
 
   //checks that we actually found what we need
@@ -113,19 +131,30 @@ void Courtroom::setEmotes()
     return;
   }
 
+  if (n_emotes_ini == -1)
+  {
+    QString err_str = "Could not find emote number(number = ) in " + char_ini_path;
+    callError(err_str);
+    return;
+  }
+
   int emote_counter = 1;
   emote_list.clear();
 
   emote_type f_emote;
 
-  for(int n_line = int_emotions_line ; n_line < int_soundn_line ; ++n_line)
+  for(int n_iteration = 1 ; n_iteration <= n_emotes_ini ; ++n_iteration)
   {
-    QString line = char_ini_list.at(n_line);
 
     //we need a whopping three of these because INCONSISTENCIES
     QString search_line = QString::number(emote_counter) + " = ";
     QString search_line2 = QString::number(emote_counter) + "= ";
     QString search_line3 = QString::number(emote_counter) + "=";
+
+  //yes this for loop is nested cry me a river
+  for(int n_line = int_emotions_line ; n_line < int_soundn_line ; ++n_line)
+  {
+    QString line = char_ini_list.at(n_line);
 
     if (line.startsWith(search_line))
     {
@@ -145,8 +174,6 @@ void Courtroom::setEmotes()
       f_emote.preanim = single_emote_line.at(1);
       f_emote.anim = single_emote_line.at(2);
       f_emote.mod = single_emote_line.at(3).toInt();
-
-      qDebug() << "f_emote.mod == " << f_emote.mod;
 
       emote_list.insert(emote_counter - 1, f_emote);
 
@@ -172,8 +199,6 @@ void Courtroom::setEmotes()
       f_emote.anim = single_emote_line.at(2);
       f_emote.mod = single_emote_line.at(3).toInt();
 
-      qDebug() << "f_emote.mod == " << f_emote.mod;
-
       emote_list.insert(emote_counter - 1, f_emote);
 
       ++emote_counter;
@@ -197,17 +222,18 @@ void Courtroom::setEmotes()
       f_emote.anim = single_emote_line.at(2);
       f_emote.mod = single_emote_line.at(3).toInt();
 
-      qDebug() << "f_emote.mod == " << f_emote.mod;
-
       emote_list.insert(emote_counter - 1, f_emote);
 
       ++emote_counter;
     }
   }
 
-  qDebug() << "emote_list.size == " << emote_list.size();
+  }
 
   emote_counter = 1;
+
+  for(int n_iteration = 1 ; n_iteration <= n_emotes_ini ; ++n_iteration)
+  {
 
   for(int n_line = int_soundn_line ; n_line < int_soundt_line ; ++n_line)
   {
@@ -259,10 +285,66 @@ void Courtroom::setEmotes()
       ++emote_counter;
     }
   }
+  }
+
+  emote_counter = 1;
+
+  for(int n_iteration = 1 ; n_iteration <= n_emotes_ini ; ++n_iteration)
+  {
+
+  for(int n_line = int_soundt_line ; n_line < char_ini_list.size() - 1 ; ++n_line)
+  {
+    //what we are doing here is finding sound effect delays
+    //dodging index out of range
+    if (emote_counter - 1 >= emote_list.size())
+      break;
+
+    QString line = char_ini_list.at(n_line);
+    QString search_line = QString::number(emote_counter) + " = ";
+    QString search_line2 = QString::number(emote_counter) + "= ";
+    QString search_line3 = QString::number(emote_counter) + " =";
+    QString search_line4 = QString::number(emote_counter) + "=";
+
+    if (line.startsWith(search_line))
+    {
+      //removes "x = " from the start of the string
+      int f_sfx_delay = line.remove(0, 4).toInt();
+
+      emote_list[emote_counter - 1].sfx_delay = f_sfx_delay;
+
+      ++emote_counter;
+    }
+
+    else if (line.startsWith(search_line2))
+    {
+      int f_sfx_delay = line.remove(0, 3).toInt();
+
+      emote_list[emote_counter - 1].sfx_delay = f_sfx_delay;
+
+      ++emote_counter;
+    }
+
+    else if (line.startsWith(search_line3))
+    {
+      int f_sfx_delay = line.remove(0, 3).toInt();
+
+      emote_list[emote_counter - 1].sfx_delay = f_sfx_delay;
+
+      ++emote_counter;
+    }
+
+    else if (line.startsWith(search_line4))
+    {
+      int f_sfx_delay = line.remove(0, 2).toInt();
+
+      emote_list[emote_counter - 1].sfx_delay = f_sfx_delay;
+
+      ++emote_counter;
+    }
+  }
+  }
 
   int n_emotes = emote_list.size();
-  qDebug() << "n_emotes = " << n_emotes;
-
   if (n_emotes == 0)
   {
     callError("Something went horribly wrong with setting the emotes. (emote_list.size() = 0)");
@@ -275,7 +357,6 @@ void Courtroom::setEmotes()
   else
   {
     emote_pages = (n_emotes / 10) + 1;
-    qDebug() << "emote_pages: " << emote_pages;
   }
 
   emote_current_page = 1;
@@ -332,8 +413,6 @@ void Courtroom::setEmotePage()
                    "seriously, though. emotes_on_page failed to set properly. who knows why."
                    "this error should never appear ever ever");
 
-  qDebug() << "emotes_on_page:" << emotes_on_page;
-
   //anything higher than the first page must have the left arrow
   if (emote_current_page > 1)
     emote_left_button->show();
@@ -374,54 +453,18 @@ void Courtroom::emote_choose(int local_emote_number)
 
   emoteicon_list.at(local_emote_number)->selected_overlay->show();
   emote_selected = n_real_emote;
+
+  int pre_state = emote_list.at(n_real_emote).mod;
+
+  switch (pre_state)
+  {
+  case 1:
+    ;
+  case 3:
+    ui->prebox->setChecked(true);
+    break;
+  default:
+    ui->prebox->setChecked(false);
+
+  }
 }
-
-/*
-//   //I don't think we'll need those things, keeping till we agreed on it
-QSettings* ini_charini = new QSettings(getCharPath(playerChar) + "char.ini", QSettings::IniFormat);
-
-emote_number = -1;
-
-ini_charini->beginGroup("Emotions"); //reach under the [Emotions] group
-if (ini_charini->contains("number")) //we can't verify the group exists in QSettings, but we can verify a key exists within it, so we check if "number" exists inside "[Emotions]"
-{
-  emote_number = ini_charini->value("number", 1).toInt();
-}
-else
-{
-    //do something
-}
-
-if (emote_number < 1)  //the following is an equivalent to the code you made, no new features yet.
-{
-    callFatalError("Number of emotes appear to be zero or negative");   //Avoid fatal errors, we want to handle stuff behind the scene without troubling the user, left it for now
-    emote_number = -1;
-}
-    QVector<emote_type>  emote_list(QVector<emote_type>(0));
-
-    if (!(emote_number == -1))
-    {
-        for (int i = 1; i <= emote_number; i++)
-        {
-            emote_type emote_struct;
-            QString emote_uncut = ini_charini->value(QString::number(i), "Dankmemes#Dankmemes#Dankmemes#0#").toString(); //"dankmemes" ensure empty lines won't cause fatal errors
-            QStringList emote_cut = emote_uncut.split("#");
-
-            emote_struct.comment=emote_cut[0]; //adding all the emote "parts" in foo
-            emote_struct.anim=emote_cut[1];
-            emote_struct.preanim=emote_cut[2];
-            emote_struct.mod=(emote_cut[3]).toInt();
-
-            emote_list.push_back(emote_struct);
-
-
-            qDebug() << "emote_list:" << emote_list.last().comment;
-            qDebug() << "emote_list:" << emote_list.last().anim;
-            qDebug() << "emote_list:" << emote_list.last().preanim;
-            qDebug() << "emote_list:" << emote_list.last().mod;
-            qDebug() << "__________" << "_______________";
-        }
-    }
-}
-
-*/

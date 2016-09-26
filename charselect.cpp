@@ -205,8 +205,6 @@ void Courtroom::setCharSelectPage()
 
     int f_mod = taken_list.at(real_char_number);
 
-    qDebug() << "character " << f_char.name << " f_mod = " << f_mod;
-
     switch (f_mod)
     {
     case 0:
@@ -262,5 +260,5 @@ void Courtroom::charChoose(int local_charnumber)
 
   m_cid = real_char_number;
 
-  character_requested(real_char, f_password);
+  character_requested(real_char_number, f_password);
 }

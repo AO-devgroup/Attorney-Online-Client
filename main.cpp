@@ -25,7 +25,7 @@ int main(int argc, char *argv[])
   QObject::connect(&main_networkhandler, SIGNAL(area_taken_list_received(QVector<int>&)), &main_courtroom, SLOT(set_area_taken_list(QVector<int>&)));
   //QObject::connect(&main_networkhandler, SIGNAL(chatmessage_received(chatmessage_type&)), &main_courtroom, SLOT(handle_chatmessage(chatmessage_type&)));
   QObject::connect(&main_networkhandler, SIGNAL(done_signal()), &main_courtroom, SLOT(go_to_charselect()));
-  QObject::connect(&main_networkhandler, SIGNAL(character_reply_received(QString,int)), &main_courtroom, SLOT(set_character(QString,int)));
+  QObject::connect(&main_networkhandler, SIGNAL(character_reply_received(int,int)), &main_courtroom, SLOT(set_character(int,int)));
   QObject::connect(&main_networkhandler, SIGNAL(ms_message_received(QString)), &main_courtroom, SLOT(handle_ms_message(QString)));
   QObject::connect(&main_networkhandler, SIGNAL(ooc_message_received(QString)), &main_courtroom, SLOT(handle_ooc_message(QString)));
   QObject::connect(&main_networkhandler, SIGNAL(song_received(QString)), &main_courtroom, SLOT(play_song(QString)));
@@ -36,13 +36,14 @@ int main(int argc, char *argv[])
   QObject::connect(&main_lobby, SIGNAL(ms_message_requested(QString)), &main_networkhandler, SLOT(ms_send_message(QString)));
   QObject::connect(&main_lobby, SIGNAL(enter_server_requested()), &main_networkhandler, SLOT(handle_enter_server_request()));
 
-  QObject::connect(&main_courtroom, SIGNAL(character_requested(QString,QString)), &main_networkhandler, SLOT(handle_character_request(QString,QString)));
+  QObject::connect(&main_courtroom, SIGNAL(character_requested(int,QString)), &main_networkhandler, SLOT(handle_character_request(int,QString)));
   QObject::connect(&main_courtroom, SIGNAL(chatmessage_requested(chatmessage_type&)), &main_networkhandler, SLOT(handle_chatmessage_request(chatmessage_type&)));
   QObject::connect(&main_courtroom, SIGNAL(legacy_chatmessage_requested(chatmessage_type&)), &main_networkhandler, SLOT(handle_legacy_chatmessage_request(chatmessage_type&)));
   QObject::connect(&main_courtroom, SIGNAL(ms_message_requested(QString)), &main_networkhandler, SLOT(ms_send_message(QString)));
   QObject::connect(&main_courtroom, SIGNAL(ooc_message_requested(QString)), &main_networkhandler, SLOT(ooc_send_message(QString)));
   QObject::connect(&main_courtroom, SIGNAL(song_requested(QString)), &main_networkhandler, SLOT(handle_song_request(QString)));
   QObject::connect(&main_courtroom, SIGNAL(request_packet(QString)), &main_networkhandler, SLOT(send_packet(QString)));
+  QObject::connect(&main_courtroom, SIGNAL(close_socket_request()), &main_networkhandler, SLOT(close_socket()));
 
   QObject::connect(&main_courtroom, SIGNAL(entering_server()), &main_lobby, SLOT(handle_server_entry()));
 

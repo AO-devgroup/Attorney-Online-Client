@@ -1381,6 +1381,9 @@
     <property name="maximum">
      <number>100</number>
     </property>
+    <property name="sliderPosition">
+     <number>50</number>
+    </property>
     <property name="orientation">
      <enum>Qt::Horizontal</enum>
     </property>
@@ -1396,6 +1399,9 @@
     </property>
     <property name="maximum">
      <number>100</number>
+    </property>
+    <property name="sliderPosition">
+     <number>50</number>
     </property>
     <property name="orientation">
      <enum>Qt::Horizontal</enum>
@@ -1415,6 +1421,9 @@
     </property>
     <property name="maximum">
      <number>100</number>
+    </property>
+    <property name="sliderPosition">
+     <number>50</number>
     </property>
     <property name="orientation">
      <enum>Qt::Horizontal</enum>
@@ -1615,6 +1624,19 @@
      </rect>
     </property>
    </widget>
+   <widget class="QLabel" name="muted">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>192</y>
+      <width>258</width>
+      <height>145</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
    <zorder>ooc_master</zorder>
    <zorder>ooc_server</zorder>
    <zorder>present</zorder>
@@ -1673,6 +1695,7 @@
    <zorder>prebox</zorder>
    <zorder>guardbox</zorder>
    <zorder>mutelist</zorder>
+   <zorder>muted</zorder>
   </widget>
  </widget>
  <resources>

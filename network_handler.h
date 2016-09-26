@@ -58,7 +58,7 @@ signals:
 
   void onlinestatus_changed(QString players_online, QString max_players);
 
-  void character_reply_received(QString p_character, int p_mod);
+  void character_reply_received(int p_character, int p_mod);
 
   void chatmessage_received(chatmessage_type &message);
 
@@ -83,7 +83,7 @@ public slots:
 
   void handle_enter_server_request();
 
-  void handle_character_request(QString p_character, QString p_password);
+  void handle_character_request(int p_character, QString p_password);
 
   void handle_chatmessage_request(chatmessage_type &p_chatmessage);
   void handle_legacy_chatmessage_request(chatmessage_type &p_chatmessage);
@@ -91,6 +91,8 @@ public slots:
   void handle_song_request(QString p_song_name);
 
   void send_packet(QString p_packet);
+
+  void close_socket();
 
 private slots:
   void handle_server_disconnect();

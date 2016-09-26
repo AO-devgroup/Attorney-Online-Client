@@ -13,4 +13,6 @@ QString get_image_path(QString p_image);
 
 QString get_background_path(QString p_background, QString p_background_image);
 
+bool cyclic_function();
+
 #endif // GLOBALS_H
