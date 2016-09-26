@@ -45,6 +45,8 @@ Courtroom::Courtroom(QWidget *parent) :
   ui->charpass->setParent(ui->charselect);
   ui->charError->setParent(ui->charselect);
 
+  ui->guardbox->hide();
+
   ui->charselect->raise();
   ui->charselect_left->raise();
   ui->charselect_right->raise();
@@ -182,12 +184,16 @@ void Courtroom::setTheme()
   ui->defense_bar->setStyleSheet("border-image:url(" + get_image_path("defensebar10.png") + ")");
   ui->prosecution_bar->setStyleSheet("border-image:url(" + get_image_path("prosecutionbar10.png") + ")");
 
+  ui->mutelist->hide();
+  show_mutelist = false;
   ui->areapreview->hide();
   ui->deskpreview->hide();
 }
 
 void Courtroom::set_character(QString p_character, int p_mod)
 {
+  qDebug() << "set_character_calledededed";
+
   switch (p_mod)
   {
   case 0:
@@ -199,6 +205,12 @@ void Courtroom::set_character(QString p_character, int p_mod)
     break;
   case 2:
     ui->charError->setText("Wrong password");
+    break;
+  case 3:
+    //your a mod now!!!
+    ui->guardbox->show();
+    playerChar = p_character;
+    enter_courtroom();
     break;
   default:
     callError("Unexpected reply from server! Expected 0, 1 or 2 in OC packet, received " + p_mod);
@@ -333,7 +345,7 @@ void Courtroom::on_chatLine_returnPressed()
   QTextStream in(&char_ini);
   QString f_side = "";
 
-  for(; !in.atEnd() ;)
+  while(!in.atEnd())
   {
     QString line = in.readLine();
     if (line.startsWith("side = "))
@@ -361,6 +373,8 @@ void Courtroom::on_chatLine_returnPressed()
     }
   }
 
+  char_ini.close();
+
   if (f_side == "")
     callError("could not find side = in char.ini");
 
@@ -380,6 +394,8 @@ void Courtroom::on_chatLine_returnPressed()
   f_chatmessage.text_color = text_color_state;
   f_chatmessage.evidence = evidence_state;
   f_chatmessage.cid = m_cid;
+
+  qDebug() << "m_cid = " << m_cid;
 
   //legacy mode sends the message in the old format, check network handler for more info
   if (legacy_mode)
@@ -493,8 +509,13 @@ void Courtroom::set_scene(QString p_side)
     ;
   }
 
+  //ui->playingbackground->setMovie(speedlinesmovie);
+
   if (fileExists(f_desk_path, true))
+  {
+    qDebug() << "yeah desk was found";
     ui->desk->setPixmap(f_desk_path);
+  }
   else if (fileExists(f_default_desk_path, true))
     ui->desk->setPixmap(f_default_desk_path);
   else
@@ -504,6 +525,9 @@ void Courtroom::set_scene(QString p_side)
 //void Courtroom::handle_chatmessage(chatmessage_type &p_message)
 void Courtroom::handle_chatmessage()
 { 
+  if (mutelist.at(current_chatmessage.cid))
+    return;
+
   //current_chatmessage = p_message;
 
   QString char_path = getBasePath() + "characters/";
@@ -610,15 +634,15 @@ void Courtroom::handle_chatmessage2()
   charmovie->stop();
   speedlinesmovie->stop();
 
-
-
   switch (current_chatmessage.emote_modifier)
   {
   case 0:
     if (current_chatmessage.objection_modifier == 0)
     {
-      charmovie->setFileName(gif_path);
+      chattimer->stop();
       charmovie_state = 1;
+      charmovie->setFileName(gif_path);
+      chattimer->start(chat_timing);
     }
     else
     {
@@ -638,7 +662,9 @@ void Courtroom::handle_chatmessage2()
     ui->desk->hide();
     charmovie->setFileName(gif_path);
     charmovie_state = 1;
-    //ui->playingbackground->setMovie(speedlinesmovie);
+    ui->playingbackground->setMovie(speedlinesmovie);
+    chattimer->stop();
+    chattimer->start(chat_timing);
     speedlinesmovie->start();
     charmovie->start();
     qDebug() << "case 5";
@@ -1126,11 +1152,18 @@ void Courtroom::char_gif_framechange(int p_frame)
       charmovie_state = 1;
       chattimer->stop();
       charmovie->stop();
+      if (current_chatmessage.realization == 1)
+      {
+        sfxplayer->stop();
+        sfxplayer->setMedia(QUrl::fromLocalFile(getBasePath() + "sounds/general/sfx-realization.wav"));
+        sfxplayer->play();
+      }
       charmovie->setFileName(getCharGifPath(current_chatmessage.character, ("(b)" + current_chatmessage.emote + ".gif")));
-      //"character talking gif" starts here
       charmovie->start();
-      chattimer->start(100);
+      chattimer->start(chat_timing);
+      chatpos = 0;
     }
+
   }
 
 }
@@ -1147,9 +1180,65 @@ void Courtroom::on_textcolor_activated(int index)
 
 void Courtroom::chat_tick()
 {
+  if (chatpos >= current_chatmessage.message.length())
+  {
+    //the not-talking aka idle animation
+    QString path = getBasePath() + "characters/" + current_chatmessage.character + "/(a)" + current_chatmessage.emote + ".gif";
 
-  sfxplayer->stop();
-  sfxplayer->setMedia(QUrl::fromLocalFile(getBasePath() + "sounds/general/sfx-blipmale.wav"));
-  sfxplayer->play();
-  ui->chattext->insertPlainText("a");
+    chatpos = 0;
+    charmovie_state = 2;
+    chattimer->stop();
+    charmovie->stop();
+    charmovie->setFileName(path);
+    charmovie->start();
+    return;
+  }
+
+  if ((current_chatmessage.message.at(chatpos)) != ' ')
+  {
+    blipplayer->stop();
+    blipplayer->setMedia(QUrl::fromLocalFile(getBasePath() + "sounds/general/sfx-blipmale.wav"));
+    blipplayer->play();
+  }
+
+  QScrollBar *scroll = ui->chattext->verticalScrollBar();
+  scroll->setValue(scroll->maximum());
+
+  ui->chattext->insertPlainText(current_chatmessage.message.at(chatpos));
+  ++chatpos;
+}
+
+void Courtroom::on_mute_clicked()
+{
+  if (show_mutelist)
+  {
+    show_mutelist = false;
+    ui->mute->setStyleSheet("border-image:url(" + get_image_path("mute.png") + ")");
+    ui->mutelist->hide();
+  }
+
+  else
+  {
+    show_mutelist = true;
+    ui->mute->setStyleSheet("border-image:url(" + get_image_path("mute_pressed.png") + ")");
+    ui->mutelist->show();
+  }
+}
+
+void Courtroom::on_mutelist_clicked(const QModelIndex &index)
+{
+  int f_index = index.row();
+
+  qDebug() << "mutelist clicked with f_index " << f_index;
+
+  if (mutelist.at(f_index))
+  {
+    ui->mutelist->item(f_index)->setText(character_list.at(f_index).name);
+    mutelist[f_index] = false;
+  }
+  else
+  {
+    ui->mutelist->item(f_index)->setText(character_list.at(f_index).name + " [X]");
+    mutelist[f_index] = true;
+  }
 }

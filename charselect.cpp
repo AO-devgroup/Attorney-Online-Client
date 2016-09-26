@@ -75,6 +75,15 @@ void Courtroom::set_character_list(QVector<char_type> &p_char_list)
   character_list = p_char_list;
   char_list_set = true;
 
+  mutelist.clear();
+  ui->mutelist->clear();
+
+  for (int n_char ; n_char < character_list.size() ; ++n_char)
+  {
+    mutelist.insert(n_char, false);
+    ui->mutelist->addItem(character_list.at(n_char).name);
+  }
+
   if (character_list.size() % 90 == 0)
     char_select_pages = character_list.size() / 90;
   else

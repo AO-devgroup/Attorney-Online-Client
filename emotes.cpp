@@ -181,7 +181,6 @@ void Courtroom::setEmotes()
 
     else if (line.startsWith(search_line3))
     {
-      //removes "x=" from the start of the string
       QString cropped_line = line.remove(0, 2);
       QStringList single_emote_line = cropped_line.split("#");
 

@@ -13,6 +13,7 @@
 #include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QButtonGroup>
+#include <QtWidgets/QCheckBox>
 #include <QtWidgets/QComboBox>
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
@@ -22,7 +23,6 @@
 #include <QtWidgets/QPlainTextEdit>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QSlider>
-#include <QtWidgets/QTextEdit>
 #include <QtWidgets/QWidget>
 
 QT_BEGIN_NAMESPACE
@@ -86,7 +86,9 @@ public:
     QLabel *deskpreview;
     QPushButton *callmod;
     QLabel *objectiongif;
-    QTextEdit *test;
+    QCheckBox *prebox;
+    QCheckBox *guardbox;
+    QListWidget *mutelist;
 
     void setupUi(QMainWindow *Courtroom)
     {
@@ -436,9 +438,15 @@ public:
         objectiongif = new QLabel(centralwidget);
         objectiongif->setObjectName(QStringLiteral("objectiongif"));
         objectiongif->setGeometry(QRect(0, 0, 256, 192));
-        test = new QTextEdit(centralwidget);
-        test->setObjectName(QStringLiteral("test"));
-        test->setGeometry(QRect(100, 500, 141, 51));
+        prebox = new QCheckBox(centralwidget);
+        prebox->setObjectName(QStringLiteral("prebox"));
+        prebox->setGeometry(QRect(187, 347, 51, 21));
+        guardbox = new QCheckBox(centralwidget);
+        guardbox->setObjectName(QStringLiteral("guardbox"));
+        guardbox->setGeometry(QRect(187, 365, 85, 21));
+        mutelist = new QListWidget(centralwidget);
+        mutelist->setObjectName(QStringLiteral("mutelist"));
+        mutelist->setGeometry(QRect(260, 160, 231, 159));
         Courtroom->setCentralWidget(centralwidget);
         ooc_master->raise();
         ooc_server->raise();
@@ -495,7 +503,9 @@ public:
         deskpreview->raise();
         callmod->raise();
         objectiongif->raise();
-        test->raise();
+        prebox->raise();
+        guardbox->raise();
+        mutelist->raise();
 
         retranslateUi(Courtroom);
 
@@ -571,6 +581,8 @@ public:
         deskpreview->setText(QString());
         callmod->setText(QApplication::translate("Courtroom", "Call mod", 0));
         objectiongif->setText(QString());
+        prebox->setText(QApplication::translate("Courtroom", "Pre", 0));
+        guardbox->setText(QApplication::translate("Courtroom", "Guard", 0));
     } // retranslateUi
 
 };

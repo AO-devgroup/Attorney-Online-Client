@@ -1579,6 +1579,42 @@
      <string/>
     </property>
    </widget>
+   <widget class="QCheckBox" name="prebox">
+    <property name="geometry">
+     <rect>
+      <x>187</x>
+      <y>347</y>
+      <width>51</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Pre</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="guardbox">
+    <property name="geometry">
+     <rect>
+      <x>187</x>
+      <y>365</y>
+      <width>85</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Guard</string>
+    </property>
+   </widget>
+   <widget class="QListWidget" name="mutelist">
+    <property name="geometry">
+     <rect>
+      <x>260</x>
+      <y>160</y>
+      <width>231</width>
+      <height>159</height>
+     </rect>
+    </property>
+   </widget>
    <zorder>ooc_master</zorder>
    <zorder>ooc_server</zorder>
    <zorder>present</zorder>
@@ -1634,6 +1670,9 @@
    <zorder>deskpreview</zorder>
    <zorder>callmod</zorder>
    <zorder>objectiongif</zorder>
+   <zorder>prebox</zorder>
+   <zorder>guardbox</zorder>
+   <zorder>mutelist</zorder>
   </widget>
  </widget>
  <resources>

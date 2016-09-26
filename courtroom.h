@@ -17,6 +17,7 @@
 #include <QBrush>
 #include <QColor>
 #include <QTimer>
+#include <QScrollBar>
 
 #include "ui_courtroom.h"
 
@@ -121,6 +122,8 @@ private:
   QMovie *objectionmovie;
   QTimer *chattimer;
 
+  int chatpos = 0;
+
   chatmessage_type current_chatmessage;
 
   //0 is nothing, 1 is WT, 2 is between WT and CE and 3 is CE
@@ -129,6 +132,11 @@ private:
 
   //0 is during preanim, 1 is talking and 2 is idle after talking.
   int charmovie_state = 0;
+
+  QVector<bool> mutelist;
+  bool show_mutelist = false;
+
+  const int chat_timing = 60;
 
   int m_cid = -1;
 
@@ -239,6 +247,10 @@ private slots:
   void on_callmod_clicked();
 
   void on_textcolor_activated(int index);
+
+  void on_mute_clicked();
+
+  void on_mutelist_clicked(const QModelIndex &index);
 
 signals:
   void entering_server();
