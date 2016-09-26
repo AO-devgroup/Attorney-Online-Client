@@ -453,6 +453,7 @@ void Networkhandler::handle_server_packet()
       else
       {
         callError("MALFORMED CHAT MESSAGE, expected size to be 15, found " + packet_contents.size());
+        qDebug() << packet;
         return;
       }
 
@@ -461,9 +462,11 @@ void Networkhandler::handle_server_packet()
 
     else if (header == "MC")
     {
-      QString song_name = packet_contents.at(1);
+      server_packet_received(packet);
 
-      song_received(song_name);
+      //QString song_name = packet_contents.at(1);
+
+      //song_received(song_name);
     }
 
     else if (header == "CT")

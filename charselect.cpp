@@ -141,6 +141,8 @@ void Courtroom::setCharSelectPage()
   ui->charselect_left->hide();
   ui->charselect_right->hide();
 
+  ui->charError->hide();
+
   //we reset all charicons first(this includes hiding)
   for(charicon *f_charicon : charicon_list)
   {

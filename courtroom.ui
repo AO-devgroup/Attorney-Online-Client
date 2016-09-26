@@ -620,11 +620,108 @@
    <widget class="QLabel" name="charError">
     <property name="geometry">
      <rect>
-      <x>270</x>
-      <y>50</y>
-      <width>59</width>
-      <height>15</height>
+      <x>430</x>
+      <y>10</y>
+      <width>271</width>
+      <height>16</height>
      </rect>
+    </property>
+    <property name="palette">
+     <palette>
+      <active>
+       <colorrole role="WindowText">
+        <brush brushstyle="SolidPattern">
+         <color alpha="255">
+          <red>255</red>
+          <green>0</green>
+          <blue>0</blue>
+         </color>
+        </brush>
+       </colorrole>
+       <colorrole role="Text">
+        <brush brushstyle="SolidPattern">
+         <color alpha="255">
+          <red>255</red>
+          <green>0</green>
+          <blue>0</blue>
+         </color>
+        </brush>
+       </colorrole>
+       <colorrole role="ButtonText">
+        <brush brushstyle="SolidPattern">
+         <color alpha="255">
+          <red>255</red>
+          <green>0</green>
+          <blue>0</blue>
+         </color>
+        </brush>
+       </colorrole>
+      </active>
+      <inactive>
+       <colorrole role="WindowText">
+        <brush brushstyle="SolidPattern">
+         <color alpha="255">
+          <red>255</red>
+          <green>0</green>
+          <blue>0</blue>
+         </color>
+        </brush>
+       </colorrole>
+       <colorrole role="Text">
+        <brush brushstyle="SolidPattern">
+         <color alpha="255">
+          <red>255</red>
+          <green>0</green>
+          <blue>0</blue>
+         </color>
+        </brush>
+       </colorrole>
+       <colorrole role="ButtonText">
+        <brush brushstyle="SolidPattern">
+         <color alpha="255">
+          <red>255</red>
+          <green>0</green>
+          <blue>0</blue>
+         </color>
+        </brush>
+       </colorrole>
+      </inactive>
+      <disabled>
+       <colorrole role="WindowText">
+        <brush brushstyle="SolidPattern">
+         <color alpha="255">
+          <red>190</red>
+          <green>190</green>
+          <blue>190</blue>
+         </color>
+        </brush>
+       </colorrole>
+       <colorrole role="Text">
+        <brush brushstyle="SolidPattern">
+         <color alpha="255">
+          <red>190</red>
+          <green>190</green>
+          <blue>190</blue>
+         </color>
+        </brush>
+       </colorrole>
+       <colorrole role="ButtonText">
+        <brush brushstyle="SolidPattern">
+         <color alpha="255">
+          <red>190</red>
+          <green>190</green>
+          <blue>190</blue>
+         </color>
+        </brush>
+       </colorrole>
+      </disabled>
+     </palette>
+    </property>
+    <property name="font">
+     <font>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
     </property>
     <property name="text">
      <string/>
@@ -1142,9 +1239,9 @@
    <widget class="QLineEdit" name="charpass">
     <property name="geometry">
      <rect>
-      <x>270</x>
-      <y>10</y>
-      <width>113</width>
+      <x>297</x>
+      <y>7</y>
+      <width>120</width>
       <height>22</height>
      </rect>
     </property>
@@ -1637,6 +1734,19 @@
      <string/>
     </property>
    </widget>
+   <widget class="QLabel" name="witnesstand">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>256</width>
+      <height>192</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
    <zorder>ooc_master</zorder>
    <zorder>ooc_server</zorder>
    <zorder>present</zorder>
@@ -1650,7 +1760,6 @@
    <zorder>playingbackground</zorder>
    <zorder>playingarea</zorder>
    <zorder>desk</zorder>
-   <zorder>chatbubble</zorder>
    <zorder>spectator</zorder>
    <zorder>charselector</zorder>
    <zorder>charselect_left</zorder>
@@ -1661,8 +1770,6 @@
    <zorder>oocchatname</zorder>
    <zorder>oocchatmessage</zorder>
    <zorder>oocmasterchat</zorder>
-   <zorder>charname</zorder>
-   <zorder>chattext</zorder>
    <zorder>charpass</zorder>
    <zorder>charError</zorder>
    <zorder>defense_bar</zorder>
@@ -1678,7 +1785,6 @@
    <zorder>witnesstestimony</zorder>
    <zorder>crossexamination</zorder>
    <zorder>reload_theme</zorder>
-   <zorder>testimony</zorder>
    <zorder>textcolor</zorder>
    <zorder>sfxslider</zorder>
    <zorder>musicslider</zorder>
@@ -1691,11 +1797,16 @@
    <zorder>areapassword</zorder>
    <zorder>deskpreview</zorder>
    <zorder>callmod</zorder>
-   <zorder>objectiongif</zorder>
    <zorder>prebox</zorder>
    <zorder>guardbox</zorder>
    <zorder>mutelist</zorder>
    <zorder>muted</zorder>
+   <zorder>witnesstand</zorder>
+   <zorder>chatbubble</zorder>
+   <zorder>chattext</zorder>
+   <zorder>charname</zorder>
+   <zorder>testimony</zorder>
+   <zorder>objectiongif</zorder>
   </widget>
  </widget>
  <resources>

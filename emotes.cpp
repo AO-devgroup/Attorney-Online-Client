@@ -243,44 +243,31 @@ void Courtroom::setEmotes()
       break;
 
     QString line = char_ini_list.at(n_line);
-    QString search_line = QString::number(emote_counter) + " = ";
-    QString search_line2 = QString::number(emote_counter) + "= ";
-    QString search_line3 = QString::number(emote_counter) + " =";
-    QString search_line4 = QString::number(emote_counter) + "=";
+
+    qDebug() << "line: " << line;
+
+    QString search_line = QString::number(emote_counter) + " =";
+    QString search_line2 = QString::number(emote_counter) + "=";
 
     if (line.startsWith(search_line))
     {
+      QString f_sfx_name;
       //removes "x = " from the start of the string
-      QString f_sfx_name = line.remove(0, 4);
 
-      emote_list[emote_counter - 1].sfx_name = f_sfx_name;
+      f_sfx_name = line.remove(0, search_line.length());
+
+      emote_list[emote_counter - 1].sfx_name = f_sfx_name.trimmed();
 
       ++emote_counter;
     }
 
     else if (line.startsWith(search_line2))
     {
-      QString f_sfx_name = line.remove(0, 3);
+      QString f_sfx_name;
 
-      emote_list[emote_counter - 1].sfx_name = f_sfx_name;
+      f_sfx_name = line.remove(0, search_line2.length());
 
-      ++emote_counter;
-    }
-
-    else if (line.startsWith(search_line3))
-    {
-      QString f_sfx_name = line.remove(0, 3);
-
-      emote_list[emote_counter - 1].sfx_name = f_sfx_name;
-
-      ++emote_counter;
-    }
-
-    else if (line.startsWith(search_line4))
-    {
-      QString f_sfx_name = line.remove(0, 2);
-
-      emote_list[emote_counter - 1].sfx_name = f_sfx_name;
+      emote_list[emote_counter - 1].sfx_name = f_sfx_name.trimmed();
 
       ++emote_counter;
     }

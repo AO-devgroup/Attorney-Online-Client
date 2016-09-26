@@ -212,9 +212,11 @@ void Courtroom::set_character(int p_character, int p_mod)
     break;
   case 1:
     ui->charError->setText("This character is already taken.");
+    ui->charError->show();
     break;
   case 2:
     ui->charError->setText("Wrong password");
+    ui->charError->show();
     break;
   case 3:
     //your a mod now!!!
@@ -395,10 +397,10 @@ void Courtroom::on_chatLine_returnPressed()
   emote_type f_emote = emote_list.at(emote_selected);
 
   f_chatmessage.pre_emote = f_emote.preanim;
-  f_chatmessage.character = playerChar.replace("#", "<num>");
+  f_chatmessage.character = playerChar.replace("#", "<num>").replace("%", "<percent>");
   f_chatmessage.emote = f_emote.anim;
-  f_chatmessage.message = f_message.replace("#", "<num>");
-  f_chatmessage.side = f_side.replace("#", "<num>");
+  f_chatmessage.message = f_message.replace("#", "<num>").replace("%", "<percent>");
+  f_chatmessage.side = f_side.replace("#", "<num>").replace("%", "<percent>");
   f_chatmessage.sfx_name = f_emote.sfx_name;
   f_chatmessage.emote_modifier = f_emote.mod;
   f_chatmessage.cid = m_cid;
@@ -454,14 +456,27 @@ void Courtroom::set_scene(QString p_side)
   QString f_desk_path = background_path;
   QString f_default_desk_path = default_path;
 
+  QString f_estrado_path = background_path + "estrado.png";
+  QString f_default_estrado_path = default_path + "estrado.png";
+
+  ui->witnesstand->hide();
+
   if (p_side == "wit")
   {
     f_background_path += "witnessempty.png";
     f_default_background_path += "witnessempty.png";
     f_speedlines_path += "prosecution_speedlines.gif";
     f_default_speedlines_path += "prosecution_speedlines.gif";
-    f_desk_path += "estrado.png";
-    f_default_desk_path += "estrado.png";
+    f_desk_path += "";
+    f_default_desk_path += "";
+    if (fileExists(f_estrado_path, true))
+      ui->witnesstand->setPixmap(f_estrado_path);
+    else if (fileExists(f_default_estrado_path, true))
+      ui->witnesstand->setPixmap(f_default_estrado_path);
+    else
+      ui->witnesstand->clear();
+
+    ui->witnesstand->show();
   }
   else if (p_side == "def")
   {
@@ -514,20 +529,20 @@ void Courtroom::set_scene(QString p_side)
     f_default_background_path += "witnessempty.png";
     f_speedlines_path += "prosecution_speedlines.gif";
     f_default_speedlines_path += "prosecution_speedlines.gif";
-    f_desk_path += "estrado.png";
-    f_default_desk_path += "estrado.png";
+    f_desk_path += "";
+    f_default_desk_path += "";
   }
 
   if (fileExists(f_background_path, true))
     ui->playingbackground->setPixmap(f_background_path);
-  else if (fileExists(f_default_background_path))
+  else if (fileExists(f_default_background_path, true))
     ui->playingbackground->setPixmap(f_default_background_path);
   else
     ui->playingbackground->clear();
 
   if (fileExists(f_speedlines_path, true))
     speedlinesmovie->setFileName(f_speedlines_path);
-  else if (fileExists(f_default_speedlines_path))
+  else if (fileExists(f_default_speedlines_path, true))
     speedlinesmovie->setFileName(f_default_speedlines_path);
   else
   {
@@ -537,13 +552,9 @@ void Courtroom::set_scene(QString p_side)
   //ui->playingbackground->setMovie(speedlinesmovie);
 
   if (fileExists(f_desk_path, true))
-  {
     ui->desk->setPixmap(f_desk_path);
-  }
   else if (fileExists(f_default_desk_path, true))
-  {
     ui->desk->setPixmap(f_default_desk_path);
-  }
   else
     ui->desk->clear();
 }
@@ -600,7 +611,7 @@ void Courtroom::handle_chatmessage2()
 {
   QString showname = getShowname(current_chatmessage.character);
 
-  QString f_message = (current_chatmessage.message).replace("<num>", "#");
+  QString f_message = (current_chatmessage.message).replace("<num>", "#").replace("<percent>", "%");
 
   ui->chatlog->moveCursor(QTextCursor::Start, QTextCursor::MoveAnchor);
   ui->chatlog->insertPlainText(showname + ": " + f_message + '\n');
@@ -734,14 +745,14 @@ void Courtroom::handle_chatmessage2()
 
 void Courtroom::handle_ms_message(QString p_message)
 {
-  QString message = p_message.replace("<num>", "#");
+  QString message = p_message.replace("<num>", "#").replace("<percent>", "%");
 
   ui->oocmasterchat->appendPlainText(message);
 }
 
 void Courtroom::handle_ooc_message(QString p_message)
 {
-  QString message = p_message.replace("<num>", "#");
+  QString message = p_message.replace("<num>", "#").replace("<percent>", "%");
 
   ui->oocserverchat->appendPlainText(message);
 }
@@ -872,25 +883,6 @@ void Courtroom::on_musiclist_doubleClicked(const QModelIndex &index)
   QString str_cid = QString::number(m_cid);
 
   request_packet("MC#" + song_name + "#" + str_cid + "#%");
-
-  //song_requested(song_name);
-}
-
-void Courtroom::play_song(QString p_song_name)
-{
-  QString song_path = getBasePath() + "sounds/music/" + p_song_name;
-
-  if (fileExists(song_path, true))
-  {
-    musicplayer->setMedia(QUrl::fromLocalFile(song_path));
-    musicplayer->play();
-  }
-
-  //assume "stop.mp3" or something
-  else
-  {
-    musicplayer->stop();
-  }
 }
 
 void Courtroom::handle_server_packet(QString p_packet)
@@ -931,13 +923,13 @@ void Courtroom::handle_server_packet(QString p_packet)
     if (hp_amount > 10 || hp_amount < 0)
       return;
 
-    if (side == "def")
+    if (side == "1")
     {
       ui->defense_bar->setPixmap(get_image_path("defensebar" + str_hp_amount + ".png"));
       defense_health = hp_amount;
     }
 
-    if (side == "pro")
+    if (side == "2")
     {
       ui->prosecution_bar->setPixmap(get_image_path("prosecutionbar" + str_hp_amount + ".png"));
       prosecution_health = hp_amount;
@@ -1029,13 +1021,37 @@ void Courtroom::handle_server_packet(QString p_packet)
     if (packet_contents.at(1).toInt() == m_cid)
       callFatalError("You have been banned.");
   }
+
+  else if (header == "MC")
+  {
+    QString song_name = packet_contents.at(1);
+
+    QString song_path = getBasePath() + "sounds/music/" + song_name;
+
+    if (fileExists(song_path, true))
+    {
+      musicplayer->setMedia(QUrl::fromLocalFile(song_path));
+      musicplayer->play();
+    }
+
+    //assume "stop.mp3" or something
+    else
+    {
+      musicplayer->stop();
+    }
+
+    QString song_char = character_list.at(packet_contents.at(2).toInt()).name;
+
+    ui->chatlog->moveCursor(QTextCursor::Start, QTextCursor::MoveAnchor);
+    ui->chatlog->insertPlainText(song_char + " has played a song: " + song_name + "\n");
+  }
 }
 
 
 void Courtroom::on_oocchatmessage_returnPressed()
 {
-  QString name = ui->oocchatname->text().replace("#", "<num>");
-  QString message = ui->oocchatmessage->text().replace("#", "<num>");
+  QString name = ui->oocchatname->text().replace("#", "<num>").replace("%", "<percent>");
+  QString message = ui->oocchatmessage->text().replace("#", "<num>").replace("%", "<percent>");
   QString packet = "CT#" + name + "#" + message + "#%";
 
   //no you cant send empty messages
@@ -1054,33 +1070,33 @@ void Courtroom::on_oocchatmessage_returnPressed()
 void Courtroom::on_defminus_clicked()
 {
   if (defense_health <= 0)
-    request_packet("HP#def#0#%");
+    request_packet("HP#1#0#%");
   else
-    request_packet("HP#def#" + QString::number(defense_health - 1) + "#%");
+    request_packet("HP#1#" + QString::number(defense_health - 1) + "#%");
 }
 
 void Courtroom::on_defplus_clicked()
 {
   if (defense_health >= 10)
-    request_packet("HP#def#10#%");
+    request_packet("HP#1#10#%");
   else
-    request_packet("HP#def#" + QString::number(defense_health + 1) + "#%");
+    request_packet("HP#1#" + QString::number(defense_health + 1) + "#%");
 }
 
 void Courtroom::on_prominus_clicked()
 {
   if (prosecution_health <= 0)
-    request_packet("HP#pro#0#%");
+    request_packet("HP#2#0#%");
   else
-    request_packet("HP#pro#" + QString::number(prosecution_health - 1) + "#%");
+    request_packet("HP#2#" + QString::number(prosecution_health - 1) + "#%");
 }
 
 void Courtroom::on_proplus_clicked()
 {
   if (prosecution_health >= 10)
-    request_packet("HP#pro#10#%");
+    request_packet("HP#2#10#%");
   else
-    request_packet("HP#pro#" + QString::number(prosecution_health + 1) + "#%");
+    request_packet("HP#2#" + QString::number(prosecution_health + 1) + "#%");
 }
 
 void Courtroom::on_musicsearch_textEdited(const QString &p_text)
@@ -1181,20 +1197,20 @@ void Courtroom::on_crossexamination_clicked()
   request_packet("RT#testimony2#%");
 }
 
-void Courtroom::on_musicslider_sliderMoved(int p_position)
+void Courtroom::on_musicslider_valueChanged(int value)
 {
-  musicplayer->setVolume(p_position);
+  musicplayer->setVolume(value);
 }
 
-void Courtroom::on_sfxslider_sliderMoved(int p_position)
+void Courtroom::on_sfxslider_valueChanged(int value)
 {
-  sfxplayer->setVolume(p_position);
+  sfxplayer->setVolume(value);
 }
 
-void Courtroom::on_blipslider_sliderMoved(int p_position)
+void Courtroom::on_blipslider_valueChanged(int value)
 {
-  blipplayer->setVolume(p_position);
-  blipplayer2->setVolume(p_position);
+  blipplayer->setVolume(value);
+  blipplayer2->setVolume(value);
 }
 
 void Courtroom::on_arealist_clicked(const QModelIndex &index)
@@ -1384,3 +1400,6 @@ void Courtroom::play_sfx()
   sfxplayer->setMedia(QUrl::fromLocalFile(getBasePath() + "sounds/general/" + current_chatmessage.sfx_name + ".wav"));
   sfxplayer->play();
 }
+
+
+

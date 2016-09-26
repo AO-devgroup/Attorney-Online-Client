@@ -207,8 +207,6 @@ private slots:
 
   void on_musiclist_doubleClicked(const QModelIndex &index);
 
-  void play_song(QString p_song_name);
-
   void on_charselect_left_clicked();
   void on_charselect_right_clicked();
   void on_changecharacter_clicked();
@@ -239,12 +237,6 @@ private slots:
 
   void on_crossexamination_clicked();
 
-  void on_musicslider_sliderMoved(int p_position);
-
-  void on_sfxslider_sliderMoved(int p_position);
-
-  void on_blipslider_sliderMoved(int p_position);
-
   void on_arealist_clicked(const QModelIndex &index);
 
   void on_arealist_doubleClicked(const QModelIndex &index);
@@ -260,6 +252,12 @@ private slots:
   void on_prebox_clicked();
 
   void play_sfx();
+
+  void on_musicslider_valueChanged(int value);
+
+  void on_sfxslider_valueChanged(int value);
+
+  void on_blipslider_valueChanged(int value);
 
 signals:
   void entering_server();
