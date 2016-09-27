@@ -104,6 +104,11 @@ void Courtroom::set_area_list(QVector<area_type> &p_area_list)
   area_list.clear();
   area_list = p_area_list;
 
+  for (area_type area : area_list)
+  {
+    qDebug() << "area: " << area.name;
+  }
+
   area_list_set = true;
 
   if (!area_taken_list_set)
@@ -121,6 +126,12 @@ void Courtroom::set_area_taken_list(QVector<int> &p_area_taken_list)
 
   if (!area_list_set)
     return;
+
+  if (area_taken_list.size() < area_list.size())
+  {
+    qDebug() << "TA packet arguments were fewer than SA packet's";
+    return;
+  }
 
   set_area_ui();
 }
@@ -311,6 +322,8 @@ void Courtroom::enter_courtroom()
     ui->defminus->hide();
     emote_left_button->hide();
     emote_right_button->hide();
+    ui->prebox->hide();
+    ui->guardbox->hide();
 
     for(emoteicon *i_icon : emoteicon_list)
     {
@@ -324,6 +337,7 @@ void Courtroom::enter_courtroom()
     ui->holdit->show();
     ui->objection->show();
     ui->takethat->show();
+    ui->prebox->show();
     ui->chatLine->show();
     ui->chatLine->setFocus();
   }
@@ -559,13 +573,15 @@ void Courtroom::set_scene(QString p_side)
     ui->desk->clear();
 }
 
-//void Courtroom::handle_chatmessage(chatmessage_type &p_message)
 void Courtroom::handle_chatmessage()
 { 
-  /*
-  if (mutelist.at(current_chatmessage.cid))
-    return;
-    */
+
+  if (current_chatmessage.cid < mutelist.size())
+  {
+    if (mutelist.at(current_chatmessage.cid))
+      return;
+  }
+
 
   //current_chatmessage = p_message;
 
@@ -631,7 +647,7 @@ void Courtroom::handle_chatmessage2()
     //ui->chatLine->setStyleSheet("QLineEdit{color: white;}");
     break;
   case 1:
-    ui->chattext->setStyleSheet("QPlainTextEdit{color: blue;}");
+    ui->chattext->setStyleSheet("QPlainTextEdit{color: rgb(45, 150, 255);}");
     //ui->chatLine->setStyleSheet("color: blue;");
     break;
   case 2:
@@ -977,7 +993,12 @@ void Courtroom::handle_server_packet(QString p_packet)
     {
       int bg_index = packet_contents.at(1).toInt();
 
+      qDebug() << "bg_index: " << bg_index;
+      qDebug() << "area_list.size(): " << area_list.size();
+
       background_path = getBasePath() + "background/" + area_list.at(bg_index).background + "/";
+
+      qDebug() << "EXECUTED.";
       //more things to do for area switch probably #T0D0
     }
     else if (packet_contents.at(2) == "1")

@@ -173,13 +173,20 @@ void Networkhandler::handle_ms_packet()
   char buffer[16384] = {0};
   ms_socket->read(buffer, ms_socket->bytesAvailable());
 
-  QString in_data = buffer;
+  //QString in_data = buffer;
 
+  QString packet = buffer;
+
+  /*
   QStringList packet_list = in_data.split("%", QString::SplitBehavior(QString::SkipEmptyParts));
 
   for (QString packet : packet_list)
   {
+  */
+
     QStringList packet_arguments = packet.split("#");
+
+    qDebug() << "packet arguments: " << packet_arguments.length();
 
     QString header = packet_arguments.at(0);
 
@@ -196,16 +203,13 @@ void Networkhandler::handle_ms_packet()
       }
     }
 
-    else if (header == "servercheok")
-    {
-      request_all_servers();
-    }
-
-    else if (header == "CHECK")
-      continue;
-
     else if (header == "ALL")
     { 
+      for (QString server : packet_arguments)
+      {
+        qDebug() << "server: " << server;
+      }
+
       int amount_of_servers = packet_arguments.size() - 2;
 
       qDebug() << "amount_of_servers: " << amount_of_servers;
@@ -232,7 +236,7 @@ void Networkhandler::handle_ms_packet()
     qDebug() << packet;
   }
 
-}
+//}
 
 void Networkhandler::handle_server_packet()
 {
@@ -373,6 +377,9 @@ void Networkhandler::handle_server_packet()
 
     else if (header == "TA")
     {
+      qDebug() << "header = TA";
+      qDebug() << "packet = " << packet;
+
       QVector<int> f_area_taken_list;
 
       for (int n_area = 0; n_area < packet_contents.size() - 2 ; ++n_area)
