@@ -157,6 +157,7 @@ void Networkhandler::handle_enter_server_request()
   server_socket->write("RC#%");
   server_socket->write("RM#%");
   server_socket->write("RA#%");
+  //this usually gets spit out as one packet because of nagle's algorithm
 }
 
 void Networkhandler::handle_character_request(int p_character, QString p_password)
@@ -173,17 +174,29 @@ void Networkhandler::handle_ms_packet()
   char buffer[16384] = {0};
   ms_socket->read(buffer, ms_socket->bytesAvailable());
 
-  //QString in_data = buffer;
+  QString in_data = buffer;
 
-  QString packet = buffer;
+  if (!in_data.endsWith("%"))
+  {
+    partial_packet = true;
+    temp_packet += in_data;
+    return;
+  }
 
-  /*
+  else
+  {
+    if (partial_packet)
+    {
+      in_data = temp_packet + in_data;
+      temp_packet = "";
+      partial_packet = false;
+    }
+  }
+
   QStringList packet_list = in_data.split("%", QString::SplitBehavior(QString::SkipEmptyParts));
 
   for (QString packet : packet_list)
   {
-  */
-
     QStringList packet_arguments = packet.split("#");
 
     qDebug() << "packet arguments: " << packet_arguments.length();
@@ -202,6 +215,9 @@ void Networkhandler::handle_ms_packet()
         callError(errorstring);
       }
     }
+
+    else if (header == "servercheok")
+      request_all_servers();
 
     else if (header == "ALL")
     { 
@@ -236,17 +252,33 @@ void Networkhandler::handle_ms_packet()
     qDebug() << packet;
   }
 
-//}
+}
 
 void Networkhandler::handle_server_packet()
 {
-
   QString in_data;
 
-
-  char buffer[6144] = {0};
+  //we go nuts now
+  char buffer[500000] = {0};
   server_socket->read(buffer, server_socket->bytesAvailable());
   in_data = buffer;
+
+  if (!in_data.endsWith("%"))
+  {
+    partial_packet = true;
+    temp_packet += in_data;
+    return;
+  }
+
+  else
+  {
+    if (partial_packet)
+    {
+      in_data = temp_packet + in_data;
+      temp_packet = "";
+      partial_packet = false;
+    }
+  }
 
   QStringList packet_list = in_data.split("%", QString::SplitBehavior(QString::SkipEmptyParts));
 

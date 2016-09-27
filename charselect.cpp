@@ -262,5 +262,8 @@ void Courtroom::charChoose(int local_charnumber)
 
   m_cid = real_char_number;
 
+  if (!fileExists(getBasePath() + "characters/" + real_char + "/char.ini"))
+    return;
+
   character_requested(real_char_number, f_password);
 }

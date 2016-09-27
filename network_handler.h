@@ -36,6 +36,9 @@ public:
 
   bool packet_debugging = true;
 
+  bool partial_packet = false;
+  QString temp_packet = "";
+
 
 
 

@@ -708,8 +708,18 @@ void Courtroom::handle_chatmessage2()
     //intentional fallthrough here
   case 0:
     chattimer->stop();
-    charmovie_state = 1;
-    charmovie->setFileName(gif_path);
+
+    if (current_chatmessage.text_color == 1)
+    {
+      charmovie_state = 2;
+      charmovie->setFileName(idle_gif_path);
+    }
+    else
+    {
+      charmovie_state = 1;
+      charmovie->setFileName(gif_path);
+    }
+
     chattimer->start(chat_timing);
     if (current_chatmessage.realization == 1)
     {
@@ -745,12 +755,20 @@ void Courtroom::handle_chatmessage2()
       charmovie_state = 2;
     }
 
+    else if (current_chatmessage.text_color == 1)
+    {
+      charmovie->setFileName(idle_gif_path);
+      chattimer->start(chat_timing);
+      charmovie_state = 2;
+    }
+
     else
     {
       charmovie->setFileName(gif_path);
       chattimer->start(chat_timing);
       charmovie_state = 1;
     }
+
     speedlinesmovie->start();
     charmovie->start();
     break;
