@@ -145,6 +145,7 @@ private:
   const int chat_timing = 60;
 
   bool muted = false;
+  bool in_court = false;
 
   int m_cid = -1;
 

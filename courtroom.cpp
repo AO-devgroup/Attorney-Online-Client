@@ -339,6 +339,8 @@ void Courtroom::enter_courtroom()
     {
       i_icon->hide();
     }
+
+
   }
   else
   {
@@ -360,6 +362,7 @@ void Courtroom::enter_courtroom()
 
   setTheme();
 
+  in_court = true;
   ui->charselect->hide();
 }
 
@@ -591,6 +594,8 @@ void Courtroom::set_scene(QString p_side)
 
 void Courtroom::handle_chatmessage()
 { 
+  if (!in_court)
+    return;
 
   if (current_chatmessage.cid < mutelist.size())
   {
@@ -958,7 +963,10 @@ void Courtroom::on_charselect_right_clicked()
 void Courtroom::on_changecharacter_clicked()
 {
   if (playerChar == "null")
+  {
+    in_court = false;
     ui->charselect->show();
+  }
   else
     request_packet("FC#%");
 }
@@ -981,6 +989,9 @@ void Courtroom::handle_server_packet(QString p_packet)
   {
     //message format:
     //MS0#1chat#2<pre emo>#3<char>#4<emo>#5<mes>#6<pos>#7<sfxname>#8<zoom>#9<cid>#10 sfx-delay#11<objection mod>#12<evidence>#13<cid>#14<realization>#15<color>#%
+
+    if (!in_court)
+      return;
 
     current_chatmessage.pre_emote = packet_contents.at(2);
     current_chatmessage.character = packet_contents.at(3);
@@ -1024,6 +1035,9 @@ void Courtroom::handle_server_packet(QString p_packet)
 
   else if (header == "RT")
   {
+    if (!in_court)
+      return;
+
     if (packet_contents.size() < 3)
     {
       callError("Malformed packet; " + p_packet);
@@ -1063,13 +1077,9 @@ void Courtroom::handle_server_packet(QString p_packet)
     {
       int bg_index = packet_contents.at(1).toInt();
 
-      qDebug() << "bg_index: " << bg_index;
-      qDebug() << "area_list.size(): " << area_list.size();
-
       background_path = getBasePath() + "background/" + area_list.at(bg_index).background + "/";
 
-      qDebug() << "EXECUTED.";
-      //more things to do for area switch probably #T0D0
+      musicplayer->stop();
     }
     else if (packet_contents.at(2) == "1")
       callError("Wrong password :v(");
@@ -1077,6 +1087,9 @@ void Courtroom::handle_server_packet(QString p_packet)
 
   else if (header == "ZZ" && ui->guardbox->checkState())
   {
+    if (!in_court)
+      return;
+
     ui->oocserverchat->appendPlainText(packet_contents.at(1));
     guardplayer->stop();
     guardplayer->setMedia(QUrl::fromLocalFile(getBasePath() + "sounds/general/sfx-gallery.wav"));
@@ -1092,6 +1105,9 @@ void Courtroom::handle_server_packet(QString p_packet)
 
   else if (header == "MU")
   {
+    if (!in_court)
+      return;
+
     if (packet_contents.at(1).toInt() == m_cid ||
         packet_contents.at(1).toInt() == -1)
     {
@@ -1118,11 +1134,23 @@ void Courtroom::handle_server_packet(QString p_packet)
   else if (header == "KB")
   {
     if (packet_contents.at(1).toInt() == m_cid)
+    {
       callFatalError("You have been banned.");
+      request_quit();
+    }
+
+  }
+
+  else if (header == "IL")
+  {
+
   }
 
   else if (header == "MC")
   {
+    if (!in_court)
+      return;
+
     QString song_name = packet_contents.at(1);
 
     QString song_path = getBasePath() + "sounds/music/" + song_name;
@@ -1525,6 +1553,7 @@ void Courtroom::on_backtolobby_clicked()
   area_taken_list_set = false;
   music_list_set = false;
   done_received = false;
+  muted = false;
   sfxplayer->stop();
   blipplayer->stop();
   blipplayer2->stop();

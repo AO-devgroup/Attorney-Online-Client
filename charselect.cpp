@@ -81,6 +81,7 @@ void Courtroom::set_character_list(QVector<char_type> &p_char_list)
   for (int n_char = 0 ; n_char < character_list.size() ; ++n_char)
   {
     mutelist.insert(n_char, false);
+
     ui->mutelist->addItem(character_list.at(n_char).name);
   }
 
