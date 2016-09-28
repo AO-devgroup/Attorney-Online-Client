@@ -522,7 +522,8 @@ void Networkhandler::handle_server_packet()
 
       else
       {
-        callError("MALFORMED CHAT MESSAGE, expected size to be 15, found " + packet_contents.size());
+        //T0D0 find a non-intrusive way of reporting that something went wrong
+        //callError("MALFORMED CHAT MESSAGE, expected size to be 15, found " + packet_contents.size());
         qDebug() << packet;
         return;
       }

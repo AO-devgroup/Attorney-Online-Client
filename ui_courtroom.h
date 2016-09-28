@@ -143,8 +143,8 @@ public:
         chatlog->setFrameShape(QFrame::NoFrame);
         chatlog->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
         chatlog->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-        chatlog->setReadOnly(false);
-        chatlog->setTextInteractionFlags(Qt::TextEditorInteraction);
+        chatlog->setReadOnly(true);
+        chatlog->setTextInteractionFlags(Qt::TextSelectableByMouse);
         holdit = new QPushButton(centralwidget);
         holdit->setObjectName(QStringLiteral("holdit"));
         holdit->setGeometry(QRect(10, 312, 76, 28));

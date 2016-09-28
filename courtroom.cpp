@@ -226,7 +226,9 @@ void Courtroom::set_character(int p_character, int p_mod)
   {
   case 0:
     qDebug() << "setting character as " << character_list.at(p_character).name;
+    qDebug() << "p_character: " << p_character;
     playerChar = character_list.at(p_character).name;
+    qDebug() << "playerChar set :" << playerChar;
     enter_courtroom();
     break;
   case 1:
@@ -340,8 +342,11 @@ void Courtroom::enter_courtroom()
   }
   else
   {
+    qDebug() << "calling setEmotes()";
     setEmotes();
+    qDebug() << "emotes set";
     setEmotePage();
+    qDebug() << "emote page set";
     ui->holdit->show();
     ui->objection->show();
     ui->takethat->show();
@@ -362,6 +367,9 @@ void Courtroom::on_chatLine_returnPressed()
 {
   //tough luck -- someone else is talking
   if (charmovie_state == 1 || charmovie_state == 0)
+    return;
+
+  if (muted)
     return;
 
   QString f_message = ui->chatLine->text();
@@ -607,6 +615,7 @@ void Courtroom::handle_chatmessage()
     //ui->objectiongif->setMovie(objectionmovie);
     sfxplayer->setMedia(QUrl::fromLocalFile(char_path + '/' + current_chatmessage.character + "/holdit.wav"));
     sfxplayer->play();
+    charmovie_state = 0;
     objectionmovie->start(); //handle_chatmessage2 is called when this is done playing, continuing the logic
     break;
   case 2:
@@ -615,6 +624,7 @@ void Courtroom::handle_chatmessage()
     //ui->objectiongif->setMovie(objectionmovie);
     sfxplayer->setMedia(QUrl::fromLocalFile(char_path + '/' + current_chatmessage.character + "/objection.wav"));
     sfxplayer->play();
+    charmovie_state = 0;
     objectionmovie->start();
     break;
   case 3:
@@ -623,6 +633,7 @@ void Courtroom::handle_chatmessage()
     //ui->objectiongif->setMovie(objectionmovie);
     sfxplayer->setMedia(QUrl::fromLocalFile(char_path + '/' + current_chatmessage.character + "/takethat.wav"));
     sfxplayer->play();
+    charmovie_state = 0;
     objectionmovie->start();
     break;
   default:
@@ -712,6 +723,7 @@ void Courtroom::handle_chatmessage2()
   QString gif_path = getCharGifPath(current_chatmessage.character, "(b)" + current_chatmessage.emote + ".gif");
   QString idle_gif_path = getCharGifPath(current_chatmessage.character, "(a)" + current_chatmessage.emote + ".gif");
   QString gif_preanim_path = getCharGifPath(current_chatmessage.character, current_chatmessage.pre_emote + ".gif");
+  QString placeholder_path = get_image_path("placeholder.gif");
 
   charmovie->stop();
   speedlinesmovie->stop();
@@ -727,12 +739,18 @@ void Courtroom::handle_chatmessage2()
     if (current_chatmessage.text_color == 1)
     {
       charmovie_state = 2;
-      charmovie->setFileName(idle_gif_path);
+      if (fileExists, true)
+        charmovie->setFileName(idle_gif_path);
+      else
+        charmovie->setFileName(placeholder_path);
     }
     else
     {
       charmovie_state = 1;
-      charmovie->setFileName(gif_path);
+      if (fileExists(gif_path, true))
+        charmovie->setFileName(gif_path);
+      else
+        charmovie->setFileName(placeholder_path);
     }
 
     chattimer->start(chat_timing);
@@ -750,7 +768,10 @@ void Courtroom::handle_chatmessage2()
     ui->desk->hide();
     //intentional fallthrough here
   case 1:
-    charmovie->setFileName(gif_preanim_path);
+    if (fileExists(gif_preanim_path, true))
+      charmovie->setFileName(gif_preanim_path);
+    else
+      charmovie->setFileName(placeholder_path);
     charmovie_state = 0;
     charmovie->start();
     break;
@@ -770,20 +791,29 @@ void Courtroom::handle_chatmessage2()
 
     if (current_chatmessage.message == " ")
     {
-      charmovie->setFileName(idle_gif_path);
+      if (fileExists(idle_gif_path, true))
+        charmovie->setFileName(idle_gif_path);
+      else
+        charmovie->setFileName(placeholder_path);
       charmovie_state = 2;
     }
 
     else if (current_chatmessage.text_color == 1)
     {
-      charmovie->setFileName(idle_gif_path);
+      if (fileExists(idle_gif_path, true))
+        charmovie->setFileName(idle_gif_path);
+      else
+        charmovie->setFileName(placeholder_path);
       chattimer->start(chat_timing);
       charmovie_state = 2;
     }
 
     else
     {
-      charmovie->setFileName(gif_path);
+      if (fileExists(gif_path, true))
+        charmovie->setFileName(gif_path);
+      else
+        charmovie->setFileName(placeholder_path);
       chattimer->start(chat_timing);
       charmovie_state = 1;
     }
@@ -927,7 +957,10 @@ void Courtroom::on_charselect_right_clicked()
 
 void Courtroom::on_changecharacter_clicked()
 {
-  request_packet("FC#%");
+  if (playerChar == "null")
+    ui->charselect->show();
+  else
+    request_packet("FC#%");
 }
 
 void Courtroom::on_musiclist_doubleClicked(const QModelIndex &index)
@@ -1052,24 +1085,32 @@ void Courtroom::handle_server_packet(QString p_packet)
 
   else if (header == "KK")
   {
-    callFatalError("You have been kicked.");
+    callFatalError("You have been kicked.", true);
     close_socket_request();
+    request_quit();
   }
 
   else if (header == "MU")
   {
-    if (packet_contents.at(1).toInt() == m_cid)
+    if (packet_contents.at(1).toInt() == m_cid ||
+        packet_contents.at(1).toInt() == -1)
     {
-      ui->muted->show();
+      //ui->muted->raise();
+      //ui->muted->show();
+
+      callError("You have been muted.", false);
       muted = true;
     }
   }
 
   else if (header == "UM")
   {
-    if (packet_contents.at(1).toInt() == m_cid)
+    if (packet_contents.at(1).toInt() == m_cid ||
+        packet_contents.at(1).toInt() == -1)
     {
       ui->muted->hide();
+
+      callError("You have been unmuted", false);
       muted = false;
     }
   }
@@ -1170,8 +1211,9 @@ void Courtroom::on_musicsearch_textEdited(const QString &p_text)
   for (int index = 0 ; index < music_list.size() ; ++index)
   {
     QString song = music_list.at(index);
+    QString search_text = p_text.toLower();
 
-    if (song.contains(p_text))
+    if (song.toLower().contains(search_text))
     {
       ui->musiclist->addItem(song);
       new_list.append(song);
@@ -1345,13 +1387,22 @@ void Courtroom::char_gif_framechange(int p_frame)
       //if its an empty message we skip straight to the "idle" emote
       if (current_chatmessage.message == " ")
       {
-        charmovie->setFileName(getCharGifPath(current_chatmessage.character, ("(a)" + current_chatmessage.emote + ".gif")));
+        QString path = getCharGifPath(current_chatmessage.character, ("(a)" + current_chatmessage.emote + ".gif"));
+        if (fileExists(path, true))
+          charmovie->setFileName(path);
+        else
+          charmovie->setFileName(get_image_path("placeholder.gif"));
         charmovie->start();
         charmovie_state = 2;
       }
       else
       {
-        charmovie->setFileName(getCharGifPath(current_chatmessage.character, ("(b)" + current_chatmessage.emote + ".gif")));
+        QString path = getCharGifPath(current_chatmessage.character, ("(b)" + current_chatmessage.emote + ".gif"));
+
+        if (fileExists(path, true))
+          charmovie->setFileName(path);
+        else
+          charmovie->setFileName(get_image_path("placeholder.gif"));
         charmovie->start();
         chattimer->start(chat_timing);
         chatpos = 0;
@@ -1385,7 +1436,10 @@ void Courtroom::chat_tick()
     charmovie_state = 2;
     chattimer->stop();
     charmovie->stop();
-    charmovie->setFileName(path);
+    if (fileExists(path, true))
+      charmovie->setFileName(path);
+    else
+      charmovie->setFileName(get_image_path("placeholder.gif"));
     charmovie->start();
     return;
   }

@@ -286,6 +286,8 @@ signals:
 
   void close_socket_request();
 
+  void request_quit();
+
 
 };
 

@@ -180,13 +180,13 @@
      <enum>Qt::ScrollBarAlwaysOff</enum>
     </property>
     <property name="readOnly">
-     <bool>false</bool>
+     <bool>true</bool>
     </property>
     <property name="plainText">
      <string/>
     </property>
     <property name="textInteractionFlags">
-     <set>Qt::TextEditorInteraction</set>
+     <set>Qt::TextSelectableByMouse</set>
     </property>
    </widget>
    <widget class="QPushButton" name="holdit">

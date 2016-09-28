@@ -57,8 +57,8 @@ void Courtroom::setEmotes()
   QFile char_ini(char_ini_path);
   if (!char_ini.open(QIODevice::ReadOnly))
   {
-      callFatalError("failed to open " + char_ini_path + " for reading.");
-      return;
+    callFatalError("failed to open " + char_ini_path + " for reading.");
+    return;
   }
 
   QTextStream in(&char_ini);
@@ -80,15 +80,15 @@ void Courtroom::setEmotes()
 
   for(int n_line = 0 ; n_line < char_ini_list.size() ; ++n_line)
   {
-    QString line = char_ini_list.at(n_line);
+    QString line = char_ini_list.at(n_line).toLower();
 
-    if (line.startsWith("[Emotions]"))
+    if (line.startsWith("[emotions]"))
       int_emotions_line = n_line;
 
-    if (line.startsWith("[SoundN]"))
+    if (line.startsWith("[soundn]"))
       int_soundn_line = n_line;
 
-    if (line.startsWith("[SoundT]"))
+    if (line.startsWith("[soundt]"))
       int_soundt_line = n_line;
 
     if (line.startsWith("number = "))
@@ -124,7 +124,7 @@ void Courtroom::setEmotes()
     return;
   }
 
-  if (int_soundn_line == -1)
+  if (int_soundt_line == -1)
   {
     QString err_str = "Could not find [SoundT] in " + char_ini_path;
     callError(err_str);
