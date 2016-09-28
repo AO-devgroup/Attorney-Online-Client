@@ -199,8 +199,6 @@ void Networkhandler::handle_ms_packet()
   {
     QStringList packet_arguments = packet.split("#");
 
-    qDebug() << "packet arguments: " << packet_arguments.length();
-
     QString header = packet_arguments.at(0);
 
     if (header == "CT")
@@ -217,7 +215,27 @@ void Networkhandler::handle_ms_packet()
     }
 
     else if (header == "servercheok")
+    {
+      qDebug() << packet;
+
+      int f_release = packet_arguments.at(1).split(".").at(0).toInt();
+      int f_major = packet_arguments.at(1).split(".").at(1).toInt();
+      //int f_minor = packet_arguments.at(1).split(".").at(2).toInt();
+
+      if (MAJOR_VERSION < f_major)
+      {
+        if (RELEASE <= f_release)
+        {
+          QString msg = "Client outdated! Your version: " + QString::number(RELEASE) + "." +
+              QString::number(MAJOR_VERSION) + "." + QString::number(MINOR_VERSION) + "\nVisit aceattorneyonline.com to update!";
+          callFatalError(msg, false);
+          request_quit();
+          return;
+        }
+      }
+
       request_all_servers();
+    }
 
     else if (header == "ALL")
     { 
@@ -249,7 +267,7 @@ void Networkhandler::handle_ms_packet()
 
     }
 
-    qDebug() << packet;
+    //qDebug() << packet;
   }
 
 }
@@ -359,6 +377,8 @@ void Networkhandler::handle_server_packet()
       }
 
       taken_list_received(f_taken_list);
+
+      qDebug() << packet;
     }
 
     //handles the music list packet
@@ -526,7 +546,7 @@ void Networkhandler::handle_server_packet()
       server_packet_received(packet);
     }
 
-    else if (header == "OA")
+    else if (header == "OA")    
     {
       server_packet_received(packet);
     }

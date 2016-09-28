@@ -2,6 +2,7 @@
 #define MAIN_H
 
 #include <QApplication>
+#include <QFont>
 
 #include "lobby.h"
 #include "courtroom.h"

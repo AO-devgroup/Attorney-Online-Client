@@ -91,6 +91,8 @@ public:
     QListWidget *mutelist;
     QLabel *muted;
     QLabel *witnesstand;
+    QPushButton *backtolobby;
+    QLabel *realizationflash;
 
     void setupUi(QMainWindow *Courtroom)
     {
@@ -134,6 +136,9 @@ public:
         brush3.setStyle(Qt::SolidPattern);
         palette.setBrush(QPalette::Disabled, QPalette::Base, brush3);
         chatlog->setPalette(palette);
+        QFont font;
+        font.setPointSize(10);
+        chatlog->setFont(font);
         chatlog->setAutoFillBackground(false);
         chatlog->setFrameShape(QFrame::NoFrame);
         chatlog->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
@@ -244,10 +249,10 @@ public:
         palette3.setBrush(QPalette::Disabled, QPalette::Text, brush2);
         palette3.setBrush(QPalette::Disabled, QPalette::ButtonText, brush2);
         charError->setPalette(palette3);
-        QFont font;
-        font.setBold(true);
-        font.setWeight(75);
-        charError->setFont(font);
+        QFont font1;
+        font1.setBold(true);
+        font1.setWeight(75);
+        charError->setFont(font1);
         musiclist = new QListWidget(centralwidget);
         new QListWidgetItem(musiclist);
         musiclist->setObjectName(QStringLiteral("musiclist"));
@@ -257,6 +262,9 @@ public:
         palette4.setBrush(QPalette::Inactive, QPalette::Base, brush);
         palette4.setBrush(QPalette::Disabled, QPalette::Base, brush3);
         musiclist->setPalette(palette4);
+        QFont font2;
+        font2.setPointSize(8);
+        musiclist->setFont(font2);
         musiclist->setFrameShape(QFrame::NoFrame);
         musiclist->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
         oocserverchat = new QPlainTextEdit(centralwidget);
@@ -294,9 +302,9 @@ public:
         palette7.setBrush(QPalette::Inactive, QPalette::Base, brush);
         palette7.setBrush(QPalette::Disabled, QPalette::Base, brush3);
         oocchatname->setPalette(palette7);
-        QFont font1;
-        font1.setPointSize(9);
-        oocchatname->setFont(font1);
+        QFont font3;
+        font3.setPointSize(9);
+        oocchatname->setFont(font3);
         oocchatname->setFrame(false);
         oocchatmessage = new QLineEdit(centralwidget);
         oocchatmessage->setObjectName(QStringLiteral("oocchatmessage"));
@@ -306,9 +314,7 @@ public:
         palette8.setBrush(QPalette::Inactive, QPalette::Base, brush);
         palette8.setBrush(QPalette::Disabled, QPalette::Base, brush3);
         oocchatmessage->setPalette(palette8);
-        QFont font2;
-        font2.setPointSize(10);
-        oocchatmessage->setFont(font2);
+        oocchatmessage->setFont(font);
         oocchatmessage->setFrame(false);
         charname = new QLabel(centralwidget);
         charname->setObjectName(QStringLiteral("charname"));
@@ -321,9 +327,7 @@ public:
         palette9.setBrush(QPalette::Disabled, QPalette::WindowText, brush2);
         palette9.setBrush(QPalette::Disabled, QPalette::ButtonText, brush2);
         charname->setPalette(palette9);
-        QFont font3;
-        font3.setPointSize(8);
-        charname->setFont(font3);
+        charname->setFont(font2);
         chattext = new QPlainTextEdit(centralwidget);
         chattext->setObjectName(QStringLiteral("chattext"));
         chattext->setGeometry(QRect(3, 132, 250, 60));
@@ -335,6 +339,7 @@ public:
         palette10.setBrush(QPalette::Disabled, QPalette::Text, brush2);
         palette10.setBrush(QPalette::Disabled, QPalette::Base, brush3);
         chattext->setPalette(palette10);
+        chattext->setFont(font);
         chattext->setFrameShape(QFrame::NoFrame);
         chattext->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
         chattext->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -428,12 +433,15 @@ public:
         musiclabel = new QLabel(centralwidget);
         musiclabel->setObjectName(QStringLiteral("musiclabel"));
         musiclabel->setGeometry(QRect(260, 390, 41, 16));
+        musiclabel->setFont(font);
         sfxlabel = new QLabel(centralwidget);
         sfxlabel->setObjectName(QStringLiteral("sfxlabel"));
         sfxlabel->setGeometry(QRect(260, 410, 21, 16));
+        sfxlabel->setFont(font);
         bliplabel = new QLabel(centralwidget);
         bliplabel->setObjectName(QStringLiteral("bliplabel"));
         bliplabel->setGeometry(QRect(260, 430, 31, 16));
+        bliplabel->setFont(font);
         arealist = new QListWidget(centralwidget);
         new QListWidgetItem(arealist);
         arealist->setObjectName(QStringLiteral("arealist"));
@@ -443,6 +451,7 @@ public:
         palette11.setBrush(QPalette::Inactive, QPalette::Base, brush);
         palette11.setBrush(QPalette::Disabled, QPalette::Base, brush3);
         arealist->setPalette(palette11);
+        arealist->setFont(font2);
         arealist->setFrameShape(QFrame::NoFrame);
         arealist->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
         areapreview = new QLabel(centralwidget);
@@ -475,6 +484,12 @@ public:
         witnesstand = new QLabel(centralwidget);
         witnesstand->setObjectName(QStringLiteral("witnesstand"));
         witnesstand->setGeometry(QRect(0, 0, 256, 192));
+        backtolobby = new QPushButton(centralwidget);
+        backtolobby->setObjectName(QStringLiteral("backtolobby"));
+        backtolobby->setGeometry(QRect(5, 5, 91, 23));
+        realizationflash = new QLabel(centralwidget);
+        realizationflash->setObjectName(QStringLiteral("realizationflash"));
+        realizationflash->setGeometry(QRect(0, 0, 256, 192));
         Courtroom->setCentralWidget(centralwidget);
         ooc_master->raise();
         ooc_server->raise();
@@ -535,6 +550,8 @@ public:
         chattext->raise();
         charname->raise();
         testimony->raise();
+        backtolobby->raise();
+        realizationflash->raise();
         objectiongif->raise();
 
         retranslateUi(Courtroom);
@@ -615,6 +632,8 @@ public:
         guardbox->setText(QApplication::translate("Courtroom", "Guard", 0));
         muted->setText(QString());
         witnesstand->setText(QString());
+        backtolobby->setText(QApplication::translate("Courtroom", "Back to lobby", 0));
+        realizationflash->setText(QString());
     } // retranslateUi
 
 };

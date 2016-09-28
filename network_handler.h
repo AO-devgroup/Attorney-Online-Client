@@ -8,6 +8,7 @@
 
 #include "datatypes.h"
 #include "error_handler.h"
+#include "globals.h"
 
 class Networkhandler : public QObject
 {
@@ -70,6 +71,8 @@ signals:
   void done_signal();
 
   void server_packet_received(QString p_packet);
+
+  void request_quit();
 
 public slots:
   void connect_to_server(QString ip, int port);

@@ -124,10 +124,13 @@ private:
   QMovie *objectionmovie;
   QTimer *chattimer;
   QTimer *sfxdelaytimer;
+  QTimer *realizationtimer;
 
   int chatpos = 0;
 
   chatmessage_type current_chatmessage;
+
+  QString char_gender = "male";
 
   //0 is nothing, 1 is WT, 2 is between WT and CE and 3 is CE
   //needed because gifs are dum
@@ -188,6 +191,8 @@ private slots:
   void emote_choose(int local_emote_number);
 
   void chat_tick();
+
+  void realization_done();
 
   void on_holdit_clicked();
 
@@ -259,8 +264,12 @@ private slots:
 
   void on_blipslider_valueChanged(int value);
 
+  void on_backtolobby_clicked();
+
 signals:
   void entering_server();
+
+  void leaving_server();
 
   void chatmessage_requested(chatmessage_type &p_chatmessage);
   void legacy_chatmessage_requested(chatmessage_type &p_chatmessage);

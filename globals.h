@@ -15,4 +15,10 @@ QString get_background_path(QString p_background, QString p_background_image);
 
 bool cyclic_function();
 
+extern const int RELEASE;
+
+extern const int MAJOR_VERSION;
+
+extern const int MINOR_VERSION;
+
 #endif // GLOBALS_H

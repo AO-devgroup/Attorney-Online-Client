@@ -2,6 +2,11 @@
 
 QString g_theme_path = "FATAL: g_theme_path was not set";
 
+const int RELEASE = 2;
+const int MAJOR_VERSION = 0;
+const int MINOR_VERSION = 0;
+//2.0.0 right
+
 //only this function should change g_theme_path
 void set_theme_path()
 {

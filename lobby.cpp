@@ -332,17 +332,30 @@ void Lobby::handle_server_entry()
   this->hide();
 }
 
+void Lobby::handle_server_exit()
+{
+  this->show();
+}
+
 void Lobby::on_about_clicked()
 {
   QMessageBox *msgBox = new QMessageBox;
-  msgBox->setText("Client version: 1.0.0\n"
+  QString f_release = QString::number(RELEASE);
+  QString f_major = QString::number(MAJOR_VERSION);
+  QString f_minor = QString::number(MINOR_VERSION);
+
+
+  msgBox->setText("Client version: " + f_release + "." + f_major + "." + f_minor + "\n"
                   "\n"
-                  "Credits:\n"
-                  "Development:\n"
+                  "Contributors:\n"
                   "OmniTroid\n"
-                  "\n"
-                  "Design:\n"
+                  "stonedDiscord\n"
+                  "Alex\n"
+                  "Unishred\n"
+                  "Argoneus\n"
+                  "Lupadim\n"
                   "Ruekasu\n"
+                  "Draxirch\n"
                   "\n"
                   "Original concept:\n"
                   "FanatSors\n"

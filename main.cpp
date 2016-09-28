@@ -11,8 +11,8 @@ int main(int argc, char *argv[])
   Courtroom main_courtroom;
   Networkhandler main_networkhandler;
 
-  main_courtroom.hide();
-  //main_courtroom.show();
+  //main_courtroom.hide();
+  main_courtroom.show();
 
   QObject::connect(&main_networkhandler, SIGNAL(ms_message_received(QString)), &main_lobby, SLOT(handle_ms_message(QString)));
   QObject::connect(&main_networkhandler, SIGNAL(server_list_received(QVector<server_type>&)), &main_lobby, SLOT(update_server_list(QVector<server_type>&)));
@@ -28,7 +28,6 @@ int main(int argc, char *argv[])
   QObject::connect(&main_networkhandler, SIGNAL(character_reply_received(int,int)), &main_courtroom, SLOT(set_character(int,int)));
   QObject::connect(&main_networkhandler, SIGNAL(ms_message_received(QString)), &main_courtroom, SLOT(handle_ms_message(QString)));
   QObject::connect(&main_networkhandler, SIGNAL(ooc_message_received(QString)), &main_courtroom, SLOT(handle_ooc_message(QString)));
-  QObject::connect(&main_networkhandler, SIGNAL(song_received(QString)), &main_courtroom, SLOT(play_song(QString)));
   QObject::connect(&main_networkhandler, SIGNAL(server_packet_received(QString)), &main_courtroom, SLOT(handle_server_packet(QString)));
 
   QObject::connect(&main_lobby, SIGNAL(all_servers_requested()), &main_networkhandler, SLOT(handle_all_servers_requested()));
@@ -46,6 +45,9 @@ int main(int argc, char *argv[])
   QObject::connect(&main_courtroom, SIGNAL(close_socket_request()), &main_networkhandler, SLOT(close_socket()));
 
   QObject::connect(&main_courtroom, SIGNAL(entering_server()), &main_lobby, SLOT(handle_server_entry()));
+  QObject::connect(&main_courtroom, SIGNAL(leaving_server()), &main_lobby, SLOT(handle_server_exit()));
+
+  QObject::connect(&main_networkhandler, SIGNAL(request_quit()), &main_application, SLOT(quit()));
 
   main_networkhandler.connect_to_master();
 

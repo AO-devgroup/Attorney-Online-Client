@@ -81,6 +81,8 @@ private slots:
 
   void handle_server_entry();
 
+  void handle_server_exit();
+
   void on_about_clicked();
 
 private:

@@ -184,6 +184,7 @@ public:
         palette6.setBrush(QPalette::Disabled, QPalette::ButtonText, brush3);
         onlinestatus->setPalette(palette6);
         QFont font3;
+        font3.setPointSize(10);
         font3.setBold(true);
         font3.setWeight(75);
         onlinestatus->setFont(font3);

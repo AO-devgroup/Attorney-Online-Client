@@ -162,6 +162,11 @@
       </disabled>
      </palette>
     </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
     <property name="autoFillBackground">
      <bool>false</bool>
     </property>
@@ -773,6 +778,11 @@
       </disabled>
      </palette>
     </property>
+    <property name="font">
+     <font>
+      <pointsize>8</pointsize>
+     </font>
+    </property>
     <property name="frameShape">
      <enum>QFrame::NoFrame</enum>
     </property>
@@ -1171,6 +1181,11 @@
       </disabled>
      </palette>
     </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
     <property name="frameShape">
      <enum>QFrame::NoFrame</enum>
     </property>
@@ -1535,6 +1550,11 @@
       <height>16</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
     <property name="text">
      <string>Music</string>
     </property>
@@ -1548,6 +1568,11 @@
       <height>16</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
     <property name="text">
      <string>Sfx</string>
     </property>
@@ -1560,6 +1585,11 @@
       <width>31</width>
       <height>16</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+     </font>
     </property>
     <property name="text">
      <string>Blips</string>
@@ -1610,6 +1640,11 @@
        </colorrole>
       </disabled>
      </palette>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>8</pointsize>
+     </font>
     </property>
     <property name="frameShape">
      <enum>QFrame::NoFrame</enum>
@@ -1747,6 +1782,32 @@
      <string/>
     </property>
    </widget>
+   <widget class="QPushButton" name="backtolobby">
+    <property name="geometry">
+     <rect>
+      <x>5</x>
+      <y>5</y>
+      <width>91</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Back to lobby</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="realizationflash">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>256</width>
+      <height>192</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
    <zorder>ooc_master</zorder>
    <zorder>ooc_server</zorder>
    <zorder>present</zorder>
@@ -1806,6 +1867,8 @@
    <zorder>chattext</zorder>
    <zorder>charname</zorder>
    <zorder>testimony</zorder>
+   <zorder>backtolobby</zorder>
+   <zorder>realizationflash</zorder>
    <zorder>objectiongif</zorder>
   </widget>
  </widget>

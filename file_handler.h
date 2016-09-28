@@ -7,4 +7,8 @@
 
 QString getShowname(QString p_character);
 
+QString getGender(QString p_character);
+
+QString getChat(QString p_character);
+
 #endif // FILE_HANDLER_H

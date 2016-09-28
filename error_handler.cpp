@@ -1,10 +1,22 @@
 #include "error_handler.h"
 
-void callError(QString message)
+void callError(QString message, bool error_text)
 {
   QMessageBox *msgBox = new QMessageBox;
-  msgBox->setText("Error: " + message);
-  msgBox->setWindowTitle("Error");
+
+
+  if (error_text)
+  {
+    msgBox->setText("Error: " + message);
+    msgBox->setWindowTitle("Error");
+  }
+
+  else
+  {
+    msgBox->setText(message);
+    msgBox->setWindowTitle("Notice");
+  }
+
   msgBox->setWindowModality(Qt::NonModal);
   msgBox->show();
 }
@@ -18,11 +30,21 @@ void callError(int message)
   msgBox.exec();
 }
 
-void callFatalError(QString message)
+void callFatalError(QString message, bool error_text)
 {
   QMessageBox msgBox;
-  msgBox.setText("FATAL ERROR: " + message + "\n\nquitting application");
-  msgBox.setWindowTitle("FATAL ERROR");
+  if (error_text)
+  {
+    msgBox.setText("FATAL ERROR: " + message + "\n\nquitting application");
+    msgBox.setWindowTitle("FATAL ERROR");
+  }
+
+  else
+  {
+    msgBox.setText(message);
+    msgBox.setWindowTitle("Notice");
+  }
+
   msgBox.exec();
   //appquit #T0D0
 }
