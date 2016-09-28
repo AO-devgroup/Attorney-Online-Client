@@ -204,9 +204,15 @@ void Networkhandler::handle_ms_packet()
     if (header == "CT")
     {
       if (packet_arguments.size() == 4)
-        ms_message_received(packet_arguments.at(1) + ": " + packet_arguments.at(2));
+      {
+        QString msg = packet_arguments.at(1) + ": " + packet_arguments.at(2);
+        ms_message_received(msg.replace("<percent>", "%").replace("<num>", "#"));
+      }
       else if (packet_arguments.size() == 3)
-        ms_message_received(packet_arguments.at(1));
+      {
+        QString msg = packet_arguments.at(1);
+        ms_message_received(msg.replace("<percent>", "%").replace("<num>", "#"));
+      }
       else
       {
         QString errorstring = "malformed masterserver packet. expected 4 or 3 packet arguments, got " + packet_arguments.size();
@@ -255,10 +261,15 @@ void Networkhandler::handle_ms_packet()
         QString i_server = packet_arguments.at(n_server);
         server_type server;
 
-        server.name = i_server.split("&").at(0);
-        server.desc =  i_server.split("&").at(1);
-        server.ip =  i_server.split("&").at(2);
-        server.port =  i_server.split("&").at(3).toInt();
+        QString f_name = i_server.split("&").at(0);
+        QString f_desc = i_server.split("&").at(1);
+        QString f_ip = i_server.split("&").at(2);
+        QString f_port = i_server.split("&").at(3);
+
+        server.name = f_name.replace("<percent>", "%").replace("<num>", "#");
+        server.desc =  f_desc.replace("<percent>", "%").replace("<num>", "#");
+        server.ip = f_ip.replace("<percent>", "%").replace("<num>", "#");
+        server.port =  f_port.toInt();
 
         m_server_list.insert(n_server - 1, server);
       }

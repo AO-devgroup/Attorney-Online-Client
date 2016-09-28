@@ -1108,21 +1108,23 @@ void Courtroom::handle_server_packet(QString p_packet)
 
 void Courtroom::on_oocchatmessage_returnPressed()
 {
-  QString name = ui->oocchatname->text().replace("#", "<num>").replace("%", "<percent>");
-  QString message = ui->oocchatmessage->text().replace("#", "<num>").replace("%", "<percent>");
-  QString packet = "CT#" + name + "#" + message + "#%";
+  QString name = ui->oocchatname->text();
+  QString message = ui->oocchatmessage->text();
+  QString packet = "CT#" + name.replace("#", "<num>").replace("%", "<percent>") + "#" +
+      message.replace("#", "<num>").replace("%", "<percent>") + "#%";
 
   //no you cant send empty messages
-  if ((name != "") && (message != ""))
-  {
-    //true is ms toggled
-    if (ms_or_server_ooc)
-      ms_message_requested(packet);
-    else
-      ooc_message_requested(packet);
+  if ((name == "") || (message == ""))
+    return;
 
-    ui->oocchatmessage->clear();
-  }
+  //true is ms toggled
+  if (ms_or_server_ooc)
+    ms_message_requested(packet);
+  else
+    ooc_message_requested(packet);
+
+  ui->oocchatmessage->clear();
+
 }
 
 void Courtroom::on_defminus_clicked()

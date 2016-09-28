@@ -223,14 +223,16 @@ void Lobby::on_chatmessage_returnPressed()
 {
   QString name = ui->chatname->text();
   QString message = ui->chatmessage->text();
-  QString packet = "CT#" + name + "#" + message + "#%";
+  QString packet = "CT#" + name.replace("#", "<num>").replace("%", "<percent>") + "#" +
+      message.replace("#", "<num>").replace("%", "<percent>") + "#%";
 
   //no you cant send empty messages
-  if ((name != "") && (message != ""))
-  {
-    ms_message_requested(packet);
-    ui->chatmessage->clear();
-  }
+  if ((name == "") || (message == ""))
+    return;
+
+  ms_message_requested(packet);
+  ui->chatmessage->clear();
+
 }
 
 void Lobby::handle_ms_message(QString message)

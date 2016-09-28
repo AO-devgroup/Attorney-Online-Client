@@ -27,7 +27,7 @@ public:
 
   //QString ms_hostname = "dev.aceattorneyonline.com";
   QString ms_hostname = "master.aceattorneyonline.com";
-  int ms_port = 27016;
+  int ms_port = 27015;
 
   QVector<server_type> m_server_list;
 
@@ -39,8 +39,6 @@ public:
 
   bool partial_packet = false;
   QString temp_packet = "";
-
-
 
 
 signals:

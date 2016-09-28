@@ -64,11 +64,13 @@ void charicon::setIcon(QString character)
   {
     this->setStyleSheet("border-image:url(" + legacy_path + ")");
     this->show();
+    QFile::copy(legacy_path, path);
   }
   else if (fileExists(legacy_path_lower, true))
   {
     this->setStyleSheet("border-image:url(" + legacy_path_lower + ")");
     this->show();
+    QFile::copy(legacy_path_lower, path);
   }
   //if the char icon could not be found we add a neat text label to help the user :)
   else
