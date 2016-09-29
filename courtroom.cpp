@@ -218,6 +218,9 @@ void Courtroom::setTheme()
   ui->realizationflash->hide();
 
   charmovie_state = 2;
+
+  //HACK for debugging
+  callError("Sample text");
 }
 
 void Courtroom::set_character(int p_character, int p_mod)
@@ -1568,4 +1571,12 @@ void Courtroom::realization_done()
 {
   realizationtimer->stop();
   ui->realizationflash->hide();
+}
+
+void Courtroom::closeEvent (QCloseEvent *event)
+{
+  //this is just to prevent those annoying "unused parameter" errors
+  event->accept();
+
+  request_quit();
 }

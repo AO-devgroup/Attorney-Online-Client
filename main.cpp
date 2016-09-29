@@ -49,6 +49,7 @@ int main(int argc, char *argv[])
 
   QObject::connect(&main_networkhandler, SIGNAL(request_quit()), &main_application, SLOT(quit()));
   QObject::connect(&main_courtroom, SIGNAL(request_quit()), &main_application, SLOT(quit()));
+  QObject::connect(&main_lobby, SIGNAL(request_quit()), &main_application, SLOT(quit()));
 
   main_networkhandler.connect_to_master();
 

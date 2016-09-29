@@ -18,6 +18,7 @@
 #include <QColor>
 #include <QTimer>
 #include <QScrollBar>
+#include <QCloseEvent>
 
 #include "ui_courtroom.h"
 
@@ -156,6 +157,8 @@ private:
   void set_area_ui();
 
   void handle_chatmessage2();
+
+  void closeEvent(QCloseEvent *event);
 
 public slots:
   void set_character_list(QVector<char_type> &p_char_list);

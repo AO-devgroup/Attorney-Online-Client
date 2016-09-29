@@ -56,6 +56,8 @@ void Lobby::setTheme()
   ui->about->setStyleSheet("border-image:url(" + get_image_path("about.png") +")");
 
   ui->favoritelist->hide();
+
+  //callError("Sample text");
 }
 
 Lobby::~Lobby()
@@ -65,35 +67,22 @@ Lobby::~Lobby()
 
 void Lobby::on_refresh_pressed()
 {
-  QString path = g_theme_path + "refresh_pressed.png";
-
-  if (fileExists(path))
-    ui->refresh->setStyleSheet("border-image:url(" + path + ")");
+  ui->refresh->setStyleSheet("border-image:url(" + get_image_path("refresh_pressed.png") +")");
 }
 
 void Lobby::on_refresh_released()
 {
-  QString path = g_theme_path + "refresh.png";
-
-  ui->refresh->setStyleSheet("border-image:url(" + path + ")");
-
-  all_servers_requested();
+  ui->refresh->setStyleSheet("border-image:url(" + get_image_path("refresh.png") + ")");
 }
 
 void Lobby::on_addtofav_pressed()
 {
-  QString path = g_theme_path + "addtofav_pressed.png";
-
-  if (fileExists(path))
-      ui->addtofav->setStyleSheet("border-image:url(" + path + ")");
+  ui->addtofav->setStyleSheet("border-image:url(" + get_image_path("addtofav_pressed.png") + ")");
 }
 
 void Lobby::on_addtofav_released()
 {
-  QString path = g_theme_path + "addtofav.png";
-
-  if (fileExists(path))
-    ui->addtofav->setStyleSheet("border-image:url(" + path + ")");
+  ui->addtofav->setStyleSheet("border-image:url(" + get_image_path("addtofav.png") + ")");
 
   //you cant add favorites from favorites m8
   if (!public_servers_selected)
@@ -125,20 +114,12 @@ void Lobby::on_addtofav_released()
 
 void Lobby::on_connect_pressed()
 {
-  QString path = g_theme_path + "connect_pressed.png";
-
-  if (fileExists(path))
-    ui->connect->setStyleSheet("border-image:url(" + path + ")");
+  ui->connect->setStyleSheet("border-image:url(" + get_image_path("connect_pressed.png") + ")");
 }
 
 void Lobby::on_connect_released()
 {
-  QString path = g_theme_path + "connect.png";
-
-  if (fileExists(path))
-  {
-    ui->connect->setStyleSheet("border-image:url(" + path + ")");
-  }
+  ui->connect->setStyleSheet("border-image:url(" + get_image_path("connect.png") + ")");
 
   enter_server_requested();
 }
@@ -148,17 +129,11 @@ void Lobby::on_publicservers_clicked()
   public_servers_selected = true;
   int_selected_server = -1;
 
-  QString path_public = g_theme_path + "publicservers_selected.png";
-  QString path_favorites = g_theme_path + "favorites.png";
+  ui->publicservers->setStyleSheet("border-image:url(" + get_image_path("publicservers_selected.png") + ")");
+  ui->favorites->setStyleSheet("border-image:url(" + get_image_path("favorites.png") + ")");
 
-  if (fileExists(path_public))
-    ui->publicservers->setStyleSheet("border-image:url(" + path_public + ")");
-
-    if (fileExists(path_favorites))
-      ui->favorites->setStyleSheet("border-image:url(" + path_favorites + ")");
-
-    ui->favoritelist->hide();
-    ui->serverlist->show();
+  ui->favoritelist->hide();
+  ui->serverlist->show();
 }
 
 void Lobby::on_favorites_clicked()
@@ -166,14 +141,8 @@ void Lobby::on_favorites_clicked()
   public_servers_selected = false;
   int_selected_server = -1;
 
-  QString path_favorites = g_theme_path + "favorites_selected.png";
-  QString path_public = g_theme_path + "publicservers.png";
-
-  if (fileExists(path_favorites))
-    ui->favorites->setStyleSheet("border-image:url(" + path_favorites + ")");
-
-  if (fileExists(path_public))
-    ui->publicservers->setStyleSheet("border-image:url(" + path_public + ")");
+  ui->publicservers->setStyleSheet("border-image:url(" + get_image_path("publicservers.png") + ")");
+  ui->favorites->setStyleSheet("border-image:url(" + get_image_path("favorites_selected.png") + ")");
 
   LoadFavorites();
 
@@ -307,9 +276,10 @@ void Lobby::LoadFavorites()
 
     else
     {
-      QString str_line = QString::number(line_count + 1);
+      //QString str_line = QString::number(line_count + 1);
 
-      callError("favorites.txt appears to be misconfigured on line " + str_line + ". Expected <ip>:<port>:<name> format.");
+      //bad servers already show up as !MISCONFIGURED! we dont need this dumb error >:v(
+      //callError("favorites.txt appears to be misconfigured on line " + str_line + ". Expected <ip>:<port>:<name> format.");
 
       server_type serv;
 
@@ -358,6 +328,7 @@ void Lobby::on_about_clicked()
                   "Lupadim\n"
                   "Ruekasu\n"
                   "Draxirch\n"
+                  "Cronnicossy\n"
                   "\n"
                   "Original concept:\n"
                   "FanatSors\n"
@@ -366,4 +337,12 @@ void Lobby::on_about_clicked()
   msgBox->setWindowTitle("About");
   msgBox->setWindowModality(Qt::NonModal);
   msgBox->show();
+}
+
+void Lobby::closeEvent (QCloseEvent *event)
+{
+  //this is just to prevent those annoying "unused parameter" errors
+  event->accept();
+
+  request_quit();
 }

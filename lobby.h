@@ -88,12 +88,14 @@ private slots:
 private:
   Ui::Lobby *ui;
   bool court_exists = false;
+  void closeEvent (QCloseEvent *event);
 
 signals:
   void all_servers_requested();
   void server_connection_requested(QString ip, int port);
   void ms_message_requested(QString packet);
   void enter_server_requested();
+  void request_quit();
   //void server_disconnect_requested();
 
 };
