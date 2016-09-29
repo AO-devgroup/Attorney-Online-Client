@@ -220,7 +220,7 @@ void Courtroom::setTheme()
   charmovie_state = 2;
 
   //HACK for debugging
-  callError("Sample text");
+  //callError("Sample text");
 }
 
 void Courtroom::set_character(int p_character, int p_mod)
@@ -603,6 +603,9 @@ void Courtroom::handle_chatmessage()
       return;
   }
 
+  chatpos = 0;
+  chattimer->stop();
+  charmovie->stop();
 
   //current_chatmessage = p_message;
 
