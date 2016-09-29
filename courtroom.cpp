@@ -597,9 +597,6 @@ void Courtroom::set_scene(QString p_side)
 
 void Courtroom::handle_chatmessage()
 { 
-  if (!in_court)
-    return;
-
   if (current_chatmessage.cid < mutelist.size())
   {
     if (mutelist.at(current_chatmessage.cid))
