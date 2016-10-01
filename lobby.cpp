@@ -328,6 +328,7 @@ void Lobby::on_about_clicked()
                   "Lupadim\n"
                   "Ruekasu\n"
                   "Draxirch\n"
+                  "Fiercy\n"
                   "Cronnicossy\n"
                   "\n"
                   "Original concept:\n"

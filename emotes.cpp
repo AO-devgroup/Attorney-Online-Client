@@ -279,7 +279,7 @@ void Courtroom::setEmotes()
   for(int n_iteration = 1 ; n_iteration <= n_emotes_ini ; ++n_iteration)
   {
 
-  for(int n_line = int_soundt_line ; n_line < char_ini_list.size() - 1 ; ++n_line)
+  for(int n_line = int_soundt_line ; n_line < char_ini_list.size() ; ++n_line)
   {
     //what we are doing here is finding sound effect delays
     //dodging index out of range
@@ -294,6 +294,8 @@ void Courtroom::setEmotes()
 
     if (line.startsWith(search_line))
     {
+      qDebug() << "iteration " << n_iteration;
+      qDebug() << "line = " << line;
       //removes "x = " from the start of the string
       int f_sfx_delay = line.remove(0, 4).toInt();
 

@@ -747,7 +747,7 @@ void Courtroom::handle_chatmessage2()
     if (current_chatmessage.text_color == 1)
     {
       charmovie_state = 2;
-      if (fileExists, true)
+      if (fileExists(idle_gif_path, true))
         charmovie->setFileName(idle_gif_path);
       else
         charmovie->setFileName(placeholder_path);
