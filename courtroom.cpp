@@ -783,6 +783,17 @@ void Courtroom::handle_chatmessage2()
     charmovie_state = 0;
     charmovie->start();
     break;
+  case 4:
+    qDebug() << "gif_preanim_path = " << gif_preanim_path;
+    ui->desk->show();
+    if (fileExists(gif_preanim_path, true))
+      charmovie->setFileName(gif_preanim_path);
+    else
+      charmovie->setFileName(placeholder_path);
+    charmovie_state = 0;
+    charmovie->start();
+    break;
+
   case 5:
     ui->desk->hide();
     ui->playingbackground->setMovie(speedlinesmovie);
@@ -1406,6 +1417,14 @@ void Courtroom::char_gif_framechange(int p_frame)
       charmovie_state = 1;
       chattimer->stop();
       charmovie->stop();
+
+      if (current_chatmessage.emote_modifier == 4)
+      {
+        speedlinesmovie->stop();
+        ui->playingbackground->setMovie(speedlinesmovie);
+        speedlinesmovie->start();
+      }
+
       if (current_chatmessage.realization == 1)
       {
         sfxplayer->stop();
