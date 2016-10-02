@@ -54,3 +54,5 @@ FORMS    += \
 
 RESOURCES += \
     resources.qrc
+
+QMAKE_LFLAGS_WINDOWS = /SUBSYSTEM:WINDOWS,5.01
