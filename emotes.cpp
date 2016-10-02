@@ -244,8 +244,6 @@ void Courtroom::setEmotes()
 
     QString line = char_ini_list.at(n_line);
 
-    qDebug() << "line: " << line;
-
     QString search_line = QString::number(emote_counter) + " =";
     QString search_line2 = QString::number(emote_counter) + "=";
 
@@ -287,17 +285,15 @@ void Courtroom::setEmotes()
       break;
 
     QString line = char_ini_list.at(n_line);
-    QString search_line = QString::number(emote_counter) + " = ";
-    QString search_line2 = QString::number(emote_counter) + "= ";
-    QString search_line3 = QString::number(emote_counter) + " =";
-    QString search_line4 = QString::number(emote_counter) + "=";
+    QString search_line = QString::number(emote_counter) + " =";
+    QString search_line2 = QString::number(emote_counter) + "=";
 
     if (line.startsWith(search_line))
     {
       qDebug() << "iteration " << n_iteration;
       qDebug() << "line = " << line;
       //removes "x = " from the start of the string
-      int f_sfx_delay = line.remove(0, 4).toInt();
+      int f_sfx_delay = line.remove(0, search_line.length()).toInt();
 
       emote_list[emote_counter - 1].sfx_delay = f_sfx_delay;
 
@@ -306,30 +302,13 @@ void Courtroom::setEmotes()
 
     else if (line.startsWith(search_line2))
     {
-      int f_sfx_delay = line.remove(0, 3).toInt();
+      int f_sfx_delay = line.remove(0, search_line2.length()).toInt();
 
       emote_list[emote_counter - 1].sfx_delay = f_sfx_delay;
 
       ++emote_counter;
     }
 
-    else if (line.startsWith(search_line3))
-    {
-      int f_sfx_delay = line.remove(0, 3).toInt();
-
-      emote_list[emote_counter - 1].sfx_delay = f_sfx_delay;
-
-      ++emote_counter;
-    }
-
-    else if (line.startsWith(search_line4))
-    {
-      int f_sfx_delay = line.remove(0, 2).toInt();
-
-      emote_list[emote_counter - 1].sfx_delay = f_sfx_delay;
-
-      ++emote_counter;
-    }
   }
   }
 
@@ -445,11 +424,14 @@ void Courtroom::emote_choose(int local_emote_number)
 
   int pre_state = emote_list.at(n_real_emote).mod;
 
+  //intentional fallthrough here
   switch (pre_state)
   {
   case 1:
     ;
   case 3:
+    ;
+  case 4:
     ui->prebox->setChecked(true);
     break;
   default:

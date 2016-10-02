@@ -453,6 +453,8 @@ void Courtroom::on_chatLine_returnPressed()
       f_chatmessage.emote_modifier = 1;
     else if (f_chatmessage.emote_modifier == 2)
       f_chatmessage.emote_modifier = 3;
+    else if (f_chatmessage.emote_modifier == 5)
+      f_chatmessage.emote_modifier = 4;
   }
 
   else
@@ -461,6 +463,8 @@ void Courtroom::on_chatLine_returnPressed()
       f_chatmessage.emote_modifier = 0;
     else if (f_chatmessage.emote_modifier == 3)
       f_chatmessage.emote_modifier = 2;
+    else if (f_chatmessage.emote_modifier == 4)
+      f_chatmessage.emote_modifier = 5;
   }
 
   ui->prebox->setChecked(false);
@@ -664,7 +668,9 @@ void Courtroom::handle_chatmessage2()
   ui->desk->show();
 
   if (current_chatmessage.sfx_name != "1" &&
-      (current_chatmessage.emote_modifier == 1 || current_chatmessage.emote_modifier == 3))
+      (current_chatmessage.emote_modifier == 1 ||
+       current_chatmessage.emote_modifier == 3 ||
+       current_chatmessage.emote_modifier == 4))
   {
     sfxdelaytimer->start(current_chatmessage.sfx_delay * 60);
   }
@@ -1422,6 +1428,7 @@ void Courtroom::char_gif_framechange(int p_frame)
       {
         speedlinesmovie->stop();
         ui->playingbackground->setMovie(speedlinesmovie);
+        ui->desk->hide();
         speedlinesmovie->start();
       }
 
