@@ -54,3 +54,5 @@ FORMS    += \
 
 RESOURCES += \
     resources.qrc
+
+CONFIG += c++11
