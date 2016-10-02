@@ -19,6 +19,7 @@
 #include <QTimer>
 #include <QScrollBar>
 #include <QCloseEvent>
+#include <QTime>
 
 #include "ui_courtroom.h"
 
@@ -126,6 +127,12 @@ private:
   QTimer *chattimer;
   QTimer *sfxdelaytimer;
   QTimer *realizationtimer;
+  QTimer *animtimer;
+
+  int animframe = 0;
+  QVector<QImage> mirror_anim;
+
+  QTime *debugtime;
 
   int chatpos = 0;
 
@@ -195,6 +202,8 @@ private slots:
   void emote_choose(int local_emote_number);
 
   void chat_tick();
+
+  void anim_tick();
 
   void realization_done();
 

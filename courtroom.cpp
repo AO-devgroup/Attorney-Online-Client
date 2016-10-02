@@ -20,6 +20,9 @@ Courtroom::Courtroom(QWidget *parent) :
   guardplayer = new QMediaPlayer(this);
   sfxdelaytimer = new QTimer(this);
   realizationtimer = new QTimer(this);
+  animtimer = new QTimer(this);
+
+  debugtime = new QTime();
 
 
   connect(testimonymovie, SIGNAL(frameChanged(int)), this, SLOT(testimony_gif_framechange(int)));
@@ -29,6 +32,8 @@ Courtroom::Courtroom(QWidget *parent) :
   connect(charmovie, SIGNAL(frameChanged(int)), this, SLOT(char_gif_framechange(int)));
 
   connect(chattimer, SIGNAL(timeout()), this, SLOT(chat_tick()));
+
+  connect(animtimer, SIGNAL(timeout()), this, SLOT(anim_tick()));
 
   connect(sfxdelaytimer, SIGNAL(timeout()), this, SLOT(play_sfx()));
 
@@ -601,6 +606,10 @@ void Courtroom::set_scene(QString p_side)
 
 void Courtroom::handle_chatmessage()
 { 
+  //DEBUG
+  debugtime->start();
+  animtimer->start(20);
+
   if (current_chatmessage.cid < mutelist.size())
   {
     if (mutelist.at(current_chatmessage.cid))
@@ -741,6 +750,29 @@ void Courtroom::handle_chatmessage2()
 
   charmovie->stop();
   speedlinesmovie->stop();
+
+  if (current_chatmessage.emote_modifier == -1)
+  {
+    QImageReader *reader = new QImageReader(gif_path);
+    QImage boi = reader->read();
+    QVector<QImage> boi_vector;
+    while (!boi.isNull())
+    {
+      boi_vector.append(boi);
+
+      boi = reader->read();
+    }
+
+    mirror_anim.clear();
+
+    for (QImage a : boi_vector)
+    {
+      mirror_anim.append(a.mirrored(true, false));
+    }
+
+
+    //ui->playingarea->setPixmap(QPixmap::fromImage(mirror_vector.last()));
+  }
 
   switch (current_chatmessage.emote_modifier)
   {
@@ -1415,6 +1447,8 @@ void Courtroom::objection_gif_framechange(int p_frame)
 
 void Courtroom::char_gif_framechange(int p_frame)
 {
+  qDebug() << "time elapsed on frame " << p_frame << ": "<< debugtime->elapsed();
+
   if (p_frame == (charmovie->frameCount()-1))
   {
     if (charmovie_state == 0)
@@ -1605,4 +1639,15 @@ void Courtroom::closeEvent (QCloseEvent *event)
   event->accept();
 
   request_quit();
+}
+
+void Courtroom::anim_tick()
+{
+  if (animframe >= mirror_anim.size())
+    animframe = 0;
+
+  ui->playingarea->setPixmap(QPixmap::fromImage(mirror_anim.at(animframe)));
+  qDebug() << "animframe: " << animframe;
+
+  ++animframe;
 }
