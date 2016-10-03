@@ -73,6 +73,8 @@ void Lobby::on_refresh_pressed()
 void Lobby::on_refresh_released()
 {
   ui->refresh->setStyleSheet("border-image:url(" + get_image_path("refresh.png") + ")");
+
+  all_servers_requested();
 }
 
 void Lobby::on_addtofav_pressed()
