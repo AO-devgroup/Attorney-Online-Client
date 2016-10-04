@@ -1462,12 +1462,12 @@
     </item>
     <item>
      <property name="text">
-      <string>Blue</string>
+      <string>Green</string>
      </property>
     </item>
     <item>
      <property name="text">
-      <string>Green</string>
+      <string>Red</string>
      </property>
     </item>
     <item>
@@ -1477,7 +1477,7 @@
     </item>
     <item>
      <property name="text">
-      <string>Red</string>
+      <string>Blue</string>
      </property>
     </item>
    </widget>

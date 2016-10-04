@@ -233,10 +233,7 @@ void Courtroom::set_character(int p_character, int p_mod)
   switch (p_mod)
   {
   case 0:
-    qDebug() << "setting character as " << character_list.at(p_character).name;
-    qDebug() << "p_character: " << p_character;
     playerChar = character_list.at(p_character).name;
-    qDebug() << "playerChar set :" << playerChar;
     enter_courtroom();
     break;
   case 1:
@@ -613,7 +610,7 @@ void Courtroom::set_scene(QString p_side)
   else
     speedlinesmovie->setFileName(getBasePath() + "themes/default/defense_speedlines.gif");
 
-  qDebug() << "f_speedlines_path: " << f_speedlines_path;
+  //qDebug() << "f_speedlines_path: " << f_speedlines_path;
 
   //ui->playingbackground->setMovie(speedlinesmovie);
 
@@ -709,11 +706,11 @@ void Courtroom::handle_chatmessage2()
     //ui->chatLine->setStyleSheet("QLineEdit{color: white;}");
     break;
   case 1:
-    ui->chattext->setStyleSheet("QPlainTextEdit{color: rgb(45, 150, 255);}");
+    ui->chattext->setStyleSheet("QPlainTextEdit{color: rgb(0, 255, 0);}");
     //ui->chatLine->setStyleSheet("color: blue;");
     break;
   case 2:
-    ui->chattext->setStyleSheet("QPlainTextEdit{color: rgb(0, 255, 0);}");
+    ui->chattext->setStyleSheet("QPlainTextEdit{color: red;}");
     //ui->chatLine->setStyleSheet("QLineEdit{color: rgb(0, 255, 0);}");
     break;
   case 3:
@@ -721,7 +718,7 @@ void Courtroom::handle_chatmessage2()
     //ui->chatLine->setStyleSheet("QLineEdit{color: orange;}");
     break;
   case 4:
-    ui->chattext->setStyleSheet("QPlainTextEdit{color: red;}");
+    ui->chattext->setStyleSheet("QPlainTextEdit{color: rgb(45, 150, 255);}");
     //ui->chatLine->setStyleSheet("QLineEdit{color: red;}");
     break;
   default:
@@ -873,7 +870,7 @@ void Courtroom::handle_chatmessage2()
     ;
   }
 
-  if (fileExists(real_gif_path))
+  if (fileExists(real_gif_path, true))
   {
     charmovie->setFileName(real_gif_path);
   }
@@ -1435,8 +1432,12 @@ void Courtroom::on_arealist_doubleClicked(const QModelIndex &index)
 
 void Courtroom::testimony_gif_framechange(int p_frame)
 {
-  if (p_frame == (testimonymovie->frameCount()-1))
+  static bool last_frame = false;
+
+
+  if (last_frame)
   {
+    last_frame = false;
     if (testimonystate == 1)
     {
       //so that the testimony blinks between WT and CE
@@ -1451,23 +1452,38 @@ void Courtroom::testimony_gif_framechange(int p_frame)
     else
       testimonymovie->stop();
   }
+
+  if (p_frame == (testimonymovie->frameCount()-1))
+  {
+    last_frame = true;
+  }
 }
 
 void Courtroom::objection_gif_framechange(int p_frame)
 {
-  if (p_frame >= (objectionmovie->frameCount()-1))
+  static bool last_frame = false;
+
+  if (last_frame)
   {
+    last_frame = false;
     objectionmovie->stop();
     handle_chatmessage2();
+  }
+  if (p_frame >= (objectionmovie->frameCount()-1))
+  {
+    last_frame = true;
   }
 }
 
 void Courtroom::char_gif_framechange(int p_frame)
 {
-  //qDebug() << "time elapsed on frame " << p_frame << ": "<< debugtime->elapsed();
+  qDebug() << "frame: " << p_frame;
+  static bool last_frame = false;
 
-  if (p_frame == (charmovie->frameCount()-1))
+  if (last_frame)
   {
+    qDebug() << "last frame was true, setting to false";
+    last_frame = false;
     if (charmovie_state == 0)
     {
       //this is called when the preanimation has played once
@@ -1524,10 +1540,11 @@ void Courtroom::char_gif_framechange(int p_frame)
         set_flipped_animation(f_gif_path);
 
       charmovie->start();
-
     }
-
   }
+
+  if (p_frame == (charmovie->frameCount() - 1))
+    last_frame = true;
 
   if (current_chatmessage.flip == 1)
   {
