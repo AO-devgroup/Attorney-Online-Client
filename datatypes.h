@@ -51,6 +51,7 @@ struct chatmessage_type
   int evidence;
   int cid;
   int sfx_delay;
+  int flip;
 };
 
 struct area_type

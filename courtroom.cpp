@@ -20,7 +20,7 @@ Courtroom::Courtroom(QWidget *parent) :
   guardplayer = new QMediaPlayer(this);
   sfxdelaytimer = new QTimer(this);
   realizationtimer = new QTimer(this);
-  animtimer = new QTimer(this);
+  //animtimer = new QTimer(this);
 
   debugtime = new QTime();
 
@@ -33,7 +33,7 @@ Courtroom::Courtroom(QWidget *parent) :
 
   connect(chattimer, SIGNAL(timeout()), this, SLOT(chat_tick()));
 
-  connect(animtimer, SIGNAL(timeout()), this, SLOT(anim_tick()));
+  //connect(animtimer, SIGNAL(timeout()), this, SLOT(anim_tick()));
 
   connect(sfxdelaytimer, SIGNAL(timeout()), this, SLOT(play_sfx()));
 
@@ -433,7 +433,7 @@ void Courtroom::on_chatLine_returnPressed()
   char_ini.close();
 
   if (f_side == "")
-    callError("could not find side = in char.ini");
+    f_side = "wit";
 
   emote_type f_emote = emote_list.at(emote_selected);
 
@@ -448,9 +448,14 @@ void Courtroom::on_chatLine_returnPressed()
   f_chatmessage.sfx_delay = f_emote.sfx_delay;
   f_chatmessage.objection_modifier = objection_state;
   f_chatmessage.evidence = evidence_state;
-  //placeholder
+  //f_chatmessage.flip set right after this block
   f_chatmessage.realization = realization_state;
   f_chatmessage.text_color = text_color_state;
+
+  if (ui->flipbox->checkState())
+    f_chatmessage.flip = 1;
+  else
+    f_chatmessage.flip = 0;
 
   if (ui->prebox->checkState())
   {
@@ -510,7 +515,12 @@ void Courtroom::set_scene(QString p_side)
   {
     f_background_path += "witnessempty.png";
     f_default_background_path += "witnessempty.png";
-    f_speedlines_path += "prosecution_speedlines.gif";
+
+    if (current_chatmessage.flip == 1)
+      f_speedlines_path += "defense_speedlines.gif";
+    else
+      f_speedlines_path += "prosecution_speedlines.gif";
+
     f_default_speedlines_path += "prosecution_speedlines.gif";
     f_desk_path += "";
     f_default_desk_path += "";
@@ -527,7 +537,9 @@ void Courtroom::set_scene(QString p_side)
   {
     f_background_path += "defenseempty.png";
     f_default_background_path += "defenseempty.png";
+
     f_speedlines_path += "defense_speedlines.gif";
+
     f_default_speedlines_path += "defense_speedlines.gif";
     f_desk_path += "bancodefensa.png";
     f_default_desk_path += "bancodefensa.png";
@@ -536,7 +548,9 @@ void Courtroom::set_scene(QString p_side)
   {
     f_background_path += "prosecutorempty.png";
     f_default_background_path += "prosecutorempty.png";
+
     f_speedlines_path += "prosecution_speedlines.gif";
+
     f_default_speedlines_path += "prosecution_speedlines.gif";
     f_desk_path += "bancoacusacion.png";
     f_default_desk_path += "bancoacusacion.png";
@@ -545,7 +559,9 @@ void Courtroom::set_scene(QString p_side)
   {
     f_background_path += "judgestand.png";
     f_default_background_path += "judgestand.png";
+
     f_speedlines_path += "defense_speedlines.gif";
+
     f_default_speedlines_path += "defense_speedlines.gif";
     f_desk_path = "";
     f_default_desk_path = "";
@@ -554,7 +570,9 @@ void Courtroom::set_scene(QString p_side)
   {
     f_background_path += "helperstand.png";
     f_default_background_path += "helperstand.png";
+
     f_speedlines_path += "defense_speedlines.gif";
+
     f_default_speedlines_path += "defense_speedlines.gif";
     f_desk_path = "";
     f_default_desk_path = "";
@@ -563,7 +581,10 @@ void Courtroom::set_scene(QString p_side)
   {
     f_background_path += "prohelperstand.png";
     f_default_background_path += "prohelperstand.png";
+
+
     f_speedlines_path += "prosecution_speedlines.gif";
+
     f_default_speedlines_path += "prosecution_speedlines.gif";
     f_desk_path = "";
     f_default_desk_path = "";
@@ -572,7 +593,9 @@ void Courtroom::set_scene(QString p_side)
   {
     f_background_path += "witnessempty.png";
     f_default_background_path += "witnessempty.png";
+
     f_speedlines_path += "prosecution_speedlines.gif";
+
     f_default_speedlines_path += "prosecution_speedlines.gif";
     f_desk_path += "";
     f_default_desk_path += "";
@@ -587,12 +610,10 @@ void Courtroom::set_scene(QString p_side)
 
   if (fileExists(f_speedlines_path, true))
     speedlinesmovie->setFileName(f_speedlines_path);
-  else if (fileExists(f_default_speedlines_path, true))
-    speedlinesmovie->setFileName(f_default_speedlines_path);
   else
-  {
-    ;
-  }
+    speedlinesmovie->setFileName(getBasePath() + "themes/default/defense_speedlines.gif");
+
+  qDebug() << "f_speedlines_path: " << f_speedlines_path;
 
   //ui->playingbackground->setMovie(speedlinesmovie);
 
@@ -606,10 +627,6 @@ void Courtroom::set_scene(QString p_side)
 
 void Courtroom::handle_chatmessage()
 { 
-  //DEBUG
-  debugtime->start();
-  animtimer->start(20);
-
   if (current_chatmessage.cid < mutelist.size())
   {
     if (mutelist.at(current_chatmessage.cid))
@@ -619,8 +636,6 @@ void Courtroom::handle_chatmessage()
   chatpos = 0;
   chattimer->stop();
   charmovie->stop();
-
-  //current_chatmessage = p_message;
 
   QString char_path = getBasePath() + "characters/";
 
@@ -675,8 +690,11 @@ void Courtroom::handle_chatmessage2()
   ui->chatlog->insertPlainText(showname + ": " + f_message + '\n');
 
   ui->desk->show();
+  ui->witnesstand->show();
 
-  if (current_chatmessage.sfx_name != "1" &&
+  //logic statements ahoy
+  if ((current_chatmessage.sfx_name != "1" &&
+       current_chatmessage.sfx_name != "0") &&
       (current_chatmessage.emote_modifier == 1 ||
        current_chatmessage.emote_modifier == 3 ||
        current_chatmessage.emote_modifier == 4))
@@ -748,36 +766,33 @@ void Courtroom::handle_chatmessage2()
   QString gif_preanim_path = getCharGifPath(current_chatmessage.character, current_chatmessage.pre_emote + ".gif");
   QString placeholder_path = get_image_path("placeholder.gif");
 
+  /*
+  if (current_chatmessage.flip == 1)
+  {
+    QImageReader *reader;
+    //QImageReader *reader = new QImageReader(gif_path);
+
+  }
+
+  else
+  {
+    ui->playingarea->show();
+    ui->flipped_playingarea->hide();
+  }
+  */
+
+
+
   charmovie->stop();
   speedlinesmovie->stop();
 
-  if (current_chatmessage.emote_modifier == -1)
-  {
-    QImageReader *reader = new QImageReader(gif_path);
-    QImage boi = reader->read();
-    QVector<QImage> boi_vector;
-    while (!boi.isNull())
-    {
-      boi_vector.append(boi);
-
-      boi = reader->read();
-    }
-
-    mirror_anim.clear();
-
-    for (QImage a : boi_vector)
-    {
-      mirror_anim.append(a.mirrored(true, false));
-    }
-
-
-    //ui->playingarea->setPixmap(QPixmap::fromImage(mirror_vector.last()));
-  }
+  QString real_gif_path;
 
   switch (current_chatmessage.emote_modifier)
   {
   case 2:
     ui->desk->hide();
+    ui->witnesstand->hide();
     //intentional fallthrough here
   case 0:
     chattimer->stop();
@@ -785,20 +800,12 @@ void Courtroom::handle_chatmessage2()
     if (current_chatmessage.text_color == 1)
     {
       charmovie_state = 2;
-      if (fileExists(idle_gif_path, true))
-        charmovie->setFileName(idle_gif_path);
-      else
-        charmovie->setFileName(placeholder_path);
+      real_gif_path = idle_gif_path;
     }
     else
     {
-      charmovie_state = 1;
-      if (fileExists(gif_path, true))
-        charmovie->setFileName(gif_path);
-      else
-        charmovie->setFileName(placeholder_path);
+      real_gif_path = gif_path;
     }
-
     chattimer->start(chat_timing);
     if (current_chatmessage.realization == 1)
     {
@@ -808,32 +815,26 @@ void Courtroom::handle_chatmessage2()
       ui->realizationflash->show();
       realizationtimer->start(60);
     }
-    charmovie->start();
     break;
   case 3:
     ui->desk->hide();
+    ui->witnesstand->hide();
     //intentional fallthrough here
   case 1:
-    if (fileExists(gif_preanim_path, true))
-      charmovie->setFileName(gif_preanim_path);
-    else
-      charmovie->setFileName(placeholder_path);
+    real_gif_path = gif_preanim_path;
     charmovie_state = 0;
-    charmovie->start();
     break;
   case 4:
-    qDebug() << "gif_preanim_path = " << gif_preanim_path;
+    //qDebug() << "gif_preanim_path = " << gif_preanim_path;
     ui->desk->show();
-    if (fileExists(gif_preanim_path, true))
-      charmovie->setFileName(gif_preanim_path);
-    else
-      charmovie->setFileName(placeholder_path);
+    ui->witnesstand->show();
+    real_gif_path = gif_preanim_path;
     charmovie_state = 0;
-    charmovie->start();
     break;
 
   case 5:
     ui->desk->hide();
+    ui->witnesstand->hide();
     ui->playingbackground->setMovie(speedlinesmovie);
     chattimer->stop();
 
@@ -848,39 +849,55 @@ void Courtroom::handle_chatmessage2()
 
     if (current_chatmessage.message == " ")
     {
-      if (fileExists(idle_gif_path, true))
-        charmovie->setFileName(idle_gif_path);
-      else
-        charmovie->setFileName(placeholder_path);
+      real_gif_path = idle_gif_path;
       charmovie_state = 2;
     }
 
     else if (current_chatmessage.text_color == 1)
     {
-      if (fileExists(idle_gif_path, true))
-        charmovie->setFileName(idle_gif_path);
-      else
-        charmovie->setFileName(placeholder_path);
+      real_gif_path = idle_gif_path;
       chattimer->start(chat_timing);
       charmovie_state = 2;
     }
 
     else
     {
-      if (fileExists(gif_path, true))
-        charmovie->setFileName(gif_path);
-      else
-        charmovie->setFileName(placeholder_path);
+      real_gif_path = gif_path;
       chattimer->start(chat_timing);
       charmovie_state = 1;
     }
 
     speedlinesmovie->start();
-    charmovie->start();
     break;
   default:
     ;
   }
+
+  if (fileExists(real_gif_path))
+  {
+    charmovie->setFileName(real_gif_path);
+  }
+  else
+  {
+    real_gif_path = placeholder_path;
+    charmovie->setFileName(real_gif_path);
+  }
+
+  if (current_chatmessage.flip == 1)
+  {
+    set_flipped_animation(real_gif_path);
+
+    ui->playingarea->hide();
+    ui->flipped_playingarea->show();
+  }
+
+  else
+  {
+    ui->playingarea->show();
+    ui->flipped_playingarea->hide();
+  }
+
+  charmovie->start();
 }
 
 void Courtroom::handle_ms_message(QString p_message)
@@ -1056,7 +1073,7 @@ void Courtroom::handle_server_packet(QString p_packet)
     current_chatmessage.sfx_delay = packet_contents.at(10).toInt();
     current_chatmessage.objection_modifier = packet_contents.at(11).toInt();
     current_chatmessage.evidence = packet_contents.at(12).toInt();
-    //index 13 is a placeholder
+    current_chatmessage.flip = packet_contents.at(13).toInt();
     current_chatmessage.realization = packet_contents.at(14).toInt();
     current_chatmessage.text_color = packet_contents.at(15).toInt();
 
@@ -1447,7 +1464,7 @@ void Courtroom::objection_gif_framechange(int p_frame)
 
 void Courtroom::char_gif_framechange(int p_frame)
 {
-  qDebug() << "time elapsed on frame " << p_frame << ": "<< debugtime->elapsed();
+  //qDebug() << "time elapsed on frame " << p_frame << ": "<< debugtime->elapsed();
 
   if (p_frame == (charmovie->frameCount()-1))
   {
@@ -1463,6 +1480,7 @@ void Courtroom::char_gif_framechange(int p_frame)
         speedlinesmovie->stop();
         ui->playingbackground->setMovie(speedlinesmovie);
         ui->desk->hide();
+        ui->witnesstand->hide();
         speedlinesmovie->start();
       }
 
@@ -1475,32 +1493,46 @@ void Courtroom::char_gif_framechange(int p_frame)
         realizationtimer->start(60);
       }
 
+      QString f_gif_path;
+
       //if its an empty message we skip straight to the "idle" emote
       if (current_chatmessage.message == " ")
       {
         QString path = getCharGifPath(current_chatmessage.character, ("(a)" + current_chatmessage.emote + ".gif"));
-        if (fileExists(path, true))
-          charmovie->setFileName(path);
-        else
-          charmovie->setFileName(get_image_path("placeholder.gif"));
-        charmovie->start();
+        f_gif_path = path;
         charmovie_state = 2;
       }
       else
       {
         QString path = getCharGifPath(current_chatmessage.character, ("(b)" + current_chatmessage.emote + ".gif"));
-
-        if (fileExists(path, true))
-          charmovie->setFileName(path);
-        else
-          charmovie->setFileName(get_image_path("placeholder.gif"));
-        charmovie->start();
+        f_gif_path = path;
         chattimer->start(chat_timing);
         chatpos = 0;
       }
 
+      if (fileExists(f_gif_path))
+      {
+        charmovie->setFileName(f_gif_path);
+      }
+      else
+      {
+        f_gif_path = get_image_path("placeholder.gif");
+        charmovie->setFileName(f_gif_path);
+      }
+
+      if (current_chatmessage.flip == 1)
+        set_flipped_animation(f_gif_path);
+
+      charmovie->start();
+
     }
 
+  }
+
+  if (current_chatmessage.flip == 1)
+  {
+    if (charmovie->currentFrameNumber() < mirror_anim.size())
+      ui->flipped_playingarea->setPixmap(QPixmap::fromImage(mirror_anim.at(charmovie->currentFrameNumber())));
   }
 
 }
@@ -1527,10 +1559,13 @@ void Courtroom::chat_tick()
     charmovie_state = 2;
     chattimer->stop();
     charmovie->stop();
-    if (fileExists(path, true))
-      charmovie->setFileName(path);
-    else
-      charmovie->setFileName(get_image_path("placeholder.gif"));
+    if (!fileExists(path, true))
+      path = get_image_path("placeholder.gif");
+
+    if(current_chatmessage.flip == 1)
+      set_flipped_animation(path);
+
+    charmovie->setFileName(path);
     charmovie->start();
     return;
   }
@@ -1600,6 +1635,11 @@ void Courtroom::on_prebox_clicked()
   ui->chatLine->setFocus();
 }
 
+void Courtroom::on_flipbox_clicked()
+{
+  ui->chatLine->setFocus();
+}
+
 void Courtroom::play_sfx()
 {
   sfxdelaytimer->stop();
@@ -1641,13 +1681,26 @@ void Courtroom::closeEvent (QCloseEvent *event)
   request_quit();
 }
 
-void Courtroom::anim_tick()
+void Courtroom::set_flipped_animation (QString p_gif_path)
 {
-  if (animframe >= mirror_anim.size())
-    animframe = 0;
+  QImageReader *reader = new QImageReader(p_gif_path);
 
-  ui->playingarea->setPixmap(QPixmap::fromImage(mirror_anim.at(animframe)));
-  qDebug() << "animframe: " << animframe;
+  mirror_anim.clear();
+  QImage f_image = reader->read();
+  while (!f_image.isNull())
+  {
+    mirror_anim.append(f_image.mirrored(true, false));
+    f_image = reader->read();
+  }
 
-  ++animframe;
+  delete reader;
+}
+
+void Courtroom::handle_server_disconnect()
+{
+  if (in_court)
+  {
+    callError("Disconnected from server :v(");
+    request_quit();
+  }
 }

@@ -93,6 +93,8 @@ public:
     QLabel *witnesstand;
     QPushButton *backtolobby;
     QLabel *realizationflash;
+    QCheckBox *flipbox;
+    QLabel *flipped_playingarea;
 
     void setupUi(QMainWindow *Courtroom)
     {
@@ -471,10 +473,10 @@ public:
         objectiongif->setGeometry(QRect(0, 0, 256, 192));
         prebox = new QCheckBox(centralwidget);
         prebox->setObjectName(QStringLiteral("prebox"));
-        prebox->setGeometry(QRect(187, 347, 51, 21));
+        prebox->setGeometry(QRect(187, 345, 51, 21));
         guardbox = new QCheckBox(centralwidget);
         guardbox->setObjectName(QStringLiteral("guardbox"));
-        guardbox->setGeometry(QRect(187, 365, 85, 21));
+        guardbox->setGeometry(QRect(187, 379, 85, 21));
         mutelist = new QListWidget(centralwidget);
         mutelist->setObjectName(QStringLiteral("mutelist"));
         mutelist->setGeometry(QRect(260, 160, 231, 159));
@@ -490,6 +492,12 @@ public:
         realizationflash = new QLabel(centralwidget);
         realizationflash->setObjectName(QStringLiteral("realizationflash"));
         realizationflash->setGeometry(QRect(0, 0, 256, 192));
+        flipbox = new QCheckBox(centralwidget);
+        flipbox->setObjectName(QStringLiteral("flipbox"));
+        flipbox->setGeometry(QRect(187, 362, 85, 21));
+        flipped_playingarea = new QLabel(centralwidget);
+        flipped_playingarea->setObjectName(QStringLiteral("flipped_playingarea"));
+        flipped_playingarea->setGeometry(QRect(0, 0, 256, 192));
         Courtroom->setCentralWidget(centralwidget);
         ooc_master->raise();
         ooc_server->raise();
@@ -502,8 +510,6 @@ public:
         objection->raise();
         chatLine->raise();
         playingbackground->raise();
-        playingarea->raise();
-        desk->raise();
         spectator->raise();
         charselector->raise();
         charselect_left->raise();
@@ -545,12 +551,16 @@ public:
         guardbox->raise();
         mutelist->raise();
         muted->raise();
+        backtolobby->raise();
+        flipbox->raise();
+        playingarea->raise();
+        flipped_playingarea->raise();
         witnesstand->raise();
+        desk->raise();
         chatbubble->raise();
         chattext->raise();
         charname->raise();
         testimony->raise();
-        backtolobby->raise();
         realizationflash->raise();
         objectiongif->raise();
 
@@ -634,6 +644,8 @@ public:
         witnesstand->setText(QString());
         backtolobby->setText(QApplication::translate("Courtroom", "Back to lobby", 0));
         realizationflash->setText(QString());
+        flipbox->setText(QApplication::translate("Courtroom", "Flip", 0));
+        flipped_playingarea->setText(QString());
     } // retranslateUi
 
 };

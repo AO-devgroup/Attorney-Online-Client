@@ -127,7 +127,7 @@ private:
   QTimer *chattimer;
   QTimer *sfxdelaytimer;
   QTimer *realizationtimer;
-  QTimer *animtimer;
+  //QTimer *animtimer;
 
   int animframe = 0;
   QVector<QImage> mirror_anim;
@@ -163,6 +163,8 @@ private:
 
   void set_area_ui();
 
+  void set_flipped_animation(QString p_gif_path);
+
   void handle_chatmessage2();
 
   void closeEvent(QCloseEvent *event);
@@ -190,6 +192,8 @@ public slots:
 
   void handle_server_packet(QString p_packet);
 
+  void handle_server_disconnect();
+
 private slots:
   void testimony_gif_framechange(int p_frame);
 
@@ -202,8 +206,6 @@ private slots:
   void emote_choose(int local_emote_number);
 
   void chat_tick();
-
-  void anim_tick();
 
   void realization_done();
 
@@ -268,6 +270,8 @@ private slots:
   void on_mutelist_clicked(const QModelIndex &index);
 
   void on_prebox_clicked();
+
+  void on_flipbox_clicked();
 
   void play_sfx();
 
