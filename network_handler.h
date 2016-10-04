@@ -70,6 +70,8 @@ signals:
 
   void server_packet_received(QString p_packet);
 
+  void disconnect_signal();
+
   void request_quit();
 
 public slots:

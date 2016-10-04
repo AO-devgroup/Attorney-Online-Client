@@ -1462,12 +1462,12 @@
     </item>
     <item>
      <property name="text">
-      <string>Blue</string>
+      <string>Green</string>
      </property>
     </item>
     <item>
      <property name="text">
-      <string>Green</string>
+      <string>Red</string>
      </property>
     </item>
     <item>
@@ -1477,7 +1477,7 @@
     </item>
     <item>
      <property name="text">
-      <string>Red</string>
+      <string>Blue</string>
      </property>
     </item>
    </widget>
@@ -1724,7 +1724,7 @@
     <property name="geometry">
      <rect>
       <x>187</x>
-      <y>347</y>
+      <y>345</y>
       <width>51</width>
       <height>21</height>
      </rect>
@@ -1737,7 +1737,7 @@
     <property name="geometry">
      <rect>
       <x>187</x>
-      <y>365</y>
+      <y>379</y>
       <width>85</width>
       <height>21</height>
      </rect>
@@ -1808,6 +1808,32 @@
      <string/>
     </property>
    </widget>
+   <widget class="QCheckBox" name="flipbox">
+    <property name="geometry">
+     <rect>
+      <x>187</x>
+      <y>362</y>
+      <width>85</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Flip</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="flipped_playingarea">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>256</width>
+      <height>192</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
    <zorder>ooc_master</zorder>
    <zorder>ooc_server</zorder>
    <zorder>present</zorder>
@@ -1819,8 +1845,6 @@
    <zorder>objection</zorder>
    <zorder>chatLine</zorder>
    <zorder>playingbackground</zorder>
-   <zorder>playingarea</zorder>
-   <zorder>desk</zorder>
    <zorder>spectator</zorder>
    <zorder>charselector</zorder>
    <zorder>charselect_left</zorder>
@@ -1862,12 +1886,16 @@
    <zorder>guardbox</zorder>
    <zorder>mutelist</zorder>
    <zorder>muted</zorder>
+   <zorder>backtolobby</zorder>
+   <zorder>flipbox</zorder>
+   <zorder>playingarea</zorder>
+   <zorder>flipped_playingarea</zorder>
    <zorder>witnesstand</zorder>
+   <zorder>desk</zorder>
    <zorder>chatbubble</zorder>
    <zorder>chattext</zorder>
    <zorder>charname</zorder>
    <zorder>testimony</zorder>
-   <zorder>backtolobby</zorder>
    <zorder>realizationflash</zorder>
    <zorder>objectiongif</zorder>
   </widget>
