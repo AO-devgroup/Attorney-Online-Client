@@ -1905,13 +1905,13 @@
    <zorder>flipped_playingarea</zorder>
    <zorder>witnesstand</zorder>
    <zorder>desk</zorder>
+   <zorder>desk_2</zorder>
    <zorder>chatbubble</zorder>
    <zorder>chattext</zorder>
    <zorder>charname</zorder>
    <zorder>testimony</zorder>
    <zorder>realizationflash</zorder>
    <zorder>objectiongif</zorder>
-   <zorder>desk_2</zorder>
   </widget>
  </widget>
  <resources>

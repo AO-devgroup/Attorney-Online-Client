@@ -352,7 +352,7 @@ void Courtroom::setEmotePage()
   emote_left_button->hide();
   emote_right_button->hide();
 
-  int emotes_on_page = -1;
+  emotes_on_page = -1;
   int total_emotes = emote_list.size();
 
   if(emote_pages < 1)                        //SANITY CHECK

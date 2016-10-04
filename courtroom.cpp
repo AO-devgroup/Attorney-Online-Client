@@ -501,6 +501,7 @@ void Courtroom::set_scene(QString p_side)
   QString f_default_speedlines_path = getBasePath() + "themes/default/";
 
   QString f_desk_path = background_path;
+  QString f_desk2_path = background_path;
   QString f_default_desk_path = default_path;
 
   QString f_estrado_path = background_path + "estrado.png";
@@ -513,14 +514,12 @@ void Courtroom::set_scene(QString p_side)
     f_background_path += "witnessempty.png";
     f_default_background_path += "witnessempty.png";
 
-    if (current_chatmessage.flip == 1)
-      f_speedlines_path += "defense_speedlines.gif";
-    else
-      f_speedlines_path += "prosecution_speedlines.gif";
+    f_speedlines_path += "prosecution_speedlines.gif";
 
     f_default_speedlines_path += "prosecution_speedlines.gif";
-    f_desk_path += "";
+    f_desk2_path += "estrado.png";
     f_default_desk_path += "";
+
     if (fileExists(f_estrado_path, true))
       ui->witnesstand->setPixmap(f_estrado_path);
     else if (fileExists(f_default_estrado_path, true))
@@ -528,7 +527,7 @@ void Courtroom::set_scene(QString p_side)
     else
       ui->witnesstand->clear();
 
-    ui->witnesstand->show();
+    //ui->witnesstand->show();
   }
   else if (p_side == "def")
   {
@@ -539,6 +538,7 @@ void Courtroom::set_scene(QString p_side)
 
     f_default_speedlines_path += "defense_speedlines.gif";
     f_desk_path += "bancodefensa.png";
+    f_desk2_path +="defensedesk.png";
     f_default_desk_path += "bancodefensa.png";
   }
   else if (p_side == "pro")
@@ -763,23 +763,6 @@ void Courtroom::handle_chatmessage2()
   QString gif_preanim_path = getCharGifPath(current_chatmessage.character, current_chatmessage.pre_emote + ".gif");
   QString placeholder_path = get_image_path("placeholder.gif");
 
-  /*
-  if (current_chatmessage.flip == 1)
-  {
-    QImageReader *reader;
-    //QImageReader *reader = new QImageReader(gif_path);
-
-  }
-
-  else
-  {
-    ui->playingarea->show();
-    ui->flipped_playingarea->hide();
-  }
-  */
-
-
-
   charmovie->stop();
   speedlinesmovie->stop();
 
@@ -789,6 +772,7 @@ void Courtroom::handle_chatmessage2()
   {
   case 2:
     ui->desk->hide();
+    ui->desk_2->hide();
     ui->witnesstand->hide();
     //intentional fallthrough here
   case 0:
@@ -815,6 +799,7 @@ void Courtroom::handle_chatmessage2()
     break;
   case 3:
     ui->desk->hide();
+    ui->desk_2->hide();
     ui->witnesstand->hide();
     //intentional fallthrough here
   case 1:
@@ -824,6 +809,7 @@ void Courtroom::handle_chatmessage2()
   case 4:
     //qDebug() << "gif_preanim_path = " << gif_preanim_path;
     ui->desk->show();
+    ui->desk_2->show();
     ui->witnesstand->show();
     real_gif_path = gif_preanim_path;
     charmovie_state = 0;
@@ -831,6 +817,7 @@ void Courtroom::handle_chatmessage2()
 
   case 5:
     ui->desk->hide();
+    ui->desk_2->hide();
     ui->witnesstand->hide();
     ui->playingbackground->setMovie(speedlinesmovie);
     chattimer->stop();
@@ -1164,7 +1151,7 @@ void Courtroom::handle_server_packet(QString p_packet)
 
   else if (header == "KK")
   {
-    callFatalError("You have been kicked.", true);
+    callFatalError("You have been kicked.", false);
     close_socket_request();
     request_quit();
   }
@@ -1178,9 +1165,18 @@ void Courtroom::handle_server_packet(QString p_packet)
         packet_contents.at(1).toInt() == -1)
     {
       //ui->muted->raise();
-      //ui->muted->show();
+      ui->muted->show();
+      ui->chatLine->hide();
 
-      callError("You have been muted.", false);
+      for (emoteicon *icon : emoteicon_list)
+      {
+        icon->hide();
+      }
+
+      emote_left_button->hide();
+      emote_right_button->hide();
+
+      //callError("You have been muted.", false);
       muted = true;
     }
   }
@@ -1191,8 +1187,17 @@ void Courtroom::handle_server_packet(QString p_packet)
         packet_contents.at(1).toInt() == -1)
     {
       ui->muted->hide();
+      ui->chatLine->show();
 
-      callError("You have been unmuted", false);
+      for (int n_icon = 0 ; n_icon < emotes_on_page ; ++n_icon)
+      {
+        emoteicon_list.at(n_icon)->show();
+      }
+
+      emote_left_button->show();
+      emote_right_button->show();
+
+      //callError("You have been unmuted", false);
       muted = false;
     }
   }
@@ -1201,7 +1206,8 @@ void Courtroom::handle_server_packet(QString p_packet)
   {
     if (packet_contents.at(1).toInt() == m_cid)
     {
-      callFatalError("You have been banned.");
+      callFatalError("You have been banned.", false);
+      close_socket_request();
       request_quit();
     }
 
@@ -1209,6 +1215,24 @@ void Courtroom::handle_server_packet(QString p_packet)
 
   else if (header == "IL")
   {
+
+  }
+
+  else if (header == "MK")
+  {
+    ui->guardbox->show();
+  }
+
+  else if (header == "SI")
+  {
+    for (int n_player = 1 ; n_player < packet_contents.size() -1 ; ++n_player)
+    {
+      QStringList packet_arguments = packet_contents.at(n_player).split('&');
+
+      ui->oocserverchat->appendPlainText(packet_arguments.at(0) + ": " +
+                                         packet_arguments.at(1) + ": " +
+                                         packet_arguments.at(2));
+    }
 
   }
 
@@ -1479,7 +1503,8 @@ void Courtroom::char_gif_framechange(int p_frame)
 {
   static bool last_frame = false;
 
-  if (last_frame)
+  //need an OR clause because 1-frame gifs dont loop, breaking our logic
+  if (last_frame || charmovie->frameCount() == 1)
   {
     last_frame = false;
     if (charmovie_state == 0)
@@ -1491,9 +1516,11 @@ void Courtroom::char_gif_framechange(int p_frame)
 
       if (current_chatmessage.emote_modifier == 4)
       {
+        qDebug() << "we get this far";
         speedlinesmovie->stop();
         ui->playingbackground->setMovie(speedlinesmovie);
         ui->desk->hide();
+        ui->desk_2->hide();
         ui->witnesstand->hide();
         speedlinesmovie->start();
       }
@@ -1676,6 +1703,7 @@ void Courtroom::on_backtolobby_clicked()
   blipplayer->stop();
   blipplayer2->stop();
   musicplayer->stop();
+  ui->guardbox->hide();
   close_socket_request();
   this->hide();
   //this just shows the lobby

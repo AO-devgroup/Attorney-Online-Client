@@ -95,6 +95,8 @@ private:
   QPushButton *emote_left_button;
   QPushButton *emote_right_button;
 
+  int emotes_on_page;
+
   //QSettings ini_charini;
 
   QMediaPlayer *musicplayer;
