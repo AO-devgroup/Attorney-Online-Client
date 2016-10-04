@@ -95,6 +95,7 @@ public:
     QLabel *realizationflash;
     QCheckBox *flipbox;
     QLabel *flipped_playingarea;
+    QLabel *desk_2;
 
     void setupUi(QMainWindow *Courtroom)
     {
@@ -498,6 +499,9 @@ public:
         flipped_playingarea = new QLabel(centralwidget);
         flipped_playingarea->setObjectName(QStringLiteral("flipped_playingarea"));
         flipped_playingarea->setGeometry(QRect(0, 0, 256, 192));
+        desk_2 = new QLabel(centralwidget);
+        desk_2->setObjectName(QStringLiteral("desk_2"));
+        desk_2->setGeometry(QRect(0, 0, 256, 192));
         Courtroom->setCentralWidget(centralwidget);
         ooc_master->raise();
         ooc_server->raise();
@@ -563,6 +567,7 @@ public:
         testimony->raise();
         realizationflash->raise();
         objectiongif->raise();
+        desk_2->raise();
 
         retranslateUi(Courtroom);
 
@@ -619,10 +624,10 @@ public:
         textcolor->clear();
         textcolor->insertItems(0, QStringList()
          << QApplication::translate("Courtroom", "White", 0)
-         << QApplication::translate("Courtroom", "Blue", 0)
          << QApplication::translate("Courtroom", "Green", 0)
-         << QApplication::translate("Courtroom", "Orange", 0)
          << QApplication::translate("Courtroom", "Red", 0)
+         << QApplication::translate("Courtroom", "Orange", 0)
+         << QApplication::translate("Courtroom", "Blue", 0)
         );
         musiclabel->setText(QApplication::translate("Courtroom", "Music", 0));
         sfxlabel->setText(QApplication::translate("Courtroom", "Sfx", 0));
@@ -646,6 +651,7 @@ public:
         realizationflash->setText(QString());
         flipbox->setText(QApplication::translate("Courtroom", "Flip", 0));
         flipped_playingarea->setText(QString());
+        desk_2->setText(QString());
     } // retranslateUi
 
 };

@@ -1834,6 +1834,19 @@
      <string/>
     </property>
    </widget>
+   <widget class="QLabel" name="desk_2">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>256</width>
+      <height>192</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
    <zorder>ooc_master</zorder>
    <zorder>ooc_server</zorder>
    <zorder>present</zorder>
@@ -1898,6 +1911,7 @@
    <zorder>testimony</zorder>
    <zorder>realizationflash</zorder>
    <zorder>objectiongif</zorder>
+   <zorder>desk_2</zorder>
   </widget>
  </widget>
  <resources>

@@ -1042,7 +1042,7 @@ void Courtroom::on_musiclist_doubleClicked(const QModelIndex &index)
   QString song_name = ui_music_list.at(index.row());
   QString str_cid = QString::number(m_cid);
 
-  request_packet("MC#" + song_name + "#" + str_cid + "#%");
+  request_packet("MC#" + song_name.toUtf8() + "#" + str_cid + "#%");
 }
 
 void Courtroom::handle_server_packet(QString p_packet)
@@ -1477,12 +1477,10 @@ void Courtroom::objection_gif_framechange(int p_frame)
 
 void Courtroom::char_gif_framechange(int p_frame)
 {
-  qDebug() << "frame: " << p_frame;
   static bool last_frame = false;
 
   if (last_frame)
   {
-    qDebug() << "last frame was true, setting to false";
     last_frame = false;
     if (charmovie_state == 0)
     {

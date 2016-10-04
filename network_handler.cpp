@@ -79,7 +79,8 @@ void Networkhandler::ms_send_message(QString p_packet)
   if (!master_connected)
     return;
 
-  ms_socket->write(p_packet.toLocal8Bit());
+  ms_socket->write(p_packet.toUtf8());
+  qDebug() << "sent message: " << p_packet.toUtf8();
 }
 
 void Networkhandler::ooc_send_message(QString p_packet)
@@ -87,7 +88,7 @@ void Networkhandler::ooc_send_message(QString p_packet)
   if (!server_connected)
     return;
 
-  server_socket->write(p_packet.toLocal8Bit());
+  server_socket->write(p_packet.toUtf8());
 }
 
 void Networkhandler::handle_chatmessage_request(chatmessage_type &p_chatmessage)
@@ -113,7 +114,7 @@ void Networkhandler::handle_chatmessage_request(chatmessage_type &p_chatmessage)
 
   qDebug() << "sent packet: " << packet;
 
-  server_socket->write(packet.toLocal8Bit());
+  server_socket->write(packet.toUtf8());
 }
 
 void Networkhandler::handle_legacy_chatmessage_request(chatmessage_type &p_chatmessage)
