@@ -26,19 +26,6 @@ QString get_image_path(QString p_image)
 
 }
 
-QString get_background_path(QString p_background, QString p_bg_image)
-{
-  QString default_path = getBasePath() + "background/gs4/" + p_bg_image;
-  QString path = getBasePath() + "background/" + p_background +  '/' + p_bg_image;
-
-  if (fileExists(path, true))
-    return path;
-  else if (fileExists(default_path))
-    return default_path;
-  else
-    return "";
-}
-
 bool cyclic_function()
 {
   static bool cycle = true;
@@ -54,4 +41,13 @@ bool cyclic_function()
     cycle = true;
     return cycle;
   }
+}
+
+void delay( int millisecondsToWait )
+{
+    QTime dieTime = QTime::currentTime().addMSecs( millisecondsToWait );
+    while( QTime::currentTime() < dieTime )
+    {
+        QCoreApplication::processEvents( QEventLoop::AllEvents, 100 );
+    }
 }

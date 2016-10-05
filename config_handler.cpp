@@ -1,5 +1,7 @@
 #include "config_handler.h"
 
+#include "courtroom.h"
+
 QString getBasePath()
 {
   return (QDir::currentPath() + "/base/");
@@ -12,7 +14,10 @@ QString getCharPath(QString character)
 
 QString getCharGifPath(QString character, QString image)
 {
-  return (getCharPath(character) + image);
+  if (fileExists(getCharPath(character) + image, true))
+    return (getCharPath(character) + image);
+  else
+    return get_image_path("placeholder.gif");
 }
 
 QString getCharEmotePath(QString character, QString emote)
@@ -45,6 +50,25 @@ QString getTheme()
   callError("Error: could not find theme in config.ini. Setting to default.");
 
   return "default";
+}
+
+QString Courtroom::get_background_path(QString p_bg_image)
+{
+  QString default_path = getBasePath() + "background/gs4/" + p_bg_image;
+  QString path = background_path + p_bg_image;
+  qDebug() << "background path = " << background_path;
+  qDebug() << "path: " << path;
+
+  if (fileExists(path, true))
+  {
+    qDebug() << "FILE EXISTS: " << path;
+    return path;
+  }
+  else
+  {
+    qDebug() << "RETURNING DEFAULT BG PATH: " << default_path;
+    return default_path;
+  }
 }
 
 bool fileExists(QString path, bool quiet)

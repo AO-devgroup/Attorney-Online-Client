@@ -159,9 +159,9 @@ private:
 
   int m_cid = -1;
 
-  void enter_courtroom();
+  QString get_background_path(QString p_background_image);
 
-  void set_scene(QString p_side);
+  void enter_courtroom();
 
   void set_area_ui();
 

@@ -90,12 +90,10 @@ public:
     QCheckBox *guardbox;
     QListWidget *mutelist;
     QLabel *muted;
-    QLabel *witnesstand;
     QPushButton *backtolobby;
     QLabel *realizationflash;
     QCheckBox *flipbox;
     QLabel *flipped_playingarea;
-    QLabel *desk_2;
 
     void setupUi(QMainWindow *Courtroom)
     {
@@ -210,7 +208,7 @@ public:
         chatLine->setFrame(false);
         desk = new QLabel(centralwidget);
         desk->setObjectName(QStringLiteral("desk"));
-        desk->setGeometry(QRect(0, 150, 256, 42));
+        desk->setGeometry(QRect(0, 0, 256, 192));
         playingbackground = new QLabel(centralwidget);
         playingbackground->setObjectName(QStringLiteral("playingbackground"));
         playingbackground->setGeometry(QRect(0, 0, 256, 192));
@@ -465,7 +463,7 @@ public:
         areapassword->setGeometry(QRect(266, 471, 224, 23));
         deskpreview = new QLabel(centralwidget);
         deskpreview->setObjectName(QStringLiteral("deskpreview"));
-        deskpreview->setGeometry(QRect(5, 621, 256, 42));
+        deskpreview->setGeometry(QRect(5, 471, 256, 192));
         callmod = new QPushButton(centralwidget);
         callmod->setObjectName(QStringLiteral("callmod"));
         callmod->setGeometry(QRect(5, 440, 71, 23));
@@ -484,9 +482,6 @@ public:
         muted = new QLabel(centralwidget);
         muted->setObjectName(QStringLiteral("muted"));
         muted->setGeometry(QRect(0, 192, 258, 145));
-        witnesstand = new QLabel(centralwidget);
-        witnesstand->setObjectName(QStringLiteral("witnesstand"));
-        witnesstand->setGeometry(QRect(0, 0, 256, 192));
         backtolobby = new QPushButton(centralwidget);
         backtolobby->setObjectName(QStringLiteral("backtolobby"));
         backtolobby->setGeometry(QRect(5, 5, 91, 23));
@@ -499,9 +494,6 @@ public:
         flipped_playingarea = new QLabel(centralwidget);
         flipped_playingarea->setObjectName(QStringLiteral("flipped_playingarea"));
         flipped_playingarea->setGeometry(QRect(0, 0, 256, 192));
-        desk_2 = new QLabel(centralwidget);
-        desk_2->setObjectName(QStringLiteral("desk_2"));
-        desk_2->setGeometry(QRect(0, 0, 256, 192));
         Courtroom->setCentralWidget(centralwidget);
         ooc_master->raise();
         ooc_server->raise();
@@ -559,7 +551,6 @@ public:
         flipbox->raise();
         playingarea->raise();
         flipped_playingarea->raise();
-        witnesstand->raise();
         desk->raise();
         chatbubble->raise();
         chattext->raise();
@@ -567,7 +558,6 @@ public:
         testimony->raise();
         realizationflash->raise();
         objectiongif->raise();
-        desk_2->raise();
 
         retranslateUi(Courtroom);
 
@@ -646,12 +636,10 @@ public:
         prebox->setText(QApplication::translate("Courtroom", "Pre", 0));
         guardbox->setText(QApplication::translate("Courtroom", "Guard", 0));
         muted->setText(QString());
-        witnesstand->setText(QString());
         backtolobby->setText(QApplication::translate("Courtroom", "Back to lobby", 0));
         realizationflash->setText(QString());
         flipbox->setText(QApplication::translate("Courtroom", "Flip", 0));
         flipped_playingarea->setText(QString());
-        desk_2->setText(QString());
     } // retranslateUi
 
 };

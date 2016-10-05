@@ -2,6 +2,7 @@
 #define GLOBALS_H
 
 #include <QString>
+#include <QTime>
 
 #include "config_handler.h"
 
@@ -11,9 +12,9 @@ void set_theme_path();
 
 QString get_image_path(QString p_image);
 
-QString get_background_path(QString p_background, QString p_background_image);
-
 bool cyclic_function();
+
+void delay(int sec);
 
 extern const int RELEASE;
 

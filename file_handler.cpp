@@ -107,3 +107,6 @@ QString getChat(QString p_character)
   char_ini.close();
   return "default";
 }
+
+
+

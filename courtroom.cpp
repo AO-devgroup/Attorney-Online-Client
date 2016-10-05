@@ -120,6 +120,8 @@ void Courtroom::set_area_list(QVector<area_type> &p_area_list)
 
   area_list_set = true;
 
+  background_path = getBasePath() + "background/" + area_list.at(0).background + "/";
+
   if (!area_taken_list_set)
     return;
 
@@ -490,138 +492,6 @@ void Courtroom::on_chatLine_returnPressed()
   ui->chatLine->clear();
 }
 
-void Courtroom::set_scene(QString p_side)
-{
-  QString default_path = getBasePath() + "background/gs4/";
-
-  QString f_background_path = background_path;
-  QString f_default_background_path = default_path;
-
-  QString f_speedlines_path = g_theme_path;
-  QString f_default_speedlines_path = getBasePath() + "themes/default/";
-
-  QString f_desk_path = background_path;
-  QString f_desk2_path = background_path;
-  QString f_default_desk_path = default_path;
-
-  QString f_estrado_path = background_path + "estrado.png";
-  QString f_default_estrado_path = default_path + "estrado.png";
-
-  ui->witnesstand->hide();
-
-  if (p_side == "wit")
-  {
-    f_background_path += "witnessempty.png";
-    f_default_background_path += "witnessempty.png";
-
-    f_speedlines_path += "prosecution_speedlines.gif";
-
-    f_default_speedlines_path += "prosecution_speedlines.gif";
-    f_desk2_path += "estrado.png";
-    f_default_desk_path += "";
-
-    if (fileExists(f_estrado_path, true))
-      ui->witnesstand->setPixmap(f_estrado_path);
-    else if (fileExists(f_default_estrado_path, true))
-      ui->witnesstand->setPixmap(f_default_estrado_path);
-    else
-      ui->witnesstand->clear();
-
-    //ui->witnesstand->show();
-  }
-  else if (p_side == "def")
-  {
-    f_background_path += "defenseempty.png";
-    f_default_background_path += "defenseempty.png";
-
-    f_speedlines_path += "defense_speedlines.gif";
-
-    f_default_speedlines_path += "defense_speedlines.gif";
-    f_desk_path += "bancodefensa.png";
-    f_desk2_path +="defensedesk.png";
-    f_default_desk_path += "bancodefensa.png";
-  }
-  else if (p_side == "pro")
-  {
-    f_background_path += "prosecutorempty.png";
-    f_default_background_path += "prosecutorempty.png";
-
-    f_speedlines_path += "prosecution_speedlines.gif";
-
-    f_default_speedlines_path += "prosecution_speedlines.gif";
-    f_desk_path += "bancoacusacion.png";
-    f_default_desk_path += "bancoacusacion.png";
-  }
-  else if (p_side == "jud")
-  {
-    f_background_path += "judgestand.png";
-    f_default_background_path += "judgestand.png";
-
-    f_speedlines_path += "defense_speedlines.gif";
-
-    f_default_speedlines_path += "defense_speedlines.gif";
-    f_desk_path = "";
-    f_default_desk_path = "";
-  }
-  else if (p_side == "hld")
-  {
-    f_background_path += "helperstand.png";
-    f_default_background_path += "helperstand.png";
-
-    f_speedlines_path += "defense_speedlines.gif";
-
-    f_default_speedlines_path += "defense_speedlines.gif";
-    f_desk_path = "";
-    f_default_desk_path = "";
-  }
-  else if (p_side == "hlp")
-  {
-    f_background_path += "prohelperstand.png";
-    f_default_background_path += "prohelperstand.png";
-
-
-    f_speedlines_path += "prosecution_speedlines.gif";
-
-    f_default_speedlines_path += "prosecution_speedlines.gif";
-    f_desk_path = "";
-    f_default_desk_path = "";
-  }
-  else
-  {
-    f_background_path += "witnessempty.png";
-    f_default_background_path += "witnessempty.png";
-
-    f_speedlines_path += "prosecution_speedlines.gif";
-
-    f_default_speedlines_path += "prosecution_speedlines.gif";
-    f_desk_path += "";
-    f_default_desk_path += "";
-  }
-
-  if (fileExists(f_background_path, true))
-    ui->playingbackground->setPixmap(f_background_path);
-  else if (fileExists(f_default_background_path, true))
-    ui->playingbackground->setPixmap(f_default_background_path);
-  else
-    ui->playingbackground->clear();
-
-  if (fileExists(f_speedlines_path, true))
-    speedlinesmovie->setFileName(f_speedlines_path);
-  else
-    speedlinesmovie->setFileName(getBasePath() + "themes/default/defense_speedlines.gif");
-
-  //qDebug() << "f_speedlines_path: " << f_speedlines_path;
-
-  //ui->playingbackground->setMovie(speedlinesmovie);
-
-  if (fileExists(f_desk_path, true))
-    ui->desk->setPixmap(f_desk_path);
-  else if (fileExists(f_default_desk_path, true))
-    ui->desk->setPixmap(f_default_desk_path);
-  else
-    ui->desk->clear();
-}
-
 void Courtroom::handle_chatmessage()
 { 
   if (current_chatmessage.cid < mutelist.size())
@@ -679,17 +549,25 @@ void Courtroom::handle_chatmessage2()
 {
   QString showname = getShowname(current_chatmessage.character);
 
+  QString chatbox_theme = getChat(current_chatmessage.character);
+
   char_gender = getGender(current_chatmessage.character);
 
   QString f_message = (current_chatmessage.message).replace("<num>", "#").replace("<percent>", "%");
 
+  if (fileExists(getBasePath() + "themes/" + chatbox_theme + "/chatmed.png"))
+    ui->chatbubble->setPixmap(getBasePath() + "themes/" + chatbox_theme + "/chatmed.png");
+
+  else if(fileExists(g_theme_path + "chatmed.png"))
+    ui->chatbubble->setPixmap(g_theme_path + "chatmed.png");
+
+  else
+    ui->chatbubble->setPixmap(getBasePath() + "themes/gs4/chatmed.png");
+
   ui->chatlog->moveCursor(QTextCursor::Start, QTextCursor::MoveAnchor);
   ui->chatlog->insertPlainText(showname + ": " + f_message + '\n');
 
-  ui->desk->show();
-  ui->witnesstand->show();
-
-  //logic statements ahoy
+  //you better know your logic :v)
   if ((current_chatmessage.sfx_name != "1" &&
        current_chatmessage.sfx_name != "0") &&
       (current_chatmessage.emote_modifier == 1 ||
@@ -726,20 +604,53 @@ void Courtroom::handle_chatmessage2()
     //ui->chatLine->setStyleSheet("QLineEdit{color: white;}");
   }
 
-  set_scene(current_chatmessage.side);
-
-  QString chatbox_theme = getChat(current_chatmessage.character);
-
-  if (fileExists(getBasePath() + "themes/" + chatbox_theme + "/chatmed.png"))
-    ui->chatbubble->setPixmap(getBasePath() + "themes/" + chatbox_theme + "/chatmed.png");
-
-  else if(fileExists(g_theme_path + "chatmed.png"))
-    ui->chatbubble->setPixmap(g_theme_path + "chatmed.png");
-
+  if (current_chatmessage.side == "wit")
+  {
+    speedlinesmovie->setFileName(get_image_path("prosecution_speedlines.gif"));
+    ui->desk->setPixmap(get_background_path("estrado.png"));
+    ui->playingbackground->setPixmap(get_background_path("witnessempty.png"));
+    ui->desk->show();
+  }
+  else if (current_chatmessage.side == "def")
+  {
+    speedlinesmovie->setFileName(get_image_path("defense_speedlines.gif"));
+    ui->desk->setPixmap(get_background_path("defensedesk.png"));
+    ui->playingbackground->setPixmap(get_background_path("defenseempty.png"));
+    ui->desk->show();
+  }
+  else if (current_chatmessage.side == "pro")
+  {
+    speedlinesmovie->setFileName(get_image_path("prosecution_speedlines.gif"));
+    ui->desk->setPixmap(get_background_path("prosecutiondesk.png"));
+    qDebug() << "DESK IS SET TO " << get_background_path("prosecutiondesk.png");
+    ui->playingbackground->setPixmap(get_background_path("prosecutorempty.png"));
+    ui->desk->show();
+  }
+  else if (current_chatmessage.side == "jud")
+  {
+    speedlinesmovie->setFileName(get_image_path("defense_speedlines.gif"));
+    ui->playingbackground->setPixmap(get_background_path("judgestand.png"));
+    ui->desk->hide();
+  }
+  else if (current_chatmessage.side == "hld")
+  {
+    speedlinesmovie->setFileName(get_image_path("defense_speedlines.gif"));
+    ui->playingbackground->setPixmap(get_background_path("helperstand.png"));
+    ui->desk->hide();
+  }
+  else if (current_chatmessage.side == "hlp")
+  {
+    speedlinesmovie->setFileName(get_image_path("prosecution_speedlines.gif"));
+    ui->playingbackground->setPixmap(get_background_path("prohelperstand.png"));
+    ui->desk->hide();
+  }
   else
-    ui->chatbubble->setPixmap(getBasePath() + "themes/gs4/chatmed.png");
-
-  //ui->chattext->setPlainText(f_message);
+  {
+    speedlinesmovie->setFileName(get_image_path("prosecution_speedlines.gif"));
+    ui->desk->setPixmap(get_background_path("estrado.png"));
+    ui->playingbackground->setPixmap(get_background_path("witnessempty.png"));
+    ui->desk->show();
+  }
 
   ui->chattext->clear();
   ui->charname->setText(showname);
@@ -761,19 +672,16 @@ void Courtroom::handle_chatmessage2()
   QString gif_path = getCharGifPath(current_chatmessage.character, "(b)" + current_chatmessage.emote + ".gif");
   QString idle_gif_path = getCharGifPath(current_chatmessage.character, "(a)" + current_chatmessage.emote + ".gif");
   QString gif_preanim_path = getCharGifPath(current_chatmessage.character, current_chatmessage.pre_emote + ".gif");
-  QString placeholder_path = get_image_path("placeholder.gif");
 
   charmovie->stop();
   speedlinesmovie->stop();
 
-  QString real_gif_path;
+  QString real_gif_path = "";
 
   switch (current_chatmessage.emote_modifier)
   {
   case 2:
     ui->desk->hide();
-    ui->desk_2->hide();
-    ui->witnesstand->hide();
     //intentional fallthrough here
   case 0:
     chattimer->stop();
@@ -799,8 +707,6 @@ void Courtroom::handle_chatmessage2()
     break;
   case 3:
     ui->desk->hide();
-    ui->desk_2->hide();
-    ui->witnesstand->hide();
     //intentional fallthrough here
   case 1:
     real_gif_path = gif_preanim_path;
@@ -809,16 +715,12 @@ void Courtroom::handle_chatmessage2()
   case 4:
     //qDebug() << "gif_preanim_path = " << gif_preanim_path;
     ui->desk->show();
-    ui->desk_2->show();
-    ui->witnesstand->show();
     real_gif_path = gif_preanim_path;
     charmovie_state = 0;
     break;
 
   case 5:
     ui->desk->hide();
-    ui->desk_2->hide();
-    ui->witnesstand->hide();
     ui->playingbackground->setMovie(speedlinesmovie);
     chattimer->stop();
 
@@ -857,15 +759,7 @@ void Courtroom::handle_chatmessage2()
     ;
   }
 
-  if (fileExists(real_gif_path, true))
-  {
-    charmovie->setFileName(real_gif_path);
-  }
-  else
-  {
-    real_gif_path = placeholder_path;
-    charmovie->setFileName(real_gif_path);
-  }
+  charmovie->setFileName(real_gif_path);
 
   if (current_chatmessage.flip == 1)
   {
@@ -1034,6 +928,8 @@ void Courtroom::on_musiclist_doubleClicked(const QModelIndex &index)
 
 void Courtroom::handle_server_packet(QString p_packet)
 {
+  //QString::fromUtf8 = p_packet;
+
   QStringList packet_contents = p_packet.split("#");
 
   QString header = packet_contents.at(0);
@@ -1437,10 +1333,12 @@ void Courtroom::on_arealist_clicked(const QModelIndex &index)
 {
   if (area_list_set && area_taken_list_set)
   {
-    QString background = area_list.at(index.row()).background;
+    QString desk_path = getBasePath() + "background/" + area_list.at(index.row()).name + "/defensedesk.png";
+    QString bg_path = getBasePath() + "background/" + area_list.at(index.row()).name + "/defenseempty.png";
 
-    ui->areapreview->setPixmap(get_background_path(background, "defenseempty.png"));
-    ui->deskpreview->setPixmap(get_background_path(background, "bancodefensa.png"));
+    //if the player does not have said bg, this will turn up blank. big problem not
+    ui->areapreview->setPixmap(desk_path);
+    ui->deskpreview->setPixmap(bg_path);
 
     ui->areapreview->show();
     ui->deskpreview->show();
@@ -1501,14 +1399,22 @@ void Courtroom::objection_gif_framechange(int p_frame)
 
 void Courtroom::char_gif_framechange(int p_frame)
 {
-  static bool last_frame = false;
-
-  //need an OR clause because 1-frame gifs dont loop, breaking our logic
-  if (last_frame || charmovie->frameCount() == 1)
+  if (current_chatmessage.flip == 1)
   {
-    last_frame = false;
+    if (charmovie->currentFrameNumber() < mirror_anim.size())
+      ui->flipped_playingarea->setPixmap(QPixmap::fromImage(mirror_anim.at(charmovie->currentFrameNumber())));
+  }
+
+
+  if (p_frame == (charmovie->frameCount() - 1))
+  {
     if (charmovie_state == 0)
     {
+      charmovie->stop();
+
+      //we need this because gifs are dumb
+      delay(charmovie->nextFrameDelay());
+
       //this is called when the preanimation has played once
       charmovie_state = 1;
       chattimer->stop();
@@ -1516,12 +1422,9 @@ void Courtroom::char_gif_framechange(int p_frame)
 
       if (current_chatmessage.emote_modifier == 4)
       {
-        qDebug() << "we get this far";
         speedlinesmovie->stop();
         ui->playingbackground->setMovie(speedlinesmovie);
         ui->desk->hide();
-        ui->desk_2->hide();
-        ui->witnesstand->hide();
         speedlinesmovie->start();
       }
 
@@ -1551,7 +1454,7 @@ void Courtroom::char_gif_framechange(int p_frame)
         chatpos = 0;
       }
 
-      if (fileExists(f_gif_path))
+      if (fileExists(f_gif_path, true))
       {
         charmovie->setFileName(f_gif_path);
       }
@@ -1565,18 +1468,9 @@ void Courtroom::char_gif_framechange(int p_frame)
         set_flipped_animation(f_gif_path);
 
       charmovie->start();
+
     }
   }
-
-  if (p_frame == (charmovie->frameCount() - 1))
-    last_frame = true;
-
-  if (current_chatmessage.flip == 1)
-  {
-    if (charmovie->currentFrameNumber() < mirror_anim.size())
-      ui->flipped_playingarea->setPixmap(QPixmap::fromImage(mirror_anim.at(charmovie->currentFrameNumber())));
-  }
-
 }
 
 void Courtroom::on_callmod_clicked()
@@ -1692,6 +1586,7 @@ void Courtroom::play_sfx()
 
 void Courtroom::on_backtolobby_clicked()
 {
+  charmovie_state = 2;
   char_list_set = false;
   taken_list_set = false;
   area_list_set = false;
@@ -1704,6 +1599,13 @@ void Courtroom::on_backtolobby_clicked()
   blipplayer2->stop();
   musicplayer->stop();
   ui->guardbox->hide();
+  ui->chatlog->clear();
+  ui->oocserverchat->clear();
+  ui->desk->hide();
+  ui->playingarea->hide();
+  ui->charname->hide();
+  ui->chattext->hide();
+  ui->chatbubble->hide();
   close_socket_request();
   this->hide();
   //this just shows the lobby

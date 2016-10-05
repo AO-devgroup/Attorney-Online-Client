@@ -506,9 +506,9 @@
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>150</y>
+      <y>0</y>
       <width>256</width>
-      <height>42</height>
+      <height>192</height>
      </rect>
     </property>
     <property name="text">
@@ -1685,9 +1685,9 @@
     <property name="geometry">
      <rect>
       <x>5</x>
-      <y>621</y>
+      <y>471</y>
       <width>256</width>
-      <height>42</height>
+      <height>192</height>
      </rect>
     </property>
     <property name="text">
@@ -1769,19 +1769,6 @@
      <string/>
     </property>
    </widget>
-   <widget class="QLabel" name="witnesstand">
-    <property name="geometry">
-     <rect>
-      <x>0</x>
-      <y>0</y>
-      <width>256</width>
-      <height>192</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-   </widget>
    <widget class="QPushButton" name="backtolobby">
     <property name="geometry">
      <rect>
@@ -1822,19 +1809,6 @@
     </property>
    </widget>
    <widget class="QLabel" name="flipped_playingarea">
-    <property name="geometry">
-     <rect>
-      <x>0</x>
-      <y>0</y>
-      <width>256</width>
-      <height>192</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-   </widget>
-   <widget class="QLabel" name="desk_2">
     <property name="geometry">
      <rect>
       <x>0</x>
@@ -1903,9 +1877,7 @@
    <zorder>flipbox</zorder>
    <zorder>playingarea</zorder>
    <zorder>flipped_playingarea</zorder>
-   <zorder>witnesstand</zorder>
    <zorder>desk</zorder>
-   <zorder>desk_2</zorder>
    <zorder>chatbubble</zorder>
    <zorder>chattext</zorder>
    <zorder>charname</zorder>
