@@ -61,12 +61,10 @@ QString Courtroom::get_background_path(QString p_bg_image)
 
   if (fileExists(path, true))
   {
-    qDebug() << "FILE EXISTS: " << path;
     return path;
   }
   else
   {
-    qDebug() << "RETURNING DEFAULT BG PATH: " << default_path;
     return default_path;
   }
 }

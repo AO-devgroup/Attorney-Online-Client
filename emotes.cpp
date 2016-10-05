@@ -290,8 +290,6 @@ void Courtroom::setEmotes()
 
     if (line.startsWith(search_line))
     {
-      qDebug() << "iteration " << n_iteration;
-      qDebug() << "line = " << line;
       //removes "x = " from the start of the string
       int f_sfx_delay = line.remove(0, search_line.length()).toInt();
 

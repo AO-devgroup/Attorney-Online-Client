@@ -113,11 +113,6 @@ void Courtroom::set_area_list(QVector<area_type> &p_area_list)
   area_list.clear();
   area_list = p_area_list;
 
-  for (area_type area : area_list)
-  {
-    qDebug() << "area: " << area.name;
-  }
-
   area_list_set = true;
 
   background_path = getBasePath() + "background/" + area_list.at(0).background + "/";
@@ -351,11 +346,8 @@ void Courtroom::enter_courtroom()
   }
   else
   {
-    qDebug() << "calling setEmotes()";
     setEmotes();
-    qDebug() << "emotes set";
     setEmotePage();
-    qDebug() << "emote page set";
     ui->holdit->show();
     ui->objection->show();
     ui->takethat->show();
@@ -622,7 +614,6 @@ void Courtroom::handle_chatmessage2()
   {
     speedlinesmovie->setFileName(get_image_path("prosecution_speedlines.gif"));
     ui->desk->setPixmap(get_background_path("prosecutiondesk.png"));
-    qDebug() << "DESK IS SET TO " << get_background_path("prosecutiondesk.png");
     ui->playingbackground->setPixmap(get_background_path("prosecutorempty.png"));
     ui->desk->show();
   }
@@ -686,7 +677,7 @@ void Courtroom::handle_chatmessage2()
   case 0:
     chattimer->stop();
 
-    if (current_chatmessage.text_color == 1)
+    if (current_chatmessage.text_color == 1 || current_chatmessage.message == " ")
     {
       charmovie_state = 2;
       real_gif_path = idle_gif_path;
@@ -713,7 +704,6 @@ void Courtroom::handle_chatmessage2()
     charmovie_state = 0;
     break;
   case 4:
-    //qDebug() << "gif_preanim_path = " << gif_preanim_path;
     ui->desk->show();
     real_gif_path = gif_preanim_path;
     charmovie_state = 0;
@@ -1048,8 +1038,9 @@ void Courtroom::handle_server_packet(QString p_packet)
   else if (header == "KK")
   {
     callFatalError("You have been kicked.", false);
+    in_court = false;
     close_socket_request();
-    request_quit();
+    on_backtolobby_clicked();
   }
 
   else if (header == "MU")
@@ -1103,8 +1094,9 @@ void Courtroom::handle_server_packet(QString p_packet)
     if (packet_contents.at(1).toInt() == m_cid)
     {
       callFatalError("You have been banned.", false);
+      in_court = false;
       close_socket_request();
-      request_quit();
+      on_backtolobby_clicked();
     }
 
   }
@@ -1606,6 +1598,7 @@ void Courtroom::on_backtolobby_clicked()
   ui->charname->hide();
   ui->chattext->hide();
   ui->chatbubble->hide();
+  in_court = false;
   close_socket_request();
   this->hide();
   //this just shows the lobby
@@ -1623,6 +1616,7 @@ void Courtroom::closeEvent (QCloseEvent *event)
   //this is just to prevent those annoying "unused parameter" errors
   event->accept();
 
+  in_court = false;
   request_quit();
 }
 
@@ -1645,7 +1639,8 @@ void Courtroom::handle_server_disconnect()
 {
   if (in_court)
   {
-    callError("Disconnected from server :v(");
-    request_quit();
+    callFatalError("Disconnected from server :v(", false);
+    close_socket_request();
+    on_backtolobby_clicked();
   }
 }
