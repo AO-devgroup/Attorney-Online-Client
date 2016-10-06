@@ -17,7 +17,9 @@ void Lobby::setTheme()
   QString background_path = (g_theme_path + "lobbybackground.png");
   QString d_background_path = (default_path + "lobbybackground.png");
 
-  QString refresh_path = (g_theme_path + "refresh.png");
+  */
+  //QString refresh_path = get_image_path("refresh.png");
+  /*
   QString d_refresh_path = (default_path + "refresh.png");
 
   QString addtofav_path = (g_theme_path + "addtofav.png");
@@ -30,9 +32,7 @@ void Lobby::setTheme()
   if (fileExists(background_path))
     ui->background->setPixmap(QPixmap(background_path));
 
-  if (fileExists(refresh_path))
-    ui->refresh->setStyleSheet("border-image:url(" + refresh_path + ")");
-
+  ui->refresh->setStyleSheet("border-image:url(" + refresh_path + ")");
   if (fileExists(addtofav_path))
     ui->addtofav->setStyleSheet("border-image:url(" + addtofav_path + ")");
 
@@ -332,6 +332,7 @@ void Lobby::on_about_clicked()
                   "Draxirch\n"
                   "Fiercy\n"
                   "Cronnicossy\n"
+                  "Noevain\n"
                   "\n"
                   "Original concept:\n"
                   "FanatSors\n"

@@ -85,7 +85,7 @@ private:
   QVector<emoteicon* > emoteicon_list; //qpushbutton inherited(widget)
   QSignalMapper *emote_mapper;
 
-  QVector<area_type> area_list;
+  QVector<area_type> area_list = {{"defaultname", "gs4", false}};
   QVector<int> area_taken_list;
 
   void construct_emotes();

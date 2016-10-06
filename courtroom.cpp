@@ -227,6 +227,9 @@ void Courtroom::setTheme()
 
 void Courtroom::set_character(int p_character, int p_mod)
 {
+  if (p_character < 0 || p_character >= character_list.size())
+    return;
+
   switch (p_mod)
   {
   case 0:
@@ -248,7 +251,7 @@ void Courtroom::set_character(int p_character, int p_mod)
     enter_courtroom();
     break;
   default:
-    callError("Unexpected reply from server! Expected 0, 1 or 2 in OC packet, received " + p_mod);
+    return;
 
   }
 
@@ -620,18 +623,21 @@ void Courtroom::handle_chatmessage2()
   else if (current_chatmessage.side == "jud")
   {
     speedlinesmovie->setFileName(get_image_path("defense_speedlines.gif"));
+    ui->desk->clear();
     ui->playingbackground->setPixmap(get_background_path("judgestand.png"));
     ui->desk->hide();
   }
   else if (current_chatmessage.side == "hld")
   {
     speedlinesmovie->setFileName(get_image_path("defense_speedlines.gif"));
+    ui->desk->clear();
     ui->playingbackground->setPixmap(get_background_path("helperstand.png"));
     ui->desk->hide();
   }
   else if (current_chatmessage.side == "hlp")
   {
     speedlinesmovie->setFileName(get_image_path("prosecution_speedlines.gif"));
+    ui->desk->clear();
     ui->playingbackground->setPixmap(get_background_path("prohelperstand.png"));
     ui->desk->hide();
   }
@@ -910,6 +916,9 @@ void Courtroom::on_changecharacter_clicked()
 
 void Courtroom::on_musiclist_doubleClicked(const QModelIndex &index)
 {
+  if (!music_list_set)
+    return;
+
   QString song_name = ui_music_list.at(index.row());
   QString str_cid = QString::number(m_cid);
 
@@ -1012,9 +1021,15 @@ void Courtroom::handle_server_packet(QString p_packet)
 
   else if (header == "OA")
   {
+    if (packet_contents.size() < 3)
+      return;
+
     if (packet_contents.at(2) == "0")
     {
       int bg_index = packet_contents.at(1).toInt();
+
+      if (bg_index >= area_list.size())
+        return;
 
       background_path = getBasePath() + "background/" + area_list.at(bg_index).background + "/";
 
@@ -1129,7 +1144,15 @@ void Courtroom::handle_server_packet(QString p_packet)
     if (!in_court)
       return;
 
+    if (packet_contents.size() < 4)
+      return;
+
     QString song_name = packet_contents.at(1);
+
+    int f_cid = packet_contents.at(2).toInt();
+
+    if (f_cid < -1)
+      return;
 
     QString song_path = getBasePath() + "sounds/music/" + song_name;
 
@@ -1145,7 +1168,11 @@ void Courtroom::handle_server_packet(QString p_packet)
       musicplayer->stop();
     }
 
-    QString song_char = character_list.at(packet_contents.at(2).toInt()).name;
+    //doin' all the checks B)
+    if (f_cid == -1 || !char_list_set || f_cid >= character_list.size())
+      return;
+
+    QString song_char = character_list.at(f_cid).name;
 
     ui->chatlog->moveCursor(QTextCursor::Start, QTextCursor::MoveAnchor);
     ui->chatlog->insertPlainText(song_char + " has played a song: " + song_name + "\n");

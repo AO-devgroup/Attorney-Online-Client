@@ -466,7 +466,7 @@ void Networkhandler::handle_server_packet()
     {
       if (packet_contents.size() != 4)
       {
-        callError("(header = OC) Expected packet_contents.size() to be 4, but found " + packet_contents.size());
+        //callError("(header = OC) Expected packet_contents.size() to be 4, but found " + packet_contents.size());
         return;
       }
 
