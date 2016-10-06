@@ -199,10 +199,7 @@ void Networkhandler::handle_ms_packet()
     }
   }
 
-  QStringList packet_list; //= in_data.split("%", QString::SplitBehavior(QString::SkipEmptyParts));
-
-  //HACK to compensate for a masterserver bug
-  packet_list.append(in_data);
+  QStringList packet_list = in_data.split("%", QString::SplitBehavior(QString::SkipEmptyParts));
 
   for (QString packet : packet_list)
   {
