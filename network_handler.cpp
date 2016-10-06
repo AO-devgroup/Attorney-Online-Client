@@ -363,9 +363,12 @@ void Networkhandler::handle_server_packet()
         QStringList char_arguments =
           packet_contents.at(n_char + 1).split("&");
 
-        if (char_arguments.size() != 2)
-          callFatalError("malformed packet. expected char_arguments.size() to be 2, found" +
+        if (char_arguments.size() < 2)
+        {
+          callFatalError("malformed packet. expected char_arguments.size() to be 2 or more, found " +
                          QString::number(char_arguments.size()));
+          request_quit();
+        }
 
         char_type f_char;
 
