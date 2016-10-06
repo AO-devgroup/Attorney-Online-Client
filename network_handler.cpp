@@ -179,8 +179,10 @@ void Networkhandler::handle_ms_packet()
 
   if (!in_data.endsWith("%"))
   {
+    qDebug() << "partial_packet set to true!";
     partial_packet = true;
     temp_packet += in_data;
+    qDebug() << "current temp_packet: " << temp_packet;
     return;
   }
 
@@ -188,13 +190,19 @@ void Networkhandler::handle_ms_packet()
   {
     if (partial_packet)
     {
+      qDebug() << "found partial_packet to be true!";
       in_data = temp_packet + in_data;
+      qDebug() << "FINAL in_data: " << in_data;
       temp_packet = "";
+      qDebug() << "partial_packet set to false!";
       partial_packet = false;
     }
   }
 
-  QStringList packet_list = in_data.split("%", QString::SplitBehavior(QString::SkipEmptyParts));
+  QStringList packet_list; //= in_data.split("%", QString::SplitBehavior(QString::SkipEmptyParts));
+
+  //HACK to compensate for a masterserver bug
+  packet_list.append(in_data);
 
   for (QString packet : packet_list)
   {
@@ -223,7 +231,7 @@ void Networkhandler::handle_ms_packet()
 
     else if (header == "servercheok")
     {
-      qDebug() << packet;
+      //qDebug() << packet;
 
       int f_release = packet_arguments.at(1).split(".").at(0).toInt();
       int f_major = packet_arguments.at(1).split(".").at(1).toInt();
@@ -233,8 +241,11 @@ void Networkhandler::handle_ms_packet()
       {
         if (RELEASE <= f_release)
         {
-          QString msg = "Client outdated! Your version: " + QString::number(RELEASE) + "." +
-              QString::number(MAJOR_VERSION) + "." + QString::number(MINOR_VERSION) + "\nVisit aceattorneyonline.com to update!";
+          QString msg = "Client outdated! Your version: " +
+              QString::number(RELEASE) + "." +
+              QString::number(MAJOR_VERSION) + "." +
+              QString::number(MINOR_VERSION) +
+              "\nVisit aceattorneyonline.com to update!";
           callFatalError(msg, false);
           request_quit();
           return;
@@ -246,9 +257,11 @@ void Networkhandler::handle_ms_packet()
 
     else if (header == "ALL")
     { 
+      qDebug() << "ALL packet: " << packet;
+
       for (QString server : packet_arguments)
       {
-        qDebug() << "server: " << server;
+        //qDebug() << "server: " << server;
       }
 
       int amount_of_servers = packet_arguments.size() - 2;
@@ -409,8 +422,6 @@ void Networkhandler::handle_server_packet()
 
     else if (header == "SA")
     {
-      qDebug() << "SA received";
-
       QVector<area_type> f_area_list;
 
       for (int n_area = 0 ; n_area < packet_contents.size() - 2; ++n_area)
@@ -441,9 +452,6 @@ void Networkhandler::handle_server_packet()
 
     else if (header == "TA")
     {
-      qDebug() << "header = TA";
-      qDebug() << "packet = " << packet;
-
       QVector<int> f_area_taken_list;
 
       for (int n_area = 0; n_area < packet_contents.size() - 2 ; ++n_area)

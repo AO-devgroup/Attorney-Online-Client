@@ -677,7 +677,7 @@ void Courtroom::handle_chatmessage2()
   case 0:
     chattimer->stop();
 
-    if (current_chatmessage.text_color == 1 || current_chatmessage.message == " ")
+    if (current_chatmessage.text_color == 4 || current_chatmessage.message == " ")
     {
       charmovie_state = 2;
       real_gif_path = idle_gif_path;
@@ -729,7 +729,7 @@ void Courtroom::handle_chatmessage2()
       charmovie_state = 2;
     }
 
-    else if (current_chatmessage.text_color == 1)
+    else if (current_chatmessage.text_color == 4)
     {
       real_gif_path = idle_gif_path;
       chattimer->start(chat_timing);
@@ -1434,14 +1434,19 @@ void Courtroom::char_gif_framechange(int p_frame)
       //if its an empty message we skip straight to the "idle" emote
       if (current_chatmessage.message == " ")
       {
-        QString path = getCharGifPath(current_chatmessage.character, ("(a)" + current_chatmessage.emote + ".gif"));
-        f_gif_path = path;
+        f_gif_path = getCharGifPath(current_chatmessage.character, ("(a)" + current_chatmessage.emote + ".gif"));
+        charmovie_state = 2;
+      }
+      else if (current_chatmessage.text_color == 4)
+      {
+        f_gif_path = getCharGifPath(current_chatmessage.character, ("(a)" + current_chatmessage.emote + ".gif"));
+        chattimer->start(chat_timing);
+        chatpos = 0;
         charmovie_state = 2;
       }
       else
       {
-        QString path = getCharGifPath(current_chatmessage.character, ("(b)" + current_chatmessage.emote + ".gif"));
-        f_gif_path = path;
+        f_gif_path = getCharGifPath(current_chatmessage.character, ("(b)" + current_chatmessage.emote + ".gif"));
         chattimer->start(chat_timing);
         chatpos = 0;
       }
