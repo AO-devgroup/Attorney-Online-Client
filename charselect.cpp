@@ -227,14 +227,6 @@ void Courtroom::setCharSelectPage()
 
     }
 
-    /*
-    if (f_char.taken)
-      f_charicon->set_taken();
-
-    if (f_char.passworded)
-      f_charicon->set_passworded();
-     */
-
     f_charicon->show();
   }
 

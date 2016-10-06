@@ -331,7 +331,13 @@ void Networkhandler::handle_server_packet()
     //typically the first thing we get from the server when we connect
     if (header == "decryptor" || header == "HI")
     {
-      server_socket->write("HI#AO2#1.0.0#%");
+      QString version_packet = "HI#AO2#" +
+          QString::number(RELEASE) + "." +
+          QString::number(MAJOR_VERSION) + "." +
+          QString::number(MINOR_VERSION) + "#%";
+
+      server_socket->write(version_packet.toUtf8());
+      qDebug() << "SENT " << version_packet;
     }
 
     //we usually receive this after sending HI#
@@ -357,26 +363,14 @@ void Networkhandler::handle_server_packet()
         QStringList char_arguments =
           packet_contents.at(n_char + 1).split("&");
 
-        if (char_arguments.size() != 4)
-          callFatalError("malformed packet. expected char_arguments.size() to be 4, found" +
+        if (char_arguments.size() != 2)
+          callFatalError("malformed packet. expected char_arguments.size() to be 2, found" +
                          QString::number(char_arguments.size()));
 
         char_type f_char;
 
         f_char.name = char_arguments.at(0);
         f_char.description =  char_arguments.at(1);
-
-        if (char_arguments.at(2) == "1")
-          f_char.taken = true;
-
-        else
-          f_char.taken = false;
-
-        if (char_arguments.at(3) == "1")
-          f_char.passworded = true;
-
-        else
-          f_char.passworded = false;
 
         f_char_list.insert(n_char, f_char);
       }

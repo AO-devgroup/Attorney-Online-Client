@@ -26,8 +26,6 @@ struct char_type
 {
   QString name;
   QString description;
-  bool taken;
-  bool passworded;
 };
 
 struct evi_type
