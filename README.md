@@ -2,11 +2,9 @@
 
 this project uses QT 5.7
 
-here is a working windows build(UPDATED 8th sept. 2016)(runs smooth on wine):
+This project is in PUBLIC BETA, for more info, check this link:
 
 http://tiny.cc/getao2
-
-keep in mind it is a work in progress
 
 # Images
 
@@ -24,10 +22,9 @@ Current look of the courtroom, the UI is still a work in progress
 
 
 # Changelog
-these are the changes from the old client made by FanatSors. the ones listed here are already done
+these are the changes from the old client made by FanatSors
 
 - "firstmode" in char.ini is now obsolete
-- "number" in char.ini is now obsolete
 - the entire misc folder is now obsolete
 - "char_chosen" pngs are now obsolete
 - "button_off" pngs are now obsolete
@@ -51,12 +48,6 @@ these are the changes from the old client made by FanatSors. the ones listed her
 - Improved network protocol
 - Added a whole lot of other things i forgot to mention
 - Removed kebab
-
-# Things left to implement
-
-- Add pre-emote support
-- Add sound effect support
-- Add objection/holdit/takethat support
 
 # Credits
 
