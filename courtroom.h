@@ -215,6 +215,8 @@ private slots:
 
   void on_objection_clicked();
 
+  void on_objectioncustom_clicked();
+
   void on_takethat_clicked();
 
   void on_present_clicked();

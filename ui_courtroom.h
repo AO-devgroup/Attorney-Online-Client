@@ -94,6 +94,7 @@ public:
     QLabel *realizationflash;
     QCheckBox *flipbox;
     QLabel *flipped_playingarea;
+    QPushButton *objectioncustom;
 
     void setupUi(QMainWindow *Courtroom)
     {
@@ -393,10 +394,10 @@ public:
         ooc_toggle->setGeometry(QRect(580, 300, 133, 19));
         realization = new QPushButton(centralwidget);
         realization->setObjectName(QStringLiteral("realization"));
-        realization->setGeometry(QRect(260, 330, 40, 40));
+        realization->setGeometry(QRect(295, 325, 40, 40));
         mute = new QPushButton(centralwidget);
         mute->setObjectName(QStringLiteral("mute"));
-        mute->setGeometry(QRect(305, 330, 40, 40));
+        mute->setGeometry(QRect(340, 325, 40, 40));
         witnesstestimony = new QPushButton(centralwidget);
         witnesstestimony->setObjectName(QStringLiteral("witnesstestimony"));
         witnesstestimony->setGeometry(QRect(5, 345, 85, 42));
@@ -494,6 +495,9 @@ public:
         flipped_playingarea = new QLabel(centralwidget);
         flipped_playingarea->setObjectName(QStringLiteral("flipped_playingarea"));
         flipped_playingarea->setGeometry(QRect(0, 0, 256, 192));
+        objectioncustom = new QPushButton(centralwidget);
+        objectioncustom->setObjectName(QStringLiteral("objectioncustom"));
+        objectioncustom->setGeometry(QRect(250, 325, 40, 40));
         Courtroom->setCentralWidget(centralwidget);
         ooc_master->raise();
         ooc_server->raise();
@@ -558,6 +562,7 @@ public:
         testimony->raise();
         realizationflash->raise();
         objectiongif->raise();
+        objectioncustom->raise();
 
         retranslateUi(Courtroom);
 
@@ -618,6 +623,7 @@ public:
          << QApplication::translate("Courtroom", "Red", 0)
          << QApplication::translate("Courtroom", "Orange", 0)
          << QApplication::translate("Courtroom", "Blue", 0)
+         << QApplication::translate("Courtroom", "Yellow", 0)
         );
         musiclabel->setText(QApplication::translate("Courtroom", "Music", 0));
         sfxlabel->setText(QApplication::translate("Courtroom", "Sfx", 0));
@@ -640,6 +646,7 @@ public:
         realizationflash->setText(QString());
         flipbox->setText(QApplication::translate("Courtroom", "Flip", 0));
         flipped_playingarea->setText(QString());
+        objectioncustom->setText(QString());
     } // retranslateUi
 
 };

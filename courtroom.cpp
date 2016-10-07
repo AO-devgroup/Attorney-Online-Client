@@ -196,6 +196,12 @@ void Courtroom::setTheme()
   ui->holdit->setStyleSheet("border-image:url(" + get_image_path("holdit.png") + ")");
   ui->objection->setStyleSheet("border-image:url(" + get_image_path("objection.png") + ")");
   ui->takethat->setStyleSheet("border-image:url(" + get_image_path("takethat.png") + ")");
+  ui->objectioncustom->setStyleSheet("border-image:url(" + get_image_path("custom.png") + ")");
+
+  if (fileExists(getBasePath() + "characters/" + playerChar + "/custom.gif", true))
+    ui->objectioncustom->show();
+  else
+    ui->objectioncustom->hide();
 
   ui->defminus->setStyleSheet("border-image:url(" + get_image_path("defminus.png") + ")");
   ui->defplus->setStyleSheet("border-image:url(" + get_image_path("defplus.png") + ")");
@@ -220,6 +226,7 @@ void Courtroom::setTheme()
   ui->realizationflash->hide();
 
   charmovie_state = 2;
+  objection_state = 0;
 
   //HACK for debugging
   //callError("Sample text");
@@ -371,7 +378,7 @@ void Courtroom::enter_courtroom()
 void Courtroom::on_chatLine_returnPressed()
 {
   //tough luck -- someone else is talking
-  if (charmovie_state == 1 || charmovie_state == 0)
+  if (charmovie_state != 2)
     return;
 
   if (muted)
@@ -500,6 +507,8 @@ void Courtroom::handle_chatmessage()
   charmovie->stop();
 
   QString char_path = getBasePath() + "characters/";
+  //only used for case 4
+  QString gif_path = "";
 
   switch(current_chatmessage.objection_modifier)
   {
@@ -511,27 +520,43 @@ void Courtroom::handle_chatmessage()
     objectionmovie->stop();
     objectionmovie->setFileName(get_image_path("holdit.gif"));
     //ui->objectiongif->setMovie(objectionmovie);
-    sfxplayer->setMedia(QUrl::fromLocalFile(char_path + '/' + current_chatmessage.character + "/holdit.wav"));
+    sfxplayer->setMedia(QUrl::fromLocalFile(char_path + current_chatmessage.character + "/holdit.wav"));
     sfxplayer->play();
-    charmovie_state = 0;
+    charmovie_state = -1;
     objectionmovie->start(); //handle_chatmessage2 is called when this is done playing, continuing the logic
     break;
   case 2:
     objectionmovie->stop();
     objectionmovie->setFileName(get_image_path("objection.gif"));
     //ui->objectiongif->setMovie(objectionmovie);
-    sfxplayer->setMedia(QUrl::fromLocalFile(char_path + '/' + current_chatmessage.character + "/objection.wav"));
+    sfxplayer->setMedia(QUrl::fromLocalFile(char_path + current_chatmessage.character + "/objection.wav"));
     sfxplayer->play();
-    charmovie_state = 0;
+    charmovie_state = -1;
     objectionmovie->start();
     break;
   case 3:
     objectionmovie->stop();
     objectionmovie->setFileName(get_image_path("takethat.gif"));
     //ui->objectiongif->setMovie(objectionmovie);
-    sfxplayer->setMedia(QUrl::fromLocalFile(char_path + '/' + current_chatmessage.character + "/takethat.wav"));
+    sfxplayer->setMedia(QUrl::fromLocalFile(char_path + current_chatmessage.character + "/takethat.wav"));
     sfxplayer->play();
-    charmovie_state = 0;
+    charmovie_state = -1;
+    objectionmovie->start();
+    break;
+  case 4:
+    objectionmovie->stop();
+    gif_path = char_path + current_chatmessage.character + "/custom.gif";
+
+    if (fileExists(gif_path, true))
+      objectionmovie->setFileName(gif_path);
+    else
+      objectionmovie->setFileName(get_image_path("placeholder.gif"));
+
+    //ui->objectiongif->setMovie(objectionmovie);
+    sfxplayer->setMedia(QUrl::fromLocalFile(char_path + current_chatmessage.character + "/custom.wav"));
+    //qDebug() << "custom path: " << char_path + '/' + current_chatmessage.character + "/custom.wav";
+    sfxplayer->play();
+    charmovie_state = -1;
     objectionmovie->start();
     break;
   default:
@@ -593,6 +618,9 @@ void Courtroom::handle_chatmessage2()
   case 4:
     ui->chattext->setStyleSheet("QPlainTextEdit{color: rgb(45, 150, 255);}");
     //ui->chatLine->setStyleSheet("QLineEdit{color: red;}");
+    break;
+  case 5:
+    ui->chattext->setStyleSheet("QPlainTextEdit{color: yellow;}");
     break;
   default:
     ui->chattext->setStyleSheet("QPlainTextEdit{color: white;}");
@@ -696,6 +724,7 @@ void Courtroom::handle_chatmessage2()
     if (current_chatmessage.realization == 1)
     {
       sfxplayer->stop();
+      qDebug() << "set realization.wav on line 727";
       sfxplayer->setMedia(QUrl::fromLocalFile(getBasePath() + "sounds/general/sfx-realization.wav"));
       sfxplayer->play();
       ui->realizationflash->show();
@@ -723,6 +752,7 @@ void Courtroom::handle_chatmessage2()
     if (current_chatmessage.realization == 1)
     {
       sfxplayer->stop();
+      qDebug() << "set realization.wav on line 755";
       sfxplayer->setMedia(QUrl::fromLocalFile(getBasePath() + "sounds/general/sfx-realization.wav"));
       sfxplayer->play();
       ui->realizationflash->show();
@@ -823,6 +853,27 @@ void Courtroom::on_objection_clicked()
     objection_state = 2;
 
     ui->objection->setStyleSheet("border-image:url(" + get_image_path("objection_selected.png") + ")");
+    ui->holdit->setStyleSheet("border-image:url(" + get_image_path("holdit.png") + ")");
+    ui->takethat->setStyleSheet("border-image:url(" + get_image_path("takethat.png") + ")");
+  }
+
+  ui->chatLine->setFocus();
+}
+
+void Courtroom::on_objectioncustom_clicked()
+{
+  //if objection is already enabled
+  if (objection_state == 4)
+  {
+    objection_state = 0;
+
+    //ui->objection->setStyleSheet("border-image:url(" + get_image_path("objection.png") + ")");
+  }
+  else
+  {
+    objection_state = 4;
+
+    ui->objection->setStyleSheet("border-image:url(" + get_image_path("objection.png") + ")");
     ui->holdit->setStyleSheet("border-image:url(" + get_image_path("holdit.png") + ")");
     ui->takethat->setStyleSheet("border-image:url(" + get_image_path("takethat.png") + ")");
   }
@@ -1373,12 +1424,11 @@ void Courtroom::on_arealist_doubleClicked(const QModelIndex &index)
 
 void Courtroom::testimony_gif_framechange(int p_frame)
 {
-  static bool last_frame = false;
-
-
-  if (last_frame)
+  if (p_frame == (testimonymovie->frameCount() - 1))
   {
-    last_frame = false;
+    //we need this because gifs are dumb
+    delay(testimonymovie->nextFrameDelay());
+
     if (testimonystate == 1)
     {
       //so that the testimony blinks between WT and CE
@@ -1393,26 +1443,18 @@ void Courtroom::testimony_gif_framechange(int p_frame)
     else
       testimonymovie->stop();
   }
-
-  if (p_frame == (testimonymovie->frameCount()-1))
-  {
-    last_frame = true;
-  }
 }
 
 void Courtroom::objection_gif_framechange(int p_frame)
 {
-  static bool last_frame = false;
 
-  if (last_frame)
+  if (p_frame == (objectionmovie->frameCount() - 1))
   {
-    last_frame = false;
+    //we need this because gifs are dumb
+    delay(objectionmovie->nextFrameDelay());
+
     objectionmovie->stop();
     handle_chatmessage2();
-  }
-  if (p_frame >= (objectionmovie->frameCount()-1))
-  {
-    last_frame = true;
   }
 }
 
@@ -1429,10 +1471,12 @@ void Courtroom::char_gif_framechange(int p_frame)
   {
     if (charmovie_state == 0)
     {
-      charmovie->stop();
 
       //we need this because gifs are dumb
       delay(charmovie->nextFrameDelay());
+      charmovie->stop();
+
+
 
       //this is called when the preanimation has played once
       charmovie_state = 1;
@@ -1450,6 +1494,7 @@ void Courtroom::char_gif_framechange(int p_frame)
       if (current_chatmessage.realization == 1)
       {
         sfxplayer->stop();
+        qDebug() << "set realization.wav on line 1497";
         sfxplayer->setMedia(QUrl::fromLocalFile(getBasePath() + "sounds/general/sfx-realization.wav"));
         sfxplayer->play();
         ui->realizationflash->show();
