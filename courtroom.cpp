@@ -366,7 +366,17 @@ void Courtroom::enter_courtroom()
     ui->chatLine->setFocus();
   }
 
-  ui->oocserverchat->hide();
+  if (ms_or_server_ooc)
+  {
+    ui->oocmasterchat->show();
+    ui->oocserverchat->hide();
+  }
+  else
+  {
+    ui->oocmasterchat->hide();
+    ui->oocserverchat->show();
+  }
+
   ui->chatLine->clear();
 
   setTheme();
@@ -486,6 +496,7 @@ void Courtroom::on_chatLine_returnPressed()
   ui->holdit->setStyleSheet("border-image:url(" + get_image_path("holdit.png") + ")");
   ui->objection->setStyleSheet("border-image:url(" + get_image_path("objection.png") + ")");
   ui->takethat->setStyleSheet("border-image:url(" + get_image_path("takethat.png") + ")");
+  ui->objectioncustom->setStyleSheet("border-image:url(" + get_image_path("custom.png") + ")");
 
   realization_state = 0;
   ui->realization->setStyleSheet("border-image:url(" + get_image_path("realization.png") + ")");
@@ -840,6 +851,7 @@ void Courtroom::on_holdit_clicked()
     ui->holdit->setStyleSheet("border-image:url(" + get_image_path("holdit_selected.png") + ")");
     ui->objection->setStyleSheet("border-image:url(" + get_image_path("objection.png") + ")");
     ui->takethat->setStyleSheet("border-image:url(" + get_image_path("takethat.png") + ")");
+    ui->objectioncustom->setStyleSheet("border-image:url(" + get_image_path("custom.png") + ")");
   }
 
   ui->chatLine->setFocus();
@@ -861,6 +873,7 @@ void Courtroom::on_objection_clicked()
     ui->objection->setStyleSheet("border-image:url(" + get_image_path("objection_selected.png") + ")");
     ui->holdit->setStyleSheet("border-image:url(" + get_image_path("holdit.png") + ")");
     ui->takethat->setStyleSheet("border-image:url(" + get_image_path("takethat.png") + ")");
+    ui->objectioncustom->setStyleSheet("border-image:url(" + get_image_path("custom.png") + ")");
   }
 
   ui->chatLine->setFocus();
@@ -873,12 +886,13 @@ void Courtroom::on_objectioncustom_clicked()
   {
     objection_state = 0;
 
-    //ui->objection->setStyleSheet("border-image:url(" + get_image_path("objection.png") + ")");
+    ui->objectioncustom->setStyleSheet("border-image:url(" + get_image_path("custom.png") + ")");
   }
   else
   {
     objection_state = 4;
 
+    ui->objectioncustom->setStyleSheet("border-image:url(" + get_image_path("custom_selected.png") + ")");
     ui->objection->setStyleSheet("border-image:url(" + get_image_path("objection.png") + ")");
     ui->holdit->setStyleSheet("border-image:url(" + get_image_path("holdit.png") + ")");
     ui->takethat->setStyleSheet("border-image:url(" + get_image_path("takethat.png") + ")");
@@ -903,6 +917,7 @@ void Courtroom::on_takethat_clicked()
     ui->takethat->setStyleSheet("border-image:url(" + get_image_path("takethat_selected.png") + ")");
     ui->objection->setStyleSheet("border-image:url(" + get_image_path("objection.png") + ")");
     ui->holdit->setStyleSheet("border-image:url(" + get_image_path("holdit.png") + ")");
+    ui->objectioncustom->setStyleSheet("border-image:url(" + get_image_path("custom.png") + ")");
   }
 
   ui->chatLine->setFocus();
@@ -1460,6 +1475,7 @@ void Courtroom::objection_gif_framechange(int p_frame)
     delay(objectionmovie->nextFrameDelay());
 
     objectionmovie->stop();
+    ui->objectiongif->hide();
     handle_chatmessage2();
   }
 }
