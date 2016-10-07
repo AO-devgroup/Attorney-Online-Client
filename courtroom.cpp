@@ -524,6 +524,7 @@ void Courtroom::handle_chatmessage()
     sfxplayer->play();
     charmovie_state = -1;
     objectionmovie->start(); //handle_chatmessage2 is called when this is done playing, continuing the logic
+    ui->objectiongif->show();
     break;
   case 2:
     objectionmovie->stop();
@@ -533,6 +534,7 @@ void Courtroom::handle_chatmessage()
     sfxplayer->play();
     charmovie_state = -1;
     objectionmovie->start();
+    ui->objectiongif->show();
     break;
   case 3:
     objectionmovie->stop();
@@ -542,6 +544,7 @@ void Courtroom::handle_chatmessage()
     sfxplayer->play();
     charmovie_state = -1;
     objectionmovie->start();
+    ui->objectiongif->show();
     break;
   case 4:
     objectionmovie->stop();
@@ -558,6 +561,7 @@ void Courtroom::handle_chatmessage()
     sfxplayer->play();
     charmovie_state = -1;
     objectionmovie->start();
+    ui->objectiongif->show();
     break;
   default:
     handle_chatmessage2();
@@ -567,6 +571,8 @@ void Courtroom::handle_chatmessage()
 
 void Courtroom::handle_chatmessage2()
 {
+  ui->objectiongif->hide();
+
   QString showname = getShowname(current_chatmessage.character);
 
   QString chatbox_theme = getChat(current_chatmessage.character);
