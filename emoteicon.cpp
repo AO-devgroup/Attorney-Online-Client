@@ -34,8 +34,8 @@ void emoteicon::setIcon(QString character, int n_emote)
   QString path = getCharPath(character) + "emotions/button" + QString::number(n_emote) + ".png";
   QString path_capital = getCharPath(character) + "emotions/Button" + QString::number(n_emote) + ".png";
 
-  QString legacy_path = getCharPath(character) + "emotions/button" + QString::number(n_emote) + "_on.png";
-  QString legacy_path_capital = getCharPath(character) + "emotions/Button" + QString::number(n_emote) + "_on.png";
+  QString legacy_path = getCharPath(character) + "emotions/button" + QString::number(n_emote) + "_off.png";
+  QString legacy_path_capital = getCharPath(character) + "emotions/Button" + QString::number(n_emote) + "_off.png";
 
   if (fileExists(path, true))
   {
