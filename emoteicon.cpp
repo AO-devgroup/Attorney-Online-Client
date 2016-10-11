@@ -30,13 +30,16 @@ emoteicon::~emoteicon()
 
 void emoteicon::setIcon(QString character, int n_emote)
 {
+  /* this became obsolete whoops
   //need upper and lowercase button because of inconsistent naming
   QString path = getCharPath(character) + "emotions/button" + QString::number(n_emote) + ".png";
   QString path_capital = getCharPath(character) + "emotions/Button" + QString::number(n_emote) + ".png";
+  */
 
   QString legacy_path = getCharPath(character) + "emotions/button" + QString::number(n_emote) + "_off.png";
   QString legacy_path_capital = getCharPath(character) + "emotions/Button" + QString::number(n_emote) + "_off.png";
 
+  /*
   if (fileExists(path, true))
   {
     this->setStyleSheet("border-image:url(" + path + ")");
@@ -45,8 +48,9 @@ void emoteicon::setIcon(QString character, int n_emote)
   {
     this->setStyleSheet("border-image:url(" + path_capital + ")");
   }
+  */
 
-  else if (fileExists(legacy_path, true))
+  if (fileExists(legacy_path, true))
   {
     this->setStyleSheet("border-image:url(" + legacy_path + ")");
   }

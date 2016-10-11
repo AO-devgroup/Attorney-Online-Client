@@ -47,7 +47,12 @@ void::Courtroom::construct_emotes()
   emote_left_button->hide();
   emote_right_button->hide();
 
-  connect(emote_mapper, SIGNAL(mapped(int)), this, SLOT(emote_choose(int))) ;
+  connect(emote_mapper, SIGNAL(mapped(int)), this, SLOT(emote_choose(int)));
+
+  for(emoteicon *i_emote : emoteicon_list)
+  {
+    i_emote->selected_overlay->hide();
+  }
 }
 
 void Courtroom::setEmotes()
@@ -333,6 +338,17 @@ void Courtroom::setEmotes()
     i_emote->reset();
   }
 
+  QString icon_path = getBasePath() + "characters/" + playerChar + "/emotions/button1_on.png";
+  QString icon_notselected_path = getBasePath() + "characters/" + playerChar + "/emotions/button";
+
+  for (int n_icon = 1 ; n_icon <= emoteicon_list.size() ; ++n_icon)
+  {
+    emoteicon *i_emote = emoteicon_list.at(n_icon - 1);
+    i_emote->setStyleSheet("border-image:url(" + icon_notselected_path + QString::number(n_icon) + "_off.png" + ")");
+  }
+
+  emoteicon_list.at(0)->setStyleSheet("border-image:url(" + icon_path + ")");
+
   //set the first emote to be selected so we avoid silly errors
   emote_selected = 0;
 }
@@ -398,10 +414,18 @@ void Courtroom::setEmotePage()
 
     if(emote_selected == n_real_emote)
     {
-      emoteicon_list.at(n_local_emote)->selected_overlay->show();
+      //emoteicon_list.at(n_local_emote)->selected_overlay->show();
+      QString icon_path = getBasePath() + "characters/" + playerChar + "/emotions/button" + QString::number(n_real_emote + 1) + "_on.png";
+
+      emoteicon_list.at(n_local_emote)->setStyleSheet("border-image:url(" + icon_path + ")");
     }
     else
-      emoteicon_list.at(n_local_emote)->selected_overlay->hide();
+    {
+      //emoteicon_list.at(n_local_emote)->selected_overlay->hide();
+      QString icon_path = getBasePath() + "characters/" + playerChar + "/emotions/button" + QString::number(n_real_emote + 1) + "_off.png";
+
+      emoteicon_list.at(n_local_emote)->setStyleSheet("border-image:url(" + icon_path + ")");
+    }
   }
 }
 
@@ -412,12 +436,26 @@ void Courtroom::emote_choose(int local_emote_number)
 
   ui->chatLine->setFocus();
 
+  /*
   for(emoteicon *i_emote : emoteicon_list)
   {
     i_emote->selected_overlay->hide();
   }
+  */
 
-  emoteicon_list.at(local_emote_number)->selected_overlay->show();
+  //emoteicon_list.at(local_emote_number)->selected_overlay->show();
+
+  QString icon_path = getBasePath() + "characters/" + playerChar + "/emotions/button" + QString::number(n_real_emote + 1) + "_on.png";
+  QString icon_notselected_path = getBasePath() + "characters/" + playerChar + "/emotions/button";
+
+  for (int n_icon = 1 ; n_icon <= emoteicon_list.size() ; ++n_icon)
+  {
+    int f_real_emote = n_icon + real_emote_modifier;
+    emoteicon *i_emote = emoteicon_list.at(n_icon - 1);
+    i_emote->setStyleSheet("border-image:url(" + icon_notselected_path + QString::number(f_real_emote) + "_off.png" + ")");
+  }
+
+  emoteicon_list.at(local_emote_number)->setStyleSheet("border-image:url(" + icon_path + ")");
   emote_selected = n_real_emote;
 
   int pre_state = emote_list.at(n_real_emote).mod;
