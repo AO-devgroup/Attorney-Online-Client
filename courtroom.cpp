@@ -502,11 +502,16 @@ void Courtroom::on_chatLine_returnPressed()
   ui->realization->setStyleSheet("border-image:url(" + get_image_path("realization.png") + ")");
 
 
-  ui->chatLine->clear();
+
 }
 
 void Courtroom::handle_chatmessage()
 { 
+  current_chatmessage.message.replace("<num>", "#").replace("<percent>", "%");
+
+  if (current_chatmessage.message == ui->chatLine->text())
+    ui->chatLine->clear();
+
   if (current_chatmessage.cid < mutelist.size())
   {
     if (mutelist.at(current_chatmessage.cid))
