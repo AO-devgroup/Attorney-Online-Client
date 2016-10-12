@@ -129,7 +129,7 @@ private:
   QTimer *chattimer;
   QTimer *sfxdelaytimer;
   QTimer *realizationtimer;
-  //QTimer *animtimer;
+  QTimer *animtimer;
 
   int animframe = 0;
   QVector<QImage> mirror_anim;
@@ -208,6 +208,8 @@ private slots:
   void emote_choose(int local_emote_number);
 
   void chat_tick();
+
+  void preanim_done();
 
   void realization_done();
 

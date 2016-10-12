@@ -1,5 +1,7 @@
 #include "file_handler.h"
 
+#include <QDebug>
+
 
 QString getShowname(QString p_character)
 {
@@ -108,5 +110,40 @@ QString getChat(QString p_character)
   return "default";
 }
 
+int get_preanim_duration(QString p_character, QString p_emote)
+{
+  QFile char_ini(getBasePath() + "characters/" + p_character + "/char.ini");
+  if (!char_ini.open(QIODevice::ReadOnly))
+  {
+    char_ini.close();
+    return 0;
+  }
+
+  QTextStream in(&char_ini);
+
+  //again, we need two search line because of i n c o n s i s t e n c i e s
+  QString search_line1 = p_emote + " =";
+  QString search_line2 = p_emote + "=";
+
+  while(!in.atEnd())
+  {
+    QString line = in.readLine().toLower().trimmed();
+
+    if (line.startsWith(search_line1))
+    {
+      char_ini.close();
+      return line.remove(0, search_line1.length()).trimmed().toInt();
+    }
+
+    if (line.startsWith(search_line2))
+    {
+      char_ini.close();
+      return line.remove(0, search_line2.length()).trimmed().toInt();
+    }
+  }
+
+  char_ini.close();
+  return 0;
+}
 
 

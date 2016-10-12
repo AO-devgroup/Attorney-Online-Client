@@ -20,7 +20,7 @@ Courtroom::Courtroom(QWidget *parent) :
   guardplayer = new QMediaPlayer(this);
   sfxdelaytimer = new QTimer(this);
   realizationtimer = new QTimer(this);
-  //animtimer = new QTimer(this);
+  animtimer = new QTimer(this);
 
   debugtime = new QTime();
 
@@ -33,7 +33,7 @@ Courtroom::Courtroom(QWidget *parent) :
 
   connect(chattimer, SIGNAL(timeout()), this, SLOT(chat_tick()));
 
-  //connect(animtimer, SIGNAL(timeout()), this, SLOT(anim_tick()));
+  connect(animtimer, SIGNAL(timeout()), this, SLOT(preanim_done()));
 
   connect(sfxdelaytimer, SIGNAL(timeout()), this, SLOT(play_sfx()));
 
@@ -724,6 +724,8 @@ void Courtroom::handle_chatmessage2()
   speedlinesmovie->stop();
 
   QString real_gif_path = "";
+  int preanim_time = 0;
+
 
   switch (current_chatmessage.emote_modifier)
   {
@@ -757,11 +759,13 @@ void Courtroom::handle_chatmessage2()
     ui->desk->hide();
     //intentional fallthrough here
   case 1:
+    preanim_time = get_preanim_duration(current_chatmessage.character, current_chatmessage.pre_emote);
     real_gif_path = gif_preanim_path;
     charmovie_state = 0;
     break;
   case 4:
     ui->desk->show();
+    preanim_time = get_preanim_duration(current_chatmessage.character, current_chatmessage.pre_emote);
     real_gif_path = gif_preanim_path;
     charmovie_state = 0;
     break;
@@ -821,6 +825,14 @@ void Courtroom::handle_chatmessage2()
   {
     ui->playingarea->show();
     ui->flipped_playingarea->hide();
+  }
+
+  qDebug() << "preanim_time = " << preanim_time;
+
+  if (preanim_time >= 0)
+  {
+    qDebug() << "animtimer started with time " << preanim_time;
+    animtimer->start(preanim_time * 60);
   }
 
   charmovie->start();
@@ -1487,12 +1499,15 @@ void Courtroom::objection_gif_framechange(int p_frame)
 
 void Courtroom::char_gif_framechange(int p_frame)
 {
+  //qDebug() << "frame: " << p_frame;
+
   if (current_chatmessage.flip == 1)
   {
     if (charmovie->currentFrameNumber() < mirror_anim.size())
       ui->flipped_playingarea->setPixmap(QPixmap::fromImage(mirror_anim.at(charmovie->currentFrameNumber())));
   }
 
+  /*
 
   if (p_frame == (charmovie->frameCount() - 1))
   {
@@ -1502,8 +1517,6 @@ void Courtroom::char_gif_framechange(int p_frame)
       //we need this because gifs are dumb
       delay(charmovie->nextFrameDelay());
       charmovie->stop();
-
-
 
       //this is called when the preanimation has played once
       charmovie_state = 1;
@@ -1567,6 +1580,72 @@ void Courtroom::char_gif_framechange(int p_frame)
 
     }
   }
+  */
+}
+
+void Courtroom::preanim_done()
+{
+  qDebug() << "preanim_done called";
+  //this is called when the preanimation has played once
+  charmovie_state = 1;
+  chattimer->stop();
+  charmovie->stop();
+  animtimer->stop();
+
+  if (current_chatmessage.emote_modifier == 4)
+  {
+    speedlinesmovie->stop();
+    ui->playingbackground->setMovie(speedlinesmovie);
+    ui->desk->hide();
+    speedlinesmovie->start();
+  }
+
+  if (current_chatmessage.realization == 1)
+  {
+    sfxplayer->stop();
+    qDebug() << "set realization.wav on line 1497";
+    sfxplayer->setMedia(QUrl::fromLocalFile(getBasePath() + "sounds/general/sfx-realization.wav"));
+    sfxplayer->play();
+    ui->realizationflash->show();
+    realizationtimer->start(60);
+  }
+
+  QString f_gif_path;
+
+  //if its an empty message we skip straight to the "idle" emote
+  if (current_chatmessage.message == " ")
+  {
+    f_gif_path = getCharGifPath(current_chatmessage.character, ("(a)" + current_chatmessage.emote + ".gif"));
+    charmovie_state = 2;
+  }
+  else if (current_chatmessage.text_color == 4)
+  {
+    f_gif_path = getCharGifPath(current_chatmessage.character, ("(a)" + current_chatmessage.emote + ".gif"));
+    chattimer->start(chat_timing);
+    chatpos = 0;
+    charmovie_state = 2;
+  }
+  else
+  {
+    f_gif_path = getCharGifPath(current_chatmessage.character, ("(b)" + current_chatmessage.emote + ".gif"));
+    chattimer->start(chat_timing);
+    chatpos = 0;
+  }
+
+  if (fileExists(f_gif_path, true))
+  {
+    charmovie->setFileName(f_gif_path);
+  }
+  else
+  {
+    f_gif_path = get_image_path("placeholder.gif");
+    charmovie->setFileName(f_gif_path);
+  }
+
+  if (current_chatmessage.flip == 1)
+    set_flipped_animation(f_gif_path);
+
+  charmovie->start();
 }
 
 void Courtroom::on_callmod_clicked()
