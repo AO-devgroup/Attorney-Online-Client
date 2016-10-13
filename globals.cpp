@@ -26,6 +26,19 @@ QString get_image_path(QString p_image)
 
 }
 
+QString get_stylesheet_path(QString p_image)
+{
+  QString default_path = getBasePath() + "themes/default/" + p_image;
+  QString image_path = g_theme_path + p_image;
+
+  if (fileExists(image_path, true))
+    return image_path.replace("'", "&#39");
+  else if (fileExists(default_path, true))
+    return default_path.replace("'", "&#39");
+  else
+    return "";
+}
+
 bool cyclic_function()
 {
   static bool cycle = true;
