@@ -32,9 +32,9 @@ QString get_stylesheet_path(QString p_image)
   QString image_path = g_theme_path + p_image;
 
   if (fileExists(image_path, true))
-    return image_path.replace("'", "\'");
+    return "border-image:url(\"" + image_path + "\")";
   else if (fileExists(default_path, true))
-    return default_path.replace("'", "\'");
+    return "border-image:url(\"" + default_path + "\")";
   else
     return "";
 }

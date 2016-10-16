@@ -32,32 +32,30 @@ void Lobby::setTheme()
   if (fileExists(background_path))
     ui->background->setPixmap(QPixmap(background_path));
 
-  ui->refresh->setStyleSheet("border-image:url(" + refresh_path + ")");
+  ui->refresh->setStyleSheet("border-image:url(" + refresh_path );
   if (fileExists(addtofav_path))
-    ui->addtofav->setStyleSheet("border-image:url(" + addtofav_path + ")");
+    ui->addtofav->setStyleSheet("border-image:url(" + addtofav_path );
 
   if (fileExists(connect_path))
-    ui->connect->setStyleSheet("border-image:url(" + connect_path + ")");
+    ui->connect->setStyleSheet("border-image:url(" + connect_path );
 
   if (fileExists(publicservers_path))
-    ui->publicservers->setStyleSheet("border-image:url(" + publicservers_path + ")");
+    ui->publicservers->setStyleSheet("border-image:url(" + publicservers_path );
 
   if (fileExists(favorites_path))
-    ui->favorites->setStyleSheet("border-image:url(" + favorites_path + ")");
+    ui->favorites->setStyleSheet("border-image:url(" + favorites_path );
 
   */
 
   ui->background->setPixmap(get_image_path("lobbybackground.png"));
-  ui->refresh->setStyleSheet("border-image:url(" + get_image_path("refresh.png") + ")");
-  ui->addtofav->setStyleSheet("border-image:url(" + get_image_path("addtofav.png") + ")");
-  ui->connect->setStyleSheet("border-image:url(" + get_image_path("connect.png") + ")");
-  ui->publicservers->setStyleSheet("border-image:url(" + get_image_path("publicservers_selected.png") + ")");
-  ui->favorites->setStyleSheet("border-image:url(" + get_image_path("favorites.png") + ")");
-  ui->about->setStyleSheet("border-image:url(" + get_image_path("about.png") +")");
+  ui->refresh->setStyleSheet(get_stylesheet_path("refresh.png"));
+  ui->addtofav->setStyleSheet(get_stylesheet_path("addtofav.png"));
+  ui->connect->setStyleSheet(get_stylesheet_path("connect.png"));
+  ui->publicservers->setStyleSheet(get_stylesheet_path("publicservers_selected.png"));
+  ui->favorites->setStyleSheet(get_stylesheet_path("favorites.png"));
+  ui->about->setStyleSheet(get_stylesheet_path("about.png"));
 
   ui->favoritelist->hide();
-
-  //callError("Sample text");
 }
 
 Lobby::~Lobby()
@@ -67,24 +65,24 @@ Lobby::~Lobby()
 
 void Lobby::on_refresh_pressed()
 {
-  ui->refresh->setStyleSheet("border-image:url(" + get_image_path("refresh_pressed.png") +")");
+  ui->refresh->setStyleSheet(get_stylesheet_path("refresh_pressed.png"));
 }
 
 void Lobby::on_refresh_released()
 {
-  ui->refresh->setStyleSheet("border-image:url(" + get_image_path("refresh.png") + ")");
+  ui->refresh->setStyleSheet(get_stylesheet_path("refresh.png"));
 
   all_servers_requested();
 }
 
 void Lobby::on_addtofav_pressed()
 {
-  ui->addtofav->setStyleSheet("border-image:url(" + get_image_path("addtofav_pressed.png") + ")");
+  ui->addtofav->setStyleSheet(get_stylesheet_path("addtofav_pressed.png"));
 }
 
 void Lobby::on_addtofav_released()
 {
-  ui->addtofav->setStyleSheet("border-image:url(" + get_image_path("addtofav.png") + ")");
+  ui->addtofav->setStyleSheet(get_stylesheet_path("addtofav.png"));
 
   //you cant add favorites from favorites m8
   if (!public_servers_selected)
@@ -116,12 +114,12 @@ void Lobby::on_addtofav_released()
 
 void Lobby::on_connect_pressed()
 {
-  ui->connect->setStyleSheet("border-image:url(" + get_image_path("connect_pressed.png") + ")");
+  ui->connect->setStyleSheet(get_stylesheet_path("connect_pressed.png"));
 }
 
 void Lobby::on_connect_released()
 {
-  ui->connect->setStyleSheet("border-image:url(" + get_image_path("connect.png") + ")");
+  ui->connect->setStyleSheet(get_stylesheet_path("connect.png"));
 
   enter_server_requested();
 }
@@ -131,8 +129,8 @@ void Lobby::on_publicservers_clicked()
   public_servers_selected = true;
   int_selected_server = -1;
 
-  ui->publicservers->setStyleSheet("border-image:url(" + get_image_path("publicservers_selected.png") + ")");
-  ui->favorites->setStyleSheet("border-image:url(" + get_image_path("favorites.png") + ")");
+  ui->publicservers->setStyleSheet(get_stylesheet_path("publicservers_selected.png"));
+  ui->favorites->setStyleSheet(get_stylesheet_path("favorites.png"));
 
   ui->favoritelist->hide();
   ui->serverlist->show();
@@ -143,8 +141,8 @@ void Lobby::on_favorites_clicked()
   public_servers_selected = false;
   int_selected_server = -1;
 
-  ui->publicservers->setStyleSheet("border-image:url(" + get_image_path("publicservers.png") + ")");
-  ui->favorites->setStyleSheet("border-image:url(" + get_image_path("favorites_selected.png") + ")");
+  ui->publicservers->setStyleSheet(get_stylesheet_path("publicservers.png"));
+  ui->favorites->setStyleSheet(get_stylesheet_path("favorites_selected.png"));
 
   LoadFavorites();
 
