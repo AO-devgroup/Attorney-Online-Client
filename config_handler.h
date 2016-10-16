@@ -22,6 +22,6 @@ QString getCharGifPath(QString character, QString gif);
 
 QString getTheme();
 
-bool fileExists(QString path, bool quiet = false);
+bool fileExists(QString path, bool quiet = true);
 
 #endif // CONFIG_HANDLER_H

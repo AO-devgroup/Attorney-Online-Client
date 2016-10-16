@@ -604,7 +604,7 @@ void Courtroom::handle_chatmessage2()
     ui->chatbubble->setPixmap(g_theme_path + "chatmed.png");
 
   else
-    ui->chatbubble->setPixmap(getBasePath() + "themes/gs4/chatmed.png");
+    ui->chatbubble->setPixmap(getBasePath() + "themes/default/chatmed.png");
 
   ui->chatlog->moveCursor(QTextCursor::Start, QTextCursor::MoveAnchor);
   ui->chatlog->insertPlainText(showname + ": " + f_message + '\n');

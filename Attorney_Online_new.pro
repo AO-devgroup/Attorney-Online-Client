@@ -15,7 +15,7 @@ RC_ICONS = logo.ico
 TARGET = Attorney_Online_new
 TEMPLATE = app
 
-VERSION = 2.0.7.0
+VERSION = 2.0.8.0
 
 
 SOURCES += \

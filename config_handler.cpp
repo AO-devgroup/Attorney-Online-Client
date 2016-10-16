@@ -30,7 +30,7 @@ QString getTheme()
   QFile config_file(getBasePath() + "config.ini");
   if (!config_file.open(QIODevice::ReadOnly))
   {
-      callError("failed to open " + getBasePath() + "config.ini for reading. Setting theme to default.");
+      //callError("failed to open " + getBasePath() + "config.ini for reading. Setting theme to default.");
       return "default";
   }
 

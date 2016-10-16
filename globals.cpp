@@ -4,7 +4,7 @@ QString g_theme_path = "FATAL: g_theme_path was not set";
 
 const int RELEASE = 2;
 const int MAJOR_VERSION = 0;
-const int MINOR_VERSION = 7;
+const int MINOR_VERSION = 8;
 
 //only this function should change g_theme_path
 void set_theme_path()
@@ -32,9 +32,9 @@ QString get_stylesheet_path(QString p_image)
   QString image_path = g_theme_path + p_image;
 
   if (fileExists(image_path, true))
-    return image_path.replace("'", "&#39");
+    return image_path.replace("'", "\'");
   else if (fileExists(default_path, true))
-    return default_path.replace("'", "&#39");
+    return default_path.replace("'", "\'");
   else
     return "";
 }

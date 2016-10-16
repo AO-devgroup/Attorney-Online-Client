@@ -12,6 +12,8 @@ void set_theme_path();
 
 QString get_image_path(QString p_image);
 
+QString get_stylesheet_path(QString p_image);
+
 bool cyclic_function();
 
 void delay(int sec);
