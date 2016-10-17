@@ -187,37 +187,37 @@ void Courtroom::setTheme()
 {
   ui->background->setPixmap(QPixmap(get_image_path("courtroombackground.png")));
 
-  ui->present->setStyleSheet("border-image:url(" + get_image_path("present_disabled.png") + ")");
+  ui->present->setStyleSheet(get_stylesheet_path("present_disabled.png"));
 
-  emote_left_button->setStyleSheet("border-image:url(" + get_image_path("arrow_left.png") + ")");
+  emote_left_button->setStyleSheet(get_stylesheet_path("arrow_left.png"));
 
-  emote_right_button->setStyleSheet("border-image:url(" + get_image_path("arrow_right.png") + ")");
+  emote_right_button->setStyleSheet(get_stylesheet_path("arrow_right.png"));
 
-  ui->holdit->setStyleSheet("border-image:url(" + get_image_path("holdit.png") + ")");
-  ui->objection->setStyleSheet("border-image:url(" + get_image_path("objection.png") + ")");
-  ui->takethat->setStyleSheet("border-image:url(" + get_image_path("takethat.png") + ")");
-  ui->objectioncustom->setStyleSheet("border-image:url(" + get_image_path("custom.png") + ")");
+  ui->holdit->setStyleSheet(get_stylesheet_path("holdit.png"));
+  ui->objection->setStyleSheet(get_stylesheet_path("objection.png"));
+  ui->takethat->setStyleSheet(get_stylesheet_path("takethat.png"));
+  ui->objectioncustom->setStyleSheet(get_stylesheet_path("custom.png"));
 
   if (fileExists(getBasePath() + "characters/" + playerChar + "/custom.gif", true))
     ui->objectioncustom->show();
   else
     ui->objectioncustom->hide();
 
-  ui->defminus->setStyleSheet("border-image:url(" + get_image_path("defminus.png") + ")");
-  ui->defplus->setStyleSheet("border-image:url(" + get_image_path("defplus.png") + ")");
-  ui->prominus->setStyleSheet("border-image:url(" + get_image_path("prominus.png") + ")");
-  ui->proplus->setStyleSheet("border-image:url(" + get_image_path("proplus.png") + ")");
-  ui->realization->setStyleSheet("border-image:url(" + get_image_path("realization.png") + ")");
-  ui->realizationflash->setStyleSheet("border-image:url(" + get_image_path("realizationflash.png") + ")");
-  ui->mute->setStyleSheet("border-image:url(" + get_image_path("mute.png") + ")");
+  ui->defminus->setStyleSheet(get_stylesheet_path("defminus.png"));
+  ui->defplus->setStyleSheet(get_stylesheet_path("defplus.png"));
+  ui->prominus->setStyleSheet(get_stylesheet_path("prominus.png"));
+  ui->proplus->setStyleSheet(get_stylesheet_path("proplus.png"));
+  ui->realization->setStyleSheet(get_stylesheet_path("realization.png"));
+  ui->realizationflash->setStyleSheet(get_stylesheet_path("realizationflash.png"));
+  ui->mute->setStyleSheet(get_stylesheet_path("mute.png"));
 
-  ui->muted->setStyleSheet("border-image:url(" + get_image_path("muted.png") + ")");
+  ui->muted->setStyleSheet(get_stylesheet_path("muted.png"));
 
-  ui->witnesstestimony->setStyleSheet("border-image:url(" + get_image_path("witnesstestimony.png") + ")");
-  ui->crossexamination->setStyleSheet("border-image:url(" + get_image_path("crossexamination.png") + ")");
+  ui->witnesstestimony->setStyleSheet(get_stylesheet_path("witnesstestimony.png"));
+  ui->crossexamination->setStyleSheet(get_stylesheet_path("crossexamination.png"));
 
-  ui->defense_bar->setStyleSheet("border-image:url(" + get_image_path("defensebar10.png") + ")");
-  ui->prosecution_bar->setStyleSheet("border-image:url(" + get_image_path("prosecutionbar10.png") + ")");
+  ui->defense_bar->setStyleSheet(get_stylesheet_path("defensebar10.png"));
+  ui->prosecution_bar->setStyleSheet(get_stylesheet_path("prosecutionbar10.png"));
 
   ui->mutelist->hide();
   show_mutelist = false;
@@ -493,13 +493,13 @@ void Courtroom::on_chatLine_returnPressed()
   chatmessage_requested(f_chatmessage);
 
   objection_state = 0;
-  ui->holdit->setStyleSheet("border-image:url(" + get_image_path("holdit.png") + ")");
-  ui->objection->setStyleSheet("border-image:url(" + get_image_path("objection.png") + ")");
-  ui->takethat->setStyleSheet("border-image:url(" + get_image_path("takethat.png") + ")");
-  ui->objectioncustom->setStyleSheet("border-image:url(" + get_image_path("custom.png") + ")");
+  ui->holdit->setStyleSheet(get_stylesheet_path("holdit.png"));
+  ui->objection->setStyleSheet(get_stylesheet_path("objection.png"));
+  ui->takethat->setStyleSheet(get_stylesheet_path("takethat.png"));
+  ui->objectioncustom->setStyleSheet(get_stylesheet_path("custom.png"));
 
   realization_state = 0;
-  ui->realization->setStyleSheet("border-image:url(" + get_image_path("realization.png") + ")");
+  ui->realization->setStyleSheet(get_stylesheet_path("realization.png"));
 
 
 
@@ -859,16 +859,16 @@ void Courtroom::on_holdit_clicked()
   {
     objection_state = 0;
 
-    ui->holdit->setStyleSheet("border-image:url(" + get_image_path("holdit.png") + ")");
+    ui->holdit->setStyleSheet(get_stylesheet_path("holdit.png"));
   }
   else
   {
     objection_state = 1;
 
-    ui->holdit->setStyleSheet("border-image:url(" + get_image_path("holdit_selected.png") + ")");
-    ui->objection->setStyleSheet("border-image:url(" + get_image_path("objection.png") + ")");
-    ui->takethat->setStyleSheet("border-image:url(" + get_image_path("takethat.png") + ")");
-    ui->objectioncustom->setStyleSheet("border-image:url(" + get_image_path("custom.png") + ")");
+    ui->holdit->setStyleSheet(get_stylesheet_path("holdit_selected.png"));
+    ui->objection->setStyleSheet(get_stylesheet_path("objection.png"));
+    ui->takethat->setStyleSheet(get_stylesheet_path("takethat.png"));
+    ui->objectioncustom->setStyleSheet(get_stylesheet_path("custom.png"));
   }
 
   ui->chatLine->setFocus();
@@ -881,16 +881,16 @@ void Courtroom::on_objection_clicked()
   {
     objection_state = 0;
 
-    ui->objection->setStyleSheet("border-image:url(" + get_image_path("objection.png") + ")");
+    ui->objection->setStyleSheet(get_stylesheet_path("objection.png"));
   }
   else
   {
     objection_state = 2;
 
-    ui->objection->setStyleSheet("border-image:url(" + get_image_path("objection_selected.png") + ")");
-    ui->holdit->setStyleSheet("border-image:url(" + get_image_path("holdit.png") + ")");
-    ui->takethat->setStyleSheet("border-image:url(" + get_image_path("takethat.png") + ")");
-    ui->objectioncustom->setStyleSheet("border-image:url(" + get_image_path("custom.png") + ")");
+    ui->objection->setStyleSheet(get_stylesheet_path("objection_selected.png"));
+    ui->holdit->setStyleSheet(get_stylesheet_path("holdit.png"));
+    ui->takethat->setStyleSheet(get_stylesheet_path("takethat.png"));
+    ui->objectioncustom->setStyleSheet(get_stylesheet_path("custom.png"));
   }
 
   ui->chatLine->setFocus();
@@ -903,16 +903,16 @@ void Courtroom::on_objectioncustom_clicked()
   {
     objection_state = 0;
 
-    ui->objectioncustom->setStyleSheet("border-image:url(" + get_image_path("custom.png") + ")");
+    ui->objectioncustom->setStyleSheet(get_stylesheet_path("custom.png"));
   }
   else
   {
     objection_state = 4;
 
-    ui->objectioncustom->setStyleSheet("border-image:url(" + get_image_path("custom_selected.png") + ")");
-    ui->objection->setStyleSheet("border-image:url(" + get_image_path("objection.png") + ")");
-    ui->holdit->setStyleSheet("border-image:url(" + get_image_path("holdit.png") + ")");
-    ui->takethat->setStyleSheet("border-image:url(" + get_image_path("takethat.png") + ")");
+    ui->objectioncustom->setStyleSheet(get_stylesheet_path("custom_selected.png"));
+    ui->objection->setStyleSheet(get_stylesheet_path("objection.png"));
+    ui->holdit->setStyleSheet(get_stylesheet_path("holdit.png"));
+    ui->takethat->setStyleSheet(get_stylesheet_path("takethat.png"));
   }
 
   ui->chatLine->setFocus();
@@ -925,16 +925,16 @@ void Courtroom::on_takethat_clicked()
   {
     objection_state = 0;
 
-    ui->takethat->setStyleSheet("border-image:url(" + get_image_path("takethat.png") + ")");
+    ui->takethat->setStyleSheet(get_stylesheet_path("takethat.png"));
   }
   else
   {
     objection_state = 3;
 
-    ui->takethat->setStyleSheet("border-image:url(" + get_image_path("takethat_selected.png") + ")");
-    ui->objection->setStyleSheet("border-image:url(" + get_image_path("objection.png") + ")");
-    ui->holdit->setStyleSheet("border-image:url(" + get_image_path("holdit.png") + ")");
-    ui->objectioncustom->setStyleSheet("border-image:url(" + get_image_path("custom.png") + ")");
+    ui->takethat->setStyleSheet(get_stylesheet_path("takethat_selected.png"));
+    ui->objection->setStyleSheet(get_stylesheet_path("objection.png"));
+    ui->holdit->setStyleSheet(get_stylesheet_path("holdit.png"));
+    ui->objectioncustom->setStyleSheet(get_stylesheet_path("custom.png"));
   }
 
   ui->chatLine->setFocus();
@@ -947,13 +947,13 @@ void Courtroom::on_present_clicked()
 
   if (present_evidence)
   {
-    ui->present->setStyleSheet("border-image:url(" + present_off + ")");
+    ui->present->setStyleSheet(get_stylesheet_path(present_off));
     present_evidence = false;
   }
 
   else
   {
-    ui->present->setStyleSheet("border-image:url(" + present_on + ")");
+    ui->present->setStyleSheet(get_stylesheet_path(present_on));
     present_evidence = true;
   }
 
@@ -1393,12 +1393,12 @@ void Courtroom::on_realization_clicked()
   if (realization_state == 0)
   {
     realization_state = 1;
-    ui->realization->setStyleSheet("border-image:url(" + get_image_path("realization_pressed.png") + ")");
+    ui->realization->setStyleSheet(get_stylesheet_path("realization_pressed.png"));
   }
   else
   {
     realization_state = 0;
-    ui->realization->setStyleSheet("border-image:url(" + get_image_path("realization.png") + ")");
+    ui->realization->setStyleSheet(get_stylesheet_path("realization.png"));
   }
 
   ui->chatLine->setFocus();
@@ -1713,14 +1713,14 @@ void Courtroom::on_mute_clicked()
   if (show_mutelist)
   {
     show_mutelist = false;
-    ui->mute->setStyleSheet("border-image:url(" + get_image_path("mute.png") + ")");
+    ui->mute->setStyleSheet(get_stylesheet_path("mute.png"));
     ui->mutelist->hide();
   }
 
   else
   {
     show_mutelist = true;
-    ui->mute->setStyleSheet("border-image:url(" + get_image_path("mute_pressed.png") + ")");
+    ui->mute->setStyleSheet(get_stylesheet_path("mute_pressed.png"));
     ui->mutelist->show();
   }
 }
