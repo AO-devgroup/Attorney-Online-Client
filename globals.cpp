@@ -14,8 +14,8 @@ void set_theme_path()
 
 QString get_image_path(QString p_image)
 { 
-  QString default_path = getBasePath() + "themes/default/" + p_image;
-  QString image_path = g_theme_path + p_image;
+  QString default_path = getBasePath() + "themes/default/" + p_image.toLower();
+  QString image_path = g_theme_path + p_image.toLower();
 
   if (fileExists(image_path, true))
     return image_path;
@@ -28,8 +28,8 @@ QString get_image_path(QString p_image)
 
 QString get_stylesheet_path(QString p_image)
 {
-  QString default_path = getBasePath() + "themes/default/" + p_image;
-  QString image_path = g_theme_path + p_image;
+  QString default_path = getBasePath() + "themes/default/" + p_image.toLower();
+  QString image_path = g_theme_path + p_image.toLower();
 
   if (fileExists(image_path, true))
     return "border-image:url(\"" + image_path + "\")";

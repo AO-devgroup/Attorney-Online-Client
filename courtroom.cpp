@@ -95,7 +95,7 @@ void Courtroom::set_music_list(QStringList &p_music_list)
 
   for (int n_song = 0 ; n_song < music_list.size() ; ++n_song)
   {
-    QString song_name = music_list.at(n_song);
+    QString song_name = music_list.at(n_song).toLower();
 
     ui->musiclist->addItem(song_name);
 
@@ -198,7 +198,7 @@ void Courtroom::setTheme()
   ui->takethat->setStyleSheet(get_stylesheet_path("takethat.png"));
   ui->objectioncustom->setStyleSheet(get_stylesheet_path("custom.png"));
 
-  if (fileExists(getBasePath() + "characters/" + playerChar + "/custom.gif", true))
+  if (fileExists(getBasePath() + "characters/" + playerChar.toLower() + "/custom.gif", true))
     ui->objectioncustom->show();
   else
     ui->objectioncustom->hide();
@@ -449,7 +449,7 @@ void Courtroom::on_chatLine_returnPressed()
   emote_type f_emote = emote_list.at(emote_selected);
 
   f_chatmessage.pre_emote = f_emote.preanim;
-  f_chatmessage.character = playerChar.replace("#", "<num>").replace("%", "<percent>");
+  //f_chatmessage.character = playerChar.replace("#", "<num>").replace("%", "<percent>");
   f_chatmessage.emote = f_emote.anim;
   f_chatmessage.message = f_message.replace("#", "<num>").replace("%", "<percent>");
   f_chatmessage.side = f_side.replace("#", "<num>").replace("%", "<percent>");
@@ -536,7 +536,7 @@ void Courtroom::handle_chatmessage()
     objectionmovie->stop();
     objectionmovie->setFileName(get_image_path("holdit.gif"));
     //ui->objectiongif->setMovie(objectionmovie);
-    sfxplayer->setMedia(QUrl::fromLocalFile(char_path + current_chatmessage.character + "/holdit.wav"));
+    sfxplayer->setMedia(QUrl::fromLocalFile(getCharPath(current_chatmessage.character) + "/holdit.wav"));
     sfxplayer->play();
     charmovie_state = -1;
     objectionmovie->start(); //handle_chatmessage2 is called when this is done playing, continuing the logic
@@ -1236,7 +1236,7 @@ void Courtroom::handle_server_packet(QString p_packet)
     if (packet_contents.size() < 4)
       return;
 
-    QString song_name = packet_contents.at(1);
+    QString song_name = packet_contents.at(1).toLower();
 
     int f_cid = packet_contents.at(2).toInt();
 

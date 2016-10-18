@@ -96,7 +96,7 @@ void Networkhandler::handle_chatmessage_request(chatmessage_type &p_chatmessage)
   if (!server_connected)
     return;
 
-  QString packet = "MS#chat#" +
+  QString packet = "MS#chat2#" +
       p_chatmessage.pre_emote + "#" +
       p_chatmessage.character + "#" +
       p_chatmessage.emote + "#" +

@@ -9,20 +9,20 @@ QString getBasePath()
 
 QString getCharPath(QString character)
 {
-  return (getBasePath() + "characters/" + character + "/");
+  return (getBasePath() + "characters/" + character.toLower() + "/");
 }
 
 QString getCharGifPath(QString character, QString image)
 {
-  if (fileExists(getCharPath(character) + image, true))
-    return (getCharPath(character) + image);
+  if (fileExists(getCharPath(character) + image.toLower(), true))
+    return (getCharPath(character) + image.toLower());
   else
     return get_image_path("placeholder.gif");
 }
 
 QString getCharEmotePath(QString character, QString emote)
 {
-  return (getCharPath(character) + emote);
+  return (getCharPath(character) + emote.toLower());
 }
 
 QString getTheme()

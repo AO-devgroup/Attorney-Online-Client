@@ -49,11 +49,7 @@ void charicon::setIcon(QString character)
   QString path = getCharPath(character) + "char_icon.png";
 
   //LEGACY SUPPORT, for ao classic filestructure
-  QString legacy_path = getBasePath() + "misc/DemoThings/" + character + "_char_icon.png";
-
-  //we also need a lowercase version for the legacy support. again because of inconsistent naming
-
-  QString legacy_path_lower = getBasePath() + "misc/DemoThings/" + character.toLower() + "_char_icon.png";
+  QString legacy_path = getBasePath() + "misc/demothings/" + character + "_char_icon.png";
 
   if (fileExists(path, true))
   {
@@ -66,13 +62,6 @@ void charicon::setIcon(QString character)
     this->show();
     QFile::copy(legacy_path, path);
   }
-  else if (fileExists(legacy_path_lower, true))
-  {
-    this->setStyleSheet("border-image:url(" + legacy_path_lower + ")");
-    this->show();
-    QFile::copy(legacy_path_lower, path);
-  }
-  //if the char icon could not be found we add a neat text label to help the user :)
   else
   {
     this->setText(character);

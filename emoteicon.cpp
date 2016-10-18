@@ -1,5 +1,7 @@
 #include "emoteicon.h"
 
+#include <QDebug>
+
 emoteicon::emoteicon()
 {
 
@@ -30,38 +32,19 @@ emoteicon::~emoteicon()
 
 void emoteicon::setIcon(QString character, int n_emote)
 {
-  /* this became obsolete whoops
-  //need upper and lowercase button because of inconsistent naming
-  QString path = getCharPath(character) + "emotions/button" + QString::number(n_emote) + ".png";
-  QString path_capital = getCharPath(character) + "emotions/Button" + QString::number(n_emote) + ".png";
-  */
-
   QString legacy_path = getCharPath(character) + "emotions/button" + QString::number(n_emote) + "_off.png";
-  QString legacy_path_capital = getCharPath(character) + "emotions/Button" + QString::number(n_emote) + "_off.png";
 
-  /*
-  if (fileExists(path, true))
-  {
-    this->setStyleSheet("border-image:url(" + path + ")");
-  }
-  else if (fileExists(path_capital, true))
-  {
-    this->setStyleSheet("border-image:url(" + path_capital + ")");
-  }
-  */
+
 
   if (fileExists(legacy_path, true))
   {
-    this->setStyleSheet("border-image:url(" + legacy_path + ")");
-  }
-
-  else if (fileExists(legacy_path_capital, true))
-  {
-    this->setStyleSheet("border-image:url(" + legacy_path_capital + ")");
+    qDebug() << "setting icon with path " << legacy_path;
+    this->setStyleSheet("border-image:url(\"" + legacy_path + "\")");
   }
 
   else
   {
+    qDebug() << "failed to find " << legacy_path;
     this->setStyleSheet("border-image:url()");
   }
 
