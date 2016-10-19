@@ -95,11 +95,11 @@ void Courtroom::set_music_list(QStringList &p_music_list)
 
   for (int n_song = 0 ; n_song < music_list.size() ; ++n_song)
   {
-    QString song_name = music_list.at(n_song).toLower();
+    QString song_name = music_list.at(n_song);
 
     ui->musiclist->addItem(song_name);
 
-    QString song_path = getBasePath() + "sounds/music/" + song_name;
+    QString song_path = getBasePath() + "sounds/music/" + song_name.toLower();
 
     if (fileExists(song_path, true))
       ui->musiclist->item(n_song)->setBackground(Qt::green);
@@ -449,7 +449,7 @@ void Courtroom::on_chatLine_returnPressed()
   emote_type f_emote = emote_list.at(emote_selected);
 
   f_chatmessage.pre_emote = f_emote.preanim;
-  //f_chatmessage.character = playerChar.replace("#", "<num>").replace("%", "<percent>");
+  f_chatmessage.character = playerChar.replace("#", "<num>").replace("%", "<percent>");
   f_chatmessage.emote = f_emote.anim;
   f_chatmessage.message = f_message.replace("#", "<num>").replace("%", "<percent>");
   f_chatmessage.side = f_side.replace("#", "<num>").replace("%", "<percent>");
@@ -1664,7 +1664,7 @@ void Courtroom::chat_tick()
   if (chatpos >= current_chatmessage.message.length())
   {
     //the not-talking aka idle animation
-    QString path = getBasePath() + "characters/" + current_chatmessage.character + "/(a)" + current_chatmessage.emote + ".gif";
+    QString path = getBasePath() + "characters/" + current_chatmessage.character.toLower() + "/(a)" + current_chatmessage.emote + ".gif";
 
     chatpos = 0;
     charmovie_state = 2;

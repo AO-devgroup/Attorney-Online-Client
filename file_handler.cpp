@@ -112,7 +112,7 @@ QString getChat(QString p_character)
 
 int get_preanim_duration(QString p_character, QString p_emote)
 {
-  QFile char_ini(getBasePath() + "characters/" + p_character + "/char.ini");
+  QFile char_ini(getBasePath() + "characters/" + p_character.toLower() + "/char.ini");
   if (!char_ini.open(QIODevice::ReadOnly))
   {
     char_ini.close();
