@@ -337,7 +337,6 @@ void Networkhandler::handle_server_packet()
           QString::number(MINOR_VERSION) + "#%";
 
       server_socket->write(version_packet.toUtf8());
-      qDebug() << "SENT " << version_packet;
     }
 
     //we usually receive this after sending HI#
