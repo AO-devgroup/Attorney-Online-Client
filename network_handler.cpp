@@ -331,12 +331,13 @@ void Networkhandler::handle_server_packet()
     //typically the first thing we get from the server when we connect
     if (header == "decryptor" || header == "HI")
     {
-      QString version_packet = "HI#AO2#" +
+      QString version_packet = "HI#" +
           QString::number(RELEASE) + "." +
           QString::number(MAJOR_VERSION) + "." +
           QString::number(MINOR_VERSION) + "#%";
 
       server_socket->write(version_packet.toUtf8());
+      qDebug() << "Sent packet: " << version_packet;
     }
 
     //we usually receive this after sending HI#
