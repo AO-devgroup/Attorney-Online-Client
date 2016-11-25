@@ -132,7 +132,7 @@ QString fanta_decrypt(QString temp_input, unsigned int key)
 
   QVector<unsigned int> unhexed_vector;
 
-  for(int i=0; i< input.length(); i+=2)
+  for(unsigned int i=0; i< input.length(); i+=2)
   {
     std::string byte = input.substr(i,2);
     unsigned int hex_int = strtoul(byte.c_str(), nullptr, 16);

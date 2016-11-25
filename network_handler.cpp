@@ -329,15 +329,9 @@ void Networkhandler::handle_server_packet()
     QString header = packet_contents.at(0);
 
     //typically the first thing we get from the server when we connect
-    if (header == "decryptor" || header == "HI")
+    if (header == "decryptor")
     {
-      QString version_packet = "HI#" +
-          QString::number(RELEASE) + "." +
-          QString::number(MAJOR_VERSION) + "." +
-          QString::number(MINOR_VERSION) + "#%";
-
-      server_socket->write(version_packet.toUtf8());
-      qDebug() << "Sent packet: " << version_packet;
+      server_packet_received(packet);
     }
 
     //we usually receive this after sending HI#
@@ -586,9 +580,6 @@ void Networkhandler::handle_server_packet()
 
 void Networkhandler::send_packet(QString p_packet)
 {
-  if (!server_connected)
-    return;
-
   server_socket->write(p_packet.toLocal8Bit());
   qDebug() << "Sent packet: " << p_packet;
 }

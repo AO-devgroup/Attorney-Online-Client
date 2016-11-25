@@ -1022,7 +1022,37 @@ void Courtroom::handle_server_packet(QString p_packet)
 
   QString header = packet_contents.at(0);
 
-  if (header == "MS")
+  if (header == "decryptor")
+  {
+    QString version_packet = "HI#" +
+    QString::number(RELEASE) + "." +
+    QString::number(MAJOR_VERSION) + "." +
+    QString::number(MINOR_VERSION) + "#%";
+
+    request_packet(version_packet);
+
+    decryptor = packet_contents.at(1);
+
+  }
+
+  else if (header == "HI")
+  {
+    QString software = packet_contents.at(1);
+    QString ver = packet_contents.at(2);
+
+    if (software == "serverD")
+    {
+      int major_ver = ver.split(".").at(0).mid(1, 4).toInt();
+
+      if (major_ver >= 1300)
+      {
+        //THIS ENABLES OP AO2 FEATURES
+        dank_memes = true;
+      }
+    }
+  }
+
+  else if (header == "MS")
   {
     //message format:
     //MS0#1chat#2<pre emo>#3<char>#4<emo>#5<mes>#6<pos>#7<sfxname>#8<zoom>#9<cid>#10 sfx-delay#11<objection mod>#12<evidence>#13<cid>#14<realization>#15<color>#%
@@ -1782,6 +1812,7 @@ void Courtroom::on_backtolobby_clicked()
   ui->chattext->hide();
   ui->chatbubble->hide();
   in_court = false;
+  dank_memes = false;
   close_socket_request();
   this->hide();
   //this just shows the lobby

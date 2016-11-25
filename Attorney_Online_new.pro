@@ -33,7 +33,8 @@ SOURCES += \
     emotes.cpp \
     emoteicon.cpp \
     file_handler.cpp \
-    hex_operations.cpp
+    hex_operations.cpp \
+    loading_handler.cpp
 
 HEADERS  += \
     main.h \
@@ -50,7 +51,8 @@ HEADERS  += \
     emotes.h \
     emoteicon.h \
     file_handler.h \
-    hex_operations.h
+    hex_operations.h \
+    loading_handler.h
 
 FORMS    += \
     lobby.ui \
