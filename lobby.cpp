@@ -60,7 +60,7 @@ void Lobby::setTheme()
 
 Lobby::~Lobby()
 {
-    delete ui;
+  delete ui;
 }
 
 void Lobby::on_refresh_pressed()
