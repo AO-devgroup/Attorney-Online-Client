@@ -1024,15 +1024,23 @@ void Courtroom::handle_server_packet(QString p_packet)
 
   if (header == "decryptor")
   {
+    dank_memes = false;
+    decryptor = packet_contents.at(1);
+    set_fantacrypt_key(decryptor);
+
+    QString legacy_packet = "#" + fanta_encrypt("HI") + "#" +
+    QString::number(RELEASE) + "." +
+    QString::number(MAJOR_VERSION) + "." +
+    QString::number(MINOR_VERSION) + "#%";
+
+    request_packet(legacy_packet);
+
     QString version_packet = "HI#" +
     QString::number(RELEASE) + "." +
     QString::number(MAJOR_VERSION) + "." +
     QString::number(MINOR_VERSION) + "#%";
 
     request_packet(version_packet);
-
-    decryptor = packet_contents.at(1);
-
   }
 
   else if (header == "HI")
@@ -1247,14 +1255,14 @@ void Courtroom::handle_server_packet(QString p_packet)
 
   else if (header == "SI")
   {
-    for (int n_player = 1 ; n_player < packet_contents.size() -1 ; ++n_player)
+    /*for (int n_player = 1 ; n_player < packet_contents.size() -1 ; ++n_player)
     {
       QStringList packet_arguments = packet_contents.at(n_player).split('&');
 
       ui->oocserverchat->appendPlainText(packet_arguments.at(0) + ": " +
                                          packet_arguments.at(1) + ": " +
                                          packet_arguments.at(2));
-    }
+    }*/
 
   }
 

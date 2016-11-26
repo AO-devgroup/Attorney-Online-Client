@@ -115,7 +115,6 @@ private:
   bool area_list_set = false;
   bool area_taken_list_set = false;
 
-  bool dank_memes = false;
   QString decryptor;
 
   //true is ms, false is server

@@ -27,6 +27,8 @@ QString fanta_decrypt(QString temp_input, unsigned int key = 0);
 
 void delay(int sec);
 
+extern bool dank_memes;
+
 extern const int RELEASE;
 
 extern const int MAJOR_VERSION;
