@@ -155,10 +155,18 @@ void Networkhandler::handle_enter_server_request()
     return;
 
   //request characters, music and background
+  if (dank_memes)
+  {
   server_socket->write("RC#%");
   server_socket->write("RM#%");
   server_socket->write("RA#%");
   //this usually gets spit out as one packet because of nagle's algorithm
+  }
+  else
+  {
+      QString packet = "#" + fanta_encrypt("askchaa") + "#%";
+      server_socket->write(packet.toUtf8());
+  }
 }
 
 void Networkhandler::handle_character_request(int p_character, QString p_password)
@@ -331,7 +339,9 @@ void Networkhandler::handle_server_packet()
     //typically the first thing we get from the server when we connect
     if (header == "decryptor")
     {
+      server_connected = true;
       server_packet_received(packet);
+      //server is now connected, but nothing is loaded yet
     }
 
     //we usually receive this after sending HI#
@@ -341,9 +351,6 @@ void Networkhandler::handle_server_packet()
       QString max_players = packet_contents.at(2);
 
       onlinestatus_changed(players_online, max_players);
-
-      //server is now connected, but nothing is loaded yet
-      server_connected = true;
     }
 
     //handles the character list packet
