@@ -15,7 +15,7 @@ RC_ICONS = logo.ico
 TARGET = Attorney_Online_new
 TEMPLATE = app
 
-VERSION = 2.0.8.0
+VERSION = 2.0.9.0
 
 
 SOURCES += \
@@ -32,7 +32,8 @@ SOURCES += \
     charselect.cpp \
     emotes.cpp \
     emoteicon.cpp \
-    file_handler.cpp
+    file_handler.cpp \
+    hex_operations.cpp
 
 HEADERS  += \
     main.h \
@@ -48,7 +49,8 @@ HEADERS  += \
     charselect.h \
     emotes.h \
     emoteicon.h \
-    file_handler.h
+    file_handler.h \
+    hex_operations.h
 
 FORMS    += \
     lobby.ui \

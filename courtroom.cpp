@@ -175,7 +175,28 @@ void Courtroom::go_to_charselect()
 
   ui->charselect->show();
 
-  if (char_list_set && taken_list_set)
+  for (int n_char = 0 ; n_char < character_list.size() ; ++n_char)
+  {
+    mutelist.insert(n_char, false);
+
+    ui->mutelist->addItem(character_list.at(n_char).name);
+  }
+
+  if (character_list.size() % 90 == 0)
+    char_select_pages = character_list.size() / 90;
+  else
+    char_select_pages = (character_list.size() / 90) + 1;
+
+  char_select_current_page = 1;
+
+  //legacy loading cant handle all the checks
+  if (!dank_memes)
+  {
+    setCharSelectPage();
+    entering_server();
+    show();
+  }
+  else if (char_list_set && taken_list_set)
   {
     setCharSelectPage();
     entering_server();
@@ -185,6 +206,8 @@ void Courtroom::go_to_charselect()
 
 void Courtroom::setTheme()
 {
+  this->setWindowTitle("Attorney Online" + g_server_name);
+
   ui->background->setPixmap(QPixmap(get_image_path("courtroombackground.png")));
 
   ui->present->setStyleSheet(get_stylesheet_path("present_disabled.png"));
@@ -225,17 +248,52 @@ void Courtroom::setTheme()
   ui->deskpreview->hide();
   ui->realizationflash->hide();
 
+  if (fileExists(g_theme_path + "design.ini"))
+  {
+    ui->holdit->move(get_element_position("hold_it"));
+    ui->objection->move(get_element_position("objection"));
+    ui->takethat->move(get_element_position("take_that"));
+    ui->objectioncustom->move(get_element_position("objection_custom"));
+    ui->realization->move(get_element_position("realization"));
+    ui->mute->move(get_element_position("mute"));
+    ui->textcolor->move(get_element_position("text_color"));
+    ui->defense_bar->move(get_element_position("defense_bar"));
+    ui->prosecution_bar->move(get_element_position("prosecution_bar"));
+    ui->defplus->move(get_element_position("def_plus"));
+    ui->defminus->move(get_element_position("def_minus"));
+    ui->proplus->move(get_element_position("pro_plus"));
+    ui->prominus->move(get_element_position("pro_minus"));
+    ui->witnesstestimony->move(get_element_position("witness_testimony"));
+    ui->crossexamination->move(get_element_position("cross_examination"));
+    ui->prebox->move(get_element_position("pre"));
+    ui->flipbox->move(get_element_position("flip"));
+    ui->guardbox->move(get_element_position("guard"));
+    ui->changecharacter->move(get_element_position("change_character"));
+    ui->reload_theme->move(get_element_position("reload_theme"));
+    ui->callmod->move(get_element_position("call_mod"));
+    ui->musiclabel->move(get_element_position("music_label"));
+    ui->musicslider->move(get_element_position("music_slider"));
+    ui->sfxlabel->move(get_element_position("sfx_label"));
+    ui->sfxslider->move(get_element_position("sfx_slider"));
+    ui->bliplabel->move(get_element_position("blips_label"));
+    ui->blipslider->move(get_element_position("blips_slider"));
+  }
+
   charmovie_state = 2;
   objection_state = 0;
-
-  //HACK for debugging
-  //callError("Sample text");
 }
 
 void Courtroom::set_character(int p_character, int p_mod)
 {
   if (p_character < 0 || p_character >= character_list.size())
     return;
+
+  if (!dank_memes)
+  {
+    playerChar = character_list.at(p_character).name;
+    enter_courtroom();
+    return;
+  }
 
   switch (p_mod)
   {
@@ -258,6 +316,7 @@ void Courtroom::set_character(int p_character, int p_mod)
     enter_courtroom();
     break;
   default:
+    callError("Invalid char mod!");
     return;
 
   }
@@ -463,10 +522,15 @@ void Courtroom::on_chatLine_returnPressed()
   f_chatmessage.realization = realization_state;
   f_chatmessage.text_color = text_color_state;
 
-  if (ui->flipbox->checkState())
-    f_chatmessage.flip = 1;
+  if (dank_memes)
+  {
+    if (ui->flipbox->checkState())
+      f_chatmessage.flip = 1;
+    else
+      f_chatmessage.flip = 0;
+  }
   else
-    f_chatmessage.flip = 0;
+    f_chatmessage.flip = m_cid;
 
   if (ui->prebox->checkState())
   {
@@ -507,7 +571,7 @@ void Courtroom::on_chatLine_returnPressed()
 
 void Courtroom::handle_chatmessage()
 { 
-  current_chatmessage.message.replace("<num>", "#").replace("<percent>", "%");
+  current_chatmessage.message.replace("<num>", "#").replace("<percent>", "%").replace("<dollar>", "$").replace("<and>", "&");
 
   if (current_chatmessage.message == ui->chatLine->text())
     ui->chatLine->clear();
@@ -977,6 +1041,8 @@ void Courtroom::on_spectator_clicked()
 {
     playerChar = "null";
 
+    m_cid = -1;
+
     enter_courtroom();
 }
 
@@ -999,8 +1065,13 @@ void Courtroom::on_changecharacter_clicked()
     in_court = false;
     ui->charselect->show();
   }
-  else
+  else if (dank_memes)
     request_packet("FC#%");
+  else
+  {
+    request_packet("#" + fanta_encrypt("DC") + "#" + m_cid +"#%");
+    go_to_charselect();
+  }
 }
 
 void Courtroom::on_musiclist_doubleClicked(const QModelIndex &index)
@@ -1008,10 +1079,14 @@ void Courtroom::on_musiclist_doubleClicked(const QModelIndex &index)
   if (!music_list_set)
     return;
 
+  QString header = "MC";
   QString song_name = ui_music_list.at(index.row());
   QString str_cid = QString::number(m_cid);
 
-  request_packet("MC#" + song_name.toUtf8() + "#" + str_cid + "#%");
+  if (!dank_memes)
+    header = fanta_encrypt(header);
+
+  request_packet("#" + header + "#" + song_name.toUtf8() + "#" + str_cid + "#%");
 }
 
 void Courtroom::handle_server_packet(QString p_packet)
@@ -1022,7 +1097,46 @@ void Courtroom::handle_server_packet(QString p_packet)
 
   QString header = packet_contents.at(0);
 
-  if (header == "MS")
+  if (header == "decryptor")
+  {
+    decryptor = packet_contents.at(1);
+    set_fantacrypt_key(decryptor);
+
+    QString legacy_packet = "#" + fanta_encrypt("HI") + "#" +
+    QString::number(RELEASE) + "." +
+    QString::number(MAJOR_VERSION) + "." +
+    QString::number(MINOR_VERSION) + "#%";
+
+    request_packet(legacy_packet);
+
+    /*
+    QString version_packet = "HI#" +
+    QString::number(RELEASE) + "." +
+    QString::number(MAJOR_VERSION) + "." +
+    QString::number(MINOR_VERSION) + "#%";
+
+    request_packet(version_packet);
+    */
+  }
+
+  else if (header == "HI")
+  {
+    QString software = packet_contents.at(1);
+    QString ver = packet_contents.at(2);
+
+    if (software == "serverD")
+    {
+      int major_ver = ver.split(".").at(0).mid(1, 4).toInt();
+
+      if (major_ver >= 1300)
+      {
+        //THIS ENABLES OP AO2 FEATURES
+        dank_memes = true;
+      }
+    }
+  }
+
+  else if (header == "MS")
   {
     //message format:
     //MS0#1chat#2<pre emo>#3<char>#4<emo>#5<mes>#6<pos>#7<sfxname>#8<zoom>#9<cid>#10 sfx-delay#11<objection mod>#12<evidence>#13<cid>#14<realization>#15<color>#%
@@ -1046,6 +1160,11 @@ void Courtroom::handle_server_packet(QString p_packet)
     current_chatmessage.text_color = packet_contents.at(15).toInt();
 
     handle_chatmessage();
+  }
+
+  else if (header == "BN")
+  {
+    background_path = getBasePath() + "background/" + packet_contents.at(1) + "/";
   }
 
   else if (header == "HP")
@@ -1120,7 +1239,7 @@ void Courtroom::handle_server_packet(QString p_packet)
       if (bg_index >= area_list.size())
         return;
 
-      background_path = getBasePath() + "background/" + area_list.at(bg_index).background + "/";
+     background_path = getBasePath() + "background/" + area_list.at(bg_index).background + "/";
 
       musicplayer->stop();
     }
@@ -1215,19 +1334,6 @@ void Courtroom::handle_server_packet(QString p_packet)
     ui->guardbox->show();
   }
 
-  else if (header == "SI")
-  {
-    for (int n_player = 1 ; n_player < packet_contents.size() -1 ; ++n_player)
-    {
-      QStringList packet_arguments = packet_contents.at(n_player).split('&');
-
-      ui->oocserverchat->appendPlainText(packet_arguments.at(0) + ": " +
-                                         packet_arguments.at(1) + ": " +
-                                         packet_arguments.at(2));
-    }
-
-  }
-
   else if (header == "MC")
   {
     if (!in_court)
@@ -1236,12 +1342,13 @@ void Courtroom::handle_server_packet(QString p_packet)
     if (packet_contents.size() < 4)
       return;
 
-    QString song_name = packet_contents.at(1).toLower();
-
     int f_cid = packet_contents.at(2).toInt();
 
     if (f_cid < -1)
       return;
+
+    QString song_name_raw = packet_contents.at(1);
+    QString song_name = song_name_raw.toLower();
 
     QString song_path = getBasePath() + "sounds/music/" + song_name;
 
@@ -1264,7 +1371,131 @@ void Courtroom::handle_server_packet(QString p_packet)
     QString song_char = character_list.at(f_cid).name;
 
     ui->chatlog->moveCursor(QTextCursor::Start, QTextCursor::MoveAnchor);
-    ui->chatlog->insertPlainText(song_char + " has played a song: " + song_name + "\n");
+    ui->chatlog->insertPlainText(song_char + " has played a song: " + song_name_raw + "\n");
+  }
+  else if (header == "ID")
+  {
+    pv = packet_contents.at(1).toInt();
+  }
+  else if (header == "SI")
+  {
+    request_packet("#" + fanta_encrypt("askchar2") + "#%");
+  }
+  else if (header == "CI")
+  {
+    if (packet_contents.at(1) == "0")
+      character_list.clear();
+
+    for (int pos = 2 ; pos <= packet_contents.size() - 3 ; pos += 2)
+    {
+      QString f_msg = packet_contents.at(pos);
+      char_type f_char;
+      f_char.name = f_msg.split("&").at(0);
+      f_char.description = f_msg.split("&").at(1);
+
+      character_list.append(f_char);
+    }
+    int next_req_number = packet_contents.at(packet_contents.size() - 4).toInt() / 10 + 1;
+
+    qDebug() << "next_req_number: " << next_req_number;
+
+    request_packet("#" + fanta_encrypt("AN") + "#" + QString::number(next_req_number) + "#%");
+  }
+  else if (header == "EM")
+  {
+    char_list_set = true;
+
+    if (packet_contents.at(1) == "0")
+    {
+      music_list.clear();
+
+      mutelist.clear();
+      ui->mutelist->clear();
+    }
+
+    for (int pos = 2 ; pos <= packet_contents.size() - 3 ; pos += 2)
+    {
+      QString f_msg = packet_contents.at(pos);
+
+      music_list.append(f_msg);
+    }
+    int next_req_number = packet_contents.at(packet_contents.size() - 4).toInt() / 10 + 1;
+
+    qDebug() << "next_req_number: " << next_req_number;
+
+    request_packet("#" + fanta_encrypt("AM") + "#" + QString::number(next_req_number) + "#%");
+  }
+  else if (header == "EI")
+  {
+    request_packet("#" + fanta_encrypt("AE") + "#" + packet_contents.at(1) + "#%");
+  }
+  else if (header == "CharsCheck")
+  {
+    ui_music_list = music_list;
+
+    music_list_set = true;
+
+    ui->musiclist->clear();
+
+    for (int n_song = 0 ; n_song < music_list.size() ; ++n_song)
+    {
+      QString song_name = music_list.at(n_song);
+
+      ui->musiclist->addItem(song_name);
+
+      QString song_path = getBasePath() + "sounds/music/" + song_name.toLower();
+
+      if (fileExists(song_path, true))
+        ui->musiclist->item(n_song)->setBackground(Qt::green);
+      else
+        ui->musiclist->item(n_song)->setBackground(Qt::red);
+    }
+
+    taken_list.clear();
+
+    for (int n_taken = 1 ; n_taken < packet_contents.size() - 1 ; ++n_taken)
+    {
+      if (packet_contents.at(n_taken) == "0")
+        taken_list.append(packet_contents.at(n_taken).toInt());
+      else
+        taken_list.append(1);
+    }
+
+    //meh
+    /*
+    if (character_list.size() != taken_list.size())
+    {
+      callError("CRITICAL FISSION MAILURE: taken_list.size did not match char_list.size");
+      qDebug() << "char_list.size: " << character_list.size();
+      qDebug() << "taken_list.size: " << taken_list.size();
+      return;
+    }
+    */
+
+    taken_list_set = true;
+  }
+  //handled elsewhere, ctrl+f DONE#
+  /*
+  else if (header == "DONE")
+  {
+    qDebug() << "got it";
+    //less safe, more compatible -- the fanta way
+    if (char_list_set && taken_list_set)
+    {
+      setCharSelectPage();
+      enter_courtroom();
+      show();
+    }
+  }
+  */
+
+  else if (header == "PV")
+  {
+    set_character(packet_contents.at(3).toInt(), -1);
+  }
+  else if (header == "checkconnection")
+  {
+    request_packet("#" + fanta_encrypt("CHECK") + "#" + m_cid + "#%" );
   }
 }
 
@@ -1782,6 +2013,7 @@ void Courtroom::on_backtolobby_clicked()
   ui->chattext->hide();
   ui->chatbubble->hide();
   in_court = false;
+  dank_memes = false;
   close_socket_request();
   this->hide();
   //this just shows the lobby

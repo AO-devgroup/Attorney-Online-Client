@@ -1,9 +1,10 @@
 #include "error_handler.h"
 
+#include <QDebug>
+
 void callError(QString message, bool error_text)
 {
   QMessageBox *msgBox = new QMessageBox;
-
 
   if (error_text)
   {

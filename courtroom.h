@@ -68,6 +68,7 @@ private:
   int char_select_pages;
   int char_select_current_page;
   QString playerChar = "null";  //null in effect means spectator
+
   QVector<char_type> character_list; //custom datatype
   QVector<charicon* > charicon_list; //qpushbutton inherited(widget)
   QSignalMapper *mapper;
@@ -86,7 +87,11 @@ private:
   QSignalMapper *emote_mapper;
 
   QVector<area_type> area_list = {{"defaultname", "gs4", false}};
+
   QVector<int> area_taken_list;
+
+  QStringList music_list;
+  QStringList ui_music_list;
 
   void construct_emotes();
   void setEmotes();
@@ -97,16 +102,11 @@ private:
 
   int emotes_on_page;
 
-  //QSettings ini_charini;
-
   QMediaPlayer *musicplayer;
   QMediaPlayer *sfxplayer;
   QMediaPlayer *blipplayer;
   QMediaPlayer *blipplayer2;
   QMediaPlayer *guardplayer;
-
-  QStringList music_list;
-  QStringList ui_music_list;
 
   bool char_list_set = false;
   bool taken_list_set = false;
@@ -115,12 +115,12 @@ private:
   bool area_list_set = false;
   bool area_taken_list_set = false;
 
+  QString decryptor;
+
   //true is ms, false is server
   bool ms_or_server_ooc = true;
 
   QString background_path;
-
-  bool legacy_mode = false;
 
   QMovie *charmovie;
   QMovie *speedlinesmovie;

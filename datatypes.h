@@ -59,4 +59,10 @@ struct area_type
   bool passworded;
 };
 
+struct pos_type
+{
+  int x;
+  int y;
+};
+
 #endif // DATATYPES_H

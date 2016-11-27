@@ -13,4 +13,6 @@ QString getChat(QString p_character);
 
 int get_preanim_duration(QString p_character, QString p_emote);
 
+QPoint get_element_position(QString element);
+
 #endif // FILE_HANDLER_H

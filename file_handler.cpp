@@ -2,13 +2,14 @@
 
 #include <QDebug>
 
+#include "globals.h"
 
 QString getShowname(QString p_character)
 {
   QFile char_ini(getBasePath() + "characters/" + p_character + "/char.ini");
   if (!char_ini.open(QIODevice::ReadOnly))
   {
-   return p_character;
+    return p_character;
   }
 
   QTextStream in(&char_ini);
@@ -144,6 +145,40 @@ int get_preanim_duration(QString p_character, QString p_emote)
 
   char_ini.close();
   return 0;
+}
+
+QPoint get_element_position(QString element)
+{
+  element = element.toLower();
+
+  QPoint f_pos;
+  f_pos.setX(0);
+  f_pos.setY(0);
+
+  QFile design_ini(g_theme_path + "design.ini");
+  if (!design_ini.open(QIODevice::ReadOnly))
+  {
+    design_ini.close();
+    return f_pos;
+  }
+
+  QTextStream in(&design_ini);
+
+  while (!in.atEnd())
+  {
+    QString line = in.readLine().toLower().trimmed();
+
+    if (line.startsWith(element))
+    {
+      QString substring = line.split("=").at(1);
+      f_pos.setX(substring.split(",").at(0).trimmed().toInt());
+      f_pos.setY(substring.split(",").at(1).trimmed().toInt());
+      break;
+    }
+  }
+
+  design_ini.close();
+  return f_pos;
 }
 
 
