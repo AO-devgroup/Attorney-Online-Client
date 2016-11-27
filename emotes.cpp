@@ -114,32 +114,34 @@ void Courtroom::setEmotes()
     }
   }
 
+  QString err_str = "DEFAULT_EMOTE_ERROR";
+
   //checks that we actually found what we need
   if (int_emotions_line == -1)
   {
-    QString err_str = "Could not find [Emotions] in " + char_ini_path;
-    callError(err_str);
+    err_str = "Could not find [Emotions] in " + char_ini_path;
+    //callError(err_str);
     return;
   }
 
   if (int_soundn_line == -1)
   {
-    QString err_str = "Could not find [SoundN] in " + char_ini_path;
-    callError(err_str);
+    err_str = "Could not find [SoundN] in " + char_ini_path;
+    //callError(err_str);
     return;
   }
 
   if (int_soundt_line == -1)
   {
-    QString err_str = "Could not find [SoundT] in " + char_ini_path;
-    callError(err_str);
+    err_str = "Could not find [SoundT] in " + char_ini_path;
+    //callError(err_str);
     return;
   }
 
   if (n_emotes_ini == -1)
   {
-    QString err_str = "Could not find emote number(number = ) in " + char_ini_path;
-    callError(err_str);
+    err_str = "Could not find emote number(number = ) in " + char_ini_path;
+    //callError(err_str);
     return;
   }
 

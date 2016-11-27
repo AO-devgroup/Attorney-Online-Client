@@ -76,6 +76,14 @@ void delay( int millisecondsToWait )
     }
 }
 
+QString incoming_network_formatter(QString input)
+{
+  return input.replace("<dollar>", "$").replace("<and>", "&").replace("<percent>", "%").replace("<num>", "#");
+}
+
+//needed for legacy operations
+int pv = 0;
+
 //everything related to encryption under here
 ////////////////////////////////////////////////////////////////////////////////////////////////
 

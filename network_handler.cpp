@@ -96,7 +96,14 @@ void Networkhandler::handle_chatmessage_request(chatmessage_type &p_chatmessage)
   if (!server_connected)
     return;
 
-  QString packet = "MS#chat2#" +
+  QString header;
+
+  if (dank_memes)
+    header = "MS";
+  else
+    header = fanta_encrypt("MS");
+
+  QString packet = header + "#chat#" +
       p_chatmessage.pre_emote + "#" +
       p_chatmessage.character + "#" +
       p_chatmessage.emote + "#" +
@@ -157,23 +164,31 @@ void Networkhandler::handle_enter_server_request()
   //request characters, music and background
   if (dank_memes)
   {
-  server_socket->write("RC#%");
-  server_socket->write("RM#%");
-  server_socket->write("RA#%");
-  //this usually gets spit out as one packet because of nagle's algorithm
+    //this usually gets spit out as one packet because of nagle's algorithm
+    server_socket->write("RC#%");
+    server_socket->write("RM#%");
+    server_socket->write("RA#%");
   }
   else
   {
-      QString packet = "#" + fanta_encrypt("askchaa") + "#%";
-      server_socket->write(packet.toUtf8());
+    QString packet = "#" + fanta_encrypt("askchaa") + "#%";
+    server_socket->write(packet.toLocal8Bit());
   }
 }
 
 void Networkhandler::handle_character_request(int p_character, QString p_password)
 {
-  QString packet = "UC#" + QString::number(p_character) + "#" + p_password + "#%";
+  QString packet;
+
+  if (dank_memes)
+    packet = "UC#" + QString::number(p_character) + "#" + p_password + "#%";
+  else
+    packet = fanta_encrypt("CC") + "#" + QString::number(pv) + "#" + QString::number(p_character) + "#2.0.9#%";
+
 
   server_socket->write(packet.toUtf8());
+
+  qDebug() << "Sent packet: " << packet;
 }
 
 void Networkhandler::handle_ms_packet()
@@ -220,7 +235,7 @@ void Networkhandler::handle_ms_packet()
       if (packet_arguments.size() == 4)
       {
         QString msg = packet_arguments.at(1) + ": " + packet_arguments.at(2);
-        ms_message_received(msg.replace("<percent>", "%").replace("<num>", "#"));
+        ms_message_received(msg.replace("<percent>", "%").replace("<num>", "#").replace("<dollar>", "$"));
       }
       else if (packet_arguments.size() == 3)
       {
@@ -332,6 +347,8 @@ void Networkhandler::handle_server_packet()
 
   for(QString packet : packet_list)
   {
+    qDebug() << "received packet: " << packet;
+
     QStringList packet_contents = packet.split("#");
 
     QString header = packet_contents.at(0);
@@ -340,6 +357,7 @@ void Networkhandler::handle_server_packet()
     if (header == "decryptor")
     {
       server_connected = true;
+      dank_memes = false;
       server_packet_received(packet);
       //server is now connected, but nothing is loaded yet
     }
@@ -351,6 +369,8 @@ void Networkhandler::handle_server_packet()
       QString max_players = packet_contents.at(2);
 
       onlinestatus_changed(players_online, max_players);
+
+      server_connected = true;
     }
 
     //handles the character list packet
@@ -549,7 +569,7 @@ void Networkhandler::handle_server_packet()
       QString name = packet_contents.at(1);
       QString message = packet_contents.at(2);
 
-      ooc_message_received(name + ": " + message);
+      ooc_message_received(incoming_network_formatter(name + ": " + message));
     }
 
     else if (header == "HP")
@@ -581,7 +601,7 @@ void Networkhandler::handle_server_packet()
       server_packet_received(packet);
 
 
-    qDebug() << "received packet: " << packet;
+
   }
 }
 

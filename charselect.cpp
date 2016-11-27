@@ -186,7 +186,7 @@ void Courtroom::setCharSelectPage()
     chars_on_page = 90;
 
   else if(chars_on_page == -1)
-    callFatalError("emotes_on_page was not set properly (-1)");
+    callFatalError("chars_on_page was not set properly (-1)");
 
   else
     callFatalError("Something broke with the charselect idk. blame the terrible developers."
@@ -223,7 +223,8 @@ void Courtroom::setCharSelectPage()
       f_charicon->set_passworded();
       break;
     default:
-      callError("SOMETHING BROKE. f_mod in function setCharSelectPage was not in 0-3, but rather " + f_mod);
+      callError("SOMETHING BROKE. f_mod in function setCharSelectPage was not in 0-3, but rather " +
+                QString::number(f_mod));
 
     }
 

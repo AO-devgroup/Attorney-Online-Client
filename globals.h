@@ -17,6 +17,10 @@ QString get_stylesheet_path(QString p_image);
 
 bool cyclic_function();
 
+QString incoming_network_formatter(QString input);
+
+extern int pv;
+
 extern unsigned int g_fantacrypt_key;
 
 void set_fantacrypt_key(QString temp_decryptor);
