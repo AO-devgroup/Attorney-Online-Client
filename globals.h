@@ -8,6 +8,7 @@
 #include "config_handler.h"
 
 extern QString g_theme_path;
+extern QString g_server_name;
 
 void set_theme_path();
 

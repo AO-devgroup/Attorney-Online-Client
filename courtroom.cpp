@@ -206,6 +206,8 @@ void Courtroom::go_to_charselect()
 
 void Courtroom::setTheme()
 {
+  this->setWindowTitle("Attorney Online" + g_server_name);
+
   ui->background->setPixmap(QPixmap(get_image_path("courtroombackground.png")));
 
   ui->present->setStyleSheet(get_stylesheet_path("present_disabled.png"));
@@ -246,11 +248,39 @@ void Courtroom::setTheme()
   ui->deskpreview->hide();
   ui->realizationflash->hide();
 
+  if (fileExists(g_theme_path + "design.ini"))
+  {
+    ui->holdit->move(get_element_position("hold_it"));
+    ui->objection->move(get_element_position("objection"));
+    ui->takethat->move(get_element_position("take_that"));
+    ui->objectioncustom->move(get_element_position("objection_custom"));
+    ui->realization->move(get_element_position("realization"));
+    ui->mute->move(get_element_position("mute"));
+    ui->textcolor->move(get_element_position("text_color"));
+    ui->defense_bar->move(get_element_position("defense_bar"));
+    ui->prosecution_bar->move(get_element_position("prosecution_bar"));
+    ui->defplus->move(get_element_position("def_plus"));
+    ui->defminus->move(get_element_position("def_minus"));
+    ui->proplus->move(get_element_position("pro_plus"));
+    ui->prominus->move(get_element_position("pro_minus"));
+    ui->witnesstestimony->move(get_element_position("witness_testimony"));
+    ui->crossexamination->move(get_element_position("cross_examination"));
+    ui->prebox->move(get_element_position("pre"));
+    ui->flipbox->move(get_element_position("flip"));
+    ui->guardbox->move(get_element_position("guard"));
+    ui->changecharacter->move(get_element_position("change_character"));
+    ui->reload_theme->move(get_element_position("reload_theme"));
+    ui->callmod->move(get_element_position("call_mod"));
+    ui->musiclabel->move(get_element_position("music_label"));
+    ui->musicslider->move(get_element_position("music_slider"));
+    ui->sfxlabel->move(get_element_position("sfx_label"));
+    ui->sfxslider->move(get_element_position("sfx_slider"));
+    ui->bliplabel->move(get_element_position("blips_label"));
+    ui->blipslider->move(get_element_position("blips_slider"));
+  }
+
   charmovie_state = 2;
   objection_state = 0;
-
-  //HACK for debugging
-  //callError("Sample text");
 }
 
 void Courtroom::set_character(int p_character, int p_mod)

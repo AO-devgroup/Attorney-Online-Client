@@ -165,6 +165,8 @@ void Lobby::on_serverlist_clicked(const QModelIndex &index)
 
   server_type f_server = m_server_list.at(index.row());
 
+  g_server_name = ": " + f_server.name;
+
   ui->description->setPlainText(f_server.desc);
 
   int_selected_server = index.row();
@@ -177,6 +179,8 @@ void Lobby::on_favoritelist_clicked(const QModelIndex &index)
   ui->onlinestatus->setText("Offline");
 
   server_type f_server = favoriteservers.at(index.row());
+
+  g_server_name = ": " + f_server.name;
 
   if (f_server.name == "!MISCONFIGURED!")
     return;

@@ -11,6 +11,7 @@
 #include "hex_operations.h"
 
 QString g_theme_path = "FATAL: g_theme_path was not set";
+QString g_server_name = "";
 
 const int RELEASE = 2;
 const int MAJOR_VERSION = 0;
