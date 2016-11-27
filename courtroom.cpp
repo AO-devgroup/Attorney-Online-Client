@@ -1069,7 +1069,7 @@ void Courtroom::on_changecharacter_clicked()
     request_packet("FC#%");
   else
   {
-    request_packet(fanta_encrypt("DC") + "#" + m_cid);
+    request_packet("#" + fanta_encrypt("DC") + "#" + m_cid +"#%");
     go_to_charselect();
   }
 }
@@ -1086,7 +1086,7 @@ void Courtroom::on_musiclist_doubleClicked(const QModelIndex &index)
   if (!dank_memes)
     header = fanta_encrypt(header);
 
-  request_packet(header + "#" + song_name.toUtf8() + "#" + str_cid + "#%");
+  request_packet("#" + header + "#" + song_name.toUtf8() + "#" + str_cid + "#%");
 }
 
 void Courtroom::handle_server_packet(QString p_packet)
@@ -1493,7 +1493,10 @@ void Courtroom::handle_server_packet(QString p_packet)
   {
     set_character(packet_contents.at(3).toInt(), -1);
   }
-
+  else if (header == "checkconnection")
+  {
+    request_packet("#" + fanta_encrypt("CHECK") + "#" + m_cid + "#%" );
+  }
 }
 
 
