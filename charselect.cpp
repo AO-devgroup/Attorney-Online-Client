@@ -206,7 +206,12 @@ void Courtroom::setCharSelectPage()
 
     f_charicon->setIcon(f_char.name);
 
-    int f_mod = taken_list.at(real_char_number);
+    int f_mod = 0;
+
+    if (real_char_number < taken_list.size())
+        f_mod = taken_list.at(real_char_number);
+    else
+        f_mod = 0;
 
     switch (f_mod)
     {

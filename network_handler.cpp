@@ -101,7 +101,7 @@ void Networkhandler::handle_chatmessage_request(chatmessage_type &p_chatmessage)
   if (dank_memes)
     header = "MS";
   else
-    header = fanta_encrypt("MS");
+    header = "#" + fanta_encrypt("MS");
 
   QString packet = header + "#chat#" +
       p_chatmessage.pre_emote + "#" +
@@ -183,7 +183,7 @@ void Networkhandler::handle_character_request(int p_character, QString p_passwor
   if (dank_memes)
     packet = "UC#" + QString::number(p_character) + "#" + p_password + "#%";
   else
-    packet = fanta_encrypt("CC") + "#" + QString::number(pv) + "#" + QString::number(p_character) + "#2.0.9#%";
+    packet = "#" + fanta_encrypt("CC") + "#" + QString::number(pv) + "#" + QString::number(p_character) + "#2.0.9#%";
 
 
   server_socket->write(packet.toUtf8());
